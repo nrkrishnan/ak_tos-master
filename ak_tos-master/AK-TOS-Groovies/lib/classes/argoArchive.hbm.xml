@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">ArgoArchive</meta>
+    <meta attribute="scope-set">public</meta>
+
+    <class name="com.navis.argo.business.model.ArchiveCarrierVisit" table="argo_ar_carrier_visit" dynamic-update="true">
+        <meta attribute="n4alias">arcv</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.ArchiveCarrierVisitHbr</meta>
+        <meta attribute="class-description">proxy representing a call of a carrier at a facility</meta>
+        <meta attribute="n4-entity-name">Archived Carrier Visit</meta>
+        <meta attribute="n4-entity-name-plural">Archived Carrier Visits</meta>
+
+        <id name="arCvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arCvArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this entity was archived.</meta>
+        </property>
+
+        <property name="arCvOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arCvId" type="string">
+            <meta attribute="field-description">carrier visit id: carrier identifier (vessel/voyage, truck license, etc.)</meta>
+            <column name="id" index="cv_ar_id_idx" length="30" not-null="true"/>
+        </property>
+
+        <property name="arCvCustomsId" type="string">
+            <meta attribute="field-description">external reference id for this visit (e.g. customs' ID at PNC)</meta>
+            <column name="customs_id" index="cv_ar_customs_id_idx" not-null="false"/>
+        </property>
+
+        <property name="arCvCarrierMode" column="carrier_mode" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" not-null="true">
+            <meta attribute="field-description">the carrier transport mode (vessel, rail or truck)</meta>
+        </property>
+
+        <property name="arCvVisitNbr" column="visit_nbr" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">number to disambuguate the visit: 1=first visit, 2=second, etc. (used for trucks and railcars only)
+            </meta>
+        </property>
+
+        <property name="arCvVisitPhase" column="phase" type="com.navis.argo.persistence.atoms.UserTypeCarrierVisitPhaseEnum" not-null="true">
+            <meta attribute="field-description">Visit phase (CREATED, INBOUND ARRIVED, ...)</meta>
+        </property>
+
+        <property name="arCvOperatorId" column="operator_id" type="string" length="100">
+            <meta attribute="field-description">The primary operator of this carrier visit.</meta>
+        </property>
+
+        <property name="arCvOperatorGkey" column="operator_gkey" type="java.lang.Long">
+            <meta attribute="field-description">The primary operator of this carrier visit.</meta>
+        </property>
+
+        <many-to-one name="arCvComplex" class="com.navis.argo.business.model.Complex">
+            <meta attribute="field-description">The Complex at which this carrier will call</meta>
+            <column name="cpx_gkey" not-null="true"/>
+        </many-to-one>
+
+        <many-to-one name="arCvFacility" class="com.navis.argo.business.model.Facility">
+            <meta attribute="field-description">The Facility at which this carrier will call (if known)</meta>
+            <column name="fcy_gkey" not-null="false"/>
+        </many-to-one>
+
+        <many-to-one name="arCvNextFacility" class="com.navis.argo.business.model.Facility">
+            <meta attribute="field-description">The next Facility this carrier will call. If null, assumption is carrier leaves complex on departure
+            </meta>
+            <column name="next_fcy_gkey" not-null="false"/>
+        </many-to-one>
+
+        <property name="arCvATA" column="ata" type="timestamp">
+            <meta attribute="field-description">Actual Time of Arrival</meta>
+        </property>
+
+        <property name="arCvATD" column="atd" type="timestamp">
+            <meta attribute="field-description">Actual Time of Departure</meta>
+        </property>
+
+        <!-- 2012-05-04 oviyak v2.4.J ARGO-31869 archive audit trail columns -->
+        <property name="arCvCreated" column="created" type="timestamp"/>
+        <property name="arCvCreator" column="creator" type="string" length="30"/>
+        <property name="arCvChanged" column="changed" type="timestamp"/>
+        <property name="arCvChanger" column="changer" type="string" length="30"/>
+
+
+        <!-- No need to archive it because the field has been null'ed out already when its VisitDetail was purged. See VisitDetails.onDelte() -->
+        <!--<many-to-one name="arCvCvd" class="com.navis.argo.business.model.ArchiveVisitDetails" cascade="all" unique="false">-->
+        <!--<meta attribute="field-description">The VisitDetails asscoiated with this CarrierVisit. May be null.</meta>-->
+        <!--<column name="arCvcvd_gkey"/>-->
+        <!--</many-to-one>-->
+
+    </class>
+
+    <class name="com.navis.argo.business.model.ArchiveVisitDetails" table="argo_ar_visit_details" dynamic-update="true">
+        <meta attribute="n4alias">arcvd</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.ArchiveVisitDetailsHbr</meta>
+        <meta attribute="class-description">Base class for details of a CarrierVisit</meta>
+        <meta attribute="n4-entity-name">Archived Carrier Visit Details</meta>
+        <meta attribute="n4-entity-name-plural">Archived Carrier Visit Details</meta>
+
+        <id name="arCvdGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arCvdArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this entity was archived.</meta>
+        </property>
+
+        <!-- manise ARGO-55808 adding index for original_gkey column-->
+        <property name="arCvdOriginalGkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the original entity before it's been purged/archived.</meta>
+            <column name="original_gkey" index="cvd_ar_original_gkey_idx"/>
+        </property>
+
+        <many-to-one name="arCvdCvComplex" class="com.navis.argo.business.model.Complex">
+            <meta attribute="field-description">The Complex at which its carrier will call</meta>
+            <column name="cv_cpx_gkey"/>
+        </many-to-one>
+
+        <many-to-one name="arCvdCvFacility" class="com.navis.argo.business.model.Facility">
+            <meta attribute="field-description">The Facility at which its carrier will call (if known)</meta>
+            <column name="cv_fcy_gkey"/>
+        </many-to-one>
+
+        <property name="arCvdCvGkey" column="cv_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Gkey of the CarrierVisit owning this CarrierVisitDetails</meta>
+        </property>
+        <property name="arCvdCvId" column="cv_id" type="string" length="30">
+            <meta attribute="field-description">CvId of the CarrierVisit owning this CarrierVisitDetails</meta>
+        </property>
+
+        <property name="arCvdETA" column="eta" type="timestamp">
+            <meta attribute="field-description">Estimated Time of Arrival</meta>
+        </property>
+
+        <property name="arCvdETD" column="etd" type="timestamp">
+            <meta attribute="field-description">Estimated Time of Departure</meta>
+        </property>
+
+        <property name="arCvdTimeDischargeComplete" column="time_discharge_complete" type="timestamp">
+            <meta attribute="field-description">Time discharge of entire carrier visit completed</meta>
+        </property>
+
+        <property name="arCvdTimeFirstAvailability" column="time_first_availabiltiy" type="timestamp">
+            <meta attribute="field-description">Date/time discharged cargo is available for pickup</meta>
+        </property>
+
+        <property name="arCvdInboundFirstFreeDay" column="ffd" type="timestamp">
+            <meta attribute="field-description">Storage First Free Day for inbound cargo</meta>
+        </property>
+
+        <property name="arCvdServiceGkey" column="service_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The service of the carrier. Nullable, as truck carriers don't have a service.</meta>
+        </property>
+
+        <property name="arCvdServiceId" column="service_id" type="string" not-null="false" length="16">
+            <meta attribute="field-description">The service of the carrier. Nullable, as truck carriers don't have a service.</meta>
+        </property>
+
+        <!--2010-03-18 vkotha v2.1.K ARGO-24463 missing fields in archive tables-->
+        <!--2011-08-15 aazhar v2.2.b5 ARGO-32708 field lenght was not set correctly in table, changing from 16 - 255-->
+        <property name="arCvdServiceName" column="service_name" type="string" not-null="false" length="255">
+            <meta attribute="field-description">The service name of the carrier. Nullable, as truck carriers don't have a service.</meta>
+        </property>
+
+        <property name="arCvdItineraryGkey" column="itinereray_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The itinerary of the carrier (most often same as carrier's service's itineray). Nullable, as truck
+                carriers don't have an itinerary.
+            </meta>
+        </property>
+
+        <property name="arCvdItineraryId" column="itinereray_id" type="string" length="255" not-null="false">
+            <meta attribute="field-description">The itinerary of the carrier (most often same as carrier's service's itineray). Nullable, as truck
+                carriers don't have an itinerary.
+            </meta>
+        </property>
+
+        <property name="arCvdInCallNumber" column="in_call_number" type="java.lang.String" length="1">
+            <meta attribute="field-description">Inbound Call Number</meta>
+        </property>
+
+        <property name="arCvdOutCallNumber" column="out_call_number" type="java.lang.String" length="1">
+            <meta attribute="field-description">Outbound Call Number</meta>
+        </property>
+
+        <property name="arCvdDataSource" column="data_source" type="com.navis.argo.persistence.atoms.UserTypeDataSourceEnum" not-null="true">
+            <meta attribute="field-description">Source of this carrier visit record</meta>
+        </property>
+
+        <property name="arCvdTimePeriodicStart" column="time_periodic_start" type="timestamp">
+            <meta attribute="field-description">First Periodic Visit time</meta>
+        </property>
+
+        <property name="arCvdTimePeriodicEnd" column="time_periodic_end" type="timestamp">
+            <meta attribute="field-description">Last Periodic Visit time</meta>
+        </property>
+
+        <property name="arCvdDurationPeriodicRecur" column="periodic_interval" type="java.lang.Long">
+            <meta attribute="field-description">Periodic Visit interval</meta>
+        </property>
+
+        <property name="arCvdLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <!--<filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>-->
+    </class>
+
+    <!--2009-07-22 spabbala v2.0.E ARGO-19140 Inspector for Archived Units-->
+    <class name="com.navis.argo.business.model.ArchivePropertySource" table="argo_ar_property_source" dynamic-update="false">
+        <meta attribute="generated-class">com.navis.argo.business.model.ArchivePropertySourceHbr</meta>
+        <meta attribute="class-description">Records the ArchiveDataSource for a property group for an entity</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">arprpsrc</meta>
+        <meta attribute="n4-entity-name">ArchivePropertySource</meta>
+        <meta attribute="n4-entity-name-plural">ArchivePropertySources</meta>
+
+        <id name="arPrpsrcGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arPrpsrcOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arPrpsrcAppliedToEntity" column="applied_to_entity" type="string" length="30" not-null="true" unique-key="prpsrc_key">
+            <meta attribute="field-description">EntityName of the owner entity</meta>
+        </property>
+
+        <property name="arPrpsrcAppliedToPrimaryKey" column="applied_to_gkey" type="java.lang.Long" not-null="true" index="arprpsrc_entity_key_idx"
+                  unique-key="prpsrc_key">
+            <meta attribute="field-description">Primary key of the owner entity</meta>
+        </property>
+
+        <property name="arPrpsrcPropertyGroup" column="property_group" type="com.navis.argo.persistence.atoms.UserTypePropertyGroupEnum" length="30"
+                  not-null="true" unique-key="prpsrc_key">
+            <meta attribute="field-description">Property Group</meta>
+        </property>
+
+        <property name="arPrpsrcDataSource" column="data_source" type="com.navis.argo.persistence.atoms.UserTypeDataSourceEnum" not-null="true">
+            <meta attribute="field-description">Source from which the property was populated</meta>
+        </property>
+
+        <property name="arPrpsrcTimestamp" column="time_updated" type="timestamp" not-null="true"/>
+
+        <property name="arPrpsrcUserId" column="user_id" type="string" not-null="true"/>
+    </class>
+
+</hibernate-mapping>

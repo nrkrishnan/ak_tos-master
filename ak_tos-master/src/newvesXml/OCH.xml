@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OCH>
+	<Field name="tranCode" length="3"></Field>
+	<Field name="date" length="8"></Field>
+	<Field name="time" length="8"></Field>
+	<Field name="user" length="5"></Field>
+	<Field name="pdlgId" length="9"></Field>
+	<Field name="chas" length="12"></Field>
+	<Field name="cd" length="1"></Field>
+	<Field name="cell" length="10"></Field>
+	<Field name="tare" length="6"></Field>
+	<Field name="vesvoy" length="6"></Field>
+	<Field name="leg" length="1"></Field>
+	<Field name="load" length="4"></Field>
+	<Field name="srv" length="5"></Field>
+	<Field name="dmg" length="1"></Field>
+	<Field name="typeCode" length="8"></Field>
+	<Field name="owner" length="4"></Field>
+	<Field name="ctrNo" length="12"></Field>
+	<Field name="mgNum" length="11"></Field>
+	<Field name="mgTare" length="6"></Field>
+	<Field name="mgCd" length="1"></Field>
+	<Field name="primaryCarrier" length="3"></Field>
+	<Field name="trade" length="1"></Field>
+</OCH>

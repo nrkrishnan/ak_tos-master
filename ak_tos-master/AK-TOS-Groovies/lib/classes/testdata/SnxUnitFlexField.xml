@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:snx xmlns:ns2="http://www.navis.com/argo">
+    <unit snx-update-note="NIS Load Transaction" line="MAT" freight-kind="FCL" category="IMPORT" id="TEST5018000" transit-state="INBOUND">
+        <equipment role="PRIMARY" material="UNKNOWN" operator="MAT" owner="MATU" strength-code="A" height-mm="2590" tare-kg="2208.99" type="D20" class="CTR" eqid="TEST5018000">
+            <damages/>
+        </equipment>
+        <position slot="1234" location="MAT616" loc-type="VESSEL"/>
+        <routing destination="HON" opl="KAH" pod-1="HON" pol="KAH" next-facility="FCY112">
+            <carrier id="MAT616" mode="VESSEL" qualifier="DECLARED" direction="IB"/>
+            <carrier id="MAT616" mode="VESSEL" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="DECLARED" direction="OB"/>
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+        <unit-etc category="IMPORT" line="MAT" />
+        <timestamps time-last-move="2013-06-18T10:42:39" />
+        <non-move-history>
+            <event id="UNIT_CREATE" time-event-applied="2013-06-18T10:42:39" user-id="user:admin" is-billable="N" />
+            <event id="UNIT_ACTIVATE" time-event-applied="2013-06-18T10:42:39" user-id="user:admin" is-billable="N" />
+            <event id="UNIT_OPERATOR_CHANGE" note="Unit Operator Changed from MAT to APL" time-event-applied="2013-07-04T15:14:44" user-id="user:admin" is-billable="N">
+                <field-changes>
+                    <field-change id="eqsEqOperator" new-value="APL" prev-value="MAT" />
+                </field-changes>
+            </event>
+            <event id="UNIT_PROPERTY_UPDATE" note="Seals updated" time-event-applied="2013-08-06T19:06:52" user-id="user:admin" is-billable="N">
+                <field-changes>
+                    <field-change id="unitSealNbr1" new-value="SEAL1" />
+                    <field-change id="unitSealNbr2" new-value="SEAL2" />
+                    <field-change id="unitIsCtrSealed" new-value="false" />
+                    <field-change id="unitGoodsAndCtrWtKg" new-value="5211.78" prev-value="2208.99" />
+                </field-changes>
+            </event>
+            <event id="UNIT_STORAGE_UPDATE" note="Unit Storage details updated" time-event-applied="2013-08-12T04:59:51" user-id="user:admin" is-billable="N">
+                <field-changes>
+                    <field-change id="ufvPaidThruDay" new-value="20130812103000IST" />
+                </field-changes>
+            </event>
+        </non-move-history>
+    </unit>
+</ns2:snx>

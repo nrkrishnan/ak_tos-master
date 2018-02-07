@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edi:appointmentTransactions xmlns:edi="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <edi:appointmentTransaction edi:appointmentDate="20080121" edi:appointmentFacilityId="FCY111" edi:appointmentGateId="APP_GATE"
+                                edi:appointmentId="2241983" edi:appointmentType="DROPOFF" edi:msgClass="APPOINTMENT" edi:msgFunction="9"
+                                edi:msgReferenceNbr="WCP000099999" edi:msgTypeId="COPINO">
+        <edi:Interchange edi:InterchangeNumber="WCP000099999" edi:InterchangeReceipient="BEANR1700" edi:InterchangeSender="DEBOCK"/>
+        <edi:ediTruckingCompany edi:truckingCompanyCode="KRK" edi:truckingCompanyCodeAgency="ZZZ" edi:truckingCompanyId="KRK"
+                                edi:truckingCompanyName="KRK TRUCKS"/>
+        <edi:ediTruck edi:truckId="588882160"/>
+        <edi:category>EXPRT</edi:category>
+        <edi:freightKind>FCL</edi:freightKind>
+        <edi:containerId>NYKU4433065</edi:containerId>
+        <edi:containerType>40HQ</edi:containerType>
+        <edi:orderNbr>937647</edi:orderNbr>
+        <edi:releaseNbr>937646</edi:releaseNbr>
+        <edi:ediOutboundVesselVisit edi:outVoyageNbr="987" edi:vesselId="STAR987" edi:vesselIdConvention="VISITREF"
+                                    edi:vesselName="STAR">
+            <edi:visitId>STAR987</edi:visitId>
+            <edi:shippingLine edi:shippingLineName="NYK"/>
+        </edi:ediOutboundVesselVisit>
+        <edi:exportRouting>
+            <edi:loadPort edi:portId="USLAX" edi:portIdConvention="UNLOCCODE"/>
+        </edi:exportRouting>
+        <edi:grossWeight edi:wtUnit="KG" edi:wtValue="12731"/>
+        <edi:sealNbr1>937AG12</edi:sealNbr1>
+    </edi:appointmentTransaction>
+</edi:appointmentTransactions>

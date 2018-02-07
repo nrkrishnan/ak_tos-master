@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">ComponentEvent</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.framework.events.business.ComponentEvent" table="frm_component_event">
+        <meta attribute="generated-class">com.navis.framework.event.business.ComponentEventHbr</meta>
+        <meta attribute="n4alias">comevt</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+        <meta attribute="n4-entity-name">Component Event</meta>
+        <meta attribute="n4-entity-name-plural">Component Events</meta>
+        <meta attribute="n4-uniqueness-description">none</meta>
+
+        <id name="comevtGkey" column="comevt_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="comevtType" column="comevt_type" type="string" length="100">
+            <meta attribute="field-description">Component event type ID</meta>
+        </property>
+
+        <!-- This filed point to enum EventMessageTransportTypeEnum, but it is stored as string. No hibernate UserType mapping.  -->
+        <property name="comevtPeerTransportType" column="comevt_peer_transport_type" type="string" length="40">
+            <meta attribute="field-description">Event transport type to be used for peer nodes: CLUSTERED_CACHE, REST</meta>
+        </property>
+
+        <property name="comevtInitiatorNodeName" column="comevt_initiator_node_name" type="string" length="100">
+            <meta attribute="field-description">Node name of node initiating the update</meta>
+        </property>
+
+        <!--  Audit Data -->
+        <property name="comevtCreated" column="comevt_created" type="timestamp"/>
+        <property name="comevtCreator" column="comevt_creator" type="string" length="30"/>
+    </class>
+
+    <class name="com.navis.framework.events.business.ComponentEventLog" table="frm_component_event_log">
+        <meta attribute="generated-class">com.navis.framework.event.business.ComponentEventLogHbr</meta>
+        <meta attribute="n4alias">comevtlog</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+        <meta attribute="n4-entity-name">Component Event Log</meta>
+        <meta attribute="n4-entity-name-plural">Component Event Log</meta>
+        <meta attribute="n4-uniqueness-description">none</meta>
+
+        <id name="comevtlogGkey" column="comevtlog_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="comevtlogNodeName" column="comevtlog_node_name" type="string" length="200">
+            <meta attribute="field-description">Name of Node executing the event</meta>
+        </property>
+        <!-- Value SUCCESS_BUT_EVENT_NOT_GENERATED would not be recorded. -->
+        <property name="comevtlogEventStatus" column="comevtlog_event_status"
+                  type="com.navis.framework.persistence.atoms.UserTypeComponentEventStatusEnum" length="40">
+            <meta attribute="field-description">Status of event execution: SUCCESS, FAILURE, SUCCESS_BUT_EVENT_NOT_GENERATED, SUCCESS_BUT_PEER_FAILURE</meta>
+        </property>
+        <property name="comevtlogStatusErrors" column="comevtlog_status_errors" type="text" length="10000">
+            <meta attribute="field-description">Event execution status messages</meta>
+        </property>
+        <many-to-one name="comevtlogComponentEvent" column="comevtlog_component_event_gkey" class="com.navis.framework.events.business.ComponentEvent"
+                     not-null="false" index="frm_comevtlog_comevt_gkey_fki"/>
+
+        <!--  Audit Data -->
+        <property name="comevtlogCreated" column="comevtlog_created" type="timestamp"/>
+        <property name="comevtlogCreator" column="comevtlog_creator" type="string" length="30"/>
+        <property name="comevtlogChanged" column="comevtlog_changed" type="timestamp"/>
+        <property name="comevtlogChanger" column="comevtlog_changer" type="string" length="30"/>
+
+    </class>
+
+</hibernate-mapping>
+

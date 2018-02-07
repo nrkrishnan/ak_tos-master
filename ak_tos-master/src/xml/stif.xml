@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="\t" newRecord="\n"></Format>
+	<Field sequence="0" name="equipNumber" dataType="String"></Field>
+	<Field sequence="1" name="equipTypeISO" dataType="String"></Field>
+	<Field sequence="2" name="cmHeight" dataType="int"></Field>
+	<Field sequence="3" name="kgWeight" dataType="int"></Field>
+	<Field sequence="4" name="owner" dataType="String"></Field>
+	<Field sequence="5" name="damage" dataType="String"></Field>
+	<Field sequence="6" name="stowLocation" dataType="String"></Field>
+	<Field sequence="7" name="plannedLocation" dataType="String"></Field>
+	<Field sequence="8" name="liveReefer" dataType="String"></Field>
+	<Field sequence="9" name="bundle" dataType="String"></Field>
+	<Field sequence="10" name="folded" dataType="String"></Field>
+	<Field sequence="11" name="loadPort" dataType="String"></Field>
+	<Field sequence="12" name="dischPort" dataType="String"></Field>
+	<Field sequence="13" name="destination" dataType="String"></Field>
+	<Field sequence="14" name="stowBlock" dataType="String"></Field>
+	<Field sequence="15" name="fullStatus" dataType="String"></Field>
+	<Field sequence="16" name="imoCode" dataType="String"></Field>
+	<Field sequence="17" name="reeferTemp" dataType="int"></Field>
+	<Field sequence="18" name="ovrHeight" dataType="int"></Field>
+	<Field sequence="19" name="ovrWideRight" dataType="int"></Field>
+	<Field sequence="20" name="ovrWideLeft" dataType="int"></Field>
+	<Field sequence="21" name="ovrLongFront" dataType="int"></Field>
+	<Field sequence="22" name="ovrLongBack" dataType="int"></Field>
+	<Field sequence="23" name="booking" dataType="String"></Field>
+	<Field sequence="24" name="commodity" dataType="String"></Field>
+	<Field sequence="25" name="userField1" dataType="String"></Field>
+	<Field sequence="26" name="userField2" dataType="String"></Field>
+	<Field sequence="27" name="userField3" dataType="String"></Field>
+	<Field sequence="28" name="userField4" dataType="String"></Field>
+	<Field sequence="29" name="remarks" dataType="String"></Field>
+	<Field sequence="30" name="DG1" dataType="String"></Field>
+	<Field sequence="31" name="DG2" dataType="String"></Field>
+	<Field sequence="32" name="DG3" dataType="String"></Field>
+	<Field sequence="33" name="DG4" dataType="String"></Field>
+	<Field sequence="34" name="DG5" dataType="String"></Field>
+	<Field sequence="35" name="DG6" dataType="String"></Field>
+	<Field sequence="36" name="DG7" dataType="String"></Field>
+	<Field sequence="37" name="DG8" dataType="String"></Field>
+	<Field sequence="38" name="DG9" dataType="String"></Field>
+	<Field sequence="39" name="upperTemp" dataType="int"></Field>
+	<Field sequence="40" name="lowerTemp" dataType="int"></Field>
+	<Field sequence="41" name="specialStow1" dataType="String"></Field>
+	<Field sequence="42" name="specialStow2" dataType="String"></Field>
+	<Field sequence="43" name="specialStow3" dataType="String"></Field>
+</FileDesc>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false">
+    <meta attribute="JavaClassPrefix">SimpleSavedQuery</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.framework.query.business.SimpleSavedQuery" table="saved_query">
+        <meta attribute="generated-class">com.navis.framework.query.business.SimpleSavedQueryHbr</meta>
+        <meta attribute="n4alias">query</meta>
+        <meta attribute="n4-entity-name">Filter</meta>
+        <meta attribute="n4-entity-name-plural">Filters</meta>
+         <meta attribute="n4-scope-description">relational to BaseUser or SecRole</meta>
+        <id name="queryGkey" column="query_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="queryBuserGkey" column="query_buser_gkey" class="com.navis.security.business.user.BaseUser" not-null="false"
+                     index="saved_query_buser_gkey_fki"/>
+
+        <!-- If role is not null, this query is scoped to role even if queryBuserGkey is not null -->
+        <many-to-one name="queryRoleGkey" column="query_role_gkey" class="com.navis.security.business.user.SecRole" index="saved_query_role_gkey_idx"/>
+
+        <property name="queryName" column="query_name" type="string" length="200"/>
+        <property name="queryDescription" column="query_description" type="string" length="200"/>
+        <property name="queryEntityName" column="query_entity_name" type="string" length="100"/>
+        <property name="queryCategory" column="query_category" type="string" length="100">
+            <meta attribute="field-description">Application-defined free-form grouping of queries, useful for retrieving them.</meta>
+        </property>
+
+        <property name="queryWhereFormat" column="query_where_format" type="string" length="4">
+            <meta attribute="field-description">Unique name for the format; allows us to change formats later on. Code will check to make sure it recognizes this.</meta>
+            <meta attribute="scope-set">protected</meta>
+            <meta attribute="scope-get">protected</meta>
+        </property>
+        <property name="queryWhere" column="query_where" type="string" length="1000">
+            <!--<meta attribute="scope-set">protected</meta>-->
+            <!--<meta attribute="scope-get">protected</meta>-->
+        </property>
+
+        <property name="queryDisplayFields" column="query_display_fields" type="string" length="4000">
+            <!--<meta attribute="scope-set">protected</meta>-->
+            <!--<meta attribute="scope-get">protected</meta>-->
+        </property>
+
+        <property name="queryOrdering" column="query_ordering" type="string" length="1000">
+            <meta attribute="scope-set">protected</meta>
+            <meta attribute="scope-get">protected</meta>
+        </property>
+
+        <!-- New JJS 2005-03-22 -->
+        <many-to-one name="queryPredicate" column="query_predicate" class="com.navis.framework.query.business.SavedPredicate" not-null="false"
+                     cascade="all" index="saved_query_predicate_fki">
+            <meta attribute="field-description">The predicate of this query (can be null)</meta>
+        </many-to-one>
+
+        <!--    Audit Data -->
+        <property name="queryCreated" column="query_created" type="timestamp"/>
+        <property name="queryCreator" column="query_cr_userid" type="string" length="30"/>
+        <property name="queryChanged" column="query_changed" type="timestamp"/>
+        <property name="queryChanger" column="query_cg_userid" type="string" length="30"/>
+
+        <!-- Used only for cascade delete-->
+        <set name="queryUserFormFilters" lazy="true" inverse="true" cascade="delete">
+            <meta attribute="field-description">Used only for cascade delete</meta>
+            <meta attribute="scope-get">private</meta>
+            <meta attribute="scope-set">private</meta>
+            <key column="usrfilt_last_used_filter_gkey"/>
+            <one-to-many class="com.navis.framework.query.business.user.UserOptionFormFilterPrefs"/>
+        </set>
+    </class>
+
+    <!--Stores users filter preferences per form.  -->
+    <class name="com.navis.framework.query.business.user.UserOptionFormFilterPrefs" table="user_option_form_filter_prefs">
+        <meta attribute="n4alias">usrfilt</meta>
+        <meta attribute="generated-class">com.navis.framework.query.business.user.UserOptionFormFilterPrefsHbr</meta>
+        <meta attribute="n4-scope-description">relational to BaseUser</meta>
+        <id name="usrfiltGkey" column="usrfilt_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="usrfiltUser" column="usrfilt_user_gkey"  class="com.navis.security.business.user.BaseUser"
+                not-null="true" index="uopt_ffprefs_usrfilt_gkey_fki"/>
+        <property name="usrfiltFormId" column="usrfilt_form_id" type="string" length="45"  not-null="true"/>
+        <many-to-one name="usrfiltLastUsedFilter" column="usrfilt_last_used_filter_gkey"
+                     class="com.navis.framework.query.business.SimpleSavedQuery"  not-null="false" index="uopt_ffprefs_lst_usedfgkey_i"/>
+    </class>
+
+    <!-- New JJS 2005-03-22.  Note this Class is self-referential: in memory the objects form a tree. -->
+    <class name="com.navis.framework.query.business.SavedPredicate" table="saved_predicate">
+        <meta attribute="generated-class">com.navis.framework.query.business.SavedPredicateHbr</meta>
+        <meta attribute="n4alias">prdct</meta>
+        <meta attribute="n4-entity-name">Predicate</meta>
+        <meta attribute="n4-entity-name-plural">Predicates</meta>
+        <meta attribute="n4-scope-description">relational</meta>
+        <id name="prdctGkey" column="prdct_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="prdctVerb" column="prdct_verb" type="com.navis.framework.persistence.atoms.UserTypePredicateVerbEnum" not-null="true"/>
+
+        <!-- 2010-06-22 CAR-3208 bbakthavachalam Increase the prdct_metafield column size. -->
+        <property name="prdctMetafield" column="prdct_metafield" type="string" length="200">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <property name="prdctValue" column="prdct_value" type="string" length="500"/>
+
+        <property name="prdctUiValue" column="prdct_uivalue" type="string" length="500"/>
+
+        <property name="prdctOrder" column="prdct_order" type="java.lang.Long"/>
+
+        <property name="prdctNegated" column="prdct_negated" type="java.lang.Boolean" not-null="true"/>
+
+        <property name="prdctParameterType" column="prdct_parm" type="com.navis.framework.persistence.atoms.UserTypePredicateParmEnum" not-null="true"/>
+
+        <!--2006-02-20 lbarman v1.0.7 ARGO-2943/CAR-589 Integrate Parameters: add fields that store param label and param internal name -->
+        <property name="prdctParameterLabel" column="prdct_parm_label" type="string" length="100" />
+
+        <property name="prdctParameterInternalName" column="prdct_parm_internal_name" type="string" length="100" />
+
+        <many-to-one name="prdctParentPredicate" column="prdct_parent" class="com.navis.framework.query.business.SavedPredicate" not-null="false"
+                     index="saved_pred_prdct_parent_fki"/>
+
+        <list name="prdctChildPrdctList" inverse="true" lazy="false" cascade="all-delete-orphan">
+            <key column="prdct_parent"/>
+            <index column="prdct_order"/>
+            <one-to-many class="com.navis.framework.query.business.SavedPredicate"/>
+        </list>
+
+    </class>
+</hibernate-mapping>

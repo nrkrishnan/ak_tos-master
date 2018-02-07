@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE navigationNodes PUBLIC "" "NavigationNodes.dtd">
+
+<navigationNodes>
+
+    <!-- The below 2 can be changed as needed later -->
+
+    <navigationNode id="TOP1_OPERATIONS"
+                    text="Operations"
+                    mnemonic="o"
+                    icon="/images/earth2_shade_16x16.png"
+                    selectedIcon="/images/earth2_shade_16x16.png"/>
+
+    <navigationNode id="MID_UNIT"
+                    text="Unit"
+                    mnemonic="u"/>
+
+    <navigationNode id="APEX_APP"
+                    text="NAVIS N4"
+                    icon="/images/cubes_16x16.png"/>
+
+    <navigationNode id="XpsCacheMonitor"
+                    text="Cluster Management"
+                    controllerRefId="xpsCacheMonitorController"/>
+
+    <navigationNode id="XpsCachedObject"
+                    text="XPS Cached Object DB"
+                    controllerRefId="xpsCachedObjectController"/>
+
+    <navigationNode id="MaintainBookingsVesselMenu"
+                    text="Bookings"
+                    variformId="ORD001"/>
+    <!--controllerRefId="bookingsController"/>-->
+
+    <navigationNode id="EmptyLoadoutOrder"
+                    text="Empty Loadout Orders"
+                    controllerRefId="emptyLoadoutOrderController"/>
+
+    <navigationNode id="SparcsImportChooser"
+                    text="Import SPARCS Data"
+                    controllerRefId="sparcsImportChooserController"/>
+
+    <navigationNode id="DbaPanel"
+                    text="Manipulate Database"
+                    controllerRefId="apexDbaPanelController"/>
+
+    <navigationNode id="DatabaseSetUp"
+                    text="Set-up Database"
+                    controllerRefId="databaseSetupController"/>
+    <!-- 2009.03.26 ssampath ARGO-17376 -->
+    <navigationNode id="NODE_YARD_BLOCK_SUPPLEMENT"
+                    text="Yard Block Supplement"
+                    controllerRefId="yardBlockSupplementController"/>
+
+    <navigationNode id="NODE_SYSTEM_PERFORMANCE_CHARTS"
+                    text="System Performance Charts"
+                    icon="/images/column_chart_16x16.png"
+                    controllerRefId="systemPerformanceGraphicsController"/>
+
+    <navigationNode id="NODE_SYSTEM_PERFORMANCE_CHARTS_CONFIG"
+                    text="System Performance Charts Configuration"
+                    icon="/images/column_chart_16x16.png"
+                    controllerRefId="systemPerformanceGraphicsConfigurationController"/>
+
+    <!-- 2008-04-01 rsatish v1.5.N ARGO-10761 one-click SNX export of all the reference data and configuration entities -->
+    <navigationNode id="SnxRefExport"
+                    text="Export Base System to SNX"
+                    commandRefId="snxRefExport"/>
+
+    <!-- 2007-08-10 tramakrishnan ARGO-7940 Moved to Argo, to be shared by other applications like Billing -->
+    <!--<navigationNode id="TopologyTree"-->
+    <!--text="Topology"-->
+    <!--controllerRefId="topologyTreeController"/>-->
+
+    <!-- mpadhye ARGO-32890: "Status view for Cacheless N4" -->
+    <!--TODO: Change this to use the variformId directly once CAR-4277 is fixed. -->
+    <navigationNode id="ARG_CHECK_INTEGRITY"
+                    text="Perform Data Integrity Check"
+                    commandRefId="integrityCheckerCommand"/>
+    <navigationNode id="PurgedFailedEntities"
+                    text="Failed Purges"
+                    variformId="TABLE_PURGED_FAILED_ENTITY"/>
+
+    <navigationNode id="ArchivedPurgedEntities"
+                    text="Monitor Archive/Purge"
+                    variformId="TABLE_PURGE_ARCHIVE_ENTITY"/>
+
+</navigationNodes>

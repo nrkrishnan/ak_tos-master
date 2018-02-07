@@ -1,0 +1,181 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">RoadDeprecated</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <class name="com.navis.road.business.model.GateExchangeAreaDeprecated" table="road_gate_xch_areas" dynamic-update="true">
+        <meta attribute="class-description">Domain entity that represents an Exchange Area</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateExchangeAreaDeprecatedHbr</meta>
+        <meta attribute="n4alias">xcharea</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Gate Exchange Area</meta>
+        <meta attribute="n4-entity-name-plural">Gate Exchange Areas</meta>
+
+        <id name="xchareaGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="xchareaCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="xchareaCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="xchareaChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="xchareaChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="xchareaLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="xchareaId" type="java.lang.String" column="id" length="6"/>
+
+        <many-to-one name="xchareaGate" column="gate_gkey" class="com.navis.road.business.model.Gate" not-null="true"
+                     cascade="none">
+            <meta attribute="field-description">Gate this Exchange Area belongs to</meta>
+        </many-to-one>
+
+        <property name="xchareaMaxTeu" type="java.lang.Integer" column="max_teu" length="2"/>
+        <property name="xchareaLaneAssignmentSequence" column="lane_assignment_sequence"
+                  type="com.navis.argo.persistence.atoms.UserTypeLaneAssignmentSequenceEnum" length="12"/>
+        <property name="xchareaTruckFlowSeqNbr" type="java.lang.Integer" column="truck_flow_seq_nbr"/>
+
+        <set name="xchareaLanes" lazy="true" table="road_gate_lanes" cascade="none">
+            <key column="xch_area_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateLaneDeprecated"/>
+        </set>
+
+        <property name="xchareaBufferSize" type="java.lang.Integer" column="buffer_size" length="4"/>
+        <property name="xchareaTrucksStaged" type="java.lang.Integer" column="trucks_staged"/>
+        <property name="xchareaTrucksQueued" type="java.lang.Integer" column="trucks_queued"/>
+
+    </class>
+
+    <class name="com.navis.road.business.model.ExchangeAreaDelayDeprecated" table="road_xch_area_delay" dynamic-update="true">
+        <meta attribute="class-description">Domain entity that holds a delay value to be used to activate a WorkInstruction that will be
+            serviced in the Destination Exchange Area.
+        </meta>
+        <meta attribute="generated-class">com.navis.road.business.model.ExchangeAreaDelayDeprecatedHbr</meta>
+        <meta attribute="n4alias">xchdly</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Exchange Area Delay</meta>
+        <meta attribute="n4-entity-name-plural">Exchange Area Delays</meta>
+
+        <id name="xchdlyGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- Either a Gate Stage or an Exchange Area could be the origin. Therefore not-null = false -->
+        <many-to-one name="xchdlyFromGateStage" column="stage_gkey" class="com.navis.road.business.model.GateConfigStage" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Origin Gate Stage this delay applies to</meta>
+        </many-to-one>
+
+        <!-- Either a Gate Stage or an Exchange Area could be the origin. Therefore not-null = false -->
+        <many-to-one name="xchdlyFromXcharea" column="xch_area_gkey_from" class="com.navis.road.business.model.GateExchangeAreaDeprecated"
+                     not-null="false" cascade="none">
+            <meta attribute="field-description">Origin Exchange Area this delay applies to</meta>
+        </many-to-one>
+
+        <many-to-one name="xchdlyToXcharea" column="xch_area_gkey_to" class="com.navis.road.business.model.GateExchangeAreaDeprecated"
+                     not-null="true" cascade="none">
+            <meta attribute="field-description">Destination Exchange Area this delay applies to</meta>
+        </many-to-one>
+
+        <property name="xchdlyDelay" type="java.lang.Long" column="delay" not-null="true"/>
+
+        <property name="xchdlyCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="xchdlyCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="xchdlyChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="xchdlyChanger" type="java.lang.String" column="changer" length="30"/>
+
+    </class>
+
+    <class name="com.navis.road.business.model.GateLaneDeprecated" table="road_gate_lanes" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable Gate Lane</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateLaneDeprecatedHbr</meta>
+        <meta attribute="n4alias">lane</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Gate Lane</meta>
+        <meta attribute="n4-entity-name-plural">Gate Lanes</meta>
+
+        <id name="dprlaneGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!--todo india_ar_pur check null/not null? -->
+        <many-to-one name="dprlaneGate" column="gate_gkey" class="com.navis.road.business.model.Gate" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Gate this lane is for</meta>
+        </many-to-one>
+
+        <many-to-one name="dprlaneTruckVisit" column="tv_gkey" class="com.navis.road.business.model.TruckVisitDetails">
+            <meta attribute="field-description">Truck currently occupying this lane</meta>
+        </many-to-one>
+
+        <property name="dprlaneId" type="java.lang.String" column="id" length="12"/>
+
+        <!--        <property name="dprlaneClass" type="com.navis.road.business.atoms.GateLaneClassEnum" length="8" column="CLASS" not-null="true"/>-->
+        <property name="dprlaneClass" type="java.lang.String" length="8" column="class" not-null="true"/>
+        <property name="dprlanePedestalId" type="java.lang.String" column="pedestal_id" length="15"/>
+        <property name="dprlanedHasScale" type="java.lang.Boolean" not-null="true" column="has_scale"/>
+        <property name="dprlaneDescription" type="java.lang.String" column="description" not-null="true" length="35"/>
+
+        <property name="dprlaneScanTruckId" type="java.lang.String" column="scan_truck_id" length="12"/>
+        <property name="dprlaneScanTruckLicenseNbr" type="java.lang.String" column="scan_truck_license_nbr" length="12"/>
+        <property name="dprlaneScanBatNbr" type="java.lang.String" column="scan_bat_nbr" length="12"/>
+
+        <property name="dprlaneIsBobtail" type="java.lang.Boolean" not-null="true" column="is_bobtail_flag"/>
+        <property name="dprlaneIsClosed" type="java.lang.Boolean" not-null="false" column="is_closed">
+            <meta attribute="field-description">*** FIELD DEPRECATED - TO BE DELETED ****</meta>
+        </property>
+        <property name="dprlaneNeedsAppointment" type="java.lang.Boolean" column="need_appointment"/>
+        <property name="dprlaneGosStatus" type="java.lang.String" column="gos_status" length="20"/>
+
+        <property name="dprlaneCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="dprlaneCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="dprlaneChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="dprlaneChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="dprlaneLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <!-- associations -->
+        <set name="dprlanePrinters" lazy="true" table="road_gate_lane_printers">
+            <key column="lane_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateLanePrinter"/>
+        </set>
+        <set name="consoles" lazy="true" table="road_hardware_devices">
+            <key column="lane_gkey"/>
+            <one-to-many class="com.navis.road.business.reference.Console"/>
+        </set>
+        <property name="dprlaneScanSetKey" type="java.lang.Long" column="scan_set_key"/>
+        <property name="dprlaneGosTvKey" type="java.lang.Long" column="gos_tv_key"/>
+        <property name="dprlaneStageId" type="java.lang.String" column="stage_id" length="60"/>
+        <property name="dprlaneStatus" type="com.navis.argo.persistence.atoms.UserTypeLaneStatusEnum" length="20" column="status"/>
+
+        <many-to-one name="dprlaneExchangeArea" column="xch_area_gkey" class="com.navis.road.business.model.GateExchangeAreaDeprecated">
+            <meta attribute="field-description">Exchange Area this Lane belongs to</meta>
+        </many-to-one>
+
+        <property name="dprlaneAssignmentPriority" type="java.lang.Long" column="assignment_priority"/>
+        <property name="dprlaneAssignmentTime" type="java.sql.Timestamp" column="assignment_time"/>
+        <property name="dprlaneClearedTime" type="java.sql.Timestamp" column="cleared_time"/>
+        <property name="dprlaneClearanceDelaySecs" type="java.lang.Long" column="clearance_delay_secs"/>
+        <property name="dprlaneHasLoopDetector" type="java.lang.Boolean" column="has_loop_detector">
+            <meta attribute="scope-get">protected</meta>
+        </property>
+        <property name="dprlaneMaxTeu" type="java.lang.Integer" column="max_teu" length="2"/>
+        <property name="dprlaneInLaneTime" type="java.sql.Timestamp" column="in_lane_time"/>
+        <property name="dprlaneMission" type="java.lang.String" column="mission" length="255"/>
+
+        <property name="dprlaneTruckStatus" type="com.navis.argo.persistence.atoms.UserTypeLaneTruckStatusEnum" length="20"
+                  column="truck_status"/>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+</hibernate-mapping>

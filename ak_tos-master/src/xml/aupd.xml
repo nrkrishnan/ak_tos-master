@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="¦" newRecord="\n"></Format>
+	<Field sequence="0" name="txnCode" dataType="String"></Field>
+	<Field sequence="1" name="date" dataType="String"></Field>
+	<Field sequence="2" name="time" dataType="String"></Field>
+	<Field sequence="3" name="filler1" dataType="String"></Field>
+	<Field sequence="4" name="nextId" dataType="String"></Field>
+	<Field sequence="5" name="equipNumber" dataType="String"></Field>
+	<Field sequence="6" name="direction" dataType="String"></Field>
+	<Field sequence="7" name="serviceCode" dataType="String"></Field>
+	<Field sequence="8" name="arrivalDate" dataType="String"></Field>
+	<Field sequence="9" name="typeCode" dataType="String"></Field>
+	<Field sequence="10" name="comments" dataType="String"></Field>
+	<Field sequence="11" name="checkDigit" dataType="String"></Field>
+	<Field sequence="12" name="controller" dataType="String"></Field>
+	<Field sequence="13" name="primaryCarrier" dataType="String"></Field>
+	<Field sequence="14" name="primaryController" dataType="String"></Field>
+	<Field sequence="15" name="majorFeature" dataType="String"></Field>
+</FileDesc>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<service-rule name="ULC_TST_HOLD_RULE" flag-type="ULC_TST_HOLD" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitRemark" value="ULC" ui-value="ULC" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+</argo:snx>
+

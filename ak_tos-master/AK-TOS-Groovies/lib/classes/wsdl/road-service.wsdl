@@ -1,0 +1,658 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2003 Navis LLC. All Rights Reserved.
+ $Id: road-service.wsdl,v 1.21 2008-03-03 12:02:41 proberts Exp $
+-->
+<wsdl:definitions
+        name="RoadService"
+        targetNamespace="http://www.navis.com/services/roadservice"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:tns="http://www.navis.com/services/roadservice"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Road Services</wsdl:documentation>
+
+    <wsdl:types>
+        <xsd:schema
+                elementFormDefault="qualified"
+                targetNamespace="http://www.navis.com/services/roadservice"
+                xmlns:types="http://types.webservice.road.navis.com/v1.0"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import
+                    namespace="http://types.webservice.road.navis.com/v1.0"
+                    schemaLocation="../schema/road-types.xsd">
+            </xsd:import>
+            <!-- wrapped style add the method name and arguments -->
+            <xsd:element name="resolveContainer">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="tranSubType" type="xsd:string" minOccurs="0"/>
+                        <!--  Numeric portion of container Id (excluding prefix)-->
+                        <xsd:element name="ctrNbr" type="xsd:string" minOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="resolveChassis">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- first argument -->
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="tranSubType" type="xsd:string" minOccurs="0"/>
+                        <!--  Numeric portion of chassis Id (excluding prefix)-->
+                        <xsd:element name="chsNbr" type="xsd:string" minOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="resolveBooking">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- first argument -->
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="bookingNbr" type="xsd:string" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="submitTransaction">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- first argument -->
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="inRequest" type="types:SubmitTransactionRequestWSType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="createTruckVisit">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- first argument -->
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="gateId" type="xsd:string" minOccurs="1"/>
+                        <xsd:element name="driverId" type="xsd:string" minOccurs="1"/>
+                        <xsd:element name="truckLicenseNbr" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="driverCardNumber" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="truckAeiTagNbr" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="truckBATNbr" type="xsd:string" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+
+            </xsd:element>
+
+            <xsd:element name="readTruckVisit">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- first argument -->
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="truckVisitId" type="xsd:long" minOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+
+            </xsd:element>
+
+            <xsd:element name="submitStageDone">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- first argument -->
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="truckVisitId" type="xsd:long" minOccurs="1"/>
+                        <xsd:element name="gateId" type="xsd:string" minOccurs="1"/>
+                        <xsd:element name="stageId" type="xsd:string" minOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+
+            </xsd:element>
+
+            <xsd:element name="cancelTruckVisit">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- first argument -->
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="truckVisitId" type="xsd:long" minOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="cancelTruckTransaction">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- first argument -->
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="tranId" type="xsd:long" minOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="callupService">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <!-- first argument -->
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="gateId" type="xsd:string" minOccurs="1"/>
+                        <xsd:element name="laneClass" type="xsd:string" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="callupServiceClient">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="callupServiceClientRequest" type="types:CallupServiceClientRequestWSType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- add the method response -->
+            <xsd:element name="submitTransactionResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="submitTransactionResponse" type="types:SubmitTransactionResponseWSType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- add the method response -->
+            <xsd:element name="createTruckVisitResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="createTruckVisitResponse" type="types:CreateTruckVisitResponseWSType"/>
+                    </xsd:sequence>
+
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- add the method response -->
+            <xsd:element name="resolveContainerResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="resolveContainerResponse" type="types:ContainerResponseWSType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- add the method response -->
+            <xsd:element name="resolveChassisResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="resolveChassisResponse" type="types:ChassisResponseWSType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- add the method response -->
+            <xsd:element name="resolveBookingResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="resolveBookingResponse" type="types:BookingResponseWSType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="readTruckVisitResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="readTruckVisitResponse" type="types:ReadTruckVisitResponseWSType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="submitStageDoneResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="commonResponse" type="types:ResponseType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="cancelTruckVisitResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="commonResponse" type="types:ResponseType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="cancelTruckTransactionResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="commonResponse" type="types:ResponseType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="callupServiceResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="callupServiceResponse" type="types:CallupServiceResponseWSType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="callupServiceClientResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="commonResponse" type="types:ResponseType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- ..... Definition of Complex Elements related to the LOV APIs .....       -->
+
+            <xsd:element name="deliveryOrderLov">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="truckingCompanyId" type="xsd:string" minOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="deliveryOrderLovResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deliveryOrderLovResponse" type="types:DeliveryOrderLovResponseWSType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="deliveryOrderItemLov">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="truckingCompanyId" type="xsd:string" minOccurs="1"/>
+                        <xsd:element name="eqLength" type="xsd:string" minOccurs="0"/>
+                        <!--  The below is not supported in this version.     -->
+                        <xsd:element name="vesselRef" type="xsd:string" minOccurs="0"/>
+                        <!-- If the below flag is set to true. Then the response will remove all the bookings
+                            thata are full (Tally >= Quantity)-->
+                        <xsd:element name="removeFullBookings" type="xsd:boolean" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="deliveryOrderItemLovResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="deliveryOrderItemLovResponse" type="types:DeliveryOrderItemLovResponseWSType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="truckingCompanyLov">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinates" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="driverId" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="truckLicenseNbr" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="driverCardNumber" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="truckAeiTagNbr" type="xsd:string" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="truckingCompanyLovResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="truckingCompanyLovResponse" type="types:TruckingCompanyLovResponseWSType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="ResolveContainerMessageRequest">
+        <wsdl:part element="tns:resolveContainer" name="resolveContainer"/>
+    </wsdl:message>
+
+    <wsdl:message name="ResolveContainerMessageResponse">
+        <wsdl:part element="tns:resolveContainerResponse" name="resolveContainerResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="ResolveChassisMessageRequest">
+        <wsdl:part element="tns:resolveChassis" name="resolveChassis"/>
+    </wsdl:message>
+
+    <wsdl:message name="ResolveChassisMessageResponse">
+        <wsdl:part element="tns:resolveChassisResponse" name="resolveChassisResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="ResolveBookingMessageRequest">
+        <wsdl:part element="tns:resolveBooking" name="resolveBooking"/>
+    </wsdl:message>
+
+    <wsdl:message name="ResolveBookingMessageResponse">
+        <wsdl:part element="tns:resolveBookingResponse" name="resolveBookingResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="SubmitTransactionMessageRequest">
+        <wsdl:part element="tns:submitTransaction" name="submitTransaction"/>
+    </wsdl:message>
+
+    <wsdl:message name="SubmitTransactionMessageResponse">
+        <wsdl:part element="tns:submitTransactionResponse" name="submitTransactionResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="CreateTruckVisitMessageRequest">
+        <wsdl:part element="tns:createTruckVisit" name="createTruckVisit"/>
+    </wsdl:message>
+
+    <wsdl:message name="CreateTruckVisitMessageResponse">
+        <wsdl:part element="tns:createTruckVisitResponse" name="createTruckVisitResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="ReadTruckVisitMessageRequest">
+        <wsdl:part element="tns:readTruckVisit" name="readTruckVisit"/>
+    </wsdl:message>
+
+    <wsdl:message name="ReadTruckVisitMessageResponse">
+        <wsdl:part element="tns:readTruckVisitResponse" name="readTruckVisitResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="SubmitStageDoneMessageRequest">
+        <wsdl:part element="tns:submitStageDone" name="submitStageDone"/>
+    </wsdl:message>
+
+    <wsdl:message name="SubmitStageDoneMessageResponse">
+        <wsdl:part element="tns:submitStageDoneResponse" name="submitStageDoneResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="CancelTruckVisitMessageRequest">
+        <wsdl:part element="tns:cancelTruckVisit" name="cancelTruckVisit"/>
+    </wsdl:message>
+
+    <wsdl:message name="CancelTruckVisitMessageResponse">
+        <wsdl:part element="tns:cancelTruckVisitResponse" name="cancelTruckVisitResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="CancelTruckTransactionMessageRequest">
+        <wsdl:part element="tns:cancelTruckTransaction" name="cancelTruckTransaction"/>
+    </wsdl:message>
+
+    <wsdl:message name="CancelTruckTransactionMessageResponse">
+        <wsdl:part element="tns:cancelTruckTransactionResponse" name="cancelTruckTransactionResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="CallupServiceMessageRequest">
+        <wsdl:part element="tns:callupService" name="callupService"/>
+    </wsdl:message>
+
+    <wsdl:message name="CallupServiceMessageResponse">
+        <wsdl:part element="tns:callupServiceResponse" name="callupServiceResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="CallupServiceClientMessageRequest">
+        <wsdl:part element="tns:callupServiceClient" name="callupServiceClient"/>
+    </wsdl:message>
+
+    <wsdl:message name="CallupServiceClientMessageResponse">
+        <wsdl:part element="tns:callupServiceClientResponse" name="callupServiceClientResponse"/>
+    </wsdl:message>
+
+    <!-- ........LOV API Messages.....   -->
+
+    <wsdl:message name="DeliveryOrderItemLovMessageRequest">
+        <wsdl:part element="tns:deliveryOrderItemLov" name="deliveryOrderItemLov"/>
+    </wsdl:message>
+
+    <wsdl:message name="DeliveryOrderItemLovMessageResponse">
+        <wsdl:part element="tns:deliveryOrderItemLovResponse" name="deliveryOrderItemLovResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="DeliveryOrderLovMessageRequest">
+        <wsdl:part element="tns:deliveryOrderLov" name="deliveryOrderLov"/>
+    </wsdl:message>
+
+    <wsdl:message name="DeliveryOrderLovMessageResponse">
+        <wsdl:part element="tns:deliveryOrderLovResponse" name="deliveryOrderLovResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="TruckingCompanyLovMessageRequest">
+        <wsdl:part element="tns:truckingCompanyLov" name="truckingCompanyLov"/>
+    </wsdl:message>
+
+    <wsdl:message name="TruckingCompanyLovMessageResponse">
+        <wsdl:part element="tns:truckingCompanyLovResponse" name="truckingCompanyLovResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="RoadServicePort">
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="resolveContainer">
+            <wsdl:input message="tns:ResolveContainerMessageRequest"/>
+            <wsdl:output message="tns:ResolveContainerMessageResponse"/>
+        </wsdl:operation>
+
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="resolveChassis">
+            <wsdl:input message="tns:ResolveChassisMessageRequest"/>
+            <wsdl:output message="tns:ResolveChassisMessageResponse"/>
+        </wsdl:operation>
+
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="resolveBooking">
+            <wsdl:input message="tns:ResolveBookingMessageRequest"/>
+            <wsdl:output message="tns:ResolveBookingMessageResponse"/>
+        </wsdl:operation>
+
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="submitTransaction">
+            <wsdl:input message="tns:SubmitTransactionMessageRequest"/>
+            <wsdl:output message="tns:SubmitTransactionMessageResponse"/>
+        </wsdl:operation>
+
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="createTruckVisit">
+            <wsdl:input message="tns:CreateTruckVisitMessageRequest"/>
+            <wsdl:output message="tns:CreateTruckVisitMessageResponse"/>
+        </wsdl:operation>
+
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="readTruckVisit">
+            <wsdl:input message="tns:ReadTruckVisitMessageRequest"/>
+            <wsdl:output message="tns:ReadTruckVisitMessageResponse"/>
+        </wsdl:operation>
+
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="submitStageDone">
+            <wsdl:input message="tns:SubmitStageDoneMessageRequest"/>
+            <wsdl:output message="tns:SubmitStageDoneMessageResponse"/>
+        </wsdl:operation>
+
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="cancelTruckVisit">
+            <wsdl:input message="tns:CancelTruckVisitMessageRequest"/>
+            <wsdl:output message="tns:CancelTruckVisitMessageResponse"/>
+        </wsdl:operation>
+
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="cancelTruckTransaction">
+            <wsdl:input message="tns:CancelTruckTransactionMessageRequest"/>
+            <wsdl:output message="tns:CancelTruckTransactionMessageResponse"/>
+        </wsdl:operation>
+
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="callupService">
+            <wsdl:input message="tns:CallupServiceMessageRequest"/>
+            <wsdl:output message="tns:CallupServiceMessageResponse"/>
+        </wsdl:operation>
+
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="callupServiceClient">
+            <wsdl:input message="tns:CallupServiceClientMessageRequest"/>
+            <wsdl:output message="tns:CallupServiceClientMessageResponse"/>
+        </wsdl:operation>
+
+        <!-- ..... LOV API Operations ...  -->
+
+        <wsdl:operation name="deliveryOrderItemLov">
+            <wsdl:input message="tns:DeliveryOrderItemLovMessageRequest"/>
+            <wsdl:output message="tns:DeliveryOrderItemLovMessageResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="deliveryOrderLov">
+            <wsdl:input message="tns:DeliveryOrderLovMessageRequest"/>
+            <wsdl:output message="tns:DeliveryOrderLovMessageResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="truckingCompanyLov">
+            <wsdl:input message="tns:TruckingCompanyLovMessageRequest"/>
+            <wsdl:output message="tns:TruckingCompanyLovMessageResponse"/>
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <wsdl:binding name="RoadServiceSoapBinding" type="tns:RoadServicePort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="resolveContainer">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="resolveChassis">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="resolveBooking">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="submitTransaction">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="createTruckVisit">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="readTruckVisit">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="submitStageDone">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="cancelTruckVisit">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="cancelTruckTransaction">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="callupService">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="callupServiceClient">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <!-- ....... LOV API Operations .... -->
+
+        <wsdl:operation name="deliveryOrderItemLov">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="deliveryOrderLov">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="truckingCompanyLov">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+    <wsdl:service name="RoadService">
+        <wsdl:port binding="tns:RoadServiceSoapBinding" name="RoadServicePort">
+            <soap:address location="http://localhost:8080/apex/services/roadservice"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

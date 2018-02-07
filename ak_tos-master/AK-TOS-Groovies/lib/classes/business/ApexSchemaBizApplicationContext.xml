@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+
+    <bean id="apexVersionManager" class="com.navis.framework.upgrade.ModuleVersionManager">
+        <property name="currentVersionNumber">
+            <!--2009.11.19  (201000) rmk Resetting as per Mike R's email to use the new scheme in trunk-->
+            <!-- 2009-12-5 (202000) hstutes ARGO-22511 - Bumping to make room for apex_2_M-rel branch -->
+            <!-- 2010.05.13 (202001) mpompa ARGO-24160 Adding xps_autostow_fltr tables  -->
+            <!-- 2010-07-22 (203000) hstutes ARGO-27303 Bumping for new 2.1 branch. -->
+            <!-- 2010-08-02 (203001) mpompa ARGO-27459 Adding new xps_ar column. -->
+	    <!-- 2010-10-07 (203002) jscattergood ARGO-28161 spatial module implementation -->
+	    <!-- 2011-03-21 (203003) SDanielson ARGO-30862 Adding new 32 bit bitset to stm_filters -->
+	    <!-- 2011-04-15 (203004) HGolbasi ARGO-31259 Adding two booleans for tandem lifts -->
+            <!-- 2012-06-25 (24003) mpompa ARGO-38619 Adding Yard Move Filter and Range tables, 8 rows to all dialog based cntr filters -->
+            <!-- 2012.07.25 (250000) RMK ARGO-40471resetting the base number post 2.4 branch -->
+            <!-- 2013-10-02 (300100) RMK ARGO-51867 Make 2.6 schema base to be 300100 so it is higher than 3.0  -->
+            <!-- 2013-10-30 (302000) RMK ARGO-52581 Make trunk schema base to be higher than 3.01 branch  -->
+            <value>302000</value>
+        </property>
+        <property name="moduleName">
+            <value>apex</value>
+        </property>
+    </bean>
+
+    <!-- This is an example of an upgrade action bean definition. -->
+    <!-- Be sure to set the correct module name to match the one above. -->
+    <!--bean id="[yourmodule]UpgradeAction108001" class="com.navis.[yourmodule].upgrade.actions.[yourmodule]UpgradeAction108001">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+        <property name="moduleName">
+            <value>[yourmodule]</value>
+        </property>
+    </bean-->
+
+</beans>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2011 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Announcement</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.carina.announcement.business.Announcement" table="frm_announcement">
+            <meta attribute="class-description">Announcement</meta>
+            <meta attribute="generated-class">com.navis.carina.announcement.business.AnnouncementHbr</meta>
+            <meta attribute="n4alias">anncmnt</meta>
+            <meta attribute="n4-entity-name">Announcement</meta>
+            <meta attribute="n4-entity-name-plural">Announcements</meta>
+            <id name="anncmntGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+                <generator class="native"/>
+            </id>
+            <property name="anncmntSubject" type="java.lang.String" column="subject" length="60">
+                <meta attribute="field-description">Subject of the Announcement</meta>
+            </property>
+            <property name="anncmntText" type="java.lang.String" column="text" length="1000">
+                <meta attribute="field-description">Text Contained in Announcement</meta>
+            </property>
+            <property name="anncmntStartDate" type="java.sql.Timestamp" column="anncmnt_startdate">
+                <meta attribute="field-description">Announcement Start Time - Date and Time</meta>
+            </property>
+            <property name="anncmntEndDate" type="java.sql.Timestamp" column="anncmnt_enddate">
+                <meta attribute="field-description">Announcement End Time - Date and Time</meta>
+            </property>
+            <property name="anncmntScopeLevel" column="anncmnt_scope_level" type="java.lang.Long" not-null="true">
+                <meta attribute="field-description">Announcement Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+            </property>
+            <property name="anncmntScopeGkey" column="anncmnt_scope_gkey" type="string" length="50">
+                <meta attribute="field-description">Announcement Scope Gkey</meta>
+            </property>
+            <property name="anncmntCreated" type="java.sql.Timestamp" column="created">
+                <meta attribute="field-description">Announcement created Time</meta>
+            </property>
+            <property name="anncmntCreator" type="java.lang.String" column="creator" length="30">
+                <meta attribute="field-description">Announcement created by user</meta>
+            </property>
+            <property name="anncmntChanged" type="java.sql.Timestamp" column="changed">
+               <meta attribute="field-description">Announcement last modified Time</meta>
+            </property>
+            <property name="anncmntChanger" type="java.lang.String" column="changer" length="30">
+                <meta attribute="field-description">Announcement last modified by user</meta>
+            </property>
+
+            <!--  mapping to CAP, Gate UI, etc..   -->
+            <bag name="anncmntMappingList" lazy="true" inverse="false" cascade="all-delete-orphan">
+                <key column="anncmnt_gkey"/>
+                <one-to-many class="com.navis.carina.announcement.business.AnnouncementMapping"/>
+            </bag>
+        </class>
+        <class name="com.navis.carina.announcement.business.AnnouncementMapping" table="frm_announcements_mapping" dynamic-update="true">
+            <meta attribute="class-description">AnnouncementMapping</meta>
+            <meta attribute="generated-class">com.navis.carina.announcement.business.AnnouncementMappingHbr</meta>
+            <meta attribute="n4alias">anncmntMapping</meta>
+            <meta attribute="n4-entity-name">AnnouncementMapping</meta>
+            <meta attribute="n4-entity-name-plural">AnnouncementMappings</meta>
+            <id name="anncmntMappingGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+                <generator class="native"/>
+            </id>
+            <many-to-one name="anncmntMappedGkey" class="com.navis.carina.announcement.business.Announcement" column="anncmnt_gkey">
+                <meta attribute="field-description">Annoucement being mapped</meta>
+            </many-to-one>
+
+            <property name="anncmntAppliedOn" type="java.lang.String" column="anncmnt_for" length="60">
+                <meta attribute="field-description">Announcement can be applied to CAP UI, Gate Ticket, etc.</meta>
+            </property>
+        </class>
+
+</hibernate-mapping>

@@ -1,0 +1,454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2011 Navis LLC. All Rights Reserved.
+  ~
+  -->
+<!--
+  This file has been moved. The original location's history can be found at:
+       http://cvs.navis.com/cgi-bin/cvsweb.cgi/apex/conf/context/Attic/ApexBizApplicationContext.xml?cvsroot=N4
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+       default-lazy-init="true">
+
+    <bean id="apexHibernateMappings" class="com.navis.framework.persistence.HbmFileSource">
+        <property name="mappings">
+            <list>
+                <value>apex.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="apexApiMappingLoader" class="com.navis.framework.portal.ApiMappingLoaderImpl">
+        <property name="xmlFilePaths">
+            <list>
+                <value>/business/apex-api-mappings.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Hibernate Interceptor.  Note: NOT a Singleton - we need a unique auditor per Session (holds state)-->
+    <bean id="auditInterceptor" class="com.navis.apex.business.ApexInterceptor" scope="prototype">
+        <property name="interceptionListener">
+            <ref bean="interceptionListener"/>
+        </property>
+    </bean>
+
+    <!-- 2005-11-16 JJS this def here just to force the class to load and register itself -->
+    <bean id="apexConfig" class="com.navis.apex.ApexConfig" lazy-init="false"/>
+
+    <!-- ========================= BUSINESS DEFINITIONS ========================= -->
+
+    <bean id="xpsLocatorTarget" class="com.navis.apex.business.xps.XpsLocatorPea" scope="singleton"/>
+
+    <bean id="xpsLocator" class="org.springframework.aop.framework.ProxyFactoryBean" scope="singleton">
+        <property name="proxyInterfaces">
+            <value>com.navis.argo.business.api.XpsLocator</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>xpsLocatorTarget</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="databaseInitializer" class="com.navis.apex.business.admin.DatabaseInitializer" scope="singleton"/>
+
+    <bean id="sparcsImporter" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>com.navis.argo.business.api.SparcsImporter</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>databaseInitializer</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="enumInitializer" class="com.navis.apex.business.EnumInitializer"/>
+
+    <bean id="bizUnitManager" class="com.navis.apex.business.model.BizUnitManagerPea"/>
+
+    <bean id="apexManagerTarget" class="com.navis.apex.business.model.ApexManagerPea">
+    </bean>
+
+    <bean id="apexManager" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>com.navis.apex.business.api.ApexManager</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>apexManagerTarget</value>
+            </list>
+        </property>
+    </bean>
+
+    <!--2012-07-18 azharad ARGO-40044: Introducing new class to Delete Working data used to clean up database-->
+    <bean id="xpsPurgeWorkingDataTarget" class="com.navis.apex.business.xps.XpsPurgeWorkingDataPea">
+    </bean>
+
+    <bean id="xpsPurgeWorkingData" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>com.navis.apex.business.api.XpsPurgeWorkingData</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>xpsPurgeWorkingDataTarget</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="reportDesignInitManager"
+          class="com.navis.apex.business.model.ReportDesignInitializationManager" scope="singleton">
+    </bean>
+
+    <bean id="servicesInitManager"
+          class="com.navis.apex.business.model.ServicesInitializationManager" scope="singleton">
+    </bean>
+    <bean id="ediExtractorACTIVITYTarget" class="com.navis.apex.business.model.ServiceEventExtractorPea"/>
+
+    <bean id="ediExtractorACTIVITY" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>com.navis.argo.business.api.EdiExtractor</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>ediExtractorACTIVITYTarget</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="ediExtractorVESSELACTIVITYarget" class="com.navis.apex.business.model.VesselActivityExtractorPea"/>
+
+    <bean id="ediExtractorVESSELACTIVITY" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>com.navis.argo.business.api.EdiExtractor</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>ediExtractorVESSELACTIVITYarget</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="ApexMetafieldPrivilegeLoader"
+          class="com.navis.apex.business.security.ApexMetafieldPrivilegeLoader" scope="singleton">
+    </bean>
+
+    <bean id="HoldsDynamicPrivManager"
+          class="com.navis.services.business.security.HoldsDynamicPrivilegeManager">
+        <property name="securedActions">
+            <list>
+                <value>REMOVE</value>
+                <value>ADD</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 2006.05.01 isaacson ARGO-3983 API to allow road Position Request message to get the UYV XpsObject to send to XPS -->
+    <bean id="unitXpsObjectPea" class="com.navis.apex.business.xps.UnitXpsObjectPea"/>
+
+    <bean id="unitXpsObject" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>com.navis.inventory.business.api.UnitXpsObject</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>unitXpsObjectPea</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 2006-05-10 JJS ARGO-4211 override of inventory module bean to extend methods that reach into other modules -->
+    <bean id="unitManagerPea" class="com.navis.apex.business.units.ApexUnitManagerPea"/>
+
+    <!-- define the bean that initializes for the Security -->
+    <bean id="securityPostInitializer" class="com.navis.apex.business.security.ApexSecurityPostInitializer"/>
+
+    <!-- 2006-06-22 AFN ARGO-4482 create indices for all foreign keys for sql-server -->
+    <bean id="sqlServerPostInitializer" class="com.navis.apex.business.ApexSqlServerPostInitializer"/>
+
+    <!-- 2006-10-10 EYU ARGO-5431 create indices for all foreign keys for oracle -->
+    <bean id="oraclePostInitializer" class="com.navis.apex.business.ApexOraclePostInitializer"/>
+
+    <!-- 2010-08-04 tisaacson ARGO-27517 General purpose message socket listener service. First use is experimental XPS startup w/o cache. -->
+    <bean id="amsPostInitializer" class="com.navis.apex.business.api.apexmessageserver.AmsPostInitializer"/>
+
+    <!-- 2013-12-18 trygve.isaacson CTO-72 Cluster-wide change notification service to support live push updates to clients. -->
+    <bean id="clusterNotificationServicePostInitializer" class="com.navis.apex.business.clusternotificationservice.ClusterNotificationServicePostInitializer"/>
+    <bean id="clusterNotificationService" class="com.navis.apex.business.clusternotificationservice.HazelcastClusterNotificationService"/>
+
+    <!-- define the bean that initializes the XPS caches, this bean is dependent on the quartz scheduler being started -->
+    <!--<bean id="xpsPostInitializer" class="com.navis.apex.business.XpsPostInitializer" depends-on="defaultQuartzScheduler"/>-->
+
+    <!-- define the bean that initializes things having to do with Topology, including Entity Sets -->
+    <bean id="entitySetManager" class="com.navis.apex.business.EntitySetManager"/>
+
+    <!-- snx importers -->
+    <!-- 2007-08-08 lbarman v1.4.G  ARGO-7766: allow hpu for export bookings - move hpu to apex so it has access to all modules -->
+    <bean id="snxHpuImporter" class="com.navis.apex.webservice.HPUWebServiceHandler" scope="singleton"/>
+
+    <!-- define all upgrade actions for APEX -->
+    <!-- action35 supersedes action30 -->
+    <!--bean id="apexUpgradeAction30" class="com.navis.apex.upgrade.actions.ApexUpgradeAction30"/-->
+    <bean id="apexUpgradeAction35" class="com.navis.apex.upgrade.actions.ApexUpgradeAction35"/>
+
+    <bean id="apexUpgradeAction49" class="com.navis.apex.upgrade.actions.ApexUpgradeAction49">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <!-- 2006-07-07 lbarman v1.1.F ARGO-4485: upgrade action to fix changed field names for goodsIsHazardous and  unitEquipmentIsDamaged -->
+    <bean id="ApexUpgradeAction66" class="com.navis.apex.upgrade.actions.ApexUpgradeAction66"></bean>
+
+    <!-- 2006-07-10 JJS -->
+    <bean id="apexUpgradeAction68" class="com.navis.apex.upgrade.actions.ApexUpgradeAction68">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <!-- 2006-09-11 eyu ARGO-5133 - fix NULL values in CREATED field in EquipmentOrder and EquipmentOrderItems -->
+    <bean id="apexUpgradeAction2002" class="com.navis.apex.upgrade.actions.ApexUpgradeAction2002">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <!-- 2007-01-05 eyu ARGO-5310 v.1.2.O Change all WEIGHT fields from Long to Double -->
+    <bean id="apexUpgradeAction2054" class="com.navis.apex.upgrade.actions.ApexUpgradeAction2054">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <!-- 2007-01-18 eyu ARGO-5954 v.1.2.0 Table vsl_vessel_classes indexing inconsistent with scope -->
+    <bean id="apexUpgradeAction2067" class="com.navis.apex.upgrade.actions.ApexUpgradeAction2067">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <!-- tituscl v2.6.T ARGO 51886 Remove unused EDI SETTINGS in trunk: Three Settings removed 1)EXTRACT_ACTIVITIES 2)EXTRACT_EQUIP_OPERATOR
+        3) 	EXTRACT_ALL_ALLIANCE_ACTIVITY -->
+
+    <!-- ARGO-4370 10/04/06 eyu v.1.2.E Need Archiving/Purging extended to high growth tables -->
+    <bean id="argoDatabasePurgeBean" class="com.navis.argo.business.ArgoDatabasePurgeBean" scope="prototype">
+        <property name="orderedList">
+            <list>
+                <value>roadPurgeManager</value>
+                <value>vesselPurgeManager</value>
+                <value>ediPurgeManager</value>
+                <value>inventoryPurgeManager</value>
+                <value>railPurgeManager</value>
+                <value>apexPurgeManager</value>
+                <value>servicesPurgeManager</value>
+                <value>cargoPurgeManager</value>
+                <value>argoPurgeManager</value>
+                <value>frameworkPurgeManager</value>
+                <!--2010-04-28 oviyak 22.1.N ARGO-25064
+                 In N4-Monitor 2.1 application, archiving/purging is not available for mensa related tables-->
+                <value>mensaPurgeManager</value>
+                <value>xpscachePurgeManager</value>
+                <value>controlPurgeManager</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- ARGO-XXX eyu 30-Aug-2006  -->
+    <bean id="apexPurgeManager" class="com.navis.apex.business.ApexPurgeManager" scope="singleton"/>
+
+    <!-- 2006-09-25 eyu ARGO-5301 - fix Hazards that are pointed by both goods and bookings -->
+    <bean id="apexUpgradeAction2011" class="com.navis.apex.upgrade.actions.ApexUpgradeAction2011">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <!-- 2006-09-25 eyu ARGO-5301 - fix Hazards that are pointed by both goods and bookings -->
+    <bean id="apexUpgradeAction2014" class="com.navis.apex.upgrade.actions.ApexUpgradeAction2014">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <!-- 2006-10-16 eyu ARGO-5358 Make existing super users to be argo users. -->
+    <bean id="apexUpgradeAction2016" class="com.navis.apex.upgrade.actions.ApexUpgradeAction2016">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <!-- 2007-05-01 lbarman v1.4.A ARGO-7010: Divide privileges for Unit and Equipment Status view - make sure behavior of existing roles doesn't change -->
+    <bean id="apexUpgradeAction4005" class="com.navis.apex.upgrade.actions.ApexUpgradeAction4005">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <!-- 2007-07-30 (4033) jkathir v1.4.G ARGO-7842: add predicate widget to EDI Session. Added a new upgrade action since the earlier upgrade action ApexUpgradeAction4010 doesn't work -->
+
+    <!-- tituscl  R 2.6.T ARGO 51886 Remove unused EDI SETTINGS in trunk: Three Settings removed 1)EXTRACT_ACTIVITIES 2)EXTRACT_EQUIP_OPERATOR
+    3) 	EXTRACT_ALL_ALLIANCE_ACTIVITY -->
+
+    <!-- 2007-09-13 (4054) JJS v1.4.K ARGO-8180/ARGO-8318: Unit Serviceables -->
+    <bean id="apexUpgradeAction4054" class="com.navis.apex.upgrade.actions.ApexUpgradeAction4054">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <bean id="snxPositionParser" class="com.navis.apex.business.units.SnxPositionParserImpl"/>
+
+    <!-- override the framework scheduler with a clustered version -->
+    <bean id="abstractPersistentQuartzScheduler" class="com.navis.framework.quartz.QuartzSchedulerBean">
+        <property name="autoStartup">
+            <value>false</value>
+        </property>
+        <property name="dataSource" ref="primaryDataSource"/>
+    </bean>
+
+    <!-- We have to set the name here and not in the parent so that the other child has no name override -->
+    <bean id="persistentQuartzScheduler" parent="abstractPersistentQuartzScheduler" scope="prototype">
+        <property name="nonTransactionalDataSource" ref="systemDataSource"/>
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.plugin.shutdownhook.class">org.quartz.plugins.management.ShutdownHookPlugin</prop>
+                <prop key="org.quartz.plugin.shutdownhook.cleanShutdown">true</prop>
+                <prop key="org.quartz.threadPool.threadCount">50</prop>
+                <prop key="org.quartz.jobStore.tablePrefix">QRTZ_</prop>
+                <prop key="org.quartz.scheduler.instanceId">AUTO</prop>
+                <prop key="org.quartz.jobStore.isClustered">true</prop>
+                <prop key="org.quartz.jobStore.clusterCheckinInterval">180000</prop>
+                <prop key="org.quartz.jobStore.misfireThreshold">1000</prop>
+                <prop key="org.quartz.threadPool.threadCount">40</prop>
+                <prop key="org.quartz.jobStore.class">org.quartz.impl.jdbcjobstore.JobStoreCMT</prop>
+                <prop key="org.quartz.jobStore.nonManagedTXDataSource">systemDataSource</prop>
+                <prop key="org.quartz.jobStore.txIsolationLevelReadCommitted">true</prop>
+                <prop key="org.quartz.scheduler.jmx.export">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- Now used for all transient quartz Jobs -->
+    <bean id="defaultQuartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="autoStartup">
+            <value>true</value>
+        </property>
+        <property name="schedulerName">
+            <value>defaultQuartzScheduler</value>
+        </property>
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.threadPool.threadCount">50</prop>
+                <prop key="org.quartz.plugin.shutdownhook.class">com.navis.framework.quartz.QuartzShutdownHookPlugin</prop>
+                <prop key="org.quartz.plugin.shutdownhook.cleanShutdown">true</prop>
+                <prop key="org.quartz.scheduler.jmx.export">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--
+    This map provides the Quartz schedulers active for the application. These schedulers will participate in the QuartzLifecycleService.
+    All schedulers MUST have a distinct schedulerName.
+    -->
+    <util:list id="jobSchedulers" value-type="org.springframework.scheduling.quartz.SchedulerFactoryBean" scope="singleton">
+        <ref bean="defaultQuartzScheduler"/>
+    </util:list>
+
+    <!-- 2008-03-06 Ramanjaneyulu ARGO-10285 v1.5.J Snx Equipment Include Grade Id. -->
+    <bean id="equipStateManager" class="com.navis.apex.business.model.EquipStateManagerPea"/>
+
+    <!-- 2008-04-01 rsatish v1.5.N ARGO-10761 one-click SNX export of all the reference data and configuration entities -->
+    <bean id="snxReferenceEntitiesExporter"
+          class="com.navis.apex.business.admin.SnxReferenceEntitiesExporter" scope="singleton">
+    </bean>
+
+    <!-- 2008-04-07 rsatish v1.5.O ARGO-10917 export related entities along with Unit -->
+    <bean id="snxUnitFacilityVisitExporter" class="com.navis.apex.business.units.SnxChainUnitExporter" scope="prototype"/>
+
+    <bean id="xpsIngrationErrorHandler" class="com.navis.apex.business.xps.integration.XpsIntegrationErrorHandler"/>
+
+    <!-- 2009.02.05 mpompa ARGO-16624 Overridden so xps cache can get flex field updates-->
+    <bean id="MetafieldDictionaryProvider"
+          class="com.navis.apex.configuration.metafield.ApexScopedMetafieldDictionaryProvider"
+          scope="singleton">
+    </bean>
+
+    <!--
+     0.3 For multiple context files. Contains beans which should be included if another module uses this module
+     -->
+    <!--2009-08-26 spabbala v2.0.G ARGO-20193 apex log cleanup-->
+    <bean id="apexMetafieldDictionaryLoader"
+          class="com.navis.framework.metafields.provider.MetafieldDictionaryXmlLoader"
+          scope="singleton">
+        <property name="xmlFilePaths">
+            <list>
+                <value>/metafields/ApexBizMetafields.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 2011-03-25 snevasekar ARGO-30667 Define the bean that initializes the REST Webservice Network Node -->
+    <!--<bean id="restWebServicePostInitializer" class="com.navis.apex.business.RestWebServicePostInitializer"/>-->
+    <bean id="xpsMessageContextFactory" class="com.navis.apex.business.xps.XpsMessageContextFactory" scope="singleton"/>
+    <bean id="xpsMessageTransactionInterceptor" class="com.navis.xpscache.xpsmessage.XpsMessageTransactionInterceptor" scope="singleton"/>
+
+    <!--  Using a list BEAN_ID. Might move to a lifecycle.  -->
+    <util:list id="txnCommitEntityEventInterceptorList" value-type="com.navis.framework.persistence.ITxnCommitEntityEventInterceptor">
+        <bean id="yardTxnInterceptor" class="com.navis.yard.business.DynamicYardTxnEntityInterceptor"/>
+        <bean id="eventBusTxnInterceptor" class="com.navis.apex.business.EventBusCommitEventInterceptor"/>
+        <bean id="changeSubscriberInterceptor" class="com.navis.apex.business.clusternotificationservice.ChangeSubscriberInterceptor"/>
+    </util:list>
+
+    <!-- amqConfigParser create ESB activeMQ configuration in N4 2.3+ -->
+    <bean id="amqConfigParser" class="com.navis.argo.business.integration.jms.ESBActiveMQN4"/>
+
+    <bean id="apexSnxEsbConfigContext" class="com.navis.framework.esb.server.configuration.DefaultESBConfigContext">
+        <property name="configurationTypeEnum">
+            <value>SNX</value>
+            <!-- EsbConfigurationTypeEnum.SNX -->
+        </property>
+        <property name="filesInClassPath">
+            <list>
+                <value>/esb/n4-mule-config.xml</value>
+            </list>
+        </property>
+        <property name="reloadable">
+            <value>true</value>
+        </property>
+    </bean>
+
+    <bean id="apexXpsESBMBean" class="com.navis.apex.business.ApexXpsESBMBean"/>
+
+    <bean id="apexXpsEsbConfigContext" class="com.navis.apex.business.ApexXpsESBConfigContext">
+        <property name="configurationTypeEnum">
+            <value>N4_BRIDGE</value>
+            <!-- EsbConfigurationTypeEnum.N4_BRIDGE -->
+        </property>
+    </bean>
+
+    <bean
+        id="apexEventBusEsbConfigContext"
+        class="com.navis.framework.esb.eventbus.configuration.MuleEventBusESBConfigContext"
+        scope="singleton"
+    >
+        <property name="configurationTypeEnum">
+            <value>EVENT_BUS</value>
+            <!-- EsbConfigurationTypeEnum.EVENT_BUS -->
+        </property>
+        <property name="filesInClassPath">
+            <list>
+                <value>/esb/event-bus-mule-config.xml</value>
+                <value>/esb/control-mule-config.xml</value>
+            </list>
+        </property>
+        <property name="reloadable">
+            <value>true</value>
+        </property>
+    </bean>
+</beans>

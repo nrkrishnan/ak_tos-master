@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+    <bean id="apexCreateTestDataTarget" class="com.navis.apex.business.model.CreateTestDataImpl"/>
+
+    <bean id="apexCreateTestData" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>com.navis.apex.business.model.ICreateTestData</value>
+        </property>
+
+        <property name="interceptorNames">
+            <list>
+                <value>persistenceInterceptor</value>
+                <value>apexCreateTestDataTarget</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- hpu handler bean-->
+    <!-- 2007-08-08 lbarman v1.4.G  ARGO-7766: allow hpu for export bookings - move hpu to apex so it has access to all modules -->
+    <bean id="hpuWebserviceHandler" class="com.navis.apex.webservice.HPUWebServiceHandler"></bean>
+    <bean id="queryWebserviceHandler" class="com.navis.apex.webservice.QueryWebserviceHandler"/>
+
+    <!-- Set use of Coherence to true. Overrides FrameworkPortalContext.xml.-->
+    <bean id="appModuleSettings" class="com.navis.framework.portal.context.server.ApplicationModuleSettings">
+        <property name="usesCacheProvider">
+            <value>true</value>
+        </property>
+        <property name="usesSpatial">
+            <value>true</value>
+        </property>
+    </bean>
+
+    <!-- 2009-10-15 rsatish ARGO-21438 performance testing scenarios-->
+    <bean id="n4PerfScenariosTarget" class="com.navis.apex.test.N4PerfScenariosImpl"></bean>
+    <bean id="n4PerfScenarios" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>com.navis.apex.test.IN4PerfScenarios</value>
+        </property>
+        <property name="interceptorNames">
+            <list>
+                <value>persistenceInterceptor</value>
+                <value>n4PerfScenariosTarget</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="xpsHttpServiceConfigGenerator" class="com.navis.apex.business.xps.XpsHttpServiceConfigGenerator"/>
+
+    <bean id="integrityCheckerController" class="com.navis.apex.presentation.controller.IntegrityCheckerController" scope="prototype"/>
+    <bean id="integrityCheckerCommand" class="com.navis.apex.presentation.command.IntegrityCheckerCommand" scope="prototype"/>
+    <bean id="xpsMessageContextLifecycleService" class="com.navis.apex.business.XpsMessageContextLifecycleService"
+          depends-on="defaultQuartzScheduler"/>
+    <bean id="restWebServiceLifecycleService" class="com.navis.apex.business.RestWebServiceLifecycleService"/>
+
+    <bean id="apexSystemExtensions" class="com.navis.extension.invocation.load.ExtensionLoadSource">
+        <property name="languageType" value="GROOVY"/>
+        <property name="filePaths">
+            <map>
+                <entry key="GROOVY_WS_CODE_EXTENSION">
+                    <list>
+                        <value>extension/system/cas/DefaultN4InboundCasMessageHandler.groovy</value>
+                        <value>extension/system/cas/DefaultN4InboundCasRequestHandler.groovy</value>
+                        <value>extension/system/cas/Default25InboundCasMessageHandler.groovy</value>
+                    </list>
+                </entry>
+                <entry key="GENERAL_NOTICES_CODE_EXTENSION">
+                    <list>
+                        <value>extension/system/cas/DefaultN4OutboundCasMessageHandler.groovy</value>
+                        <value>extension/system/HostEventExporter.groovy</value>
+                    </list>
+                </entry>
+                <entry key="LIBRARY">
+                    <list>
+                        <value>extension/system/cas/CasHelper.groovy</value>
+                        <value>extension/system/cas/CasMessageHelper.groovy</value>
+                        <value>extension/system/cas/OnboardUnitUpdate.groovy</value>
+                        <value>extension/system/cas/CraneWorkListUpdate.groovy</value>
+                        <value>extension/system/HostEventExporterHandler.groovy</value>
+                    </list>
+                </entry>
+                <entry key="RAIL_OPTIMAL_TZ_SLOT_FINDER">
+                    <list>
+                        <value>extension/system/OptimalTZSlotFinderSample.groovy</value>
+                    </list>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+</beans>

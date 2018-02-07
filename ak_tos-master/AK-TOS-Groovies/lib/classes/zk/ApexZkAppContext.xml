@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation=
+               "http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+
+    <!-- location of help sets -->
+    <bean id="apexHelpLocator" class="com.navis.framework.zk.help.HelpLocator" scope="prototype">
+        <property name="helpSetLocation">
+            <value>javaHelp/apexHelp/apex.hs</value>
+        </property>
+    </bean>
+    <!-- override the login to handle scope selection -->
+    <bean id="apexLoginHandler" class="com.navis.argo.web.zk.ArgoLoginHandler" scope="prototype">
+        <property name="siteSelectionCommand" value="apexSiteSelectionCommand"/>
+        <property name="redirectZul" value="apexHomeView.zul"/>
+    </bean>
+
+    <!-- Resolved from the apexLogin.zul, This is the entry point bean -->
+    <bean id="apexLoginHandlerWrapper" class="com.navis.argo.web.zk.ArgoLoginHandlerWrapper" scope="prototype">
+        <property name="loginHandler" ref="apexLoginHandler"/>
+    </bean>
+
+    <bean id="apexSiteSelectionHandler" class="com.navis.argo.web.zk.SiteSelectionHandler" scope="prototype">
+        <property name="helpLocator" ref="apexHelpLocator"/>
+        <property name="redirectZul" value="apexHomeView.zul"/>
+    </bean>
+
+    <bean id="apexSiteSelectionCommand" class="com.navis.framework.zk.command.ZkUriUiCommand" scope="prototype">
+        <property name="destination" value="EMBEDDED"/>
+        <property name="label" value="Site Selection"/>
+        <property name="title" value="Site Selection"/>
+        <property name="uri" value="siteSelection.zul"/>
+        <property name="eventHandler" ref="apexSiteSelectionHandler"/>
+    </bean>
+
+    <bean id="apexHomeViewController" class="com.navis.apex.zk.server.application.controller.ApexHomeViewController" scope="prototype"/>
+
+</beans>

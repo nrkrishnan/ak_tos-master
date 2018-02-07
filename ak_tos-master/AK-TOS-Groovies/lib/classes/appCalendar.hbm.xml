@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <meta attribute="JavaClassPrefix">AppCalendar</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.framework.configuration.calendar.AppCalendarEvent" table="frm_cal_event">
+        <meta attribute="generated-class">com.navis.framework.configuration.calendar.AppCalendarEventHbr</meta>
+        <meta attribute="n4alias">appcalevt</meta>
+        <meta attribute="n4-entity-name">Calendar Event</meta>
+        <meta attribute="n4-entity-name-plural">Calendar Events</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+
+        <id name="appcalevtGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="appcalevtName" column="name" type="string" length="50" unique="false" not-null="true">
+            <meta attribute="field-description">Name of this calendar event</meta>
+        </property>
+
+        <property name="appcalevtDescription" column="description" type="string" length="100">
+            <meta attribute="field-description">Description of this calendar event</meta>
+        </property>
+
+        <property name="appcalevtOccurrDateStart" column="occ_start" type="timestamp" not-null="true">
+            <meta attribute="field-description">The first day the event occurs</meta>
+        </property>
+
+        <property name="appcalevtRecurrDateEnd" column="rec_end" type="timestamp" not-null="false">
+            <meta attribute="field-description">The last recurrence day of the event</meta>
+        </property>
+
+        <property name="appcalevtInterval" type="com.navis.framework.persistence.atoms.UserTypeAppCalendarIntervalEnum">
+            <meta attribute="field-description">The interval of recurrence of this calendar event</meta>
+            <column name="repeat_interval" not-null="true"/>
+        </property>
+
+        <property name="appcalevtScopeLevel" column="scope_level" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Scope: 0=broadest, 1=next broadest, etc.</meta>
+        </property>
+
+        <property name="appcalevtScopeGkey" column="scope_gkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the scoping entity at which this event is defined</meta>
+        </property>
+
+        <many-to-one name="appcalevtType" class="com.navis.framework.configuration.calendar.AppCalendarEventType">
+            <meta attribute="field-description">The type of this calendar event</meta>
+            <column name="type_gkey" not-null="true" index="frm_cal_event_type_gkey_fki"/>
+        </many-to-one>
+    </class>
+
+    <class name="com.navis.framework.configuration.calendar.AppCalendarEventType" table="frm_cal_event_type">
+        <meta attribute="generated-class">com.navis.framework.configuration.calendar.AppCalendarEventTypeHbr</meta>
+        <meta attribute="n4alias">appcalevttype</meta>
+        <meta attribute="n4-entity-name">Calendar Event Type</meta>
+        <meta attribute="n4-entity-name-plural">Calendar Event Types</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-uniqueness-description">none</meta>
+
+        <id name="appcalevttypeGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="appcalevttypeName" column="name" type="string" length="50" unique="false" not-null="true">
+            <meta attribute="field-description">Name of this calendar event type</meta>
+        </property>
+
+        <property name="appcalevttypeIsPartialDayEventType" column="partial_day" type="java.lang.Boolean"
+                  not-null="true">
+            <meta attribute="field-description">Full-day or partial-day flag of this calendar event type</meta>
+        </property>
+
+        <property name="appcalevttypeDescription" column="description" type="string" length="100">
+            <meta attribute="field-description">Description of this calendar event type</meta>
+        </property>
+    </class>
+
+</hibernate-mapping>

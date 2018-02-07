@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">System</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.carina.diagnostic.business.NodeConfig" table="frm_node_config">
+        <meta attribute="generated-class">com.navis.carina.diagnostic.business.NodeConfigHbr</meta>
+        <meta attribute="n4alias">nodecfg</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-entity-name">Application Node Config</meta>
+        <meta attribute="n4-entity-name-plural">Application Node Config</meta>
+        <meta attribute="n4-uniqueness-description">none</meta>
+
+        <id name="nodecfgGkey" column="nodecfg_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="nodecfgNodeName" column="nodecfg_node_name" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Application node name</meta>
+        </property>
+
+        <property name="nodecfgNodeIPAddress" column="nodecfg_ip_address" type="string" length="40" not-null="true">
+            <meta attribute="field-description">Application server IP Address</meta>
+        </property>
+
+        <!-- change nodecfgNodeURL to NOT NULL  -->
+        <property name="nodecfgNodeURL" column="nodecfg_node_url" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Application node URL</meta>
+        </property>
+
+        <property name="nodecfgLastStartupTime" column="nodecfg_last_startup_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">Last timestamp when the application node started</meta>
+        </property>
+
+        <property name="nodecfgLastShutdownTime" column="nodecfg_last_shutdown_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">Last timestamp when the application node was shut down</meta>
+        </property>
+
+        <property name="nodecfgLogDirPath" column="nodecfg_log_dirpath" type="string" length="250" not-null="false">
+            <meta attribute="field-description">Application node log dir path</meta>
+        </property>
+
+        <property name="nodecfgLogFileNamePattern" column="nodecfg_log_filename_pattern" type="string" length="4000" not-null="false">
+            <meta attribute="field-description">Application node log file patterns</meta>
+        </property>
+
+        <property name="nodecfgServerMode" column="nodecfg_server_mode" type="com.navis.framework.persistence.atoms.UserTypeServerModeEnum"
+                  length="20">
+            <meta attribute="field-description">Application server mode: SERVLET, STANDALONE_ULC, STANDALONE_FACELESS</meta>
+        </property>
+
+        <property name="nodecfgStatus" column="nodecfg_status" type="com.navis.framework.persistence.atoms.UserTypeNodeStatusTypeEnum"
+                  length="20">
+            <meta attribute="field-description">Application last known node status: STARTING, ACTIVE, SHUTDOWN, SHUTDOWN_ABNORMAL, DEACTIVATED</meta>
+        </property>
+
+        <property name="nodecfgDescription" column="nodecfg_description" type="string" length="255">
+            <meta attribute="field-description">Application node description</meta>
+        </property>
+
+        <property name="nodecfgNote" column="nodecfg_notes" type="string" length="4000" not-null="false">
+            <meta attribute="field-description">Application node note</meta>
+        </property>
+
+        <property name="nodecfgLastFailedAccessTime" column="nodecfg_last_faild_accs_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">Failed access to this node - failure date</meta>
+        </property>
+
+        <property name="nodecfgLastFailedAccessErrors" column="nodecfg_last_faild_accs_errors" type="string" length="4000" not-null="false">
+            <meta attribute="field-description">Failed access to this node - error messages</meta>
+        </property>
+
+        <property name="nodecfgStartupErrors" column="nodecfg_startup_errors" type="string" length="4000" not-null="false">
+            <meta attribute="field-description">Applciation node startup error messages</meta>
+        </property>
+
+        <!--  Audit Data -->
+        <property name="nodecfgCreated" column="nodecfg_created" type="timestamp"/>
+        <property name="nodecfgCreator" column="nodecfg_creator" type="string" length="30"/>
+        <property name="nodecfgChanged" column="nodecfg_updated" type="timestamp"/>
+        <property name="nodecfgChanger" column="nodecfg_updater" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.framework.esb.business.EsbConfiguration" table="esb_config">
+        <meta attribute="n4alias">esb</meta>
+        <meta attribute="generated-class">com.navis.framework.esb.business.EsbConfigurationHbr</meta>
+        <meta attribute="n4-entity-name">EsbConfiguration</meta>
+        <meta attribute="n4-entity-name-plural">EsbConfigurations</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+
+        <id name="esbGkey" column="esb_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="esbConfigType" column="esb_type" type="com.navis.framework.persistence.atoms.UserTypeEsbConfigurationTypeEnum" length="25" not-null="true">
+            <meta attribute="field-description">Is this configuration enabled?</meta>
+        </property>
+
+        <property name="esbEnabled" column="esb_enabled" type="com.navis.framework.persistence.atoms.UserTypeBooleanEnum" length="5" not-null="true">
+            <meta attribute="field-description">Is this configuration enabled?</meta>
+        </property>
+
+        <property name="esbConfigName" column="esb_config_name" type="string" length="100" not-null="true" unique="true">
+            <meta attribute="field-description">ESB configuration name</meta>
+        </property>
+
+        <property name="esbConfigXml" column="esb_config_xml" type="text" not-null="true">
+            <meta attribute="field-description">xml representation of the esb configuration</meta>
+        </property>
+
+        <property name="esbChanged" column="esb_update_date" type="timestamp">
+            <meta attribute="field-description">when the esb configuration was updated</meta>
+        </property>
+
+        <property name="esbChanger" column="esb_update_user" type="string" length="30">
+            <meta attribute="field-description">who updated the esb configuration</meta>
+        </property>
+
+        <property name="esbCreated" column="esb_create_date" type="timestamp">
+            <meta attribute="field-description">when the esb configuration was created</meta>
+        </property>
+
+        <property name="esbCreator" column="esb_create_user" type="string" length="30">
+            <meta attribute="field-description">who created the esb configuration</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.carina.diagnostic.business.ClusterService" table="frm_cluster_service">
+        <meta attribute="generated-class">com.navis.carina.diagnostic.business.ClusterServiceHbr</meta>
+        <meta attribute="n4alias">clservice</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-entity-name">Application Cluster Service</meta>
+        <meta attribute="n4-entity-name-plural">Application Cluster Service</meta>
+        <meta attribute="n4-uniqueness-description">none</meta>
+
+        <id name="clusterServiceGkey" column="clservice_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="clusterServiceKey" column="clservice_key" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Application service name</meta>
+        </property>
+
+        <property name="clusterServiceScopeLevel" column="clservice_scope_level" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Cluster Service scope level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+        </property>
+        <property name="clusterServiceScopeGkey" column="clservice_scope_gkey" type="string" length="50">
+            <meta attribute="field-description">Cluster service scope gkey</meta>
+        </property>
+
+        <property name="clusterServiceType" column="clservice_type" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Application cluster service type</meta>
+        </property>
+
+        <property name="clusterServiceName" column="clservice_name" type="string" length="255" not-null="true">
+            <meta attribute="field-description">Application cluster service name</meta>
+        </property>
+
+        <property name="clusterServiceStatus" column="clservice_status" type="string" length="30">
+            <meta attribute="field-description">Application cluster service status</meta>
+        </property>
+
+        <property name="clusterServiceIPAddress" column="clservice_ip_address" type="string" length="40" not-null="false">
+            <meta attribute="field-description">Application cluster service IP Address</meta>
+        </property>
+
+        <property name="clusterServiceMacAddress" column="clservice_mac_address" type="string" length="40" not-null="false">
+            <meta attribute="field-description">Application cluster service MAC Address</meta>
+        </property>
+
+        <property name="clusterServicePort" column="clservice_port" type="java.lang.Integer">
+            <meta attribute="field-description">Application cluster service port</meta>
+        </property>
+
+        <property name="clusterServiceVersion" column="clservice_version" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Application cluster service version</meta>
+        </property>
+
+        <property name="clusterServiceInfo" column="clservice_info" type="string" length="1024" not-null="false">
+            <meta attribute="field-description">Application Cluster service info</meta>
+        </property>
+
+        <property name="clusterServiceStartupTime" column="clservice_startup_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">When did this service start up?</meta>
+        </property>
+
+        <property name="clusterServiceHeartBeatTime" column="clservice_heart_beat_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">When did this service entry last update itself?</meta>
+        </property>
+
+        <property name="clusterServiceActivityTime" column="clservice_activity_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">When did this service last see cluster "activity"?</meta>
+        </property>
+
+        <property name="clusterServiceShutdownTime" column="clservice_shutdown_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">When did this service shut down?</meta>
+        </property>
+
+        <property name="clusterServiceUserName" column="clservice_user_name" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Application cluster service user name</meta>
+        </property>
+
+        <property name="clusterServiceMemoryUsed" column="clservice_memory_used" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Application cluster service memory used</meta>
+        </property>
+
+        <property name="clusterServiceMemoryMax" column="clservice_memory_max" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Application cluster service memory max</meta>
+        </property>
+
+        <property name="clusterServiceCpuCount" column="clservice_cpu_count" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Application cluster service CPU count</meta>
+        </property>
+
+        <property name="clusterServiceCpuLoad" column="clservice_cpu_load" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Application cluster service CPU load for last minute</meta>
+        </property>
+
+        <set name="clusterServiceGroups" table="frm_job_group_node" inverse="false" lazy="true">
+            <key column="clusterServiceGkey"/>
+            <many-to-many column="jobgroupGkey" class="com.navis.framework.quartz.business.JobGroup"/>
+        </set>
+
+    </class>
+
+</hibernate-mapping>

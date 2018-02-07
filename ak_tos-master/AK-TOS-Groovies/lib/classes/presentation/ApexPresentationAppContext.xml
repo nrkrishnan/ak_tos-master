@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+
+    <bean id="ApexMetafieldDictionaryLoader"
+          class="com.navis.framework.metafields.provider.MetafieldDictionaryXmlLoader">
+        <property name="xmlFilePaths">
+            <list>
+                <value>/metafields/ApexBizMetafields.xml</value>
+                <value>/metafields/ApexGuiMetafields.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="apexForms" class="com.navis.framework.web.variforms.AppFormsProvider"
+          scope="singleton">
+        <property name="filePaths">
+            <list>
+                <value>/forms/ApexVariforms.xml</value>
+            </list>
+        </property>
+    </bean>
+     <!-- 2011.11.10 ramacke, V2.3.E ARGO-33173 - Create Announcement Entity-->
+    <!--Announcement types for CAP-->
+    <bean id="announcementTypes" class="java.util.LinkedHashMap">
+        <constructor-arg>
+            <map>
+                <entry key="GATE">
+                    <value>GATE_ANNOUNCEMENT_TYPE</value>
+                </entry>
+                <entry key="CAP">
+                    <value>CAP_ANNOUNCEMENT_TYPE</value>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="integrityCheckerController" class="com.navis.apex.presentation.controller.IntegrityCheckerController" scope="prototype"/>
+    <bean id="integrityCheckerCommand" class="com.navis.apex.presentation.command.IntegrityCheckerCommand" scope="prototype"/>
+    <!-- version info -->
+    <bean id="manifestInfo"
+          class="com.navis.framework.presentation.util.ManifestVersionInfo"
+          scope="singleton">
+        <constructor-arg value="com.navis.argo.business.api.ArgoUtils"/>
+    </bean>
+    <bean id="applicationVersionInfo"
+          class="com.navis.framework.presentation.util.VersionInfo"
+          scope="singleton">
+        <property name="manifestInfo">
+            <ref local="manifestInfo"/>
+        </property>
+        <property name="title" value="Navis N4"/>
+        <property name="shortText" value="{0}"/>
+    </bean>
+
+    <!-- If the supported browsers are changed, you need to adjust the BrowserCheckSaTestSuite to match -->
+    <bean id="supportedBrowsers"
+          class="com.navis.framework.web.util.SupportedBrowsers"
+          scope="singleton">
+        <constructor-arg>
+            <map>
+                <entry key="IE">
+                    <value>10</value>
+                </entry>
+                <entry key="Chrome">
+                    <value>32</value>
+                </entry>
+                <entry key="Safari">
+                    <value>6</value>
+                </entry>
+                <entry key="Mobile Safari">
+                    <value>6</value>
+                </entry>
+                <entry key="Chrome Mobile">
+                    <value>32</value>
+                </entry>
+                <entry key="Firefox">
+                    <value>28</value>
+                </entry>
+            </map>
+        </constructor-arg>
+    </bean>
+
+</beans>

@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+        name="InventoryService"
+        targetNamespace="http://www.navis.com/services/inventoryservice"
+        xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:tns="http://www.navis.com/services/inventoryservice"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Inventory Services</wsdl:documentation>
+
+    <wsdl:types>
+        <xsd:schema
+                elementFormDefault="qualified"
+                targetNamespace="http://www.navis.com/services/inventoryservice"
+                xmlns:types="http://types.webservice.inventory.navis.com/v1.0"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import
+                    namespace="http://types.webservice.inventory.navis.com/v1.0"
+                    schemaLocation="../schema/inventory-types.xsd">
+            </xsd:import>
+            <!-- wrapped style add the method name and arguments -->
+            <xsd:element name="equipmentInquiry">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinateIdsWsType" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="eqId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="equipmentInquiryResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="equipmentInquiryResponse" type="types:EquipmentInquiryResponseWsType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <!--2009-02-20 vkotha v1.8.F v1.9.B ARGO-16795(NFRM-311) Gap 35 Container Inquiry Availability by bill of lading number.-->
+            <!-- wrapped style add the method name and arguments -->
+            <xsd:element name="equipmentInquiryByBillOfLading">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinateIdsWsType" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="billId" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="equipmentInquiryByBillOfLadingResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="equipmentInquiryByBillOfLadingResponse" type="types:EquipmentInquiryByBillOfLadingResponseWsType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- To update paid thru day for STORAGE or REEFER POWER. ptdDate String XML_DATE_TIME_ZONE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss Z"  -->
+            <xsd:element name="updatePaidThruDay">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinateIdsWsType" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="eqId" type="xsd:string" minOccurs="1"/>
+                        <xsd:element name="chargeFor" type="xsd:string" minOccurs="1"/>
+                        <xsd:element name="paidThruDay" type="xsd:string" minOccurs="1"/>
+                        <xsd:element name="extractGkey" type="xsd:long" minOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+
+            </xsd:element>
+
+            <xsd:element name="updatePaidThruDayResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="updatePaidThruDayResponse" type="types:UpdatePaidThruDayResponseWsType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <!-- paidThruDay and proposedStartDay XML_DATE_TIME_ZONE_FORMAT "yyyy-MM-dd'T'HH:mm:ss Z"(Example 2009-11-18T00:00:00 -0800)-->
+            <xsd:element name="proposePaidThruDay">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinateIdsWsType" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="eqId" type="xsd:string" minOccurs="1"/>
+                        <!-- STORAGE or REEFER -->
+                        <xsd:element name="chargeFor" type="xsd:string" minOccurs="1"/>
+                        <!-- Value is not mandatory. yyyy-MM-dd'T'HH:mm:ss Z -->
+                        <xsd:element name="paidThruDay" type="xsd:string" minOccurs="1"/>
+                        <!-- Value is not mandatory. Pass null value-->
+                        <xsd:element name="proposedStartDay" type="xsd:string" minOccurs="0"/>
+                        <!-- ChargeableUnitEvent Gkey -->
+                        <xsd:element name="extractGkey" type="xsd:long" minOccurs="1"/>
+                        <!-- Is Guarantee Chargeable -->
+                        <xsd:element name="isGuaranteeChargeable" type="xsd:boolean" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="proposePaidThruDayResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="proposePaidThruDayResponse" type="types:ProposePaidThruDayResponseWsType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="updatePaidThruDayRequest">
+        <wsdl:part element="tns:updatePaidThruDay" name="updatePaidThruDay"/>
+    </wsdl:message>
+
+    <wsdl:message name="updatePaidThruDayResponse">
+        <wsdl:part element="tns:updatePaidThruDayResponse" name="updatePaidThruDayResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="proposePaidThruDayRequest">
+        <wsdl:part element="tns:proposePaidThruDay" name="proposePaidThruDay"/>
+    </wsdl:message>
+
+    <wsdl:message name="proposePaidThruDayResponse">
+        <wsdl:part element="tns:proposePaidThruDayResponse" name="proposePaidThruDayResponse"/>
+    </wsdl:message>
+
+    <wsdl:message name="equipmentInquiryRequest">
+        <wsdl:part element="tns:equipmentInquiry" name="equipmentInquiry"/>
+    </wsdl:message>
+
+    <wsdl:message name="equipmentInquiryResponse">
+        <wsdl:part element="tns:equipmentInquiryResponse" name="equipmentInquiryResponse"/>
+    </wsdl:message>
+
+    <!--2009-02-20 vkotha v1.8.F v1.9.B ARGO-16795(NFRM-311) Gap 35 Container Inquiry Availability by bill of lading number.-->
+    <wsdl:message name="equipmentInquiryByBillOfLadingRequest">
+        <wsdl:part element="tns:equipmentInquiryByBillOfLading" name="equipmentInquiryByBillOfLading"/>
+    </wsdl:message>
+
+    <wsdl:message name="equipmentInquiryByBillOfLadingResponse">
+        <wsdl:part element="tns:equipmentInquiryByBillOfLadingResponse" name="equipmentInquiryByBillOfLadingResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="InventoryServicePort">
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="equipmentInquiry">
+            <wsdl:input message="tns:equipmentInquiryRequest"/>
+            <wsdl:output message="tns:equipmentInquiryResponse"/>
+        </wsdl:operation>
+
+        <!--2009-02-20 vkotha v1.8.F v1.9.B ARGO-16795(NFRM-311) Gap 35 Container Inquiry Availability by bill of lading number.-->
+        <wsdl:operation name="equipmentInquiryByBillOfLading">
+            <wsdl:input message="tns:equipmentInquiryByBillOfLadingRequest"/>
+            <wsdl:output message="tns:equipmentInquiryByBillOfLadingResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="updatePaidThruDay">
+            <wsdl:input message="tns:updatePaidThruDayRequest"/>
+            <wsdl:output message="tns:updatePaidThruDayResponse"/>
+        </wsdl:operation>
+
+        <wsdl:operation name="proposePaidThruDay">
+            <wsdl:input message="tns:proposePaidThruDayRequest"/>
+            <wsdl:output message="tns:proposePaidThruDayResponse"/>
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <wsdl:binding name="InventoryServiceSoapBinding" type="tns:InventoryServicePort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="equipmentInquiry">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <!--2009-02-20 vkotha v1.8.F v1.9.B ARGO-16795(NFRM-311) Gap 35 Container Inquiry Availability by bill of lading number.-->
+        <wsdl:operation name="equipmentInquiryByBillOfLading">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="updatePaidThruDay">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="proposePaidThruDay">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+    <wsdl:service name="InventoryService">
+        <wsdl:port binding="tns:InventoryServiceSoapBinding" name="InventoryServicePort">
+            <soap:address location="http://localhost:8080/apex/services/inventoryservice"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

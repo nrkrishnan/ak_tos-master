@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<xs:schema id="ManifestWSResponse" 
+                  targetNamespace="http://tempuri.org/ManifestWSResponse.xsd"
+                  elementFormDefault="qualified"
+                  xmlns="http://tempuri.org/ManifestWSResponse.xsd"
+                  xmlns:mstns="http://tempuri.org/ManifestWSResponse.xsd"
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="ManifestWSResponse">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="Header" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="Transporter" minOccurs="1" default="Matson Navigation Lines">
+								<xs:annotation>
+									<xs:documentation>Cargo Transportation company's full name. This name is used to uniquely identify a transporter.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="Horizon Lines" />
+										<xs:enumeration value="Matson Navigation Lines" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="VesselName" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Ship's name. VesselName/Voyage and ETA together uniquely identify a shipment, while these fields together with ManifestType uniquely identify a manifest file. In the Invicta online system, VesselName and Voyage number will be strung together separated by a space and displayed as the "Vessel &amp; Voyage".</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="13" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Voyage" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Ship's Voyage number. VesselName/Voyage and ETA together uniquely identify a shipment, while these fields together with ManifestType uniquely identify a manifest file. In the Invicta online system, VesselName and Voyage number will be strung together separated by a space and displayed as the "Vessel &amp; Voyage". Voyage number usually contains four or five digits depending on the direction of the voyage.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="6" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="PortOfLoading" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>The Port where the Cargo is loaded onto the Vessel.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="BEH" />
+										<xs:enumeration value="BHB" />
+										<xs:enumeration value="DUT" />
+										<xs:enumeration value="FRD" />
+										<xs:enumeration value="JMM" />
+										<xs:enumeration value="KPH" />
+										<xs:enumeration value="LHB" />
+										<xs:enumeration value="OBK" />
+										<xs:enumeration value="ODW" />
+										<xs:enumeration value="OLH" />
+										<xs:enumeration value="PTR" />
+										<xs:enumeration value="QGM" />
+										<xs:enumeration value="QHL" />
+										<xs:enumeration value="QHN" />
+										<xs:enumeration value="QKH" />
+										<xs:enumeration value="QKW" />
+										<xs:enumeration value="QLA" />
+										<xs:enumeration value="QLB" />
+										<xs:enumeration value="QNW" />
+										<xs:enumeration value="QOK" />
+										<xs:enumeration value="QPT" />
+										<xs:enumeration value="QSD" />
+										<xs:enumeration value="QSE" />
+										<xs:enumeration value="RCE" />
+										<xs:enumeration value="TWH" />
+										<xs:enumeration value="YBW" />
+										<xs:enumeration value="YGE" />
+										<xs:enumeration value="YGG" />
+										<xs:enumeration value="YMF" />
+										<xs:enumeration value="YPT" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="PortOfDischarge" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>The final Hawaii Port destination.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="PIO" />
+										<xs:enumeration value="MUA" />
+										<xs:enumeration value="NAW" />
+										<xs:enumeration value="KWE" />
+										<xs:enumeration value="HIL" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ATD" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Actual Time of Departure. Must be earlier than ETA. Not in Invicta and will not be used. To be used in future exports system.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:dateTime">
+										<xs:minInclusive value="2000-01-01T12:00:00.0000000-10:00" />
+										<xs:maxInclusive value="3000-01-01T12:00:00.0000000-10:00" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ETA" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Estimated Time of Arrival. Must be later than ATD. VesselName/Voyage and ETA together uniquely identify a shipment, while these fields together with ManifestType uniquely identify a manifest file.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:dateTime">
+										<xs:minInclusive value="2000-01-01T12:00:00.0000000-10:00" />
+										<xs:maxInclusive value="3000-01-01T12:00:00.0000000-10:00" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ManifestType" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Indicates whether this is a [C]ontainer Manifest, [N]on-Container Manifest, [S]upplemental Container Manifest or S[u]pplemental Non-Container Manifest. VesselName/Voyage, ETA and ManifestType together uniquely identify a manifest file. As of 1/28/2008, it is not clear yet whether the supplements will be required and can be provided within enough time before a shipment arrives. Until a need is established and contracted for an additional feed for supplements, only one container and one non-container manifest file can be submitted via the web service for a given shipment.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="C" />
+										<xs:enumeration value="N" />
+										<xs:enumeration value="S" /> <!-- Not implemented yet -->
+										<xs:enumeration value="U" /> <!-- Not implemented yet -->
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="TransmitDateTime" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Data transmission date/time. Date/Time of when data extract has been transmitted to HDOA server. When files are resent, this time stamp will be used to determine which file was sent later and therefore is more recent. This date must not be earlier than today.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:dateTime">
+										<xs:minInclusive value="2009-01-01T12:00:00.0000000-10:00" />
+										<xs:maxInclusive value="3000-01-01T12:00:00.0000000-10:00" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="TransmitCount" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Number of cargo units in this Manifest file</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:minInclusive value="0" />
+										<xs:maxInclusive value="2500" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="DataPerUnit">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="TransactionType" minOccurs="1" default="A">
+								<xs:annotation>
+									<xs:documentation>(A)dd, (U)pdate or (D)elete. Initially, only Adds will occur. Update and Delete may be future use options.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="A" />
+										<xs:enumeration value="U" />
+										<xs:enumeration value="D" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ContainerNo" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Carrier's Container record number. If this unit is not a container, this value must not be provided and there must be a NonContainerNo.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="50" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="NonContainerNo" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Carrier's Non-Container record number. If this unit is a container, this value must not be provided and there must be a ContainerNo.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="30" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="VINRefNo" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>The Carrier's Non-Container record number, if the cargo unit is not a container. This number could be a Vehicle Identification Number (VIN) or some other reference number. This VIN or reference number is used as a cross-check in case a unit is labeled with the incorrect non-container unit number.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="50" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ContainerNonType" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation></xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="1" /> <!-- "Standard" -->
+										<xs:enumeration value="2" /> <!-- "Reefer" -->
+										<xs:enumeration value="3" /> <!-- "Roll-On" -->
+										<xs:enumeration value="4" /> <!-- "Roll-Off" -->
+										<xs:enumeration value="5" /> <!-- "Pallet" -->
+										<xs:enumeration value="6" /> <!-- "Bulktainer" -->
+										<xs:enumeration value="7" /> <!-- "Flat Rack" -->
+										<xs:enumeration value="8" /> <!-- "Auto Rack" -->
+										<xs:enumeration value="9" /> <!-- "Platform" -->
+										<xs:enumeration value="10" /> <!-- "Tank" -->
+										<xs:enumeration value="11" /> <!-- "Gas Bottle" -->
+										<xs:enumeration value="12" /> <!-- "Swapbody" -->
+										<xs:enumeration value="13" /> <!-- "Vehicle" -->
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ContentsCommodity" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Summarized description of the cargo contents. This field will be searched for keywords or phrases that HDOA has flagged as risk-identifying. To minimize the number of false hits or misses, the recommended delimiter is a vertical bar (|). Until a delimiter is provided, any HDOA risk phrase that is found in this field will trigger the highest associated risk assignment.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="65" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="TariffDesc" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Detailed description of the cargo contents.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="255" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="WeightSpecification" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Unit of weight.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="pound" />
+										<xs:enumeration value="ton" />
+										<xs:enumeration value="kilogram" />
+										<xs:enumeration value="metric ton" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="GrossWeight" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Weight of cargo unit including the container/non-container weight.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:double">
+										<xs:minInclusive value=".0001" />
+										<xs:maxInclusive value="9999999" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="NetWeight" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Weight of cargo unit excluding the container/non-container weight.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:double">
+										<xs:minInclusive value=".0001" />
+										<xs:maxInclusive value="9999999" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ContainerSizeFeet" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Container size in feet.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:minInclusive value="0" />
+										<xs:maxInclusive value="9999999" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ContainerParcelCount" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Count within the container.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:minInclusive value="0" />
+										<xs:maxInclusive value="9999999" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="BillOfLadingNo" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>The Carrier's document number evidencing the receipt of goods for shipment.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="30" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="MarksMake" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Record of a vehicle's brand.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="20" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ShippersRef" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Shipper reference number for the cargo unit.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="20" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Shipper" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>The Company shipping the freight.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="50" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Consignee" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>The Company or Individual to whom merchandise is being delivered.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="50" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="PortOfOriginUnit" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>The Originating Port of the Container/Non-Containerized Unit. Inland Port, if available. If HDOA has system-flagged this port as high risk or RIFA, the automatic manifest feed will flag the unit as high risk. Information about RIFA risk ports comes from a list of RIFA containers in each shipment that Matson faxes to HDOA.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="30" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="PlaceOfDeliveryUnit" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Delivery location for the Container/Non-Containerized Unit. May be the same as Port of Discharge depending upon the carrier and information, i.e. Kawaihae, transiting through HON.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="30" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="PlaceOfReceiptUnit" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Receipt location of Container/Non-Containerized Unit. May be the same, depending upon on the carrier.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="30" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="HDOAFee" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Transporter calculated fee.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:decimal">
+										<xs:minInclusive value=".01" />
+										<xs:maxInclusive value="9999999" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="HDOAHold" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Indicates whether or not the transporter predicts this unit will need to be inspected.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="1" />
+										<xs:enumeration value="0" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ThirdPartyCheck" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Check number for when the 3rd party to whom the Transporter passes the fee cost along to (Shipper or Importer) opts to send a check directly to HDOA.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="10" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="HAZ" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Flag that indicates whether or not hazardous cargo is being shipped.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="1" />
+										<xs:enumeration value="0" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Temperature" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Container or Non-Containerized unit's temperature. HDOA requires this info, when the transporter has it, to determine food safety. Since Matson only captures this value for ContainerNonType = Reefer, this requirement was changed to apply only to reefers pending HDOA approval.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:minInclusive value="0" />
+										<xs:maxInclusive value="9999999" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="TempSpecification" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>(F)ahrenheit or (C)elsius. HDOA requires this info, when the transporter has it, to determine food safety. Since Matson only captures this value for ContainerNonType = Reefer, this requirement was changed to apply only to reefers pending HDOA approval.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="F" />
+										<xs:enumeration value="C" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="DischargeService" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>The type of Discharge Service being used: CY,CFS,AUT,R/S,CON</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:token">
+										<xs:enumeration value="CY" />
+										<xs:enumeration value="CFS" />
+										<xs:enumeration value="AUT" />
+										<xs:enumeration value="R/S" />
+										<xs:enumeration value="CON" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="HatchCellNo" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>The hatch number per cell on the Vessel.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="20" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="ShipperSealNo" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>The number of the Shipper's seal.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:normalizedString">
+										<xs:minLength value="1" />
+										<xs:maxLength value="20" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="TOS" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>The type of service used: [S]ingle consignee, [M]ultiple consignees.</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base = "xs:token">
+										<xs:enumeration value="S" />
+										<xs:enumeration value="M" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Remarks" type="xs:string" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Response field only. The release action to be taken by DOA on this container or non-container unit.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="SpecialTag" type="xs:string" minOccurs="0">
+								<xs:annotation>
+									<xs:documentation>Response field only. Indicates whether this unit is flagged as a Red Imported Fire Ant (RIFA) risk.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="RiskLevel" type="xs:int" minOccurs="1">
+								<xs:annotation>
+									<xs:documentation>Response field only. Indicates whether this unit is flagged as High(1), Moderate(2), Low(3), or No(9) risk.</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

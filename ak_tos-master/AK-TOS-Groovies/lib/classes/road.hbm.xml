@@ -1,0 +1,2936 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">Road</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <joined-subclass name="com.navis.road.business.model.TruckVisitDetails" table="road_truck_visit_details"
+                     extends="com.navis.argo.business.model.VisitDetails" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.TruckVisitDetailsHbr</meta>
+        <meta attribute="n4alias">tvdtls</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Truck Visit Details</meta>
+        <meta attribute="n4-entity-name-plural">Truck Visit Details</meta>
+        <meta attribute="subclassCustomComponent">tvdtlsCustomFlexFields</meta>
+        <meta attribute="carina-oracle-index">
+            create index tvdtls_pos_anchor_idx on road_truck_visit_details(pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index tvdtls_pos_anchor_idx on road_truck_visit_details(pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <key column="tvdtls_gkey"/>
+
+        <property name="tvdtlsBatNbr" type="java.lang.String" column="bat_nbr" length="6"/>
+        <property name="tvdtlsOutBatNbr" type="java.lang.String" column="bat_nbr_out" length="6"/>
+        <property name="tvdtlsStatus" type="com.navis.road.persistence.atoms.UserTypeTruckVisitStatusEnum"
+                  column="status" length="8" index="road_trvdet_status_idx"/>
+        <property name="tvdtlsTruckStatus" type="com.navis.road.persistence.atoms.UserTypeTruckVisitStatusEnum"
+                  column="truck_status" length="8"/>
+
+        <property name="tvdtlsTruckLicenseNbr" type="java.lang.String" column="truck_license_nbr" length="10" index="road_trvdet_lcsnbr_idx"/>
+        <property name="tvdtlsTruckId" type="java.lang.String" column="truck_id" length="10" index="road_trvdet_truckid_idx"/>
+        <property name="tvdtlsTruckAeiTagId" type="java.lang.String" column="truck_aei_tag_id" length="40" index="tvdtls_tag_id"/>
+        <!--2010-01-18 mkamalakannan ARGO-22803 v2.1.G, 2.0.2, 1.8.8 increased column length of driver license nbr and driver card ID-->
+        <property name="tvdtlsDriverLicenseNbr" type="java.lang.String" column="driver_license_nbr" length="15"/>
+        <property name="tvdtlsDriverCardId" type="java.lang.String" column="driver_card_id" length="20" index="road_trvdet_drvcard_idx"/>
+        <!-- 2012-06-06 kanampr ARGO-35009 increasing the driver_name column size in road_ar_truck_visit_details and road_truck_visit_details -->
+        <property name="tvdtlsDriverName" type="java.lang.String" column="driver_name" length="60"/>
+        <property name="tvdtlsDriverIsHazardLicensed" type="java.lang.Boolean" column="driver_is_hazard_licensed"/>
+
+        <property name="tvdtlsCallUpTime" type="java.sql.Timestamp" column="call_up_time" length="7"/>
+        <property name="tvdtlsEnteredYard" type="java.sql.Timestamp" column="entered_yard" length="7"/>
+        <property name="tvdtlsExitedYard" type="java.sql.Timestamp" column="exited_yard" length="7"/>
+        <property name="tvdtlsNextStageId" type="java.lang.String" column="next_stage_id" length="60">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <property name="tvdtlsScaleWeight" type="java.lang.Double" column="scale_weight"/>
+
+        <property name="tvdtlsCreated" type="java.sql.Timestamp" column="created" index="tvdtls_created_idx"/>
+        <property name="tvdtlsCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="tvdtlsChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="tvdtlsChanger" type="java.lang.String" column="changer" length="30"/>
+
+        <property name="tvdtlsPriority" type="com.navis.road.persistence.atoms.UserTypePriorityStatusEnum"
+                  column="priority" not-null="false" length="15"/>
+        <property name="tvdtlsGosTvKey" type="java.lang.Long" column="gos_tv_key" index="tvdtls_gos_tv_key_idx"/>
+        <property name="tvdtlsWaitStatus" type="java.lang.String" column="wait_status" length="20"/>
+
+        <component name="tvdtlsPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The position of the truck from the perspective of this facility</meta>
+            <property name="posLocType" column="pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum"
+                      length="16">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or
+                    carrier visit Id
+                </meta>
+            </property>
+            <property name="posLocGkey" column="pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its
+                    Location
+                </meta>
+            </property>
+            <property name="posOrientation" column="pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the truck within this
+                    Position
+                </meta>
+            </property>
+            <property name="posName" column="pos_name" type="string"
+                      length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <many-to-one name="tvdtlsTruckAction" column="truck_action"
+                     class="com.navis.road.business.model.TruckAction">
+            <meta attribute="field-description">Truck Action</meta>
+        </many-to-one>
+        <property name="tvdtlsPreStageStatus" type="com.navis.road.persistence.atoms.UserTypeTruckVisitStatusEnum" column="pre_stage_status" length="8"/>
+
+        <many-to-one name="tvdtlsGate" column="gate_gkey" class="com.navis.road.business.model.Gate" not-null="true">
+            <meta attribute="field-description">Gate where truck was processed</meta>
+        </many-to-one>
+        <property name="tvdtlsEntryLaneDeprecated" column="entry_lane_gkey" type="java.lang.Long"/>
+        <many-to-one name="tvdtlsEntryLane" column="entry_gateln_gkey" class="com.navis.road.business.model.GateLane">
+            <meta attribute="field-description">Entry Lane</meta>
+        </many-to-one>
+        <property name="tvdtlsExchangeLaneDeprecated" column="exchange_lane_gkey" type="java.lang.Long"/>
+        <many-to-one name="tvdtlsExchangeLane" column="xchln_gkey"
+                     class="com.navis.argo.business.model.ExchangeLane">
+            <meta attribute="field-description">Exchange Lane</meta>
+        </many-to-one>
+        <property name="tvdtlsExitLaneDeprecated" column="exit_lane_gkey" type="java.lang.Long"/>
+        <many-to-one name="tvdtlsExitLane" column="exit_gateln_gkey" class="com.navis.road.business.model.GateLane">
+            <meta attribute="field-description">Exit Lane</meta>
+        </many-to-one>
+        <property name="tvdtlsTroubleLaneDeprecated" column="trouble_lane_gkey" type="java.lang.Long"/>
+        <many-to-one name="tvdtlsTroubleLane" column="trouble_gateln_gkey" class="com.navis.road.business.model.GateLane">
+            <meta attribute="field-description">Trouble Lane</meta>
+        </many-to-one>
+        <many-to-one name="tvdtlsTrkCompany" column="trkco_gkey" class="com.navis.road.business.model.TruckingCompany">
+            <meta attribute="field-description">Trucking Company</meta>
+        </many-to-one>
+        <many-to-one name="tvdtlsTruck" column="truck_gkey" class="com.navis.road.business.model.Truck">
+            <meta attribute="field-description">Truck Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tvdtlsDriver" column="driver_gkey" class="com.navis.road.business.model.TruckDriver">
+            <meta attribute="field-description">Truck Driver Gkey</meta>
+        </many-to-one>
+        <set name="tvdtlsTruckTrans" lazy="true" table="road_truck_transactions">
+            <key column="truck_visit_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckTransaction"/>
+        </set>
+        <set name="tvdtlsStats" lazy="true" table="road_truck_visit_stats">
+            <key column="tv_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckVisitStats"/>
+        </set>
+        <!--2009-04-21 vkotha v1.9.E ARGO-16578 TruckVisitAppointment-4: Changes to Gate UI to support Truck Vi`sit Appointments-->
+        <property name="tvdtlsTvAppointmentNbr" type="java.lang.Long" column="truck_visit_appointment_nbr" length="10"/>
+        <property name="tvdtlsTransactionCount" type="java.lang.Long"
+                  formula="( SELECT COUNT(road_truck_transactions.nbr) FROM road_truck_transactions
+                  WHERE (road_truck_transactions.truck_visit_gkey = tvdtls_gkey) AND (road_truck_transactions.status != 'CANCEL'))">
+            <meta attribute="field-description">Number of transactions in the truck visit.</meta>
+        </property>
+        <!--property name="tvdtlsAgeInYard" type="java.lang.Long"
+                  formula="timestampdiff(minute, entered_yard, now())">
+            <meta attribute="field-description">Number of minutes the truck has been in the yard.</meta>
+        </property-->
+        <property name="tvdtlsFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String Tvdtls flex-field #01</meta>
+        </property>
+        <property name="tvdtlsFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String Tvdtls flex-field #02</meta>
+        </property>
+        <property name="tvdtlsFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String Tvdtls flex-field #03</meta>
+        </property>
+        <property name="tvdtlsFlexDate01" column="flex_date01" type="timestamp">
+            <meta attribute="field-description">Date Tvdtls flex-field #01</meta>
+        </property>
+
+        <property name="tvdtlsTruckingCoId" type="java.lang.String" column="trucking_co_id" length="100"/>
+
+        <many-to-one name="tvdtlsChassisProfile" column="chpro_gkey" class="com.navis.road.business.model.ChassisProfile">
+            <meta attribute="field-description">Chassis Profile</meta>
+        </many-to-one>
+
+        <property name="tvdtlsChassisCount" type="java.lang.Integer" column="chassis_count"/>
+        <property name="tvdtlsChassisLengthOverall" type="java.lang.Double" column="chassis_length_overall"/>
+
+        <property name="tvdtlsChassisTotalTeu" type="java.lang.Integer" column="chassis_total_teu" length="2"/>
+
+        <property name="tvdtlsChassis1Teu" type="java.lang.Integer" column="chassis1_teu" length="2"/>
+        <property name="tvdtlsChassis2Teu" type="java.lang.Integer" column="chassis2_teu" length="2"/>
+        <property name="tvdtlsChassis3Teu" type="java.lang.Integer" column="chassis3_teu" length="2"/>
+        <property name="tvdtlsChassis4Teu" type="java.lang.Integer" column="chassis4_teu" length="2"/>
+        <property name="tvdtlsChassis5Teu" type="java.lang.Integer" column="chassis5_teu" length="2"/>
+
+        <set name="tvdtlsImages" lazy="true" table="road_truck_visit_images" cascade="all-delete-orphan">
+            <key column="tv_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckVisitImage"/>
+        </set>
+
+        <property name="tvdtlsClosureType" type="java.lang.String" column="closure_type" length="20"/>
+        <property name="tvdtlsExtraTimeOverride" type="java.lang.Integer" column="extra_time_override"/>
+        <!--smandadi 20-June-2012 v2.4.M ARGO-39277: Incorrect reassessment of truckVisitStatus
+            while both truck visit and transaction is in trouble-->
+        <property name="tvdtlsHasVisitTrouble" type="java.lang.Boolean" column="has_visit_trouble"/>
+
+        <!-- deprecated -->
+        <property name="tvdtlsExchangeAreaDeprecated" column="xcharea_gkey" type="java.lang.Long"/>
+
+        <many-to-one name="tvdtlsNextExchangeArea" column="next_xcharea_gkey" class="com.navis.argo.business.model.ExchangeArea"
+                     not-null="false" cascade="none">
+            <meta attribute="field-description">Exchange area at which the truck will be handled (for the next transaction)</meta>
+        </many-to-one>
+
+        <property name="tvdtlsWasAutoClosed" type="java.lang.Boolean" column="auto_closed"/>
+        <dynamic-component name="tvdtlsCustomFlexFields"/>
+    </joined-subclass>
+
+    <!-- The information collected from the clerk is held in the truck visit and truck transaction. Some
+         information is held as both a natural key (e.g. container number as a string) and a pointer to an
+         object (e.g. Container).  Other information is only held as a pointer.  The natural key recording
+         is provided if the clerk must be able to enter information that may not resolve to an existing entity,
+         but the natural key must be preserved for later reprocessing (e.g. trouble desk).  Information that
+         is only recorded as a pointer is for data where it is reasonable to assume the clerk can only select
+         predefined data.  In Express where only natural keys were used, this distinction was not needed.
+         For N4, where few natural keys are used, this distinction is very important.
+
+         At this time the following natural keys are supported
+            Truck Visit: driver license, driver card, truck license
+            Transaction: container number, chassis number, accessory number, booking number, equipment types
+
+         Any other information must be selected by the clerk from pre-existing data
+            Truck Visit: trucking company
+            Transaction: trucking company, carrier visits, equipement owners
+
+         The original truck visit and transaction model came from Express, but many natural keys have been
+         removed as it was determined the second approach was sufficient.-->
+
+    <class name="com.navis.road.business.model.TruckTransaction" table="road_truck_transactions" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.TruckTransactionHbr</meta>
+        <meta attribute="n4alias">tran</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Truck Transaction</meta>
+        <meta attribute="n4-entity-name-plural">Truck Transactions</meta>
+        <meta attribute="carina-index">
+            tran_chsid_fcygk_idx(chs_id, fcy_gkey);
+            tran_eqonbr_fcygk_idx(eqo_nbr, fcy_gkey);
+            tran_creator_fcygk_idx(creator, fcy_gkey);
+            tran_changer_fcygk_idx(changer, fcy_gkey);
+            tran_nxtstageid_fcygk_idx(next_stage_id, fcy_gkey);
+            tran_stageid_fcygk_idx(stage_id, fcy_gkey);
+            rdtrtrans_aptmn_nbr_idx(appointment_nbr);
+        </meta>
+        <meta attribute="carina-oracle-index">
+            create index tran_chs_pos_anchor_idx on road_truck_transactions(chs_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            create index tran_ctr_pos_anchor_idx on road_truck_transactions(ctr_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index tran_chs_pos_anchor_idx on road_truck_transactions(chs_pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+            create spatial index tran_ctr_pos_anchor_idx on road_truck_transactions(ctr_pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <id name="tranGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">tran_gkey</param>
+            </generator>
+        </id>
+        <!-- Control information -->
+        <property name="tranSeqWithinFacility" type="java.lang.Long" column="seq_within_facility" length="10"
+                  index="tran_seq"/>
+        <property name="tranNbr" type="java.lang.Long" column="nbr" length="4" index="road_tr_trans_nbr_idx"/>
+        <property name="tranSubType" type="com.navis.road.persistence.atoms.UserTypeTranSubTypeEnum" column="sub_type"
+                  not-null="true" length="2"/>
+        <property name="tranStatus" type="com.navis.road.persistence.atoms.UserTypeTranStatusEnum" column="status"
+                  length="16"/>
+        <property name="tranStageId" type="java.lang.String" column="stage_id" length="60"/>
+        <property name="tranNextStageId" type="java.lang.String" column="next_stage_id" length="60"/>
+        <property name="tranTrouble" type="java.lang.String" column="trouble" length="3"/>
+        <property name="tranTroubleStatus" type="java.lang.String" column="trouble_status" length="20"/>
+        <property name="tranHadTrouble" type="java.lang.Boolean" column="had_trouble" length="5"/>
+        <property name="tranCancelCode" type="java.lang.String" column="cancel_code" length="10"/>
+        <property name="tranNotes" type="java.lang.String" column="notes" length="255"/>
+        <property name="tranHandled" type="java.sql.Timestamp" column="handled"/>
+        <property name="tranTerminalId" type="java.lang.String" column="terminal_id" length="4"/>
+        <!-- Reference Number attributes -->
+        <property name="tranExportReleaseNbr" type="java.lang.String" column="export_release_nbr" length="15"/>
+        <!-- 2008-07-31 ARGO-13044 Increase the column length of import_release_nbr in road_gate_appointments and road_truck_transactions-->
+        <property name="tranImportReleaseNbr" type="java.lang.String" column="import_release_nbr" length="30"/>
+        <property name="tranAppointmentNbr" type="java.lang.String" column="appointment_nbr" length="10"/>
+        <property name="tranPinNbr" type="java.lang.String" column="pin_nbr" length="20"/>
+        <!-- truck attributes -->
+        <property name="tranTrkcId" type="java.lang.String" column="trkco_id" length="100"/>
+        <!-- 2007-01-05 ARGO-5310 eyu v1.2.O Change all WEIGHT fields from Long to Double -->
+        <property name="tranTruckTareWeight" type="java.lang.Double" column="truck_tare_weight"/>
+        <property name="tranTruckSafeWeight" type="java.lang.Double" column="truck_safe_weight"/>
+        <property name="tranScaleWeight" type="java.lang.Double" column="scale_weight"/>
+        <property name="tranCtrTruckPosition" type="java.lang.Integer" column="ctr_truck_position"/>
+        <property name="tranCtrCenterToChassisBackMm" column="ctr_center_to_chassis_back_mm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The distance from the center of the container to the back of the chassis</meta>
+        </property>
+        <property name="tranCtrDoorDirection" type="com.navis.inventory.persistence.atoms.UserTypeDoorDirectionEnum"
+                  column="ctr_door_direction" length="8"/>
+        <property name="tranCtrNbr" type="java.lang.String" column="ctr_id" length="30" index="road_tr_trans_crtid_idx"/>
+        <property name="tranCtrNbrDataSource" column="ctr_id_data_source" type="com.navis.argo.persistence.atoms.UserTypeDataSourceEnum" not-null="false">
+            <meta attribute="field-description">Data source of the tranCtrNbr field</meta>
+        </property>
+        <property name="tranCtrOwnerId" type="java.lang.String" column="ctr_owner_id" length="16"/>
+        <property name="tranCtrFreightKind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum"
+                  column="ctr_freight_kind" length="3"/>
+        <property name="tranCtrunitGkey" type="java.lang.Long" column="ctrunit_gkey" length="10"/>
+        <!-- 2006-10-06 Shan V1.2.E ARGO-4797, altering the length to 6 to be in sync with edTypId   -->
+        <property name="tranCtrTypeId" type="java.lang.String" column="ctr_type_id" length="6"/>
+        <property name="tranCtrIsDamaged" type="java.lang.Boolean" not-null="true" column="ctr_is_damaged"/>
+        <property name="tranCtrSafeWeight" type="java.lang.Double" column="ctr_safe_weight" length="8"/>
+        <property name="tranCtrTareWeight" type="java.lang.Double" column="ctr_tare_weight" length="8"/>
+        <property name="tranCtrNetWeight" type="java.lang.Double" column="ctr_net_weight" length="8"/>
+        <property name="tranCtrGrossWeight" type="java.lang.Double" column="ctr_gross_weight" length="8"/>
+        <property name="tranCtrVGMWeight" type="java.lang.Double" column="ctr_vgm_weight" length="8"/>
+        <property name="tranCtrVGMEntity" type="java.lang.String" column="ctr_vgm_entity" />
+        <!-- 2006-10-06 Shan V1.2.E ARGO-4797, altering the length to 30 to be in sync with edIdFull   -->
+        <!-- 2009-08-18 spabbala v2.0.G ARGO-20251 Missing indexes for performance: adding index road_trucktr_ctrida_idx on ctr_id_assigned -->
+        <property name="tranCtrNbrAssigned" type="java.lang.String" column="ctr_id_assigned" length="30" index="road_trucktr_ctrida_idx"/>
+        <property name="tranCtrNbrProvided" type="java.lang.String" column="ctr_id_provided" length="30"/>
+        <property name="tranCtrTicketPosId" type="java.lang.String" column="ctr_ticket_pos_id"/>
+        <!-- Container Accessory attributes -->
+        <!-- 2006-10-06 Shan V1.2.E ARGO-4797, altering the length to 30 to be in sync with edIdFull   -->
+        <property name="tranCtrAccNbr" type="java.lang.String" column="ctr_acc_nbr" length="30"/>
+        <property name="tranCtrAccTypeId" type="java.lang.String" column="ctr_acc_type_id" length="6"/>
+        <property name="tranCtrAccOwnerId" type="java.lang.String" column="ctr_acc_owner_id" length="16"/>
+        <!--Siva ARGO-8133 tranCtrAccDamage is changed from string to  UnitEquipDamages-->
+        <!-- <property name="tranCtrAccDamage" type="java.lang.String" column="ctr_acc_damaged" length="3"/> -->
+
+        <property name="tranCtrAccFuelLevel" type="java.lang.String" column="ctr_acc_fuel_level" length="8"/>
+        <property name="tranCtrAccTareWeight" type="java.lang.Double" column="ctr_acc_tare_weight" length="8"/>
+        <!-- Chassis attributes -->
+        <!-- 2006-10-06 Shan V1.2.E ARGO-4797, altering the length to 30 to be in sync with edIdFull   -->
+        <property name="tranChsNbr" type="java.lang.String" column="chs_id" length="30"/>
+        <property name="tranChsNbrDataSource" column="chs_id_data_source" type="com.navis.argo.persistence.atoms.UserTypeDataSourceEnum" not-null="false">
+            <meta attribute="field-description">Data source of the tranChsNbr field</meta>
+        </property>
+        <property name="tranChsOwnerId" type="java.lang.String" column="chs_owner_id" length="16"/>
+        <property name="tranChsIsOwners" type="java.lang.Boolean" not-null="true" column="chs_is_owners"/>
+        <property name="tranChsunitGkey" type="java.lang.Long" column="chsunit_gkey" length="10"/>
+        <!-- 2006-10-06 Shan V1.2.E ARGO-4797, altering the length to 6 to be in sync with eqTypId   -->
+        <property name="tranChsTypeId" type="java.lang.String" column="chs_type_id" length="6"/>
+        <property name="tranChsIsDamaged" type="java.lang.Boolean" not-null="true" column="CHS_IS_DAMAGED"/>
+        <property name="tranChsTareWeight" type="java.lang.Double" column="chs_tare_weight" length="8"/>
+        <property name="tranChsSafeWeight" type="java.lang.Double" column="chs_safe_weight" length="8"/>
+        <property name="tranChsLicenseNbr" type="java.lang.String" column="chs_license_nbr" length="11"/>
+        <property name="tranChsNbrAssigned" type="java.lang.String" column="chs_id_assigned" length="30"/>
+        <!-- Chassis Accessory attributes -->
+        <!-- 2006-10-06 Shan V1.2.E ARGO-4797, altering the length to 30 to be in sync with edIdFull   -->
+        <property name="tranChsAccNbr" type="java.lang.String" column="chs_acc_nbr" length="30"/>
+        <property name="tranChsAccTypeId" type="java.lang.String" column="chs_acc_type_id" length="6"/>
+        <property name="tranChsAccOwnerId" type="java.lang.String" column="chs_acc_owner_id" length="16"/>
+        <!--Siva ARGO-7347 tranChsAccDamage is changed from string to  UnitEquipDamages-->
+        <!--<property name="tranChsAccDamage" type="java.lang.String" column="chs_acc_damaged" length="3"/> -->
+        <property name="tranChsAccFuelLevel" type="java.lang.String" column="chs_acc_fuel_level" length="8"/>
+        <property name="tranChsAccTareWeight" type="java.lang.Double" column="chs_acc_tare_weight" length="8"/>
+
+        <!-- 2007-11-05 JJS v1.4.0 ARGO-8845, Breakbulk support   -->
+        <property name="tranUnitId" type="java.lang.String" column="unit_id" length="50"/>
+
+        <!-- Routing attributes -->
+        <property name="tranTradeId" type="java.lang.String" column="TRADE_ID" length="4"/>
+        <property name="tranOrigin" type="java.lang.String" column="origin" length="30"/>
+        <property name="tranDestination" type="java.lang.String" column="destination" length="30"/>
+        <!-- Business Organization attributes -->
+        <!-- 2007-05-04 v1.4.A ARGO-6877: Adapt all the bizuId field to new size '100'-->
+        <property name="tranLineId" type="java.lang.String" column="line_id" length="100"/>
+        <property name="tranShipper" type="java.lang.String" column="shipper" length="100"/>
+        <property name="tranConsignee" type="java.lang.String" column="consignee" length="100"/>
+        <property name="tranScAgent" type="java.lang.String" column="sc_agent" length="100"/>
+        <!-- Order attributes -->
+        <!-- 2006-12-18 Shan v1.2.L ARGO-5742 data type for tranEqoAccTypeId is changed from string to Enum -->
+        <!-- 2007-03-05 JJS v1.3.C ARGO-5633 data type for tranEqoAccTypeId is changed to UserTypeEquipIsoGroupEnum -->
+        <property name="tranEqoAccTypeId" type="com.navis.argo.persistence.atoms.UserTypeEquipIsoGroupEnum" column="eqo_acc_type_id"/>
+        <property name="tranEqoEqIsoGroup" type="com.navis.argo.persistence.atoms.UserTypeEquipIsoGroupEnum"
+                  column="eqo_eq_iso_group"/>
+        <property name="tranEqoEqLength" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalLengthEnum"
+                  column="eqo_eq_length"/>
+        <property name="tranEqoEqHeight" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalHeightEnum"
+                  column="eqo_eq_height"/>
+
+        <property name="tranEqoNbr" type="java.lang.String" column="eqo_nbr" length="30"/>
+        <property name="tranMilitaryVNbr" type="java.lang.String" column="military_v_nbr" length="5"/>
+        <property name="tranMilitaryTcn" type="java.lang.String" column="military_tcn" length="10"/>
+        <property name="tranMaterial" type="com.navis.argo.persistence.atoms.UserTypeEquipMaterialEnum"
+                  column="material" length="10"/>
+        <property name="tranShandId" type="java.lang.String" column="shand_id" length="9"/>
+        <property name="tranShandId2" type="java.lang.String" column="shand_id2" length="9"/>
+        <property name="tranShandId3" type="java.lang.String" column="shand_id3" length="9"/>
+        <property name="tranGroupId" type="java.lang.String" column="group_id" length="17"/>
+        <property name="tranIdoId" type="java.lang.String" column="ido_id" length="30"/>
+        <many-to-one name="tranEqFtr" column="feature_gkey" class="com.navis.argo.business.reference.EquipFeature">
+            <meta attribute="field-description">Equipment Feature</meta>
+        </many-to-one>
+        <many-to-one name="tranEqGrade" column="grade_gkey" class="com.navis.argo.business.reference.EquipGrade">
+            <meta attribute="field-description">Required grade for equipment</meta>
+        </many-to-one>
+        <!--RMK, ARGO-11474 New fields from inspection to be part of the transaction object (2008.05.20) -->
+        <many-to-one name="tranCtrCondition" column="condition_gkey" class="com.navis.argo.business.reference.EquipCondition" not-null="false">
+            <meta attribute="field-description">Condition for the container</meta>
+        </many-to-one>
+        <many-to-one name="tranCtrMnrStatus" column="mnr_gkey" class="com.navis.argo.business.reference.MnrStatus" not-null="false">
+            <meta attribute="field-description">Maintenance and Repair status for container</meta>
+        </many-to-one>
+        <property name="tranCscDate" type="java.lang.String" column="csc_date" length="5" not-null="false"/>
+        <property name="tranCtrBuildDate" type="java.sql.Timestamp" column="built_date"/>
+        <property name="tranBlNbr" type="java.lang.String" column="bl_nbr" length="30"/>
+        <property name="tranBlItemQty" type="java.lang.Double" column="bl_item_qty"/>
+        <property name="tranBlItemQtyMoved" type="java.lang.Double" column="bl_item_qty_moved"/>
+        <!-- Goods attributes -->
+        <property name="tranCommodityCode" type="java.lang.String" column="commodity_code"/>
+        <!-- 2006-10-06 Shan V1.2.E ARGO-4797, Hibernate created length as length is not specified earlier
+             so now decreasing the length may be risky hence setting the length explicity to 255
+         -->
+        <property name="tranCommodityDescription" type="java.lang.String" column="commodity_description" length="255"/>
+        <property name="tranTempRequired" type="java.lang.Double" column="temp_required" length="5"/>
+        <property name="tranTempObserved" type="java.lang.Double" column="temp_observed" length="5"/>
+        <property name="tranTempSetting" type="java.lang.Double" column="temp_setting" length="5"/>
+        <property name="tranReeferHours" type="java.lang.Double" column="reefer_hours"/>
+        <property name="tranReeferFaultCode" type="string" column="reefer_fault_code" length="8"/>
+        <property name="tranReeferFuelLevel" type="java.lang.Double" column="reefer_fuel_level"/>
+        <!-- 2006-10-17 svaitheas v1.2.E : ARGO-4698 :Correct gate form vent settings to conform to functional requirements  -->
+        <!-- An Upgrade action has to be written to convert the exisiting values in String to Double and to make vent_units field bigger -->
+        <!--
+	    <property name="tranVentUnits" type="java.lang.String" column="vent_units" length="3"/>
+        <property name="tranVentRequired" type="java.lang.String" column="vent_required" length="4"/>
+        <property name="tranVentSetting" type="java.lang.String" column="vent_setting" length="4"/>
+        <property name="tranO2Required" type="java.lang.Double" column="o2_required" length="4"/>
+        -->
+        <property name="tranVentUnit" column="vent_units" type="com.navis.argo.persistence.atoms.UserTypeVentUnitEnum" length="40">
+            <meta attribute="field-description">Unit (%,cubic feet per minute, etc.) that goes with the vent required and vent setting fields.</meta>
+        </property>
+        <property name="tranVentRequired" type="java.lang.Double" column="vent_required_pct">
+            <meta attribute="field-description">Vent required</meta>
+        </property>
+        <property name="tranVentSetting" type="java.lang.Double" column="vent_setting_pct">
+            <meta attribute="field-description">Vent setting</meta>
+        </property>
+        <property name="tranO2Required" type="java.lang.Double" column="o2_required" length="4"/>
+        <property name="tranCo2Required" type="java.lang.Double" column="co2_required" length="4"/>
+        <property name="tranHumidityRequired" type="java.lang.Double" column="humidity_required" length="10"/>
+        <property name="tranIsHazard" type="java.lang.Boolean" not-null="true" column="is_hazard"/>
+        <property name="tranIsHazardChecked" type="java.lang.Boolean" column="is_hazard_checked"/>
+        <property name="tranIsPlacarded" type="java.lang.Boolean" not-null="true" column="is_placarded"/>
+        <property name="tranIsPlacardedOk" type="java.lang.Boolean" not-null="true" column="is_placarded_ok"/>
+        <property name="tranIsOog" type="java.lang.Boolean" not-null="true" column="is_oog"/>
+        <property name="tranOogFront" type="java.lang.Long" column="oog_front" length="5"/>
+        <property name="tranOogBack" type="java.lang.Long" column="oog_back" length="5"/>
+        <property name="tranOogLeft" type="java.lang.Long" column="oog_left" length="5"/>
+        <property name="tranOogRight" type="java.lang.Long" column="oog_right" length="5"/>
+        <property name="tranOogTop" type="java.lang.Long" column="oog_top" length="5"/>
+        <property name="tranSealNbr1" type="java.lang.String" column="seal_nbr1" length="15"/>
+        <property name="tranSealNbr2" type="java.lang.String" column="seal_nbr2" length="15"/>
+        <property name="tranSealNbr3" type="java.lang.String" column="seal_nbr3" length="15"/>
+        <property name="tranSealNbr4" type="java.lang.String" column="seal_nbr4" length="15"/>
+        <property name="tranCtrIsSealed" type="java.lang.Boolean">
+            <column name="is_ctr_sealed" default="0"/>
+        </property>
+        <many-to-one name="tranTruckAction" column="truck_action"
+                     class="com.navis.road.business.model.TruckAction">
+            <meta attribute="field-description">Truck Action</meta>
+        </many-to-one>
+        <property name="tranIsXrayRequired" type="java.lang.Boolean" column="is_xray_required"/>
+        <property name="tranIsConfirmed" type="java.lang.Boolean" column="is_confirmed"/>
+        <property name="tranSeqNbr" type="java.lang.Integer" column="seq_nbr"/>
+        <property name="tranExchangeAreaId" type="java.lang.String" column="exchange_area_id" length="20"/>
+        <property name="tranHasDocuments" type="java.lang.Boolean" column="has_documents"/>
+        <!-- 2009-07-03 dkannadasan v2.0.D ARGO-18983, Adding new field "category" -->
+        <property name="tranUnitCategory" column="category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum" not-null="false">
+            <meta attribute="field-description">The Category of the Unit (Export/Domestic).</meta>
+        </property>
+        <!-- This is the current position of the Container for deliveries, and planned position for recievals -->
+        <component name="tranCtrPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The position of the truck from the perspective of this facility</meta>
+            <meta attribute="scope-get">public</meta>
+            <meta attribute="scope-set">protected</meta>
+            <property name="posLocType" column="ctr_pos_loctype"
+                      type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="ctr_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or
+                    carrier visit Id
+                </meta>
+            </property>
+            <property name="posLocGkey" column="ctr_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="ctr_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its
+                    Location
+                </meta>
+            </property>
+            <property name="posOrientation" column="ctr_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the truck within this
+                    Position
+                </meta>
+            </property>
+            <property name="posName" column="ctr_pos_name" type="string"
+                      length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="ctr_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="ctr_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="ctr_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="ctr_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <property name="tranCtrPositionIsWheeled" type="java.lang.Boolean" column="ctr_pos_is_wheeled"/>
+
+        <!-- This is the current position of the Chassis for deliveries, and planned position for recievals -->
+        <component name="tranChsPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The position of the truck from the perspective of this facility</meta>
+            <property name="posLocType" column="chs_pos_loctype"
+                      type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="chs_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or
+                    carrier visit Id
+                </meta>
+            </property>
+            <property name="posLocGkey" column="chs_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="chs_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its
+                    Location
+                </meta>
+            </property>
+            <property name="posOrientation" column="chs_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the truck within this
+                    Position
+                </meta>
+            </property>
+            <property name="posName" column="chs_pos_name" type="string"
+                      length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="chs_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="chs_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="chs_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="chs_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <!-- 5/29/2007 eyu v.1.4.A ARGO-7190 Flex fields integration in the road module. -->
+        <!-- Flex fields.  *MUST* be the same set as those in Unit.  -->
+        <property name="tranUnitFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="tranUnitFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+        <property name="tranUnitFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+        <property name="tranUnitFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <property name="tranUnitFlexString05" column="flex_string09" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+        <property name="tranUnitFlexString06" column="flex_string10" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+        <property name="tranUnitFlexString07" column="flex_string11" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+        <property name="tranUnitFlexString08" column="flex_string12" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+        <property name="tranUnitFlexString09" column="flex_string13" type="string" length="255">
+            <meta attribute="field-description">String flex-field #09</meta>
+        </property>
+        <property name="tranUnitFlexString10" column="flex_string14" type="string" length="255">
+            <meta attribute="field-description">String flex-field #10</meta>
+        </property>
+
+        <property name="tranUnitFlexString11" column="flex_string15" type="string" length="255">
+            <meta attribute="field-description">String flex-field #11</meta>
+        </property>
+
+        <property name="tranUnitFlexString12" column="flex_string16" type="string" length="255">
+            <meta attribute="field-description">String flex-field #12</meta>
+        </property>
+
+        <property name="tranUnitFlexString13" column="flex_string17" type="string" length="255">
+            <meta attribute="field-description">String flex-field #13</meta>
+        </property>
+
+        <property name="tranUnitFlexString14" column="flex_string18" type="string" length="255">
+            <meta attribute="field-description">String flex-field #14</meta>
+        </property>
+
+        <property name="tranUnitFlexString15" column="flex_string19" type="string" length="255">
+            <meta attribute="field-description">String flex-field #15</meta>
+        </property>
+
+        <!-- Flex fields.  *MUST* be the same set as those in UnitFacilityVisit.  -->
+        <property name="tranUfvFlexString01" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #01</meta>
+        </property>
+        <property name="tranUfvFlexString02" column="flex_string06" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #02</meta>
+        </property>
+        <property name="tranUfvFlexString03" column="flex_string07" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #03</meta>
+        </property>
+        <property name="tranUfvFlexString04" column="flex_string08" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="tranUfvFlexString05" column="flex_string20" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="tranUfvFlexString06" column="flex_string21" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="tranUfvFlexString07" column="flex_string22" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="tranUfvFlexString08" column="flex_string23" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="tranUfvFlexString09" column="flex_string24" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="tranUfvFlexString10" column="flex_string25" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+
+        <property name="tranUfvFlexDate01" column="flex_date01" type="timestamp">
+            <meta attribute="field-description">Date ufv flex-field #01</meta>
+        </property>
+        <property name="tranUfvFlexDate02" column="flex_date02" type="timestamp">
+            <meta attribute="field-description">Date ufv flex-field #02</meta>
+        </property>
+        <property name="tranUfvFlexDate03" column="flex_date03" type="timestamp">
+            <meta attribute="field-description">Date ufv flex-field #03</meta>
+        </property>
+        <property name="tranUfvFlexDate04" column="flex_date04" type="timestamp">
+            <meta attribute="field-description">Date ufv flex-field #04</meta>
+        </property>
+
+        <!--Truck Transaction flex fields-->
+        <property name="tranFlexString01" column="tran_flex_string01" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #01</meta>
+        </property>
+        <property name="tranFlexString02" column="tran_flex_string02" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #02</meta>
+        </property>
+        <property name="tranFlexString03" column="tran_flex_string03" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #03</meta>
+        </property>
+        <property name="tranFlexString04" column="tran_flex_string04" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #04</meta>
+        </property>
+        <property name="tranFlexString05" column="tran_flex_string05" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #05</meta>
+        </property>
+        <property name="tranFlexString06" column="tran_flex_string06" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #06</meta>
+        </property>
+        <property name="tranFlexString07" column="tran_flex_string07" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #07</meta>
+        </property>
+        <property name="tranFlexString08" column="tran_flex_string08" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #08</meta>
+        </property>
+        <property name="tranFlexDate01" column="tran_flex_date01" type="timestamp">
+            <meta attribute="field-description">Date Tran flex-field #01</meta>
+        </property>
+        <property name="tranFlexDate02" column="tran_flex_date02" type="timestamp">
+            <meta attribute="field-description">Date Tran flex-field #02</meta>
+        </property>
+        <property name="tranFlexDate03" column="tran_flex_date03" type="timestamp">
+            <meta attribute="field-description">Date Tran flex-field #03</meta>
+        </property>
+        <property name="tranFlexDate04" column="tran_flex_date04" type="timestamp">
+            <meta attribute="field-description">Date Tran flex-field #04</meta>
+        </property>
+        <property name="tranCreated" type="java.sql.Timestamp" column="created" index="tran_created_idx"/>
+        <property name="tranCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="tranChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="tranChanger" type="java.lang.String" column="changer" length="30"/>
+
+        <!-- The below are many-to-one relations.       -->
+        <many-to-one name="tranUnit" column="unit_gkey" class="com.navis.inventory.business.units.Unit" cascade="none">
+            <meta attribute="field-description">Gate Transaction UNIT (container and/or chassis)</meta>
+        </many-to-one>
+        <many-to-one name="tranLine" column="line_gkey" class="com.navis.argo.business.reference.LineOperator"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction Shipping Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranChassis" column="chs_gkey" class="com.navis.argo.business.reference.Chassis"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction Equipment Gkey for chassis</meta>
+        </many-to-one>
+        <many-to-one name="tranContainer" column="ctr_gkey" class="com.navis.argo.business.reference.Container"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction Equipment Gkey for container</meta>
+        </many-to-one>
+        <many-to-one name="tranChsAccessory" column="chsacc_gkey" class="com.navis.argo.business.reference.Accessory"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction Equipment Gkey for chassis accessory</meta>
+        </many-to-one>
+        <many-to-one name="tranCtrAccessory" column="ctracc_gkey" class="com.navis.argo.business.reference.Accessory"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction Equipment Gkey for container accessory</meta>
+        </many-to-one>
+        <many-to-one name="tranCtrOwner" column="ctr_owner_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction Container Owner Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranChsOwner" column="chs_owner_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction Chassis Owner Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranCtrAccOwner" column="ctr_acc_owner_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction Container Accessory Owner Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranChsAccOwner" column="chs_acc_owner_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction Chassis Accessory Owner Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranCtrOperator" column="ctr_operator_gkey"
+                     class="com.navis.argo.business.reference.ScopedBizUnit" cascade="none">
+            <meta attribute="field-description">Gate Transaction Container Operator Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranChsOperator" column="chs_operator_gkey"
+                     class="com.navis.argo.business.reference.ScopedBizUnit" cascade="none">
+            <meta attribute="field-description">Gate Transaction Chassis Operator Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranCtrAccOperator" column="ctr_acc_operator_gkey"
+                     class="com.navis.argo.business.reference.ScopedBizUnit" cascade="none">
+            <meta attribute="field-description">Gate Transaction Container Accessory Operator Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranChsAccOperator" column="chs_acc_operator_gkey"
+                     class="com.navis.argo.business.reference.ScopedBizUnit" cascade="none">
+            <meta attribute="field-description">Gate Transaction Container Accessory Operator Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranEqo" column="eqo_gkey" class="com.navis.orders.business.eqorders.EquipmentOrder"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction Equipment Order Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranEqoItem" column="eqoitem_gkey"
+                     class="com.navis.orders.business.eqorders.EquipmentOrderItem" cascade="none">
+            <meta attribute="field-description">Gate Transaction Equipment Order Item Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranCarrierVisit" column="cv_gkey" class="com.navis.argo.business.model.CarrierVisit"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction carrier visit Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranLoadPoint" column="pol_gkey" class="com.navis.argo.business.reference.RoutingPoint"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction load point Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranDischargePoint1" column="pod1_gkey"
+                     class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">Gate Transaction 1st discharge point Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranDischargePoint2" column="pod2_gkey"
+                     class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">Gate Transaction 2nd discharge point Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranDischargePoint3" column="pod3_gkey"
+                     class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">Gate Transaction 3rd discharge point Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranOptionalPod1" column="opt_pod1_gkey"
+                     class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">Gate Transaction 1st optional discharge point Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranCommodity" column="commodity_gkey" class="com.navis.argo.business.reference.Commodity"
+                     cascade="none">
+            <meta attribute="field-description">Gate Transaction commodity Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranBl" column="bl_gkey" class="com.navis.cargo.business.model.BillOfLading" cascade="none">
+            <meta attribute="field-description">Gate Transaction Bill of Lading Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranBlItem" column="bl_item_gkey" class="com.navis.cargo.business.model.BlItem" cascade="none">
+            <meta attribute="field-description">Gate Transaction Bill of Lading Item Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranCargoServiceOrder" column="cargo_service_order_gkey"
+                     class="com.navis.orders.business.serviceorders.CargoServiceOrder" cascade="none">
+            <meta attribute="field-description">Gate Transaction Cargo Service Order Gkey</meta>
+        </many-to-one>
+        <property name="tranCargoServiceOrderNbr" type="java.lang.String" column="cargo_service_order_nbr" length="30"/>
+        <many-to-one name="tranCargoServiceOrderItem" column="cargo_service_order_item_gkey"
+                     class="com.navis.orders.business.serviceorders.CargoServiceOrderItem" cascade="none">
+            <meta attribute="field-description">Gate Transaction Cargo service Order Item Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranTruckingCompany" column="trkco_gkey"
+                     class="com.navis.road.business.model.TruckingCompany" cascade="none">
+            <meta attribute="field-description">Gate Transaction Trucking Company Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranTruckVisit" column="truck_visit_gkey"
+                     class="com.navis.road.business.model.TruckVisitDetails" cascade="none">
+            <meta attribute="field-description">Truck Visit Details Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranCtrDmg" column="ctr_damages_gkey"
+                     class="com.navis.inventory.business.units.UnitEquipDamages" cascade="none">
+            <meta attribute="field-description">Container Damage Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranChsDmg" column="chs_damages_gkey"
+                     class="com.navis.inventory.business.units.UnitEquipDamages" cascade="none">
+            <meta attribute="field-description">Chassis Damage Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranHaz" column="haz_gkey" class="com.navis.inventory.business.imdg.Hazards" cascade="none">
+            <meta attribute="field-description">Hazards details</meta>
+        </many-to-one>
+        <!--Siva ARGO-8133 tranCtrAccDamage is changed from string to  UnitEquipDamages-->
+        <many-to-one name="tranCtrAccDamage" column="ctr_acc_damages_gkey"
+                     class="com.navis.inventory.business.units.UnitEquipDamages" cascade="none">
+            <meta attribute="field-description">Container Accessory Damage Gkey</meta>
+        </many-to-one>
+        <!--Siva ARGO-7347 tranChsAccDamage is changed from string to  UnitEquipDamages-->
+        <many-to-one name="tranChsAccDamage" column="chs_acc_damages_gkey" class="com.navis.inventory.business.units.UnitEquipDamages" cascade="none">
+            <meta attribute="field-description">Chassis Accessory Damage Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranExchangeLane" column="xchln_gkey" class="com.navis.argo.business.model.ExchangeLane"
+                     cascade="none">
+            <meta attribute="field-description">Exchange Lane Assigned for this transaction</meta>
+        </many-to-one>
+        <many-to-one name="tranYard" column="yard_gkey" class="com.navis.argo.business.model.Yard" not-null="false">
+            <meta attribute="field-description">The Yard (if known) of this TruckTransaction</meta>
+        </many-to-one>
+        <many-to-one name="tranFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="true">
+            <meta attribute="field-description">The Facility of this TruckTransaction</meta>
+        </many-to-one>
+        <many-to-one name="tranComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex"
+                     not-null="true">
+            <meta attribute="field-description">The Complex to which this TruckTransaction belongs.</meta>
+            <meta attribute="use-in-tostring">true</meta>
+        </many-to-one>
+        <many-to-one name="tranOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator"
+                     not-null="false" cascade="none">
+            <meta attribute="field-description">Current operator of the Truck Transaction</meta>
+        </many-to-one>
+
+        <set name="tranBundle" lazy="true" table="road_truck_transaction_bundles">
+            <key column="tran_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckTransactionBundle"/>
+        </set>
+
+        <set name="tranPlacards" lazy="true" table="road_transaction_placards">
+            <key column="tran_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TransactionPlacard"/>
+        </set>
+
+        <many-to-one name="tranGate" column="gate_gkey" class="com.navis.road.business.model.Gate" not-null="false">
+            <meta attribute="field-description">Current Gate for this transaction</meta>
+        </many-to-one>
+
+        <many-to-one name="tranNextGate" column="next_gate_gkey" class="com.navis.road.business.model.Gate" not-null="false">
+            <meta attribute="field-description">Next gate for this transaction</meta>
+            <meta attribute="scope-get">protected</meta>
+            <meta attribute="scope-set">public</meta>
+        </many-to-one>
+
+        <many-to-one name="tranCancelReason" column="cancel_reason_gkey" class="com.navis.road.business.reference.CancelReason" not-null="false">
+            <meta attribute="field-description">Reason for cancelling a truck transaction</meta>
+        </many-to-one>
+
+        <!-- 2009-03-30 eyu N4 Archiving. Add this back that was removed on 11/16/06 -->
+        <set name="tranDocuments" lazy="true" table="road_documents" inverse="true" cascade="delete">
+            <key column="tran_gkey"/>
+            <one-to-many class="com.navis.road.business.model.Document"/>
+        </set>
+
+        <set name="tranStages" lazy="true" table="road_truck_transaction_stages" cascade="all-delete-orphan">
+            <key column="tran_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckTransactionStage"/>
+        </set>
+
+        <set name="tranCargoLots" lazy="true" table="road_truck_transaction_crglots" cascade="all-delete-orphan" inverse="true">
+            <key column="tran_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckTransactionCargoLot"/>
+        </set>
+
+        <set name="tranCrgDmg" lazy="true" inverse="true" table="crg_damages" cascade="all-delete-orphan">
+            <key column="tran_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.CargoDamage"/>
+        </set>
+
+        <!-- 26.09.13 prabhat ARGO-51407-Enhance Road schema to support new Rail Configuration field for Tank containers -->
+        <property name="tranTankRails" column="tank_rails" type="com.navis.argo.persistence.atoms.UserTypeTankRailTypeEnum" not-null="false">
+            <meta attribute="field-description">Tank rail configuration.</meta>
+        </property>
+
+        <property name="tranWasAutoClosed" type="java.lang.Boolean" column="auto_closed"/>
+
+        <property name="tranCheId" column="che_id" type="string" not-null="false">
+            <meta attribute="field-description">Name of CHE that handles the transaction</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.road.business.model.TruckTransactionBundle" table="road_truck_transaction_bundles"
+           dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.TruckTransactionBundleHbr</meta>
+        <meta attribute="n4alias">tranbundle</meta>
+        <meta attribute="n4-entity-name">Truck Transaction Bundle</meta>
+        <meta attribute="n4-entity-name-plural">Truck Transaction Bundles</meta>
+
+        <id name="tranbundleGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">tran_bundle_gkey</param>
+            </generator>
+        </id>
+
+        <property name="tranbundleNbr" type="java.lang.String" column="nbr" length="12"/>
+
+        <many-to-one name="tranbundleTran" column="tran_gkey" class="com.navis.road.business.model.TruckTransaction"
+                     cascade="all">
+            <meta attribute="field-description">Gate Transaction Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranbundleEquipType" column="eq_type_gkey"
+                     class="com.navis.argo.business.reference.EquipType">
+            <meta attribute="field-description">Equipment type Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranbundleDmg" column="damages_gkey"
+                     class="com.navis.inventory.business.units.UnitEquipDamages" cascade="none">
+            <meta attribute="field-description">Bundle Damage Gkey</meta>
+        </many-to-one>
+    </class>
+
+    <class name="com.navis.road.business.model.TruckTransactionCargoLot" table="road_truck_transaction_crglots" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.TruckTransactionCargoLotHbr</meta>
+        <meta attribute="n4alias">trancargolot</meta>
+        <meta attribute="n4-entity-name">TruckTransactionCargoLot</meta>
+        <meta attribute="n4-entity-name-plural">TruckTransactionCargoLots</meta>
+
+        <id name="trancargolotGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">ttstage_gkey</param>
+            </generator>
+        </id>
+
+        <property name="trancargolotQuantity" type="java.lang.Double" column="quantity" length="5"/>
+        <property name="trancargolotChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="trancargolotChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="trancargolotCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="trancargolotCreator" type="java.lang.String" column="creator" length="30"/>
+
+        <!-- associations -->
+        <many-to-one name="trancargolotCargoLot" column="cargo_lot_gkey" class="com.navis.cargo.business.model.CargoLot" cascade="none">
+            <meta attribute="field-description">Gate Transaction Cargo Lots reference Gkey</meta>
+        </many-to-one>
+        <many-to-one name="trancargolotTransaction" column="tran_gkey" class="com.navis.road.business.model.TruckTransaction"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Truck Transaction</meta>
+        </many-to-one>
+    </class>
+
+    <class name="com.navis.road.business.model.TransactionPlacard" table="road_transaction_placards"
+           dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.TransactionPlacardHbr</meta>
+        <meta attribute="n4alias">tranplacard</meta>
+        <meta attribute="n4-entity-name">Transaction Placard</meta>
+        <meta attribute="n4-entity-name-plural">Transaction Placards</meta>
+
+        <id name="tranplacardGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">tran_placard_gkey</param>
+            </generator>
+        </id>
+
+        <many-to-one name="tranplacardTran" column="tran_gkey" class="com.navis.road.business.model.TruckTransaction"
+                     cascade="all">
+            <meta attribute="field-description">Gate Transaction Gkey</meta>
+        </many-to-one>
+        <many-to-one name="tranplacardPlacard" column="placard_gkey"
+                     class="com.navis.inventory.business.imdg.Placard">
+            <meta attribute="field-description">Placard Gkey</meta>
+        </many-to-one>
+
+    </class>
+
+    <joined-subclass name="com.navis.road.business.model.TruckingCompany" table="road_trucking_companies"
+                     extends="com.navis.argo.business.reference.ScopedBizUnit" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.TruckingCompanyHbr</meta>
+        <meta attribute="n4alias">trkc</meta>
+        <meta attribute="n4-entity-name">Trucking Company</meta>
+        <meta attribute="n4-entity-name-plural">Trucking Companies</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">bzuId</meta>
+
+        <key column="trkc_id"/>
+        <!--2009-11-18 rkasindula v2.1.B ARGO-21702 "notes" field is moved to scopedBizUnit entity.-->
+        <!--<property name="trkcObsoleteNotes" type="java.lang.String" column="notes" length="60"/>-->
+        <property name="trkcStatus" type="com.navis.road.persistence.atoms.UserTypeTrkcStatusEnum" column="status"
+                  length="8"/>
+        <property name="trkcDocMedium" type="java.lang.String" column="doc_medium" length="1"/>
+        <property name="trkcInsuranceExpiration" type="java.sql.Timestamp" column="insurance_expiration" length="7"/>
+        <property name="trkcIsExamSiteCarrier" type="java.lang.Boolean" column="is_exam_carrier">
+            <meta attribute="field-description">True if this Trucking Company is allowed to pickup Cargo that needs Exam.</meta>
+        </property>
+        <property name="trkcExamAuthExpiration" type="java.sql.Timestamp" column="exam_auth_expiration" length="7">
+            <meta attribute="field-description">Expiration date of authorization for the trucking company to pickup Cargo that needs Exam.</meta>
+        </property>
+        <property name="trkcIsSeizedCargoCarrier" type="java.lang.Boolean" column="is_seized_cargo_carrier">
+            <meta attribute="field-description">True if this Trucking Company is allowed to pickup Seized Cargo.</meta>
+        </property>
+        <property name="trkcSeizedCargoAuthExpiration" type="java.sql.Timestamp" column="seized_cargo_auth_expiration" length="7">
+            <meta attribute="field-description">Expiration date of authorization for the trucking company to pickup Seized Cargo.</meta>
+        </property>
+        <property name="trkcRefId" column="ref_id" type="java.lang.String">
+            <meta attribute="field-description">Reference information recorded for trucking company</meta>
+        </property>
+        <!-- removed audit fields from trucking company as they are recoreded in parent scopeBizUnit entity -->
+        <!--<property name="trkcCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="trkcCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="trkcChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="trkcChanger" type="java.lang.String" column="changer" length="30"/>-->
+
+        <!-- associations -->
+        <many-to-one name="trkcTruckDriver" column="driver_gkey" class="com.navis.road.business.model.TruckDriver">
+            <meta attribute="field-description">Deprecated: Truck driver is associated with</meta>
+        </many-to-one>
+        <many-to-one name="trkcDefaultEdo" column="edo_gkey"
+                     class="com.navis.orders.business.eqorders.EquipmentDeliveryOrder">
+            <meta attribute="field-description">Default EDO for this trucking company</meta>
+        </many-to-one>
+        <set name="trkcTrkVisitDtls" lazy="true" table="road_truck_visit_details">
+            <key column="trkco_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckVisitDetails"/>
+        </set>
+        <set name="trkcDrivers" lazy="true" table="road_truck_drivers">
+            <key column="trkco_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckDriver"/>
+        </set>
+        <set name="trkcTrucks" lazy="true" table="road_trucks">
+            <key column="trkco_gkey"/>
+            <one-to-many class="com.navis.road.business.model.Truck"/>
+        </set>
+        <!-- 2007-11-01 rsatish v1.4.P ARGO-8711 inverse set to true -->
+        <set name="trkcLines" inverse="true" lazy="true" table="road_trucking_company_lines" cascade="all-delete-orphan">
+            <key column="trkco_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckingCompanyLine"/>
+        </set>
+
+    </joined-subclass>
+
+    <class name="com.navis.road.business.model.TruckingCompanyLine" table="road_trucking_company_lines"
+           dynamic-update="true">
+        <meta attribute="class-description">User Definable contracted relationships between lines and trucking Companies
+        </meta>
+        <meta attribute="generated-class">com.navis.road.business.model.TruckingCompanyLineHbr</meta>
+        <meta attribute="n4alias">trkcline</meta>
+        <meta attribute="n4-entity-name">Trucking Company Line</meta>
+        <meta attribute="n4-entity-name-plural">Trucking Company Lines</meta>
+
+        <id name="trkclineGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="trkclineAliasId" column="line_alias_id" type="java.lang.String" length="100">
+            <meta attribute="field-description">Alternate value for the line</meta>
+        </property>
+
+        <many-to-one name="trkclineTrkco" column="trkco_gkey" class="com.navis.road.business.model.TruckingCompany"
+                     not-null="true">
+            <meta attribute="field-description">Trucking Company the Line Operator is associated with</meta>
+        </many-to-one>
+
+        <many-to-one name="trkclineLine" column="line_gkey" class="com.navis.argo.business.reference.LineOperator"
+                     not-null="true">
+            <meta attribute="field-description">Trucking Company the Line Operator is associated with</meta>
+        </many-to-one>
+
+        <property name="trkclineExpirationDate" type="java.sql.Timestamp" column="expiration_date" length="7"/>
+        <!-- 2009-03-20 jku ARGO-16861 1.9.C NFRM-317 Gap 171.1 Gate - Credit & Insurance Holds. -->
+        <property name="trkclineCreditExpirationDate" type="java.sql.Timestamp" column="credit_expiration_date"/>
+        <property name="trkclineInsuranceExpirationDate" type="java.sql.Timestamp" column="insurance_expiration_date"/>
+        <property name="trkclineStatus" type="com.navis.road.persistence.atoms.UserTypeTrkcStatusEnum" column="status"
+                  length="8"/>
+        <property name="trkclineIsHouseTrucker" type="java.lang.Boolean" column="is_house_trucker"/>
+
+        <set name="trkclineRestrictions" inverse="true" lazy="true" table="road_trucking_company_line_restrictions" cascade="all-delete-orphan">
+            <key column="trkcline_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckingCompanyLineRestriction"/>
+        </set>
+
+        <property name="trkclineCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="trkclineCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="trkclineChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="trkclineChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="trkclineLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.road.business.model.TruckingCompanyLineRestriction" table="road_trucking_company_restrict"
+           dynamic-update="true">
+        <meta attribute="class-description">Restricted transaction types for this trucking company line relationship</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.TruckingCompanyLineRestrictionHbr</meta>
+        <meta attribute="n4alias">tlr</meta>
+        <meta attribute="n4-entity-name">Trucking Company Line Restriction</meta>
+        <meta attribute="n4-entity-name-plural">Trucking Company Line Restrictions</meta>
+
+        <id name="tlrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="tlrTruckingCompanyLine" column="trkcline_gkey" class="com.navis.road.business.model.TruckingCompanyLine"
+                     not-null="true">
+            <meta attribute="field-description">Trucking Company Line relationship restriction is associated with</meta>
+        </many-to-one>
+
+        <property name="tlrTranSubType" type="com.navis.road.persistence.atoms.UserTypeTranSubTypeEnum" column="sub_type" length="2"/>
+
+        <property name="tlrCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="tlrCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="tlrChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="tlrChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="tlrLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.road.business.model.Gate" table="road_gates" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable Gate Complex</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateHbr</meta>
+        <meta attribute="n4alias">gate</meta>
+        <meta attribute="n4-entity-name">Gate</meta>
+        <meta attribute="n4-entity-name-plural">Gates</meta>
+
+        <id name="gateGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="gateId" type="java.lang.String" column="id" length="12" not-null="true"/>
+        <property name="gateDescription" type="java.lang.String" column="description" not-null="true" length="35"/>
+        <property name="gateTruckFlowSeqNbr" type="java.lang.Integer" column="truck_flow_seq_nbr"/>
+
+        <property name="gateCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="gateCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="gateChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="gateChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="gateLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <!-- associations -->
+        <many-to-one name="gateFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="true">
+            <meta attribute="field-description">Facility that this gate belongs to</meta>
+        </many-to-one>
+
+        <many-to-one name="gateConfig" column="gate_config_gkey"
+                     class="com.navis.road.business.model.GateConfiguration">
+            <meta attribute="field-description">Gate Configuration</meta>
+        </many-to-one>
+
+        <many-to-one name="gateConfigInternalTruck" column="config_internal_truck_gkey"
+                     class="com.navis.road.business.model.GateConfiguration">
+            <meta attribute="field-description">Gate Configuration for Internal Trucks</meta>
+        </many-to-one>
+
+        <many-to-one name="gateApptRuleSet" column="appt_quota_rule_set_gkey"
+                     class="com.navis.road.business.appointment.model.AppointmentQuotaRuleSet">
+            <meta attribute="field-description">The quota rule set this gate uses</meta>
+        </many-to-one>
+
+        <set name="gateLanes" lazy="true" table="road_lanes" cascade="all-delete-orphan">
+            <key column="gate_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateLane"/>
+        </set>
+
+        <set name="gateYards" inverse="true" lazy="true" table="road_gate_yards" cascade="all-delete-orphan">
+            <key column="gate_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateYard"/>
+        </set>
+        <set name="gateConsoles" lazy="true" table="road_gate_consoles" cascade="all-delete-orphan">
+            <key column="gate_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateConsole"/>
+        </set>
+        <set name="gateRelayFacilities" lazy="true" table="road_gate_relay_facilities" cascade="all-delete-orphan">
+            <key column="gate_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateRelayFacility"/>
+        </set>
+
+        <set name="gateXchareas" lazy="true" table="road_gate_exchange_areas" cascade="all-delete-orphan">
+            <key column="gate_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateExchangeArea"/>
+        </set>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.road.business.model.GateConfiguration" table="road_gate_configuration" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable Gate Complex</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateConfigurationHbr</meta>
+        <meta attribute="n4alias">gateConfig</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">GateConfiguration</meta>
+        <meta attribute="n4-entity-name-plural">GateConfigurations</meta>
+
+        <id name="gateConfigGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="gateConfigId" type="java.lang.String" column="id" length="12" not-null="true"/>
+        <property name="gateConfigDescription" type="java.lang.String" column="description" not-null="true"
+                  length="35"/>
+
+        <property name="gateConfigCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="gateConfigCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="gateConfigChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="gateConfigChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="gateConfigLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <many-to-one name="gateConfigOperator" column="opr_gkey" class="com.navis.argo.business.model.Operator"
+                     not-null="true">
+            <meta attribute="field-description">Operator that this gateConfig belongs to</meta>
+        </many-to-one>
+        <set name="gateConfigStages" order-by="stage_order" inverse="true" lazy="true" table="road_gate_stages" cascade="all-delete-orphan">
+            <key column="gate_config_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateConfigStage"/>
+        </set>
+
+        <set name="gateConfigGates" order-by="gkey" lazy="true" table="road_gates" cascade="none">
+            <key column="gate_config_gkey"/>
+            <one-to-many class="com.navis.road.business.model.Gate"/>
+        </set>
+
+        <many-to-one name="gateConfigTroubleDocType" column="trouble_doctype_gkey" class="com.navis.argo.business.model.DocumentType"
+                     cascade="none">
+            <meta attribute="field-description">Document type used for Trouble Tickets</meta>
+        </many-to-one>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.road.business.model.GateConfigStage" table="road_gate_stages" discriminator-value="GEN" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable Gate Stage</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateConfigStageHbr</meta>
+        <meta attribute="n4alias">stage</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Gate Config Stage</meta>
+        <meta attribute="n4-entity-name-plural">Gate Config Stages</meta>
+
+        <id name="stageGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <discriminator column="sub_type" type="string" length="3"/>
+
+        <property name="stageOrder" type="java.lang.Long" column="stage_order" length="5" not-null="false"/>
+        <property name="stageId" type="java.lang.String" column="id" length="60" not-null="true"/>
+        <property name="stageDescription" type="java.lang.String" column="description" length="35"/>
+        <property name="stageMenuId" type="java.lang.String" column="menu_id" length="60"/>
+        <property name="stageType" type="com.navis.road.persistence.atoms.UserTypeGateStageTypeEnum" column="type" length="10"/>
+        <property name="stageIsAutoStage" type="java.lang.Boolean" column="is_auto_stage"/>
+        <property name="stageIsTruckVisitRequired" type="java.lang.Boolean" column="is_truck_visit_required"/>
+        <property name="stagePollNextTruck" type="java.lang.Boolean" column="poll_next_truck"/>
+        <property name="stagePollTruckInterval" type="java.lang.Long" column="poll_truck_interval_secs" length="3"/>
+        <property name="stageCheckIfAllDone" type="java.lang.Boolean" column="check_all_done"/>
+        <property name="stageAllowTransactionEdit" type="java.lang.Boolean" column="allow_transaction_edit"/>
+        <property name="stageAllowStageId" type="java.lang.String" column="allow_stage_id" length="60"/>
+        <property name="stageAllowAnyStage" type="java.lang.Boolean" column="allow_any_stage"/>
+        <property name="stageNextStageIdNoTran" type="java.lang.String" column="next_stage_id_no_tran" length="60"/>
+        <property name="stagePickupAssignment" type="java.lang.String" column="pickup_assignment" length="12"/>
+        <property name="stageOpenBarrierOnTrouble" type="java.lang.Boolean" column="open_barrier_on_trouble"/>
+        <property name="stageIncludeAppointmentsTab" type="com.navis.argo.persistence.atoms.UserTypeDisplayModeEnum"
+                  column="include_appointments_tab"/>
+        <property name="stageAppointmentsTabFilter" type="java.lang.String" column="filter_id"/>
+        <property name="stageCargoLotsFilter" type="java.lang.String" column="cargo_lots_filter_id"/>
+        <property name="stageIncludeGroupsTab" type="com.navis.argo.persistence.atoms.UserTypeDisplayModeEnum" column="include_groups_tab"/>
+        <property name="stageCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="stageCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="stageChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="stageChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="stageLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="stageExchangeLaneAssignmentBooth" type="java.lang.Boolean" column="exchange_lane_assignment_booth"/>
+
+        <many-to-one name="stageGateConfig" column="gate_config_gkey"
+                     class="com.navis.road.business.model.GateConfiguration" not-null="true" cascade="none">
+            <meta attribute="field-description">Configuration to which this stage belongs</meta>
+        </many-to-one>
+
+        <set name="stageTransactions" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="gate_stage_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateStageTranType"/>
+        </set>
+        <property name="stageIsVisibleInCap" type="java.lang.Boolean" column="is_visible_in_cap"/>
+        <property name="stageExtraTimeMins" type="java.lang.Integer" column="extra_time_mins"/>
+        <property name="stageAllowedTimeMins" type="java.lang.Integer" column="allowed_time_mins"/>
+        <property name="stageSupportsCallup" type="java.lang.Boolean" column="supports_callup"/>
+        <property name="stageIsExcluded" type="java.lang.Boolean" column="is_excluded"/>
+
+        <set name="stageStagesAllowed" table="road_allowable_gate_stage_map" inverse="false" lazy="true">
+            <key column="allowed_at_gkey"/>
+            <many-to-many column="allowed_gkey" class="com.navis.road.business.model.GateConfigStage"/>
+        </set>
+        <set name="stageStagesAllowedFrom" table="road_allowable_gate_stage_map" inverse="false" lazy="true">
+            <key column="allowed_gkey"/>
+            <many-to-many column="allowed_at_gkey" class="com.navis.road.business.model.GateConfigStage"/>
+        </set>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <subclass name="com.navis.road.business.interfacilitytransfer.GateConfigIFTStage" extends="com.navis.road.business.model.GateConfigStage"
+              discriminator-value="IFT" dynamic-update="true">
+        <meta attribute="n4alias">iftstage</meta>
+        <meta attribute="generated-class">com.navis.road.business.interfacilitytransfer.GateConfigIFTStageHbr</meta>
+        <meta attribute="class-description">The gate configuration for an IFT stage</meta>
+        <meta attribute="n4-entity-name">Gate Config IFT Stage</meta>
+        <meta attribute="n4-entity-name-plural">Gate Config IFT Stages</meta>
+    </subclass>
+
+    <class name="com.navis.road.business.model.GateStageBaseType" table="road_gate_stage_base_type"
+           discriminator-value="null" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.GateStageBaseTypeHbr</meta>
+        <meta attribute="n4-entity-name">Gate Stage Base Type</meta>
+        <meta attribute="n4-entity-name-plural">Gate Stage Base Types</meta>
+        <meta attribute="scope-set">public</meta>
+        <id name="typeGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <discriminator column="type" not-null="false" type="string" length="10"/>
+        <property name="basetypeLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <many-to-one name="basetypeForm" column="form_gkey" class="com.navis.argo.variform.DynaForm"
+                     not-null="true" cascade="none">
+            <meta attribute="field-description">Dyna Form associated with the base type.</meta>
+        </many-to-one>
+        <set name="basetypeBizTasks" order-by="seq_nbr" inverse="true" lazy="true" table="road_gate_biz_task" cascade="all-delete-orphan">
+            <key column="base_type_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateBizTask"/>
+        </set>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <joined-subclass name="com.navis.road.business.model.GateStageTranType" extends="com.navis.road.business.model.GateStageBaseType"
+                     table="road_gate_config_tran_type" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.GateStageTranTypeHbr</meta>
+        <meta attribute="n4-entity-name">Gate Stage Tran Type</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name-plural">Gate Stage Tran Types</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">trantypeCustomFlexFields</meta>
+
+        <key column="tran_type_gkey"/>
+        <property name="trantypeNextStageId" type="java.lang.String" column="next_stage_id" length="60"/>
+        <property name="trantypePollScale" type="java.lang.Boolean" column="poll_scale"/>
+        <property name="trantypePrepopulateInspInfo" type="java.lang.Boolean" column="prepopulate_insp_info"/>
+        <property name="trantypePollScaleInterval" type="java.lang.Long" column="poll_scale_interval_secs" length="3"/>
+        <property name="trantypeAddAllowed" type="java.lang.Boolean" column="add_allowed"/>
+        <property name="trantypeAutoSubmit" type="java.lang.Boolean" column="auto_submit"/>
+        <property name="trantypeProceedIfTrouble" type="java.lang.Boolean" column="proceed_if_trouble"/>
+        <many-to-one name="trantypeStage" column="gate_stage_gkey" index="gstgtt_gate_stage_gkey"
+                     class="com.navis.road.business.model.GateConfigStage" not-null="true">
+            <meta attribute="field-description">Gate Stage to which this transaction type belongs</meta>
+        </many-to-one>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="trantypeCustomFlexFields"/>
+    </joined-subclass>
+
+    <joined-subclass name="com.navis.road.business.model.GateStageTruckVisitType" table="road_gate_config_tv_type"
+                     extends="com.navis.road.business.model.GateStageBaseType" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.GateStageTruckVisitTypeHbr</meta>
+        <meta attribute="n4-entity-name">Gate Stage Truck Visit Type</meta>
+        <meta attribute="n4-entity-name-plural">Gate Stage Truck Visit Types</meta>
+        <meta attribute="scope-set">public</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">tvtypeCustomFlexFields</meta>
+        <key column="tv_type_gkey"/>
+        <many-to-one name="tvtypeStage" column="gate_stage_gkey" index="gstgtv_gate_stage_gkey"
+                     class="com.navis.road.business.model.GateConfigStage" cascade="none">
+            <meta attribute="field-description">Gate Stage to which this truck visit type belongs</meta>
+        </many-to-one>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="tvtypeCustomFlexFields"/>
+    </joined-subclass>
+
+    <class name="com.navis.road.business.model.GateBizTask" table="road_gate_biz_task" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.GateBizTaskHbr</meta>
+        <meta attribute="n4-entity-name">Gate Biz Task</meta>
+        <meta attribute="n4-entity-name-plural">Gate Biz Tasks</meta>
+        <meta attribute="scope-set">public</meta>
+        <id name="biztaskGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="biztaskLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <property name="biztaskId" type="java.lang.String" column="task_id" length="100" not-null="true"/>
+        <property name="biztaskDescription" type="java.lang.String" column="task_description" length="255"/>
+        <property name="biztaskCustomCode" type="java.lang.String" column="task_custom_code" length="3000"/>
+        <property name="biztaskSeqNbr" type="java.lang.Integer" column="seq_nbr"/>
+        <many-to-one name="biztaskTruckActionOnFail" column="truck_action_on_fail"
+                     class="com.navis.road.business.model.TruckAction">
+            <meta attribute="field-description">Truck Action on task Failure</meta>
+        </many-to-one>
+        <property name="biztaskFilter" column="filter_gkey" type="java.lang.Long" not-null="false"/>
+        <set name="biztaskParams" lazy="true" inverse="true" table="road_biz_task_param" cascade="all-delete-orphan">
+            <key column="biz_task_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateBizTaskParam"/>
+        </set>
+        <many-to-one name="bizTaskBasetype" column="base_type_gkey"
+                     class="com.navis.road.business.model.GateStageBaseType" cascade="none">
+            <meta attribute="field-description">The parent of the Biz Task could be either
+                GateStageTranType or GateStageTruckVisitType
+            </meta>
+        </many-to-one>
+
+        <!-- 2009-04-21 spabbala ARGO-18101 TruckVisitAppointment: Gate Configuration Changes and Validations for Truck Visit Appointments-->
+        <property name="biztaskIsIncluded" type="java.lang.Boolean" column="is_included"/>
+        <property name="biztaskIsIncludedDispatch" type="java.lang.Boolean" column="is_included_dispatch"/>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.road.business.model.GateBizTaskParam" table="road_gate_biz_task_param" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.GateBizTaskParamHbr</meta>
+        <meta attribute="n4-entity-name">Gate Biz Task Param</meta>
+        <meta attribute="n4-entity-name-plural">Gate Biz Task Params</meta>
+        <meta attribute="scope-set">public</meta>
+        <id name="biztaskparamGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="biztaskparamLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <property name="biztaskparamId" type="java.lang.String" column="task_id" length="100"/>
+        <property name="biztaskparamValue" type="java.lang.String" column="task_description" length="255"/>
+        <many-to-one name="biztaskparamBiztask" column="biz_task_gkey" class="com.navis.road.business.model.GateBizTask"
+                     cascade="none">
+            <meta attribute="field-description">Biz Task with which this param is associated.</meta>
+        </many-to-one>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <joined-subclass name="com.navis.road.business.model.GateLane" table="road_lanes" extends="com.navis.argo.business.model.Lane"
+                     dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable Gate Lane</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateLaneHbr</meta>
+        <meta attribute="n4alias">gateln</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Gate Lane</meta>
+        <meta attribute="n4-entity-name-plural">Gate Lanes</meta>
+
+        <key column="gkey"/>
+
+        <many-to-one name="gatelnGate" column="gate_gkey" class="com.navis.road.business.model.Gate" not-null="true"
+                     cascade="none">
+            <meta attribute="field-description">Gate this lane is for</meta>
+        </many-to-one>
+
+        <property name="gatelnClass" type="com.navis.road.persistence.atoms.UserTypeGateLaneClassEnum" length="8"
+                  column="class" not-null="true"/>
+
+        <property name="gatelnNeedsAppointment" type="java.lang.Boolean" column="need_appointment"/>
+
+        <property name="gatelnStageId" type="java.lang.String" column="stage_id" length="60"/>
+
+        <many-to-one name="gatelnTruckVisit" column="tvdtls_gkey" class="com.navis.road.business.model.TruckVisitDetails">
+        </many-to-one>
+
+    </joined-subclass>
+
+    <class name="com.navis.road.business.model.GateExchangeArea" table="road_gate_exchange_areas" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for exchange areas serviced by a gate</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateExchangeAreaHbr</meta>
+        <meta attribute="n4alias">gatexcharea</meta>
+        <meta attribute="n4-entity-name">Gate Exchange Area</meta>
+        <meta attribute="n4-entity-name-plural">Gate Exchange Areas</meta>
+
+        <id name="gatexchareaGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="gatexchareaLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="gatexchareaCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="gatexchareaCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="gatexchareaChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="gatexchareaChanger" type="java.lang.String" column="changer" length="30"/>
+
+        <many-to-one name="gatexchareaGate" column="gate_gkey" class="com.navis.road.business.model.Gate" not-null="true"
+                     cascade="none">
+            <meta attribute="field-description">Gate which serves the exchange area</meta>
+        </many-to-one>
+
+        <many-to-one name="gatexchareaXcharea" column="xcharea_gkey" class="com.navis.argo.business.model.ExchangeArea" not-null="true">
+            <meta attribute="field-description">Exchange area which is serviced by this gate</meta>
+        </many-to-one>
+
+        <set name="gatexchareaDelays" lazy="true" table="road_gate_exchange_area_delay" inverse="true" cascade="delete">
+            <key column="gatexcharea_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateExchangeAreaDelay"/>
+        </set>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <joined-subclass name="com.navis.road.business.model.ScanSet" table="road_scan_sets" extends="com.navis.argo.business.model.ScanSetBase"
+                         dynamic-update="true">
+
+        <meta attribute="class-description">Stored OCR scans</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.ScanSetHbr</meta>
+        <meta attribute="n4alias">scan</meta>
+        <meta attribute="n4-entity-name">Scan Set</meta>
+        <meta attribute="n4-entity-name-plural">Scan Sets</meta>
+        <meta attribute="scope-set">public</meta>
+
+        <key column="gkey" foreign-key="FK_SCAN_SET_BASE"/>
+
+        <property name="scanCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="scanCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="scanChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="scanChanger" type="java.lang.String" column="changer" length="30"/>
+
+        <many-to-one name="scanFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="true">
+        </many-to-one>
+
+        <property name="scanTruckId" type="java.lang.String" column="truck_id" length="12"/>
+        <property name="scanTruckTagId" type="java.lang.String" column="truck_tag_id" length="40"/>
+        <property name="scanTruckLicenseNbr" type="java.lang.String" column="truck_license_nbr" length="12"/>
+        <property name="scanBatNbr" type="java.lang.String" column="bat_nbr" length="12"/>
+        <property name="scanGosTvKey" type="java.lang.Long" column="gos_tv_key"/>
+        <property name="scanTvisitFlexString01" type="java.lang.String" column="tvisit_flex_string01" length="255"/>
+        <property name="scanTvisitFlexString02" type="java.lang.String" column="tvisit_flex_string02" length="255"/>
+        <property name="scanTvisitFlexString03" type="java.lang.String" column="tvisit_flex_string03" length="255"/>
+
+        <property name="scanStatus" type="java.lang.String" length="12" column="status"/>
+
+        <property name="scanDriverCardId" type="java.lang.String" length="20" column="driver_card_id"/>
+        <property name="scanDriverLicenseNbr" type="java.lang.String" length="15" column="driver_license_nbr"/>
+        <property name="scanImageId" type="java.lang.String" length="40" column="image_id"/>
+        <property name="scanScaleWeight" type="java.lang.Double" column="scale_weight"/>
+        <property name="scanScaleWeightUnit" type="java.lang.String" length="6" column="scale_weight_unit"/>
+        <property name="scanTruckTareWeight" type="java.lang.Double" column="tare_weight"/>
+        <property name="scanTruckTareWeightUnit" type="java.lang.String" length="6" column="tare_weight_unit"/>
+        <property name="scanTruckSafeWeight" type="java.lang.Double" column="safe_weight"/>
+        <property name="scanTruckSafeWeightUnit" type="java.lang.String" length="6" column="safe_weight_unit"/>
+        <property name="scanTruckingCoId" type="java.lang.String" length="100" column="trucking_co_id"/>
+
+        <property name="scanChassisProfileId" type="java.lang.String" length="20" column="chassis_profile_id"/>
+
+        <property name="scanChassisCount" type="java.lang.Integer" column="chassis_count"/>
+        <property name="scanChassisLengthOverall" type="java.lang.Double" column="chassis_length_overall"/>
+
+        <property name="scanChassisTotalTeu" type="java.lang.Integer" column="chassis_total_teu" length="2"/>
+
+        <property name="scanChassis1Teu" type="java.lang.Integer" column="chassis1_teu" length="2"/>
+        <property name="scanChassis2Teu" type="java.lang.Integer" column="chassis2_teu" length="2"/>
+        <property name="scanChassis3Teu" type="java.lang.Integer" column="chassis3_teu" length="2"/>
+        <property name="scanChassis4Teu" type="java.lang.Integer" column="chassis4_teu" length="2"/>
+        <property name="scanChassis5Teu" type="java.lang.Integer" column="chassis5_teu" length="2"/>
+
+        <set name="scanContainers" lazy="true" table="road_scan_containers" cascade="all-delete-orphan">
+            <key column="scan_gkey"/>
+            <one-to-many class="com.navis.road.business.model.ScanContainer"/>
+        </set>
+
+        <set name="scanChassis" lazy="true" table="road_scan_chassis" cascade="all-delete-orphan">
+            <key column="scan_gkey"/>
+            <one-to-many class="com.navis.road.business.model.ScanChassis"/>
+        </set>
+
+        <set name="scanImages" lazy="true" table="road_scan_images" cascade="all-delete-orphan">
+            <key column="scan_gkey"/>
+            <one-to-many class="com.navis.road.business.model.ScanImage"/>
+        </set>
+
+    </joined-subclass>
+
+    <class name="com.navis.road.business.model.ScanContainer" table="road_scan_containers" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ScanContainerHbr</meta>
+        <meta attribute="n4alias">scanctr</meta>
+        <meta attribute="n4-entity-name">Scanned Container</meta>
+        <meta attribute="n4-entity-name-plural">Scanned Containers</meta>
+        <meta attribute="scope-set">public</meta>
+
+        <id name="scanctrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">scanctr_gkey</param>
+            </generator>
+        </id>
+
+        <property name="scanctrSeqNbr" type="java.lang.Integer" column="seq_nbr"/>
+        <property name="scanctrId" type="java.lang.String" length="30" column="id"/>
+        <property name="scanctrTypeId" type="java.lang.String" length="12" column="type_id"/>
+        <property name="scanctrChsId" type="java.lang.String" length="30" column="chs_id"/>
+        <property name="scanctrAccId" type="java.lang.String" length="30" column="acc_id"/>
+        <property name="scanctrAccType" type="java.lang.String" length="12" column="acc_type_id"/>
+        <property name="scanctrTranType" type="java.lang.String" length="12" column="tran_type"/>
+        <property name="scanctrIsThrough" type="java.lang.Boolean" column="is_through"/>
+        <property name="scanctrTruckPosition" type="java.lang.Integer" column="truck_position"/>
+        <property name="scanctrCenterToChassisBackMm" column="center_to_chassis_back_mm" type="java.lang.Long" not-null="false"/>
+        <property name="scanctrDoorDirection" type="com.navis.inventory.persistence.atoms.UserTypeDoorDirectionEnum"
+                  column="ctr_door_direction" length="8"/>
+        <property name="scanctrIsPlacarded" type="java.lang.Boolean" column="is_placarded"/>
+        <property name="scanctrIsXrayRequired" type="java.lang.Boolean" column="is_xray_required"/>
+        <property name="scanctrPin" type="java.lang.String" length="20" column="pin"/>
+        <property name="scanctrSealNbr1" type="java.lang.String" length="15" column="seal_nbr1"/>
+        <property name="scanctrSealNbr2" type="java.lang.String" length="15" column="seal_nbr2"/>
+        <property name="scanctrSealNbr3" type="java.lang.String" length="15" column="seal_nbr3"/>
+        <property name="scanctrSealNbr4" type="java.lang.String" length="15" column="seal_nbr4"/>
+        <property name="scanctrIsSealed" type="java.lang.Boolean">
+            <column name="is_ctr_sealed" default="0"/>
+        </property>
+        <property name="scanctrIsChsOwners" type="java.lang.Boolean">
+            <column name="is_chs_owners" default="0"/>
+        </property>
+        <property name="scanctrNotes" type="java.lang.String" length="255" column="notes"/>
+        <property name="scanctrUnitFlexString01" type="java.lang.String" length="255" column="unit_flex_string01"/>
+        <property name="scanctrUnitFlexString02" type="java.lang.String" length="255" column="unit_flex_string02"/>
+        <property name="scanctrUnitFlexString03" type="java.lang.String" length="255" column="unit_flex_string03"/>
+        <property name="scanctrUnitFlexString04" type="java.lang.String" length="255" column="unit_flex_string04"/>
+        <property name="scanctrUnitFlexString05" type="java.lang.String" length="255" column="unit_flex_string05"/>
+        <property name="scanctrUnitFlexString06" type="java.lang.String" length="255" column="unit_flex_string06"/>
+        <property name="scanctrUnitFlexString07" type="java.lang.String" length="255" column="unit_flex_string07"/>
+        <property name="scanctrUnitFlexString08" type="java.lang.String" length="255" column="unit_flex_string08"/>
+        <property name="scanctrUnitFlexString09" type="java.lang.String" length="255" column="unit_flex_string09"/>
+        <property name="scanctrUnitFlexString10" type="java.lang.String" length="255" column="unit_flex_string10"/>
+        <property name="scanctrUnitFlexString11" type="java.lang.String" length="255" column="unit_flex_string11"/>
+        <property name="scanctrUnitFlexString12" type="java.lang.String" length="255" column="unit_flex_string12"/>
+        <property name="scanctrUnitFlexString13" type="java.lang.String" length="255" column="unit_flex_string13"/>
+        <property name="scanctrUnitFlexString14" type="java.lang.String" length="255" column="unit_flex_string14"/>
+        <property name="scanctrUnitFlexString15" type="java.lang.String" length="255" column="unit_flex_string15"/>
+        <property name="scanctrUfvFlexString01" type="java.lang.String" length="255" column="ufv_flex_string01"/>
+        <property name="scanctrUfvFlexString02" type="java.lang.String" length="255" column="ufv_flex_string02"/>
+        <property name="scanctrUfvFlexString03" type="java.lang.String" length="255" column="ufv_flex_string03"/>
+        <property name="scanctrUfvFlexString04" type="java.lang.String" length="255" column="ufv_flex_string04"/>
+        <property name="scanctrUfvFlexString05" type="java.lang.String" length="255" column="ufv_flex_string05"/>
+        <property name="scanctrUfvFlexString06" type="java.lang.String" length="255" column="ufv_flex_string06"/>
+        <property name="scanctrUfvFlexString07" type="java.lang.String" length="255" column="ufv_flex_string07"/>
+        <property name="scanctrUfvFlexString08" type="java.lang.String" length="255" column="ufv_flex_string08"/>
+        <property name="scanctrUfvFlexString09" type="java.lang.String" length="255" column="ufv_flex_string09"/>
+        <property name="scanctrUfvFlexString10" type="java.lang.String" length="255" column="ufv_flex_string10"/>
+        <property name="scanctrUfvFlexDate01" type="timestamp" column="ufv_flex_date01"/>
+        <property name="scanctrUfvFlexDate02" type="timestamp" column="ufv_flex_date02"/>
+        <property name="scanctrUfvFlexDate03" type="timestamp" column="ufv_flex_date03"/>
+        <property name="scanctrUfvFlexDate04" type="timestamp" column="ufv_flex_date04"/>
+
+        <!--Over Dimension Details-->
+        <property name="scanctrIsOog" type="java.lang.Boolean" column="is_oog"/>
+        <property name="scanctrOogFront" type="java.lang.Double" column="oog_front" length="5"/>
+        <property name="scanctrOogBack" type="java.lang.Double" column="oog_back" length="5"/>
+        <property name="scanctrOogLeft" type="java.lang.Double" column="oog_left" length="5"/>
+        <property name="scanctrOogRight" type="java.lang.Double" column="oog_right" length="5"/>
+        <property name="scanctrOogTop" type="java.lang.Double" column="oog_top" length="5"/>
+
+        <!-- associations -->
+        <many-to-one name="scanctrScanSet" column="scan_gkey" class="com.navis.road.business.model.ScanSet"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Scan Set</meta>
+        </many-to-one>
+
+        <!--Damage Details-->
+        <many-to-one name="scanctrDamage" column="ctr_damages_gkey"
+                     class="com.navis.inventory.business.units.UnitEquipDamages" cascade="all">
+            <meta attribute="field-description">Container Damage Gkey</meta>
+        </many-to-one>
+
+        <!--Placards -->
+        <set name="scanctrPlacards" table="road_scan_container_placards" lazy="false" cascade="none">
+            <key column="road_scanctr_gkey"/>
+            <many-to-many class="com.navis.inventory.business.imdg.Placard" column="placd_gkey"/>
+        </set>
+
+        <property name="scanctrTankRails" type="com.navis.argo.persistence.atoms.UserTypeTankRailTypeEnum"
+                  column="ctr_tank_rails"/>
+
+        <property name="scanctrGrossWeight" type="java.lang.Double" column="gross_wt"/>
+        <property name="scanctrVGMWeight" type="java.lang.Double" column="vgm_wt"/>
+        <property name="scanctrVGMEntity" type="java.lang.String" column="vgm_entity"/>
+        <property name="scanctrGrossWeightUnit" type="com.navis.framework.persistence.atoms.UserTypeMassUnitEnum" column="gross_wt_unit" length="20"/>
+    </class>
+
+    <class name="com.navis.road.business.model.ScanChassis" table="road_scan_chassis" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ScanChassisHbr</meta>
+        <meta attribute="n4alias">scanchs</meta>
+        <meta attribute="n4-entity-name">Scanned Chassis</meta>
+        <meta attribute="n4-entity-name-plural">Scanned Chassis</meta>
+        <meta attribute="scope-set">public</meta>
+
+        <id name="scanchsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">scanchs_gkey</param>
+            </generator>
+        </id>
+
+        <property name="scanchsSeqNbr" type="java.lang.Integer" column="seq_nbr"/>
+        <property name="scanchsId" type="java.lang.String" length="30" column="id"/>
+        <property name="scanchsTypeId" type="java.lang.String" length="12" column="type_id"/>
+        <property name="scanchsAccId" type="java.lang.String" length="30" column="acc_id"/>
+        <property name="scanchsAccType" type="java.lang.String" length="12" column="acc_type_id"/>
+        <property name="scanchsNotes" type="java.lang.String" length="255" column="notes"/>
+        <property name="scanchsIsChsOwners" type="java.lang.Boolean">
+            <column name="is_chs_owners" default="0"/>
+        </property>
+
+        <!-- associations -->
+        <many-to-one name="scanchsScanSet" column="scan_gkey" class="com.navis.road.business.model.ScanSet"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Scan Set</meta>
+        </many-to-one>
+
+        <!--Damage Details-->
+        <many-to-one name="scanchsDamage" column="chs_damages_gkey"
+                     class="com.navis.inventory.business.units.UnitEquipDamages" cascade="all">
+            <meta attribute="field-description">Chassis Damage Gkey</meta>
+        </many-to-one>
+
+    </class>
+
+    <class name="com.navis.road.business.model.ScanImage" table="road_scan_images" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ScanImageHbr</meta>
+        <meta attribute="n4alias">scanimg</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Scanned Image</meta>
+        <meta attribute="n4-entity-name-plural">Scanned Images</meta>
+
+        <id name="scanimgGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">scanimg_gkey</param>
+            </generator>
+        </id>
+
+        <property name="scanimgId" type="java.lang.String" length="40" column="id"/>
+        <property name="scanimgUrl" type="java.lang.String" length="255" column="url"/>
+        <property name="scanimgSetId" type="java.lang.String" length="40" column="set_id"/>
+        <property name="scanimgSubject" type="java.lang.String" length="40" column="subject"/>
+
+        <property name="scanimgCaptured" type="java.sql.Timestamp" column="captured"/>
+
+
+        <!-- associations -->
+        <many-to-one name="scanimgScanSet" column="scan_gkey" class="com.navis.road.business.model.ScanSet"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Scan Set</meta>
+        </many-to-one>
+
+    </class>
+
+    <class name="com.navis.road.business.model.GateYard" table="road_gate_yards" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable yards serviced by a gate</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateYardHbr</meta>
+        <meta attribute="n4alias">gateyard</meta>
+        <meta attribute="n4-entity-name">Gate Yard</meta>
+        <meta attribute="n4-entity-name-plural">Gate Yards</meta>
+
+        <id name="gateyardGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="gateyardGate" column="gate_gkey" class="com.navis.road.business.model.Gate" not-null="true"
+                     cascade="none">
+            <meta attribute="field-description">Gate the yard is associated with</meta>
+        </many-to-one>
+
+        <many-to-one name="gateyardYard" column="yard_gkey" class="com.navis.argo.business.model.Yard" not-null="true" cascade="none">
+            <meta attribute="field-description">Yard the gate is associated with</meta>
+        </many-to-one>
+
+        <set name="gateyardBlocks" lazy="true" table="road_gate_yard_blocks" cascade="all-delete-orphan">
+            <key column="gateyard_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateYardBlock"/>
+        </set>
+
+        <property name="gateyardCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="gateyardCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="gateyardChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="gateyardChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>
+
+    <class name="com.navis.road.business.model.GateYardBlock" table="road_gate_yard_blocks" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable yard blocks serviced by a
+            gate
+        </meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateYardBlockHbr</meta>
+        <meta attribute="n4alias">gateblk</meta>
+        <meta attribute="n4-entity-name">Gate Yard Block</meta>
+        <meta attribute="n4-entity-name-plural">Gate Yard Blocks</meta>
+
+        <id name="gateblkGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="gateblkGateYard" column="gateyard_gkey" class="com.navis.road.business.model.GateYard"
+                     not-null="true">
+            <meta attribute="field-description">Gate yard the block is associated with</meta>
+        </many-to-one>
+
+        <property name="gateblkMask" type="java.lang.String" column="mask"/>
+
+        <property name="gateblkCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="gateblkCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="gateblkChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="gateblkChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>
+
+    <class name="com.navis.road.business.model.GateConsole" table="road_gate_consoles" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable consoles by a gate</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateConsoleHbr</meta>
+        <meta attribute="n4alias">gateconsole</meta>
+        <meta attribute="n4-entity-name">Gate Console</meta>
+        <meta attribute="n4-entity-name-plural">Gate Consoles</meta>
+
+        <id name="gateconsoleGkey" column="gate" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="gateconsoleGate" column="gate_gkey" class="com.navis.road.business.model.Gate"
+                     not-null="true">
+            <meta attribute="field-description">Gate the console is associated with</meta>
+        </many-to-one>
+
+        <many-to-one name="gateconsoleConsole" column="console_gkey" class="com.navis.road.business.reference.Console"
+                     not-null="true">
+            <meta attribute="field-description">Console the gate is associated with</meta>
+        </many-to-one>
+
+        <property name="gateconsoleCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="gateconsoleCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="gateconsoleChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="gateconsoleChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="gateconsoleLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <class name="com.navis.road.business.model.GateRelayFacility" table="road_gate_relay_facilities"
+           dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable facilities gate relays
+            containers to
+        </meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateRelayFacilityHbr</meta>
+        <meta attribute="n4alias">gaterelay</meta>
+        <meta attribute="n4-entity-name">Gate Relay Facility</meta>
+        <meta attribute="n4-entity-name-plural">Gate Relay Facilities</meta>
+
+        <id name="gaterelayGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="gaterelayGate" column="gate_gkey" class="com.navis.road.business.model.Gate" not-null="true">
+            <meta attribute="field-description">Gate the facility can relay to</meta>
+        </many-to-one>
+
+        <many-to-one name="gaterelayFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="true">
+            <meta attribute="field-description">Facility the gate can relay to</meta>
+        </many-to-one>
+
+        <property name="gaterelayCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="gaterelayCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="gaterelayChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="gaterelayChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="gaterelayLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <subclass name="com.navis.road.business.reference.Printer"
+              extends="com.navis.argo.business.reference.HardwareDevice" discriminator-value="PRINTER"
+              dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.reference.PrinterHbr</meta>
+        <meta attribute="n4alias">prtr</meta>
+        <meta attribute="n4-entity-name">Printer</meta>
+        <meta attribute="n4-entity-name-plural">Printers</meta>
+
+        <set name="prtrConsolePrinters" lazy="true" table="road_console_printers">
+            <key column="printer_gkey"/>
+            <one-to-many class="com.navis.road.business.model.ConsolePrinter"/>
+        </set>
+        <set name="prtrGateLanePrinters" lazy="true" table="road_gate_lane_printers">
+            <key column="hw_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateLanePrinter"/>
+        </set>
+        <property name="prtrDriver" type="com.navis.framework.persistence.atoms.UserTypePrinterDriverEnum" column="printer_driver" length="25">
+            <meta attribute="field-description">Driver needed for the printer.</meta>
+            <meta attribute="scope-get">protected</meta>
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <property name="prtrQueueName" type="java.lang.String" column="queue_name" length="60"/>
+
+    </subclass>
+
+    <subclass name="com.navis.road.business.reference.Console"
+              extends="com.navis.argo.business.reference.Workstation" discriminator-value="CONSOLE"
+              dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.reference.ConsoleHbr</meta>
+        <meta attribute="n4alias">hwconsole</meta>
+        <meta attribute="n4-entity-name">Console</meta>
+        <meta attribute="n4-entity-name-plural">Consoles</meta>
+
+        <!-- associations -->
+        <property name="hwLaneSelectedDeprecated" column="lane_gkey" type="java.lang.Long"/>
+        <many-to-one name="hwLaneSelected" column="lane_selected_gkey" class="com.navis.argo.business.model.Lane"
+                     cascade="none">
+            <meta attribute="field-description">Reference to the gate lane currently selected by clerk at this
+                console
+            </meta>
+        </many-to-one>
+
+        <set name="hwPrinters" lazy="true" table="road_console_printers">
+            <key column="console_gkey"/>
+            <one-to-many class="com.navis.road.business.model.ConsolePrinter"/>
+        </set>
+        <set name="hwconsoleGateConsoles" lazy="true" table="road_gate_consoles">
+            <key column="console_gkey"/>
+            <one-to-many class="com.navis.road.business.model.GateConsole"/>
+        </set>
+    </subclass>
+
+    <class name="com.navis.road.business.model.TruckDriver" table="road_truck_drivers" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable Truck Driver</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.TruckDriverHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4alias">driver</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Truck Driver</meta>
+        <meta attribute="n4-entity-name-plural">Truck Drivers</meta>
+        <meta attribute="n4-business-key">driverLicenseNbr</meta>
+
+        <id name="driverGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="driverScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" index="driver_reference_set"/>
+        </many-to-one>
+
+        <property name="driverName" type="java.lang.String" column="name" length="60"/>
+        <!--2010-01-18 mkamalakannan ARGO-22803 v2.1.G, 2.0.2, 1.8.8 increased column length of driver license nbr and driver card ID -->
+        <property name="driverCardId" type="java.lang.String" column="card_id" length="20"/>
+        <property name="driverLicenseNbr" type="java.lang.String" column="driver_license_nbr" length="15"/>
+        <property name="driverBatNbr" type="java.lang.String" column="bat_nbr" length="6"/>
+        <property name="driverLicenseState" type="java.lang.String" column="driver_license_state" length="3"/>
+
+        <property name="driverEmailAddress" type="java.lang.String" column="email_address" length="255"/>
+        <property name="driverBirthDate" type="java.sql.Timestamp" column="driver_birth_date" length="7"/>
+        <property name="driverHazLicenseExp" type="java.sql.Timestamp" column="haz_lic_exp_date"/>
+        <property name="driverHazLicenseNbr" type="java.lang.String" column="driver_Haz_lic_nbr" length="30"/>
+        <property name="driverIsHazardLicensed" type="java.lang.Boolean" column="is_hazard_licensed"/>
+
+        <property name="driverSuspended" type="java.sql.Timestamp" column="suspended" length="7"/>
+        <property name="driverStatus" type="com.navis.road.persistence.atoms.UserTypeDriverStatusEnum" column="status"
+                  length="12"/>
+
+        <property name="driverCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="driverCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="driverChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="driverChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="driverLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <property name="driverCardExpiration" type="java.sql.Timestamp" column="card_expiration" length="7"/>
+
+        <!-- associations -->
+        <many-to-one name="driverTruck" column="truck_gkey" class="com.navis.road.business.model.Truck" cascade="none">
+            <meta attribute="field-description">Reference to the Truck Table</meta>
+        </many-to-one>
+        <many-to-one name="driverTrkCo" column="trkco_gkey" class="com.navis.road.business.model.TruckingCompany"
+                     cascade="none">
+            <meta attribute="field-description">Reference to the Trucking Company Table</meta>
+        </many-to-one>
+        <set name="driverTrkVisitDtls" lazy="true" table="road_truck_visit_details">
+            <key column="driver_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckVisitDetails"/>
+        </set>
+        <set name="driverTrkCoSet" lazy="true" table="road_trucking_companies">
+            <key column="driver_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckingCompany"/>
+        </set>
+
+        <set name="trucks" lazy="true" table="road_trucks" cascade="all-delete-orphan" batch-size="1" outer-join="auto">
+            <key column="driver_gkey"/>
+            <one-to-many class="com.navis.road.business.model.Truck"/>
+        </set>
+
+        <!-- PSR ARGO-6023 create a single uid field from the alternates of card_id and license -->
+        <property name="driverId" type="java.lang.String" column="id" length="25"/>
+
+        <!--2010-11-25 rkasindula ARGO-25399 v2.2.G four flex strings columns are added to driver-->
+        <property name="driverFlexString01" column="flex_string01" type="string" length="255"/>
+        <property name="driverFlexString02" column="flex_string02" type="string" length="255"/>
+        <property name="driverFlexString03" column="flex_string03" type="string" length="255"/>
+        <property name="driverFlexString04" column="flex_string04" type="string" length="255"/>
+
+        <property name="driverIsInternal" type="java.lang.Boolean" column="is_internal" not-null="false"/>
+        <property name="driverCheLogonId" type="java.lang.String" column="che_logon_id" length="30" not-null="false"/>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.road.business.model.Truck" table="road_trucks" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable Truck</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.TruckHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4alias">truck</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Truck</meta>
+        <meta attribute="n4-entity-name-plural">Trucks</meta>
+        <meta attribute="n4-business-key">truckLicenseNbr</meta>
+
+        <id name="truckGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="truckScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" index="truck_reference_set" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="truckId" type="java.lang.String" column="truck_id" length="10" index="truck_id"/>
+        <property name="truckLicenseNbr" type="java.lang.String" column="license_nbr" length="10" unique-key="unique_key" index="truck_license_nbr"/>
+        <property name="truckLicenseState" type="java.lang.String" column="license_state" length="3"/>
+        <property name="truckLicenseExpiration" type="java.sql.Timestamp" column="expiration" length="7"/>
+
+        <property name="truckBatNbr" type="java.lang.String" column="bat_nbr" length="6"/>
+        <property name="truckAeiTagId" type="java.lang.String" column="aei_tag_id" length="40" index="truck_tag_id"/>
+        <property name="truckTareWeight" type="java.lang.Double" column="tare_weight"/>
+        <property name="truckSafeWeight" type="java.lang.Double" column="safe_weight"/>
+        <property name="truckStatus" type="com.navis.road.persistence.atoms.UserTypeTruckStatusEnum" column="status" length="8"/>
+
+        <property name="truckCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="truckCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="truckChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="truckChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="truckLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <!-- associations -->
+        <many-to-one name="truckTrkCo" column="trkco_gkey" class="com.navis.road.business.model.TruckingCompany"
+                     cascade="none">
+            <meta attribute="field-description">The last Trucking Company truck drove for</meta>
+        </many-to-one>
+        <many-to-one name="truckDriver" column="driver_gkey" class="com.navis.road.business.model.TruckDriver"
+                     cascade="none">
+            <meta attribute="field-description">The last Driver that drove this truck</meta>
+        </many-to-one>
+
+        <set name="truckrkVisitDtls" lazy="true" table="road_truck_visit_details">
+            <key column="truck_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckVisitDetails"/>
+        </set>
+        <set name="truckDrivers" lazy="true" table="road_truck_drivers" cascade="all-delete-orphan" batch-size="1"
+             outer-join="auto">
+            <key column="truck_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckDriver"/>
+        </set>
+
+        <property name="truckIsInternal" type="java.lang.Boolean" column="is_internal"/>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+        <!-- following columns has to be added -->
+        <!--many-to-one name="truckLastTrkCo" column="last_trkco_gkey" class="com.navis.road.business.model.TruckingCompany" cascade="none">
+            <meta attribute="field-description">Reference to the Truck Company Table</meta>
+        </many-to-one -->
+        <!--many-to-one name="truckLastDriver" column="last_driver_gkey" class="com.navis.road.business.model.TruckDriver" cascade="none">
+            <meta attribute="field-description">Reference to the usual truck driver</meta>
+        </many-to-one-->
+    </class>
+
+    <!-- following new entity has to be added -->
+
+    <class name="com.navis.road.business.model.TruckCompanyDriver" table="road_truck_company_drivers"
+           dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.TruckCompanyDriverHbr</meta>
+        <meta attribute="n4alias">trkcdrv</meta>
+        <meta attribute="n4-entity-name">Truck Company Driver</meta>
+        <meta attribute="n4-entity-name-plural">Truck Company Drivers</meta>
+
+        <id name="trkcdrvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="trkcDriverExpiration" type="java.sql.Timestamp" column="expiration" length="7"/>
+        <many-to-one name="trkcdrvTrkCo" column="trkco_gkey" class="com.navis.road.business.model.TruckingCompany"
+                     cascade="none">
+            <meta attribute="field-description">Reference to the Truck Company Table</meta>
+        </many-to-one>
+        <many-to-one name="trkcdrvDriver" column="driver_gkey" class="com.navis.road.business.model.TruckDriver"
+                     cascade="none">
+            <meta attribute="field-description">Reference to the usual truck driver</meta>
+        </many-to-one>
+    </class>
+
+    <class name="com.navis.road.business.model.RoadInspection" table="road_inspections" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.RoadInspectionHbr</meta>
+        <meta attribute="n4alias">insp</meta>
+        <meta attribute="n4-entity-name">Inspection</meta>
+        <meta attribute="n4-entity-name-plural">Inspections</meta>
+        <meta attribute="carina-index">
+            roadinspect_eq_crtd_idx(eq_id, created);
+        </meta>
+        <id name="inspGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">insp_gkey</param>
+            </generator>
+        </id>
+
+        <many-to-one name="inspFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="true">
+            <meta attribute="field-description">The Facility where this inspection occured</meta>
+        </many-to-one>
+
+        <many-to-one name="inspTruckTransaction" column="tran_gkey"
+                     class="com.navis.road.business.model.TruckTransaction" cascade="none">
+            <meta attribute="field-description">Truck Transaction Gkey</meta>
+        </many-to-one>
+
+        <property name="inspLaneDeprecated" type="java.lang.Long" column="lane_gkey"/>
+        <many-to-one name="inspLane" column="inspection_lane_gkey" class="com.navis.argo.business.model.Lane"
+                     cascade="none">
+            <meta attribute="field-description">Lane where inspection occured</meta>
+        </many-to-one>
+
+        <property name="inspEqId" type="java.lang.String" column="eq_id" length="12"/>
+        <property name="inspSealNbr1" type="java.lang.String" column="seal_nbr1" length="15"/>
+        <property name="inspSealNbr2" type="java.lang.String" column="seal_nbr2" length="15"/>
+        <property name="inspSealNbr3" type="java.lang.String" column="seal_nbr3" length="15"/>
+        <property name="inspSealNbr4" type="java.lang.String" column="seal_nbr4" length="15"/>
+        <property name="inspSealNbr5" type="java.lang.String" column="seal_nbr5" length="15"/>
+
+        <!-- Environment Details -->
+        <property name="inspTempObserved" type="java.lang.Double" column="temp_observed" length="5"/>
+        <property name="inspTempSetting" type="java.lang.Double" column="temp_setting" length="5"/>
+        <property name="inspVentUnit" column="vent_units" type="com.navis.argo.persistence.atoms.UserTypeVentUnitEnum" length="40">
+            <meta attribute="field-description">Unit (%,cubic feet per minute, etc.) that goes with the vent required and vent setting fields.</meta>
+        </property>
+        <property name="inspVentSetting" type="java.lang.Double" column="vent_setting_pct">
+            <meta attribute="field-description">Vent setting</meta>
+        </property>
+        <!-- 2008-04-30 (5097) EYU ARGO-11359, Added Required Temperature to the road inspection table -->
+        <property name="inspTempRequired" type="java.lang.Double" column="temp_required"/>
+
+        <!-- 2008-02-27 (5035) EYU ARGO-10242, Mobile Gate Inspection program, add new columns in RoadInspection table -->
+        <property name="inspIsDry" type="java.lang.Boolean" column="vent_is_dry"/>
+
+        <property name="inspHadTrouble" type="java.lang.Boolean" column="had_trouble" length="5"/>
+
+        <property name="inspEqtypId" type="java.lang.String" column="eqtypId" length="6">
+            <meta attribute="field-description">Equipment type code (ISO or other).</meta>
+        </property>
+        <property name="inspLineOp" type="java.lang.String" column="lineop" length="100">
+            <meta attribute="field-description">Line operator ID/Codes</meta>
+        </property>
+        <!-- 2008-05-12 (6010) EYU ARGO-11440, Added Truck License Plate  -->
+        <property name="inspLicense" type="java.lang.String" column="license" length="10"/>
+
+        <!-- Genset -->
+        <property name="inspGensetId" type="java.lang.String" column="genset_id" length="20"/>
+        <many-to-one name="inspGensetType" column="equip_type_gkey" class="com.navis.argo.business.reference.EquipType">
+            <meta attribute="field-description">Genset type</meta>
+        </many-to-one>
+
+        <!-- Position -->
+        <property name="inspPosOnTruck" type="java.lang.Integer" column="position_on_truck"/>
+        <property name="inspRemainOnTruck" type="java.lang.Boolean" column="remain_on_truck"/>
+        <property name="inspDoorDirection" type="com.navis.inventory.persistence.atoms.UserTypeDoorDirectionEnum"
+                  column="door_direction" length="8"/>
+
+        <!-- CSC Info -->
+        <property name="inspCscDate" type="java.lang.String" column="csc_date" length="15"/>
+        <property name="inspCscMnfDate" type="java.sql.Timestamp" column="csc_mnf_date"/>
+
+        <!-- Weight -->
+        <property name="inspSafeWt" type="java.lang.Double" column="safe_wt"/>
+        <property name="inspTareWt" type="java.lang.Double" column="tare_wt"/>
+        <property name="inspNotes" type="java.lang.String" column="notes" length="30"/>
+
+        <!-- Feature -->
+        <many-to-one name="inspEqFtr" column="feature_gkey" class="com.navis.argo.business.reference.EquipFeature">
+            <meta attribute="field-description">Equipment Feature</meta>
+        </many-to-one>
+        <property name="inspEqMaterial" type="com.navis.argo.persistence.atoms.UserTypeEquipMaterialEnum"
+                  column="material" length="16"/>
+
+        <property name="inspTankRails" column="tank_rails" type="com.navis.argo.persistence.atoms.UserTypeTankRailTypeEnum" not-null="false">
+            <meta attribute="field-description">Tank rail configuration.</meta>
+        </property>
+
+        <!-- Placards -->
+        <set name="inspPlacards" table="road_inspection_placard_map" lazy="true" cascade="none">
+            <key column="road_inspection_gkey"/>
+            <many-to-many class="com.navis.inventory.business.imdg.Placard" column="placd_gkey"/>
+        </set>
+
+        <!-- Bundles -->
+        <set name="inspBundles" lazy="true" table="road_inspection_bundles" cascade="save-update">
+            <key column="road_inspection_gkey"/>
+            <one-to-many class="com.navis.road.business.model.Bundle"/>
+        </set>
+
+        <!-- Hazard Details -->
+        <property name="inspIsHazard" type="java.lang.Boolean" not-null="true" column="is_hazard"/>
+        <property name="inspIsPlacarded" type="java.lang.Boolean" not-null="true" column="is_placarded"/>
+        <property name="inspIsPlacardedOk" type="java.lang.Boolean" not-null="true" column="is_placarded_ok"/>
+
+        <!-- Over Dimension Details -->
+        <property name="inspIsOog" type="java.lang.Boolean" not-null="true" column="is_oog"/>
+        <property name="inspOogFront" type="java.lang.Double" column="oog_front" length="5"/>
+        <property name="inspOogBack" type="java.lang.Double" column="oog_back" length="5"/>
+        <property name="inspOogLeft" type="java.lang.Double" column="oog_left" length="5"/>
+        <property name="inspOogRight" type="java.lang.Double" column="oog_right" length="5"/>
+        <property name="inspOogTop" type="java.lang.Double" column="oog_top" length="5"/>
+
+        <!-- Damage Details -->
+        <property name="inspDamageSeverity" column="damage_severity" type="com.navis.inventory.persistence.atoms.UserTypeEqDamageSeverityEnum"
+                  not-null="false">
+            <meta attribute="field-description">NONE/MINOR/MAJOR</meta>
+        </property>
+        <many-to-one name="inspDamages" column="eq_damages_gkey" class="com.navis.inventory.business.units.UnitEquipDamages" cascade="none">
+            <meta attribute="field-description">Equipment Damage Gkey</meta>
+        </many-to-one>
+        <many-to-one name="inspEqGrade" column="grade_gkey" class="com.navis.argo.business.reference.EquipGrade">
+            <meta attribute="field-description">Required grade for equipment</meta>
+        </many-to-one>
+
+        <!-- ARGO-11456 2008/05/07 eyu 1.6.A  Add M&R Status field to gate inspection RDT -->
+        <many-to-one name="inspMnrStatus" column="mnr_status_gkey" class="com.navis.argo.business.reference.MnrStatus" not-null="false">
+            <meta attribute="field-description">The M&amp;R Status</meta>
+        </many-to-one>
+
+        <!-- Audit -->
+        <property name="inspCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="inspCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="inspChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="inspChanger" type="java.lang.String" column="changer" length="30"/>
+
+        <!-- 08/03/2010 Serge Marchenko ARGO-24381 Add Unit flex fields in the gate inspection table. -->
+        <property name="inspUnitFlexString01" column="flex_string01" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="inspUnitFlexString02" column="flex_string02" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+        <property name="inspUnitFlexString03" column="flex_string03" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+        <property name="inspUnitFlexString04" column="flex_string04" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+        <property name="inspUnitFlexString05" column="flex_string05" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+        <property name="inspUnitFlexString06" column="flex_string06" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+        <property name="inspUnitFlexString07" column="flex_string07" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+        <property name="inspUnitFlexString08" column="flex_string08" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+        <property name="inspUnitFlexString09" column="flex_string09" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #09</meta>
+        </property>
+        <property name="inspUnitFlexString10" column="flex_string10" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #10</meta>
+        </property>
+        <property name="inspUnitFlexString11" column="flex_string11" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #11</meta>
+        </property>
+        <property name="inspUnitFlexString12" column="flex_string12" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #12</meta>
+        </property>
+        <property name="inspUnitFlexString13" column="flex_string13" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #13</meta>
+        </property>
+        <property name="inspUnitFlexString14" column="flex_string14" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #14</meta>
+        </property>
+        <property name="inspUnitFlexString15" column="flex_string15" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #15</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.road.business.model.Bundle" table="road_inspection_bundles" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.BundleHbr</meta>
+        <meta attribute="n4alias">bndl</meta>
+        <meta attribute="n4-entity-name">Bundle</meta>
+        <meta attribute="n4-entity-name-plural">Bundles</meta>
+
+        <id name="bndlGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">bndl_gkey</param>
+            </generator>
+        </id>
+        <property name="bndlEqId" type="java.lang.String" column="eq_id" length="12"/>
+        <many-to-one name="bndlDmg" column="damages_gkey"
+                     class="com.navis.inventory.business.units.UnitEquipDamages" cascade="none">
+            <meta attribute="field-description">Bundle Damage Gkey</meta>
+        </many-to-one>
+        <!--2011-04-19 spabbala v2.2.T ARGO-31418 added hbm property for existing road_inspection_gkey column to use findOrCreate pattern -->
+        <many-to-one name="bndlRoadInspection" column="road_inspection_gkey" class="com.navis.road.business.model.RoadInspection" not-null="false">
+            <meta attribute="field-description">The associated RoadInspection Gkey.</meta>
+        </many-to-one>
+    </class>
+
+    <class name="com.navis.road.business.model.Document" table="road_documents" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.DocumentHbr</meta>
+        <meta attribute="n4alias">doc</meta>
+        <meta attribute="n4-entity-name">Document</meta>
+        <meta attribute="n4-entity-name-plural">Documents</meta>
+
+        <id name="docPk" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">doc_gkey</param>
+            </generator>
+        </id>
+        <property name="docData" type="text" column="doc_data" length="100000000"/>
+        <property name="docTranSubType" type="com.navis.road.persistence.atoms.UserTypeTranSubTypeEnum" column="sub_type" length="2"/>
+        <property name="docCtrNbr" type="java.lang.String" column="ctr_id" length="30"/>
+        <property name="docChsNbr" type="java.lang.String" column="chs_id" length="30"/>
+        <property name="docCreated" type="java.sql.Timestamp" column="created" index="road_doc_created_index"/>
+        <property name="docCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="docStageId" type="java.lang.String" column="stage_id" length="60">
+            <meta attribute="field-description">Gate Stage ID at which this document was created</meta>
+        </property>
+
+        <!-- associations -->
+        <many-to-one name="docTransaction" column="tran_gkey" class="com.navis.road.business.model.TruckTransaction"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Truck Transaction</meta>
+        </many-to-one>
+        <many-to-one name="docTruckVisit" column="tvdtls_gkey" class="com.navis.road.business.model.TruckVisitDetails"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Truck Visit</meta>
+        </many-to-one>
+        <many-to-one name="docDocType" column="doctype_gkey" class="com.navis.argo.business.model.DocumentType"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Truck Transaction</meta>
+        </many-to-one>
+
+        <set name="docMessages" lazy="true" table="road_document_messages" cascade="all-delete-orphan">
+            <key column="doc_gkey"/>
+            <one-to-many class="com.navis.road.business.model.DocumentMessage"/>
+        </set>
+
+        <property name="docBatchNbr" type="java.lang.Long" column="batch_nbr"/>
+
+    </class>
+
+    <class name="com.navis.road.business.model.DocumentMessage" table="road_document_messages" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.DocumentMessageHbr</meta>
+        <meta attribute="n4alias">docmsg</meta>
+        <meta attribute="n4-entity-name">Document Message</meta>
+        <meta attribute="n4-entity-name-plural">Document Messages</meta>
+
+        <id name="docmsgPk" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="docmsgMsgId" type="java.lang.String" column="msg_id" length="255"/>
+        <property name="docmsgMsgText" type="java.lang.String" column="msg_text" length="255"/>
+        <property name="docmsgSeverity" type="java.lang.String" column="severity" length="255"/>
+        <property name="docmsgParam1" type="java.lang.String" column="param1" length="255"/>
+        <property name="docmsgParam2" type="java.lang.String" column="param2" length="255"/>
+        <property name="docmsgParam3" type="java.lang.String" column="param3" length="255"/>
+        <!--ARGO - 11342 2008-05-08 dvenkatesan Added param4 to param9 for DocumentMessage-->
+        <property name="docmsgParam4" type="java.lang.String" column="param4" length="255"/>
+        <property name="docmsgParam5" type="java.lang.String" column="param5" length="255"/>
+        <property name="docmsgParam6" type="java.lang.String" column="param6" length="255"/>
+        <property name="docmsgParam7" type="java.lang.String" column="param7" length="255"/>
+        <property name="docmsgParam8" type="java.lang.String" column="param8" length="255"/>
+        <property name="docmsgParam9" type="java.lang.String" column="param9" length="255"/>
+        <property name="docmsgCreated" type="java.sql.Timestamp" column="created" index="road_docmsg_created_index"/>
+        <property name="docmsgCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="docmsgStageId" type="java.lang.String" column="stage_id" length="60">
+            <meta attribute="field-description">Gate Stage ID at which this document message was created</meta>
+        </property>
+
+        <!-- associations -->
+        <many-to-one name="docmsgTransaction" column="tran_gkey" class="com.navis.road.business.model.TruckTransaction"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Truck Transaction</meta>
+        </many-to-one>
+        <!--
+        <many-to-one name="docmsgDocument" column="doc_gkey" class="com.navis.road.business.model.Document"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Document</meta>
+        </many-to-one>
+        -->
+    </class>
+
+    <!-- List of printers associated with a gate lane, including an optional document type assigned to printer -->
+    <class name="com.navis.road.business.model.GateLanePrinter" table="road_gate_lane_printers" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.GateLanePrinterHbr</meta>
+        <meta attribute="n4alias">laneprtr</meta>
+        <meta attribute="n4-entity-name">Gate Lane Printer</meta>
+        <meta attribute="n4-entity-name-plural">Gate Lane Printers</meta>
+
+        <id name="laneprtrPk" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">lane_printer_gkey</param>
+            </generator>
+        </id>
+
+        <!-- associations -->
+        <many-to-one name="laneprtrPrinter" column="printer_gkey" class="com.navis.road.business.reference.Printer"
+                     cascade="none">
+            <meta attribute="field-description">Reference to printer</meta>
+        </many-to-one>
+
+        <property name="laneprtrLaneDeprecated" type="java.lang.Long" column="lane_gkey"/>
+        <many-to-one name="laneprtrLane" column="printer_lane_gkey" class="com.navis.road.business.model.GateLane"
+                     cascade="none">
+            <meta attribute="field-description">Reference to gate lane</meta>
+        </many-to-one>
+
+        <many-to-one name="laneprtrDocType" column="doctype_gkey" class="com.navis.argo.business.model.DocumentType"
+                     cascade="none">
+            <meta attribute="field-description">Reference to document type</meta>
+        </many-to-one>
+
+        <property name="laneprtrCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="laneprtrCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="laneprtrChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="laneprtrChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="laneprtrLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+    </class>
+
+    <!-- List of printers associated with a console, including an optional document type assigned to printer -->
+    <class name="com.navis.road.business.model.ConsolePrinter" table="road_console_printers" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ConsolePrinterHbr</meta>
+        <meta attribute="n4alias">consoleprtr</meta>
+        <meta attribute="n4-entity-name">Console Printer</meta>
+        <meta attribute="n4-entity-name-plural">Console Printers</meta>
+
+        <id name="consoleprtrPk" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">lane_printer_gkey</param>
+            </generator>
+        </id>
+
+        <!-- associations -->
+        <many-to-one name="consoleprtrPrinter" column="printer_gkey" class="com.navis.road.business.reference.Printer"
+                     cascade="none">
+            <meta attribute="field-description">Reference to printer</meta>
+        </many-to-one>
+
+        <many-to-one name="consoleprtrConsole" column="console_gkey" class="com.navis.road.business.reference.Console"
+                     cascade="none">
+            <meta attribute="field-description">Reference to console</meta>
+        </many-to-one>
+
+        <many-to-one name="consoleprtrDocType" column="doctype_gkey" class="com.navis.argo.business.model.DocumentType"
+                     cascade="none">
+            <meta attribute="field-description">Reference to document type</meta>
+        </many-to-one>
+
+        <property name="consoleprtrCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="consoleprtrCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="consoleprtrChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="consoleprtrChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="consoleprtrLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.road.business.model.TruckVisitStats" table="road_truck_visit_stats" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.TruckVisitStatsHbr</meta>
+        <meta attribute="n4alias">tvstat</meta>
+        <meta attribute="n4-entity-name">TruckVisitStat</meta>
+        <meta attribute="n4-entity-name-plural">TruckVisitStats</meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE INDEX tvstat_tvstatus_complete_idx ON road_truck_visit_stats (tv_status, completed);
+        </meta>
+
+        <id name="tvstatGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">tvstat_gkey</param>
+            </generator>
+        </id>
+
+        <!-- associations, the truck visit is optional so the truck visit can be purged and the stats retained -->
+        <many-to-one name="tvstatGate" column="gate_gkey" class="com.navis.road.business.model.Gate" cascade="none">
+            <meta attribute="field-description">Reference to Gate</meta>
+        </many-to-one>
+        <many-to-one name="tvstatTruckVisit" column="tv_gkey" class="com.navis.road.business.model.TruckVisitDetails"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Truck Visit</meta>
+        </many-to-one>
+        <many-to-one name="tvstatTruckingCompany" column="trkc_gkey"
+                     class="com.navis.road.business.model.TruckingCompany" cascade="none">
+            <meta attribute="field-description">Reference to Trucking Company</meta>
+        </many-to-one>
+        <many-to-one name="tvstatDriver" column="driver_gkey" class="com.navis.road.business.model.TruckDriver"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Truck Driver</meta>
+        </many-to-one>
+        <many-to-one name="tvstatLineRcv" column="line_rcv_gkey" class="com.navis.argo.business.reference.LineOperator"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Line Operator for first recieval</meta>
+        </many-to-one>
+        <many-to-one name="tvstatLineDlv" column="line_dlv_gkey" class="com.navis.argo.business.reference.LineOperator"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Line Operator for first delivery</meta>
+        </many-to-one>
+
+        <!-- Basic attributes -->
+        <property name="tvstatHadTrouble" type="java.lang.Boolean" column="had_trouble" length="5"/>
+        <property name="tvstatStart" type="java.sql.Timestamp" column="started"/>
+        <property name="tvstatEnd" type="java.sql.Timestamp" column="completed"/>
+        <property name="tvstatTurnTime" type="java.lang.Long" column="turn_time" length="10"/>
+        <property name="tvstatStatus" type="com.navis.road.persistence.atoms.UserTypeTranStatusEnum" column="tv_status"
+                  length="8"/>
+        <property name="tvstatTranCount" type="java.lang.Long" column="tran_count" length="5"/>
+        <property name="tvstatIsCanceled" type="java.lang.Boolean" column="is_canceled"/>
+
+        <!-- Count breakdown by transaction type -->
+        <property name="tvstatDlvFullCount" type="java.lang.Long" column="dlv_full_count" length="5"/>
+        <property name="tvstatRcvFullCount" type="java.lang.Long" column="rcv_full_count" length="5"/>
+        <property name="tvstatDlvMtyCount" type="java.lang.Long" column="dlv_mty_count" length="5"/>
+        <property name="tvstatRcvMtyCount" type="java.lang.Long" column="rcv_mty_count" length="5"/>
+        <property name="tvstatDlvChsCount" type="java.lang.Long" column="dlv_chs_count" length="5"/>
+        <property name="tvstatRcvChsCount" type="java.lang.Long" column="rcv_chs_count" length="5"/>
+        <!-- 2009-07-09 bbakthavachalam v2.0.E ARGO-19447: need to determine 'tvstatTroubleResolveTime' and  'tvstatTurnTimeNet' -->
+        <!-- these fields driven by a formula, there will be no db column for that fields-->
+        <property name="tvstatTroubleResolveTime" type="java.lang.Long"
+                  formula="( SELECT SUM(road_truck_visit_stages.trouble_resolve_time) FROM road_truck_visit_stages
+                  WHERE (road_truck_visit_stages.tvstat_gkey = gkey) AND (road_truck_visit_stages.had_trouble = 1))">
+            <meta attribute="field-description">The total time to resolve the problem that occured in any stages of visit(in milliseconds).</meta>
+        </property>
+        <property name="tvstatTurnTimeNet" type="java.lang.Long"
+                  formula="COALESCE(turn_time,0) - ( SELECT SUM(COALESCE(road_truck_visit_stages.trouble_resolve_time,0)) FROM road_truck_visit_stages
+                  WHERE (road_truck_visit_stages.tvstat_gkey = gkey) AND (road_truck_visit_stages.had_trouble = 1))">
+            <meta attribute="field-description">Truck turn time minus truck trouble time(in milliseconds).</meta>
+        </property>
+
+        <property name="tvstatChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="tvstatChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="tvstatCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="tvstatCreator" type="java.lang.String" column="creator" length="30"/>
+
+        <set name="tvstatStages" lazy="true" table="truck_visit_stages" cascade="all-delete-orphan">
+            <key column="tvstat_gkey"/>
+            <one-to-many class="com.navis.road.business.model.TruckVisitStage"/>
+        </set>
+
+    </class>
+
+    <class name="com.navis.road.business.model.TruckVisitStage" table="road_truck_visit_stages" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.TruckVisitStageHbr</meta>
+        <meta attribute="n4alias">tvstage</meta>
+        <meta attribute="n4-entity-name">TruckVisitStage</meta>
+        <meta attribute="n4-entity-name-plural">TruckVisitStages</meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE INDEX tvstage_hadtrouble_tvstat_idx ON road_truck_visit_stages (had_trouble, tvstat_gkey) include (trouble_resolve_time);
+        </meta>
+        <meta attribute="carina-oracle-index">
+            CREATE INDEX tvstage_hadtrouble_tvstat_idx ON road_truck_visit_stages (had_trouble, tvstat_gkey,trouble_resolve_time)
+        </meta>
+
+        <id name="tvstageGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">tvstage_gkey</param>
+            </generator>
+        </id>
+
+        <!-- associations, the truck visit is optional so the truck visit can be purged and the stats retained -->
+        <many-to-one name="tvstageTvStats" column="tvstat_gkey" class="com.navis.road.business.model.TruckVisitStats"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Truck Visit Stats</meta>
+        </many-to-one>
+
+        <property name="tvstageSeq" type="java.lang.Long" column="seq" length="5"/>
+        <property name="tvstageId" type="java.lang.String" column="id" length="60"/>
+        <property name="tvstageStart" type="java.sql.Timestamp" column="stage_start"/>
+        <property name="tvstageEnd" type="java.sql.Timestamp" column="stage_end"/>
+        <property name="tvstageQueueTime" type="java.lang.Long" column="queue_time"/>
+        <property name="tvstageHadTrouble" type="java.lang.Boolean" column="had_trouble" length="5"/>
+        <property name="tvstageTroubleResolveTime" type="java.lang.Long" column="trouble_resolve_time" length="5"/>
+        <property name="tvstageExtraTimeAllowanceMins" type="java.lang.Integer" column="extra_time_mins"/>
+
+        <property name="tvstageChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="tvstageChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="tvstageCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="tvstageCreator" type="java.lang.String" column="creator" length="30"/>
+
+    </class>
+
+    <class name="com.navis.road.business.model.TruckVisitImage" table="road_truck_visit_images" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.TruckVisitImageHbr</meta>
+        <meta attribute="n4alias">tvimg</meta>
+        <meta attribute="n4-entity-name">Truck Visit Image</meta>
+        <meta attribute="n4-entity-name-plural">Truck Visit Images</meta>
+
+        <id name="tvimgGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">tvimg_gkey</param>
+            </generator>
+        </id>
+
+        <many-to-one name="tvimgFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="true">
+        </many-to-one>
+
+        <property name="tvimgCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="tvimgCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="tvimgChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="tvimgChanged" type="java.sql.Timestamp" column="changed"/>
+
+        <many-to-one name="tvimgTruckVisit" column="tv_gkey" class="com.navis.road.business.model.TruckVisitDetails"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Truck Visit</meta>
+        </many-to-one>
+
+        <property name="tvimgId" type="java.lang.String" length="40" column="id"/>
+        <property name="tvimgUrl" type="java.lang.String" length="255" column="url"/>
+
+        <many-to-one name="tvimgGate" column="gate_gkey" class="com.navis.road.business.model.Gate" not-null="false">
+            <meta attribute="field-description">Gate where image was sourced</meta>
+        </many-to-one>
+        <property name="tvimgStageId" type="java.lang.String" column="stage_id" length="20"/>
+        <property name="tvimgLaneDeprecated" type="java.lang.Long" column="lane_gkey"/>
+        <many-to-one name="tvimgLane" column="lane_captured_gkey" class="com.navis.argo.business.model.Lane" not-null="false">
+            <meta attribute="field-description">Lane where image was captured</meta>
+        </many-to-one>
+
+        <property name="tvimgExchangeAreaDeprecated" column="xcharea_gkey" type="java.lang.Long"/>
+
+        <many-to-one name="tvimgExchangeAreaCaptured" column="xcharea_captured_gkey" class="com.navis.argo.business.model.ExchangeArea" not-null="false">
+            <meta attribute="field-description">Exchange Area where image was captured</meta>
+        </many-to-one>
+
+        <property name="tvimgSetId" type="java.lang.String" length="40" column="set_id">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <property name="tvimgSubject" type="java.lang.String" length="40" column="subject">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="tvimgCaptured" type="java.sql.Timestamp" column="captured"/>
+
+    </class>
+
+    <class name="com.navis.road.business.model.TruckTransactionStage" table="road_truck_transaction_stages" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.TruckTransactionStageHbr</meta>
+        <meta attribute="n4alias">ttstage</meta>
+        <meta attribute="n4-entity-name">TruckTransactionStage</meta>
+        <meta attribute="n4-entity-name-plural">TruckTransactionStages</meta>
+
+        <id name="ttstageGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">ttstage_gkey</param>
+            </generator>
+        </id>
+
+        <property name="ttstageSeq" type="java.lang.Long" column="seq" length="5"/>
+        <property name="ttstageId" type="java.lang.String" column="id" length="60"/>
+        <property name="ttstageStart" type="java.sql.Timestamp" column="stage_start"/>
+        <property name="ttstageEnd" type="java.sql.Timestamp" column="stage_end"/>
+        <property name="ttstageStatus" type="com.navis.road.persistence.atoms.UserTypeTranStageStatusEnum" column="status" length="12"/>
+        <property name="ttstageType" type="com.navis.road.persistence.atoms.UserTypeTranStageTypeEnum" column="stage_type" length="12"/>
+        <property name="ttstageChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="ttstageChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="ttstageCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="ttstageCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="ttstageOrder" type="java.lang.Long" column="stage_order" length="5"/>
+        <property name="ttstageHadTrouble" type="java.lang.Boolean" column="had_trouble" length="5"/>
+        <!--2009-09-09 rsatish v2.0.H ARGO-20291 required in reports -->
+        <property name="ttstageQueueTime" type="java.lang.Long" column="queue_time"/>
+        <!--2009-09-09 rsatish v2.0.H ARGO-20310 required in reports -->
+        <property name="ttstageTroubleResolveTime" type="java.lang.Long" column="trouble_resolve_time" length="5"/>
+
+        <!-- associations -->
+        <many-to-one name="stageTransaction" column="tran_gkey" class="com.navis.road.business.model.TruckTransaction"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Truck Transaction</meta>
+        </many-to-one>
+    </class>
+
+    <class name="com.navis.road.business.model.LineGateRestriction" table="road_line_gate_restrictions"
+           dynamic-update="true">
+        <meta attribute="class-description">Restricted transaction types for this Line Operator</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.LineGateRestrictionHbr</meta>
+        <meta attribute="n4alias">lgr</meta>
+        <meta attribute="n4-entity-name">Line Gate Restriction</meta>
+        <meta attribute="n4-entity-name-plural">Line Gate Restrictions</meta>
+
+        <id name="lgrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="lgrLine" column="line_gkey" class="com.navis.argo.business.reference.LineOperator"
+                     not-null="true">
+            <meta attribute="field-description">Line to which this restriction is associated</meta>
+        </many-to-one>
+
+        <property name="lgrTranSubType" type="com.navis.road.persistence.atoms.UserTypeTranSubTypeEnum" column="tran_sub_type" length="2"/>
+
+        <property name="lgrCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="lgrCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="lgrChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="lgrChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="lgrLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+    <!--ARGO=19366 2009-07-07 dvenkatesan Add a new entity for Transaction Cancel Reasons-->
+    <class name="com.navis.road.business.reference.CancelReason" table="ref_tran_cancel_reasons" dynamic-update="true">
+        <meta attribute="class-description">Domain entity to define the reasons for cancelling a Truck Transaction</meta>
+        <meta attribute="generated-class">com.navis.road.business.reference.CancelReasonHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4alias">cr</meta>
+        <meta attribute="n4-entity-name">Cancel Reason</meta>
+        <meta attribute="n4-entity-name-plural">Cancel Reasons</meta>
+        <meta attribute="n4-business-key">crCode</meta>
+
+        <id name="crGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="crScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="crCode" type="java.lang.String" column="code" length="15" not-null="true" unique-key="unique_key"/>
+        <property name="crDescription" type="java.lang.String" column="description" length="255"/>
+        <property name="crCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="crCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="crChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="crChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="crLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.road.business.model.GateExchangeAreaDelay" table="road_gate_exchange_area_delay" dynamic-update="true">
+        <meta attribute="class-description">Domain entity that holds a delay value to be used to activate a WorkInstruction that will be
+            serviced in the Destination Exchange Area.
+        </meta>
+        <meta attribute="generated-class">com.navis.road.business.model.GateExchangeAreaDelayHbr</meta>
+        <meta attribute="n4alias">xchdly</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Exchange Area Delay</meta>
+        <meta attribute="n4-entity-name-plural">Exchange Area Delays</meta>
+
+        <id name="gatexchdlyGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="gatexchdlyGatexcharea" column="gatexcharea_gkey" class="com.navis.road.business.model.GateExchangeArea"
+                     not-null="true" cascade="none">
+            <meta attribute="field-description">Exchange Area (Destination) to which this delay applies</meta>
+            <meta attribute="scope-set">protected</meta>
+        </many-to-one>
+
+        <!-- Either a Gate Stage or an Exchange Area could be the origin. Therefore not-null = false -->
+        <property name="gatexchdlyOriginGateStageId" type="java.lang.String" column="origin_stage_id" length="30" not-null="false">
+            <meta attribute="field-description">Origin Gate Stage from which this delay applies</meta>
+        </property>
+
+        <!-- Either a Gate Stage or an Exchange Area could be the origin. Therefore not-null = false -->
+        <many-to-one name="gatexchdlyOriginXcharea" column="from_xcharea_gkey" class="com.navis.argo.business.model.ExchangeArea"
+                     not-null="false" cascade="none">
+            <meta attribute="field-description">Origin Exchange Area this delay applies to</meta>
+        </many-to-one>
+
+        <property name="gatexchdlyDelay" type="java.lang.Long" column="delay" not-null="true"/>
+
+        <property name="gatexchdlyCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="gatexchdlyCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="gatexchdlyChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="gatexchdlyChanger" type="java.lang.String" column="changer" length="30"/>
+
+    </class>
+
+    <class name="com.navis.road.business.model.TruckAction" table="road_truck_actions" dynamic-update="true">
+        <meta attribute="class-description">Action Codes for Trucks</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.TruckActionHbr</meta>
+        <meta attribute="n4alias">trkact</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Truck Action</meta>
+        <meta attribute="n4-entity-name-plural">Truck Actions</meta>
+        <meta attribute="n4-business-key">trkactId</meta>
+
+        <id name="trkactGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">trkact_gkey</param>
+            </generator>
+        </id>
+
+        <property name="trkactCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="trkactCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="trkactChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="trkactChanger" type="java.lang.String" column="changer" length="30"/>
+
+        <!-- @todo remove trkactFacility -->
+        <many-to-one name="trkactFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="false"/>
+
+        <many-to-one name="trkactOperator" column="opr_gkey" class="com.navis.argo.business.model.Operator"
+                     not-null="false">
+            <meta attribute="field-description">Operator that this truck action belongs to</meta>
+        </many-to-one>
+
+        <property name="trkactLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="trkactId" type="java.lang.String" column="id" length="20" index="road_truck_action_id_idx"/>
+        <property name="trkactDescription" type="java.lang.String" column="description" length="80" not-null="true"/>
+        <property name="trkactSeverity" type="java.lang.Integer" column="severity" length="4"/>
+        <property name="trkactIsRetry" type="java.lang.Boolean" column="is_retry"/>
+        <property name="trkactHoldTruck" type="java.lang.Boolean" column="hold_truck"/>
+        <property name="trkactIsDefaultInbound" type="java.lang.Boolean" column="is_default_inbound"/>
+        <property name="trkactIsDefaultOutbound" type="java.lang.Boolean" column="is_default_outbound"/>
+        <property name="trkactIsDefaultYard" type="java.lang.Boolean" column="is_default_yard"/>
+        <property name="trkactInfo" type="java.lang.String" column="location" length="255">
+            <meta attribute="field-description">Additional info for action (eg field to retry, location to proceed to)</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <class name="com.navis.road.business.model.ChassisProfile" table="road_chassis_profiles" dynamic-update="true">
+        <meta attribute="class-description">Entity for Chassis Profiles/Configurations</meta>
+        <meta attribute="generated-class">com.navis.road.business.model.ChassisProfileHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4alias">chpro</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Chassis Profile</meta>
+        <meta attribute="n4-entity-name-plural">Chassis Profiles</meta>
+        <meta attribute="n4-business-key">chproId</meta>
+
+        <id name="chproGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="chproScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" index="chpro_reference_set"/>
+        </many-to-one>
+
+        <property name="chproCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="chproCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="chproChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="chproChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="chproLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="chproId" type="java.lang.String" column="id" length="12" not-null="true"/>
+
+        <property name="chproIsProhibited" type="java.lang.Boolean" column="profile_is_prohibited"/>
+
+        <property name="chproChassis1Teu" type="java.lang.Integer" column="chassis1_teu" length="2"/>
+        <property name="chproChassis2Teu" type="java.lang.Integer" column="chassis2_teu" length="2"/>
+        <property name="chproChassis3Teu" type="java.lang.Integer" column="chassis3_teu" length="2"/>
+        <property name="chproChassis4Teu" type="java.lang.Integer" column="chassis4_teu" length="2"/>
+        <property name="chproChassis5Teu" type="java.lang.Integer" column="chassis5_teu" length="2"/>
+
+        <property name="chproLengthOverall" type="java.lang.Double" column="length_overall"/>
+        <property name="chproWeight" type="java.lang.Double" column="weight"/>
+        <property name="chproHasCenterPins" type="java.lang.Boolean" column="has_center_pins"/>
+        <property name="chproIsHeavyLift" type="java.lang.Boolean" column="is_heavy_lift"/>
+        <property name="chproChassis1Crane" type="java.lang.Boolean" column="chassis1_has_crane"/>
+        <property name="chproChassis2Crane" type="java.lang.Boolean" column="chassis2_has_crane"/>
+        <property name="chproChassis3Crane" type="java.lang.Boolean" column="chassis3_has_crane"/>
+        <property name="chproChassis4Crane" type="java.lang.Boolean" column="chassis4_has_crane"/>
+        <property name="chproChassis5Crane" type="java.lang.Boolean" column="chassis5_has_crane"/>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+</hibernate-mapping>

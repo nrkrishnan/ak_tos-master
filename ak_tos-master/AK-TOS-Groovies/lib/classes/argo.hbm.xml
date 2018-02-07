@@ -1,0 +1,2605 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (c) 2013 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- 06-Feb-01 ramsatis v1.0.4 ARGO-2245 proxy enabled -->
+<!-- 06-Feb-07 ramsatis v1.0.5 ARGO-2245 reverted back for time being as per Andreas suggestion -->
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">Argo</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- Entity: CheZone -->
+    <class name="com.navis.argo.business.xps.model.CheZone" table="xps_chezone" dynamic-update="true">
+
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4alias">chezone</meta>
+        <meta attribute="generated-class">com.navis.argo.business.xps.model.CheZoneHbr</meta>
+        <meta attribute="carina-index">chezone_py_idx(pkey,yard)</meta>
+
+        <id name="chezoneGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="chezoneYard" class="com.navis.argo.business.model.Yard">
+            <column name="yard" not-null="true"/>
+        </many-to-one>
+
+        <property name="chezonePkey" column="pkey" index="chezone_idx" type="java.lang.Long" not-null="true"/>
+        <property name="chezoneCheId" column="che_id" type="java.lang.Long" not-null="true"/>
+        <property name="chezoneSelBlock" column="sel_block" type="java.lang.String" length="255" not-null="true"/>
+        <property name="chezoneSelFirstRow" column="sel_first_row" type="java.lang.Long"/>
+        <property name="chezoneSelLastRow" column="sel_last_row" type="java.lang.Long"/>
+        <property name="chezoneSelFirstColumn" column="sel_first_column" type="java.lang.Long"/>
+        <property name="chezoneSelLastColumn" column="sel_last_column" type="java.lang.Long"/>
+        <property name="chezoneOrdFirstRow" column="ord_first_row" type="java.lang.Long"/>
+        <property name="chezoneOrdLastRow" column="ord_last_row" type="java.lang.Long"/>
+        <property name="chezoneOrdFirstColumn" column="ord_first_column" type="java.lang.Long"/>
+        <property name="chezoneOrdLastColumn" column="ord_last_column" type="java.lang.Long"/>
+        <property name="chezoneOrdFirstTrack" column="ord_first_track" type="java.lang.Long"/>
+        <property name="chezoneOrdLastTrack" column="ord_last_track" type="java.lang.Long"/>
+
+    </class>
+
+    <!-- Entity: EcEvent -->
+    <class name="com.navis.argo.business.xps.model.EcEvent" table="xps_ecevent">
+
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4alias">ecevent</meta>
+        <meta attribute="generated-class">com.navis.argo.business.xps.model.EcEventHbr</meta>
+        <meta attribute="carina-sqlserver-index">create nonclustered index xps_ecevent_yard_pkey on xps_ecevent(yard, pkey) include(gkey)</meta>
+        <meta attribute="carina-oracle-index">xps_ecevent_yard_pkey(yard,pkey)</meta>
+        <meta attribute="carina-mysql-index">xps_ecevent_yard_pkey(yard,pkey)</meta>
+        <id name="eceventGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="eceventYard" class="com.navis.argo.business.model.Yard">
+            <column name="yard" not-null="true"/>
+        </many-to-one>
+
+        <property name="eceventPkey" column="pkey" index="ecevent_idx" type="java.lang.Long" not-null="true"/>
+
+        <property name="eceventTimestamp" column="timestamp" type="java.util.Date"/>
+        <property name="eceventType" column="type" type="java.lang.Long"/>
+        <property name="eceventCheId" column="che_id" type="java.lang.Long"/>
+        <property name="eceventCheName" column="che_name" type="java.lang.String" length="255"/>
+        <property name="eceventOperatorName" column="operator_name" type="java.lang.String" length="255"/>
+        <property name="eceventSubType" column="sub_type" type="java.lang.Long"/>
+        <property name="eceventTypeDescription" column="type_description" type="java.lang.String" length="255"/>
+        <property name="eceventFromCheIdName" column="from_che_id_name" type="java.lang.Long"/>
+        <property name="eceventToCheIdName" column="to_che_id_name" type="java.lang.Long"/>
+        <property name="eceventUnitIdName" column="unit_id_name" type="java.lang.String" length="255"/>
+        <property name="eceventPowName" column="pow_name" type="java.lang.String" length="255"/>
+        <property name="eceventPoolName" column="pool_name" type="java.lang.String" length="255"/>
+        <property name="eceventWorkQueue" column="work_queue" type="java.lang.String" length="255"/>
+        <property name="eceventTravelDistance" column="travel_distance" type="java.lang.Long"/>
+        <property name="eceventMoveKind" column="move_kind" type="java.lang.String" length="255"/>
+        <property name="eceventIsTwinMove" column="is_twin_move" type="java.lang.Boolean"/>
+        <property name="eceventStartDistance" column="start_distance" type="java.lang.Long"/>
+        <property name="eceventWorkAssignmentGkey" column="work_assignment_gkey" type="java.lang.Long"/>
+        <property name="eceventWorkAssignmentId" column="work_assignment_id" type="java.lang.String" length="255"/>
+        <property name="eceventUnitReference" column="unit_reference" type="java.lang.String" length="255"/>
+        <property name="eceventTransactionId" column="tran_id" type="java.lang.String" length="255"/>
+        <property name="eceventLocType" column="loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16">
+            <meta attribute="field-description">An Enum giving the type of position</meta>
+        </property>
+        <property name="eceventLocId" column="locid" type="string" length="16">
+            <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+        </property>
+        <property name="eceventLocSlot" column="loc_slot" type="string" length="16">
+            <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+        </property>
+        <property name="eceventPosOperationalPosId" column="ops_pos_id" type="string" length="80">
+            <meta attribute="field-description">XPS/ECI operation position (TIP, TQ, LN.4, AGV.AGV01.xyz, QCPLATFORM.QC01.xyz, etc.)</meta>
+        </property>
+        <property name="eceventUnladenLocType" column="unladen_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16">
+            <meta attribute="field-description">An Enum giving the type of position when che is unladen</meta>
+        </property>
+        <property name="eceventUnladenLocId" column="unladen_locid" type="string" length="16">
+            <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id when che is unladen</meta>
+        </property>
+        <property name="eceventUnladenLocSlot" column="unladen_loc_slot" type="string" length="16">
+            <meta attribute="field-description">A String giving the coordinates of the Position within its Location when che is unladen</meta>
+        </property>
+        <property name="eceventLadenLocType" column="laden_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16">
+            <meta attribute="field-description">An Enum giving the type of position when che is laden</meta>
+        </property>
+        <property name="eceventLadenLocId" column="laden_locid" type="string" length="16">
+            <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id when che is laden</meta>
+        </property>
+        <property name="eceventLadenLocSlot" column="laden_loc_slot" type="string" length="16">
+            <meta attribute="field-description">A String giving the coordinates of the Position within its Location when che is laden</meta>
+        </property>
+    </class>
+
+    <!-- Entity: EcAlarm -->
+    <class name="com.navis.argo.business.xps.model.EcAlarm" table="xps_ecalarm">
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4alias">ecalarm</meta>
+        <meta attribute="carina-index">ecalarm_py_idx(pkey,yard)</meta>
+        <meta attribute="generated-class">com.navis.argo.business.xps.model.EcAlarmHbr</meta>
+
+        <id name="ecalarmGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="ecalarmYard" class="com.navis.argo.business.model.Yard">
+            <column name="yard" not-null="true"/>
+        </many-to-one>
+
+        <many-to-one name="ecalarmChe" class="com.navis.argo.business.xps.model.Che">
+            <column name="che" not-null="false"/>
+        </many-to-one>
+
+        <property name="ecalarmPkey" column="pkey" index="ecalarm_idx" type="java.lang.Long" not-null="true"/>
+
+        <property name="ecalarmSubjectName" column="subject_name" type="java.lang.String"
+                  length="255"  />
+        <property name="ecalarmSubjectType" column="subject_type" type="java.lang.Long"
+                />
+        <property name="ecalarmPosition" column="position" type="java.lang.String"
+                  length="255"  />
+        <property name="ecalarmAlarmTime" column="alarm_time" type="java.util.Date"
+                />
+        <property name="ecalarmCheId" column="che_id" type="java.lang.String"
+                  length="255"  />
+        <property name="ecalarmUserName" column="user_name" type="java.lang.String"
+                  length="255"  />
+        <property name="ecalarmDescription" column="description" type="java.lang.String"
+                  length="255"  />
+    </class>
+
+
+    <!-- Entity: WorkShift -->
+    <class name="com.navis.argo.business.xps.model.WorkShift" table="xps_craneshift" dynamic-update="true">
+
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4alias">workshift</meta>
+        <meta attribute="carina-index">craneshift_py_idx(pkey,yard)</meta>
+        <meta attribute="generated-class">com.navis.argo.business.xps.model.WorkShiftHbr</meta>
+
+        <id name="workshiftGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="workshiftYard" class="com.navis.argo.business.model.Yard">
+            <column name="yard" not-null="true"/>
+        </many-to-one>
+
+        <property name="workshiftPkey" column="pkey" index="workshift_idx" type="java.lang.Long" not-null="true"/>
+        <property name="workshiftVisit" column="visit" type="java.lang.String" length="255"/>
+        <property name="workshiftOwnerPowPkey" column="owner_pow" type="java.lang.Long"/>
+        <many-to-one name="workshiftOwnerPow" class="com.navis.argo.business.xps.model.PointOfWork">
+            <column name="owner_pow_gkey" not-null="false"/>
+        </many-to-one>
+        <property name="workshiftProduction" column="production" type="java.lang.Long"/>
+        <property name="workshiftDualProduction" column="dual_production" type="java.lang.Long"/>
+        <property name="workshiftAboveDeckPenalty" column="above_deck_penalty" type="java.lang.Long"/>
+        <property name="workshiftStartTime" column="start_time" type="java.util.Date"/>
+        <property name="workshiftDuration" column="duration" type="java.lang.Long"/>
+        <property name="workshiftCost" column="cost" type="java.lang.Float"/>
+        <property name="workshiftCraneOperator" column="crane_operator" type="java.lang.String" length="255"/>
+        <property name="workshiftClerk1" column="clerk1" type="java.lang.String" length="255"/>
+        <property name="workshiftClerk2" column="clerk2" type="java.lang.String" length="255"/>
+        <property name="workshiftCraneOperatorLogin" column="crane_operator_login" type="java.lang.String" length="255"/>
+        <property name="workshiftClerk1Login" column="clerk1_login" type="java.lang.String" length="255"/>
+        <property name="workshiftRadioId" column="radio_id" type="java.lang.String" length="255"/>
+        <property name="workshiftNextShiftPkey" column="next_shift" type="java.lang.Long"/>
+        <many-to-one name="workshiftNextShift" class="com.navis.argo.business.xps.model.WorkShift">
+            <column name="next_shift_gkey" not-null="false"/>
+        </many-to-one>
+        <property name="workshiftNextShiftPriority" column="next_shift_priority" type="java.lang.Long"/>
+        <property name="workshiftWorkState" column="work_state" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'workshiftWorkStateEnum' instead</meta>
+        </property>
+        <property name="workshiftWorkStateEnum" column="work_state_enum" type="com.navis.argo.persistence.atoms.UserTypeWsWorkStateEnum"/>
+        <property name="workshiftBerthLocation" column="berth_location" type="java.lang.Long"/>
+        <property name="workshiftShiftName" column="shift_name" type="java.lang.String" length="255"/>
+        <property name="workshiftFirstLiftTime" column="first_lift_time" type="java.util.Date"/>
+        <property name="workshiftLastLiftTime" column="last_lift_time" type="java.util.Date"/>
+        <property name="workshiftTwinProduction" column="twin_production" type="java.lang.Long"/>
+        <property name="workshiftShiftRTGs" column="shift_rtgs" type="java.lang.Long"/>
+        <property name="workshiftShiftForks" column="shift_forks" type="java.lang.Long"/>
+        <property name="workshiftShiftRTGAssignment" column="shift_rtgassignment" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'workshiftShiftRTGAssignmentEnum' instead</meta>
+        </property>
+        <property name="workshiftShiftRTGAssignmentEnum" column="shift_rtgassignment_enum"
+                  type="com.navis.argo.persistence.atoms.UserTypeWsResourceAssignmentEnum"/>
+        <property name="workshiftShiftForkAssignment" column="shift_fork_assignment" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'workshiftShiftForkAssignmentEnum' instead</meta>
+        </property>
+        <property name="workshiftShiftForkAssignmentEnum" column="shift_fork_assignment_enum"
+                  type="com.navis.argo.persistence.atoms.UserTypeWsResourceAssignmentEnum"/>
+        <property name="workshiftShiftRTGFollowQC" column="shift_rtgfollow_qc" type="java.lang.Boolean"/>
+        <property name="workshiftShiftForkFollowQC" column="shift_fork_follow_qc" type="java.lang.Boolean"/>
+        <property name="workshiftTandemProduction" column="tandem_production" type="java.lang.Long"/>
+        <property name="workshiftQuadProduction" column="quad_production" type="java.lang.Long"/>
+
+    </class>
+
+    <!-- Entity: PointOfWork -->
+    <class name="com.navis.argo.business.xps.model.PointOfWork" table="xps_pointofwork" dynamic-update="true">
+
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4alias">pointofwork</meta>
+        <meta attribute="carina-index">pointofwork_py_idx(pkey,yard)</meta>
+        <meta attribute="generated-class">com.navis.argo.business.xps.model.PointOfWorkHbr</meta>
+
+        <id name="pointofworkGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="pointofworkYard" class="com.navis.argo.business.model.Yard">
+            <column name="yard" not-null="true"/>
+        </many-to-one>
+
+        <property name="pointofworkPkey" column="pkey" index="pointofwork_idx" type="java.lang.Long" not-null="true"/>
+        <property name="pointofworkOwnerPoolReference" column="owner_pool_reference" type="java.lang.Long"/>
+        <many-to-one name="pointofworkOwnerPool" class="com.navis.argo.business.xps.model.ChePool" column="owner_pool_gkey" not-null="false">
+            <meta attribute="field description">Equipment Pool working the Point of Work</meta>
+        </many-to-one>
+
+        <property name="pointofworkName" column="name" type="java.lang.String" length="255"/>
+        <property name="pointofworkClerk" column="clerk" type="java.lang.String" length="255"/>
+        <property name="pointofworkVesselVisitReference" column="visit" type="java.lang.String" length="255"/>
+        <many-to-one name="pointofworkVesselVisit" class="com.navis.argo.business.model.CarrierVisit" column="vessel_visit_gkey" not-null="false">
+            <meta attribute="field description">Vessel Berthing for the Point of Work</meta>
+        </many-to-one>
+        <property name="pointofworkCheId" column="che_id" type="java.lang.Long"/>
+        <property name="pointofworkCraneWidth" column="crane_width" type="java.lang.Float"/>
+        <property name="pointofworkProduction" column="production" type="java.lang.Float"/>
+        <property name="pointofworkDualProduction" column="dual_production" type="java.lang.Float"/>
+        <property name="pointofworkDispatchMode" column="dispatch_mode" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'pointofworkDispatchModeEnum' instead</meta>
+        </property>
+        <property name="pointofworkDispatchModeEnum" column="dispatch_mode_enum" type="com.navis.argo.persistence.atoms.UserTypePowDispatchModeEnum"/>
+        <property name="pointofworkDoubleCycling" column="double_cycling" type="java.lang.Boolean"/>
+        <property name="pointofworkNeedSendVisitToAbb" column="need_send_visit_to_abb" type="java.lang.Boolean"/>
+        <property name="pointofworkIsBulkRunPow" column="is_bulk_run_pow" type="java.lang.Boolean"/>
+        <property name="pointofworkIsRailPow" column="is_rail_pow" type="java.lang.Boolean"/>
+        <property name="pointofworkDoesTwoTwentiesLoad" column="does_two_twenties_load" type="java.lang.Boolean"/>
+        <property name="pointofworkDoesTwoTwentiesDischarge" column="does_two_twenties_discharge" type="java.lang.Boolean"/>
+        <property name="pointofworkIsDischargingToBuffer" column="is_discharging_to_buffer" type="java.lang.Boolean"/>
+        <property name="pointofworkIsRoadPow" column="is_road_pow" type="java.lang.Boolean"/>
+        <property name="pointofworkLaneName" column="lane_name" type="java.lang.String" length="255"/>
+        <property name="pointofworkQuayOrder" column="quay_order" type="java.lang.Long"/>
+        <property name="pointofworkLoadRequest" column="load_request" type="java.lang.Long"/>
+        <property name="pointofworkLoadAck" column="load_ack" type="java.lang.Long"/>
+        <property name="pointofworkYardCrane1Id" column="yard_crane1" type="java.lang.Long"/>
+        <many-to-one name="pointofworkYardCrane1" class="com.navis.argo.business.xps.model.Che" column="yard_crane_1_gkey" not-null="false">
+            <meta attribute="field description">1st Yard Crane for the Point of Work</meta>
+        </many-to-one>
+        <property name="pointofworkYardCrane2Id" column="yard_crane2" type="java.lang.Long"/>
+        <many-to-one name="pointofworkYardCrane2" class="com.navis.argo.business.xps.model.Che" column="yard_crane_2_gkey" not-null="false">
+            <meta attribute="field description">2nd Yard Crane for the Point of Work</meta>
+        </many-to-one>
+        <property name="pointofworkYardCrane3Id" column="yard_crane3" type="java.lang.Long"/>
+        <many-to-one name="pointofworkYardCrane3" class="com.navis.argo.business.xps.model.Che" column="yard_crane_3_gkey" not-null="false">
+            <meta attribute="field description">3rd Yard Crane for the Point of Work</meta>
+        </many-to-one>
+        <property name="pointofworkYardCrane4Id" column="yard_crane4" type="java.lang.Long"/>
+        <many-to-one name="pointofworkYardCrane4" class="com.navis.argo.business.xps.model.Che" column="yard_crane_4_gkey" not-null="false">
+            <meta attribute="field description">4th Yard Crane for the Point of Work</meta>
+        </many-to-one>
+        <property name="pointofworkYardCrane5Id" column="yard_crane5" type="java.lang.Long"/>
+        <many-to-one name="pointofworkYardCrane5" class="com.navis.argo.business.xps.model.Che" column="yard_crane_5_gkey" not-null="false">
+            <meta attribute="field description">5th Yard Crane for the Point of Work</meta>
+        </many-to-one>
+        <property name="pointofworkMaximumPms" column="maximum_pms" type="java.lang.Long"/>
+        <property name="pointofworkPushRate" column="push_rate" type="java.lang.Long"/>
+        <property name="pointofworkAutoPushRate" column="auto_push_rate" type="java.lang.Boolean"/>
+        <property name="pointofworkRelativePriority" column="relative_priority" type="java.lang.Long"/>
+        <property name="pointofworkVoiceChannel" column="voice_channel" type="java.lang.String" length="255"/>
+        <property name="pointofworkLastQuayOrRailAccess" column="last_quay_or_rail_access" type="java.util.Date"/>
+        <property name="pointofworkQcVesselVisitReference" column="qc_vessel_reference" type="java.lang.String" length="255"/>
+        <many-to-one name="pointofworkQcVesselVisit" class="com.navis.argo.business.model.CarrierVisit"
+                     column="qc_vessel_visit_gkey" not-null="false">
+            <meta attribute="field description">Visit the Point of Work's Quay Crane operates at</meta>
+        </many-to-one>
+        <property name="pointofworkQcLastMoveType" column="qc_last_move_type" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'pointofworkQcLastMoveTypeEnum' instead</meta>
+        </property>
+        <property name="pointofworkQcLastMoveTypeEnum" column="qc_last_move_type_enum"
+                  type="com.navis.argo.persistence.atoms.UserTypeWiMoveKindEnum"/>
+        <property name="pointofworkQcVesselBay" column="qc_vessel_bay" type="java.lang.String" length="255"/>
+        <property name="pointofworkRoadObjective" column="road_objective" type="java.lang.Long"/>
+        <property name="pointofworkBufferName" column="buffer_name" type="java.lang.String" length="255"/>
+        <property name="pointofworkCraneReachLeft" column="crane_reach_left" type="java.lang.Float"/>
+        <property name="pointofworkCraneReachRight" column="crane_reach_right" type="java.lang.Float"/>
+        <property name="pointofworkDoNotMakeLate" column="do_not_make_late" type="java.lang.Boolean"/>
+        <property name="pointofworkTerminalCode" column="terminal_code" type="java.lang.String" length="255"/>
+        <property name="pointofworkTwinProduction" column="twin_production" type="java.lang.Float"/>
+        <property name="pointofworkLastDispatchTime" column="last_dispatch_time" type="java.util.Date"/>
+        <property name="pointofworkMinimumPms" column="minimum_pms" type="java.lang.Long"/>
+        <property name="pointofworkJobListPriority" column="job_list_priority" type="java.lang.Long"/>
+        <property name="pointofworkCheWaitingAtPow" column="che_waiting_at_pow" type="java.lang.String" length="255"/>
+        <property name="pointofworkTandemProduction" column="tandem_production" type="java.lang.Float"/>
+        <property name="pointofworkQuadProduction" column="quad_production" type="java.lang.Float"/>
+        <property name="pointofworkPowDriveDirection" column="pow_drive_direction" type="java.lang.String" length="255"/>
+
+    </class>
+
+    <!-- Entity: Pool -->
+    <class name="com.navis.argo.business.xps.model.ChePool" table="xps_pool" dynamic-update="true">
+
+        <meta attribute="n4alias">pool</meta>
+        <meta attribute="carina-index">pool_py_idx(pkey,yard)</meta>
+        <meta attribute="generated-class">com.navis.argo.business.xps.model.ChePoolHbr</meta>
+        <meta attribute="scope-set">public</meta>
+
+        <id name="poolGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="poolYard" class="com.navis.argo.business.model.Yard">
+            <column name="yard" not-null="true"/>
+        </many-to-one>
+
+        <property name="poolPkey" column="pkey" index="pool_idx" type="java.lang.Long" not-null="true"/>
+        <property name="poolOwner" column="owner" type="java.lang.String" length="255"/>
+        <property name="poolName" column="name" type="java.lang.String" length="255"/>
+        <property name="poolLocked" column="locked" type="java.lang.Boolean"/>
+        <property name="poolDispatcherLocked" column="dispatcher_locked" type="java.lang.Boolean"/>
+        <property name="poolIttPool" column="itt_pool" type="java.lang.Boolean"/>
+        <property name="poolPrimeRoutePool" column="prime_route_pool" type="java.lang.Boolean"/>
+        <property name="poolDispatcherAddress" column="dispatcher_address" type="java.lang.Long"/>
+
+    </class>
+
+    <!--  Entity WorkAssignment  -->
+    <class name="com.navis.argo.business.xps.model.WorkAssignment" table="xps_workassignment" dynamic-update="true">
+
+        <meta attribute="n4alias">workassignment</meta>
+        <meta attribute="carina-index">workassignment_py_idx(pkey,yard)</meta>
+        <meta attribute="generated-class">com.navis.argo.business.xps.model.WorkAssignmentHbr</meta>
+        <meta attribute="class-description">Domain entity representing a work assignment</meta>
+        <meta attribute="n4-entity-name">Work Assignment</meta>
+        <meta attribute="n4-entity-name-plural">Work Assignments</meta>
+        <meta attribute="scope-set">public</meta>
+
+        <id name="workassignmentGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="workassignmentYard" class="com.navis.argo.business.model.Yard">
+            <meta attribute="field-description">Yard in which Work Assignment is performed</meta>
+            <column name="yard" not-null="true"/>
+        </many-to-one>
+
+        <property name="workassignmentPkey" column="pkey" index="workassignment_idx" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">SPARCS' reference for the Work Assignment</meta>
+        </property>
+
+        <property name="workassignmentIdentifier" column="identifier" type="java.lang.String" length="255">
+        </property>
+
+        <property name="workassignmentStatus" column="status" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'workassignmentStatusEnum' instead</meta>
+        </property>
+
+        <property name="workassignmentStatusEnum" column="status_enum" type="com.navis.argo.persistence.atoms.UserTypeWaStatusEnum"/>
+
+        <property name="workassignmentLastStatusUpdate" column="last_status_update" type="java.util.Date">
+        </property>
+
+        <property name="workassignmentRawStatus" column="raw_status" type="java.lang.String" length="255">
+        </property>
+
+        <property name="workassignmentLastRawStatusUpdate" column="last_raw_status_update" type="java.util.Date">
+            <meta attribute="field-description">Time of last raw status update</meta>
+        </property>
+
+        <property name="workassignmentErrorDetails" column="error_details" type="java.lang.String" length="255">
+        </property>
+
+        <property name="workassignmentChePkey" column="che_pkey" type="java.lang.Long">
+        </property>
+
+        <property name="workassignmentMovePurposeEnum" column="move_purpose_enum" type="com.navis.argo.persistence.atoms.UserTypeWaMovePurposeEnum"/>
+
+        <many-to-one name="workassignmentChe" class="com.navis.argo.business.xps.model.Che">
+            <meta attribute="field-description">Che to perform Work Assignment</meta>
+            <column name="che_entity_gkey" not-null="false"/>
+        </many-to-one>
+
+        <set name="workassignmentJobStepProjections" inverse="true" lazy="true" cascade="all-delete-orphan" order-by="start_time">
+            <meta attribute="field-description">Job step projections computed for this work assignment</meta>
+            <key column="work_assignment_gkey"/>
+            <one-to-many class="com.navis.argo.business.model.JobStepProjection"/>
+        </set>
+
+        <property name="workassignmentJobType" column="job_type" type="com.navis.argo.persistence.atoms.UserTypeCheInstructionTypeEnum" not-null="false">
+            <meta attribute="field-description">Indicates the job type (indirect pointer to Job step configuration) that this Work assignment follows</meta>
+        </property>
+    </class>
+
+    <!--
+     REFERENCE (abstract entities)
+     -->
+
+    <!--
+    EntitySet Definition
+    2006-08-09 JJS ARGO-4786 made this explicitly non-lazy.
+    -->
+    <class name="com.navis.argo.business.reference.EntitySet" table="ref_entity_set" dynamic-update="true" lazy="false">
+        <meta attribute="generated-class">com.navis.argo.business.reference.EntitySetHbr</meta>
+        <meta attribute="n4alias">enset</meta>
+        <meta attribute="n4-entity-name">Entity Set</meta>
+        <meta attribute="n4-entity-name-plural">Entity Sets</meta>
+
+        <id name="ensetGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="ensetName" column="name" type="string" length="20" not-null="true" unique="true">
+            <meta attribute="field-description">Entity Set Name</meta>
+        </property>
+
+        <!-- 2006-07-06 JJS ARGO-4531 removing this
+        <property name="ensetEntityId" column="entity" type="string" length="50">
+            <meta attribute="field-description">Classname of the Entity to which this Use pertains</meta>
+        </property>
+        -->
+
+        <!-- 2006-07-06 JJS ARGO-4531 adding this (allow these to be specific to an Operator) -->
+        <many-to-one name="ensetOperator" column="opr_gkey" class="com.navis.argo.business.model.Operator" not-null="false">
+            <meta attribute="field-description">The Operator to which this EntitySet belongs, null if Global</meta>
+        </many-to-one>
+
+        <!-- 2006-07-06 JJS ARGO-4531 we don't need these to be obsoleteable
+        <property name="ensetLifeCycleState" column="life_cycle_state"
+            type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+        -->
+    </class>
+
+    <!--
+    EntitySetUse Definition
+    -->
+    <class name="com.navis.argo.business.reference.EntitySetUse" table="ref_entity_set_use" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.argo.business.reference.EntitySetUseHbr</meta>
+        <meta attribute="n4alias">enstu</meta>
+        <meta attribute="n4-entity-name">Entity Set Use</meta>
+        <meta attribute="n4-entity-name-plural">Entity Set Use</meta>
+
+        <id name="enstuGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="enstuEntityId" column="entity" type="string" length="50" not-null="true">
+            <meta attribute="field-description">Classname of the Entity to which this Use pertains</meta>
+        </property>
+
+        <property name="enstuScope" column="scope" type="com.navis.argo.persistence.atoms.UserTypeScopeEnum" not-null="true">
+            <meta attribute="field-description">Scope of the EntitySet (yard, facility, or complex)</meta>
+        </property>
+
+        <property name="enstuScopeGkey" column="scope_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Key of the scoping yard, facility or complex.</meta>
+        </property>
+
+        <many-to-one name="enstuEntitySet" column="enset_gkey" class="com.navis.argo.business.reference.EntitySet" not-null="true">
+            <meta attribute="field-description">Associated EntitySet</meta>
+        </many-to-one>
+
+        <!-- 2006-07-06 JJS ARGO-4531 we don't need these to be obsoleteable
+       <property name="enstuLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+        -->
+
+    </class>
+
+    <!--
+    USER
+    -->
+
+    <class name="com.navis.argo.business.model.UserPrefs" table="argo_user_prefs" dynamic-update="true">
+        <meta attribute="n4alias">upref</meta>
+        <!--meta attribute="generated-class">com.navis.argo.business.model.UserPrefsHbr</meta-->
+        <meta attribute="class-description">Stores a user's preferences, including most recent scope coordinates</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">User Preferences</meta>
+        <meta attribute="n4-entity-name-plural">User Preferences</meta>
+
+        <id name="uprefUserId" column="user_id" type="string" length="50" unsaved-value="null">
+            <generator class="assigned"/>
+        </id>
+
+        <property name="uprefLastOperator" column="last_opr" type="string" length="20" not-null="true">
+            <meta attribute="field-description">Id of Operator that user last logged-on to</meta>
+        </property>
+
+        <property name="uprefLastComplex" column="last_cpx" type="string" length="20" not-null="true">
+            <meta attribute="field-description">Id of Complex that user last logged-on to</meta>
+        </property>
+
+        <property name="uprefLastFacility" column="last_fcy" type="string" length="20" not-null="true">
+            <meta attribute="field-description">Id of Facility that user last logged-on to</meta>
+        </property>
+
+        <property name="uprefLastYard" column="last_yrd" type="string" length="20" not-null="true">
+            <meta attribute="field-description">Id of Yard that user last logged-on to</meta>
+        </property>
+
+        <property name="uprefLastLoginTime" column="login_time" type="timestamp">
+            <meta attribute="field-description">time of last login</meta>
+        </property>
+
+    </class>
+
+    <!--
+    MODEL
+    -->
+
+    <class name="com.navis.argo.business.model.Operator" table="argo_operator" dynamic-update="true">
+        <meta attribute="n4alias">opr</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.OperatorHbr</meta>
+        <meta attribute="class-description">Domain entity representing a Terminal Operator</meta>
+        <meta attribute="scope-set">protected</meta>
+        <meta attribute="n4-entity-name">Operator</meta>
+        <meta attribute="n4-entity-name-plural">Operators</meta>
+
+        <id name="oprGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="oprId" column="id" type="string" length="20" not-null="true">
+            <meta attribute="field-description">operator Id, which must be globally unique</meta>
+        </property>
+
+        <property name="oprName" column="name" type="string" length="30">
+            <meta attribute="field-description">operator name</meta>
+        </property>
+
+        <property name="oprLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <many-to-one name="oprBizUnit" column="bizu_gkey" class="com.navis.argo.business.reference.MasterBizUnit" cascade="none">
+            <meta attribute="field-description">Reference to the harmonized business unit table</meta>
+        </many-to-one>
+
+        <set name="oprCpxSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">complexes of this operator</meta>
+            <key column="opr_gkey"/>
+            <one-to-many class="com.navis.argo.business.model.Complex"/>
+        </set>
+
+        <!-- 2006-11-08 JJS v1.2.E ARGO-5583 new flag -->
+        <property name="oprEnforceSingleEqUse" column="enforce_single_eq_use" type="java.lang.Boolean">
+            <meta attribute="field-description">if True, each Equipment can only be part of one ACTIVE Unit at Operator Scope</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <class name="com.navis.argo.business.model.Complex" table="argo_complex" dynamic-update="true">
+        <meta attribute="n4alias">cpx</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.ComplexHbr</meta>
+        <meta attribute="class-description">Domain entity representing a transport complex</meta>
+        <meta attribute="n4-entity-name">Complex</meta>
+        <meta attribute="n4-entity-name-plural">Complexes</meta>
+
+        <id name="cpxGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="cpxId" column="id" type="string" length="20" not-null="true">
+            <meta attribute="field-description">complex Id, which must be globally unique</meta>
+        </property>
+
+        <property name="cpxName" column="name" type="string" length="30">
+            <meta attribute="field-description">complex name</meta>
+        </property>
+
+        <property name="cpxTimeZoneId" column="time_zone" type="string" length="30" not-null="true">
+            <meta attribute="field-description">time zone id</meta>
+        </property>
+
+        <property name="cpxLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <many-to-one name="cpxOperator" column="opr_gkey" class="com.navis.argo.business.model.Operator" not-null="true">
+            <meta attribute="field-description">The Operator to which this Complex belongs</meta>
+        </many-to-one>
+
+        <set name="cpxFcySet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">facilities of this complex</meta>
+            <key column="cpx_gkey"/>
+            <one-to-many class="com.navis.argo.business.model.Facility"/>
+        </set>
+
+        <!-- 2010-10-01 PJI 2.2 ARGO-28157 Berth Model. Use gkey only since BerthModel is in yard module.
+             This loose coupling helps yard model be somewhat independent of N4 code. -->
+        <property name="cpxBerthModelGkey" column="berth_model_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The gkey of the BerthModel associated with this Complex</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.argo.business.model.Facility" table="argo_facility" dynamic-update="true">
+        <meta attribute="n4alias">fcy</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.FacilityHbr</meta>
+        <meta attribute="class-description">Domain entity representing a Facility</meta>
+        <meta attribute="n4-entity-name">Facility</meta>
+        <meta attribute="n4-entity-name-plural">Facilities</meta>
+
+        <id name="fcyGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="fcyId" column="id" type="string" length="20" not-null="true">
+            <meta attribute="field-description">facility Id, unique within the Complex</meta>
+        </property>
+
+        <property name="fcyName" column="name" type="string" length="30">
+            <meta attribute="field-description">facility name</meta>
+        </property>
+
+        <!-- 2008-09-16 lbarman 1.8.A ARGO-14333: allow non-operational facilities -->
+        <property name="fcyIsNonOperational" column="non_operational" type="java.lang.Boolean" not-null="false"/>
+
+        <!-- 2009-03-25 smahesh 1.9.D ARGO-17232 Added time zone to facility -->
+        <property name="fcyTimeZoneId" column="time_zone" type="string" length="30" not-null="false">
+            <meta attribute="field-description">facility time zone id</meta>
+        </property>
+
+        <property name="fcyLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <many-to-one name="fcyComplex" column="cpx_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which this Facility belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="fcyRoutingPoint" column="rp_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="true">
+            <meta attribute="field-description">Routing point associated with this facility</meta>
+        </many-to-one>
+
+        <set name="fcyYrdSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">yards of this facility</meta>
+            <key column="fcy_gkey"/>
+            <one-to-many class="com.navis.argo.business.model.Yard"/>
+        </set>
+
+        <set name="fcyRelays" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Facility Relays of this facility</meta>
+            <key column="fcy_gkey"/>
+            <one-to-many class="com.navis.argo.business.model.FacilityRelay"/>
+        </set>
+
+        <property name="fcyTeuGreen" column="teu_green" type="java.lang.Long">
+            <meta attribute="field-description">Number of TEU in facility at 'green' level: beyond this ops become somewhat affected</meta>
+        </property>
+
+        <property name="fcyTeuYellow" column="teu_yellow" type="java.lang.Long">
+            <meta attribute="field-description">Number of TEU in facility at 'yellow' level (i.e. max with acceptable ops problem)</meta>
+        </property>
+
+        <property name="fcyTeuRed" column="teu_red" type="java.lang.Long">
+            <meta attribute="field-description">Max TEU in facility</meta>
+        </property>
+
+        <!-- CAR-1300 eyu v.1.4.B 6/8/2007 Enable support for an external JMS queue within the framework -->
+        <component name="fcyJmsConnection" class="com.navis.framework.esb.server.configuration.ESBJmsConnection">
+            <meta attribute="field-description">The jms connection on facility</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="jmsProvider" column="jms_provider" type="com.navis.framework.persistence.atoms.UserTypeJmsProviderEnum" length="15">
+                <meta attribute="field-description">type of JMS provider from which we get SNX messages</meta>
+            </property>
+
+            <property name="jmsProviderUrl" column="jms_provider_url" type="string" length="120">
+                <meta attribute="field-description">URL of JMS provider</meta>
+            </property>
+
+            <property name="jmsInUri" column="jms_in_uri" type="string" length="120">
+                <meta attribute="field-description">Inbound URI on Jms Provider from where we get the SNX messages</meta>
+            </property>
+
+            <property name="jmsPollInUri" column="jms_poll_in_uri" type="string" length="120">
+                <meta attribute="field-description">Low-priority inbound URI on Jms Provider from where we poll for the SNX messages</meta>
+            </property>
+
+            <property name="jmsPollFrequency" column="jms_poll_frequency" type="java.lang.Long">
+                <meta attribute="field-description">The polling frequency on the low-priority inbound queue.</meta>
+            </property>
+
+            <property name="jmsOutUri" column="jms_out_uri" type="string" length="120">
+                <meta attribute="field-description">Outbound URI of fcyJmsProvider that we use to establish JMS communication</meta>
+            </property>
+        </component>
+
+        <many-to-one name="fcyRouteResolverRules" class="com.navis.argo.business.model.EntityMappingPredicate" column="route_resolver_rules"
+                     not-null="false" cascade="all">
+            <meta attribute="field-description">Top node in a EntityMappingPredicate tree defining the route resolver rules for this facility</meta>
+        </many-to-one>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!-- Describes the relay relationship from a facility to another facility in the same complex -->
+    <class name="com.navis.argo.business.model.FacilityRelay" table="argo_facility_relays" dynamic-update="true">
+        <meta attribute="n4alias">fcyrelay</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.FacilityRelayHbr</meta>
+        <meta attribute="class-description">Domain entity representing a Facility to Facilty Relay relationship</meta>
+        <meta attribute="n4-entity-name">FacilityRelay</meta>
+        <meta attribute="n4-entity-name-plural">FacilitieRelays</meta>
+
+        <id name="fcyrelayGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="fcyrelayTransitTimeHrs" column="transit_time_hrs" type="java.lang.Long">
+            <meta attribute="field-description">Typical transit time in hours to the other facility</meta>
+        </property>
+
+        <property name="fcyrelayCutoffLeadTimeHrs" column="cutoff_lead_time_hrs" type="java.lang.Long">
+            <meta attribute="field-description">Lead time in hours needed to meet the cutoff of outbound carrier at other facility</meta>
+        </property>
+
+        <property name="fcyrelayCarrierModeDefault" column="carrier_mode_default" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum"
+                  not-null="true">
+            <meta attribute="field-description">The default relay carrier mode (e.g. rail) to other facility</meta>
+        </property>
+
+        <many-to-one name="fcyrelayFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility" not-null="true">
+            <meta attribute="field-description">Primary (From) Facility</meta>
+        </many-to-one>
+
+        <many-to-one name="fcyrelayToFacility" column="to_fcy_gkey" class="com.navis.argo.business.model.Facility" not-null="true">
+            <meta attribute="field-description">Other (To) Facility</meta>
+        </many-to-one>
+
+        <property name="fcyrelayIftOnly" column="ift_only" type="java.lang.Boolean" not-null="false"/>
+
+    </class>
+
+    <class name="com.navis.argo.business.model.Yard" table="argo_yard" dynamic-update="true">
+        <meta attribute="n4alias">yrd</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.YardHbr</meta>
+        <meta attribute="class-description">Domain entity representing a Yard</meta>
+        <meta attribute="n4-entity-name">Yard</meta>
+        <meta attribute="n4-entity-name-plural">Yards</meta>
+
+        <id name="yrdGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="yrdId" column="id" type="string" length="20" not-null="true">
+            <meta attribute="field-description">Yard Id, complex-unique id-string for this location</meta>
+        </property>
+
+        <property name="yrdName" column="name" type="string" length="40">
+            <meta attribute="field-description">Yard full name - for display only</meta>
+        </property>
+
+        <property name="yrdLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="yrdXpsImportState" column="xps_state"
+                  type="com.navis.argo.persistence.atoms.UserTypeXpsImportStateEnum" length="30" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="yrdCompiledYard" column="compiled_yard" type="com.navis.framework.persistence.util.BlobUserType" length="1000000"
+                  not-null="false" lazy="true">
+            <meta attribute="field-description">Compiled yard file</meta>
+        </property>
+
+        <property name="yrdSparcsSettings" column="sparcs_settings_file" type="text" length="1000000" not-null="false" lazy="true">
+            <meta attribute="field-description">SPARCS settings file - read during init then settings become immutable</meta>
+        </property>
+
+        <!--2010.09.29 pji ARGO-28157. Add berth model to N4. -->
+        <property name="yrdBerthTextFile" column="berth_text_file" type="com.navis.framework.persistence.util.BlobUserType" length="1000000"
+                  not-null="false" lazy="true">
+            <meta attribute="field-description">Berth text file</meta>
+        </property>
+
+        <many-to-one name="yrdFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility" not-null="true">
+            <meta attribute="field-description">The Facility to which this Yard belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="yrdBinModel" column="abm_gkey" class="com.navis.spatial.business.model.AbstractBin">
+            <meta attribute="field-description">The bin model that is associated with this Yard. May be null.</meta>
+        </many-to-one>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!--2009.03.24 ssampath ARGO-17376. This entity contains additional yard-block specific information that does not come
+     from the compiled SPARCS yard file. Presently, this entity simply contains shared associations. However, it is conceivable
+     that other yard block specific information may be needed in the future.
+     -->
+    <class name="com.navis.argo.business.model.YrdBlkSupplement" table="argo_yard_block_supplement" dynamic-update="true">
+        <meta attribute="n4alias">ybs</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.YrdBlkSupplementHbr</meta>
+        <meta attribute="class-description">Domain entity representing additional Yard Block specific details that do not come from the compiled
+            SPARCS yard file
+        </meta>
+        <meta attribute="n4-entity-name">YrdBlkSupplement</meta>
+        <meta attribute="n4-entity-name-plural">YrdBlkSupplements</meta>
+
+        <id name="ybsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="ybsYard" column="yrd_gkey" class="com.navis.argo.business.model.Yard" not-null="true">
+            <meta attribute="field-description">The Yard to which this Block belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="ybsComplex" class="com.navis.argo.business.model.Complex">
+            <meta attribute="field-description">The Complex to which this supplement applies</meta>
+            <column name="cpx_gkey" not-null="true"/>
+        </many-to-one>
+
+        <property name="ybsBlockId" column="yrd_block_id" type="string" length="20" not-null="true" index="ybs_block_idx">
+            <meta attribute="field-description">Id of the Yard Block for which supplemental information is specified</meta>
+        </property>
+
+        <set name="ybsYbySet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Set of Yards that share this block</meta>
+            <key column="ybs_Gkey"/>
+            <one-to-many class="com.navis.argo.business.model.YrdBlkSharedYard"/>
+        </set>
+
+        <property name="ybsCreated" column="created" type="timestamp"/>
+        <property name="ybsCreator" column="creator" type="string" length="30"/>
+        <property name="ybsChanged" column="changed" type="timestamp"/>
+        <property name="ybsChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!--2009.03.24 ssampath ARGO-17376. Maher Terminals accomplishes IFT using shared yard blocks. A single yard block (physicall space)
+     is shared between two facilities. Shared yard blocks will be defined in the SPARCS yard file for each of the facilities sharing it
+     in an identical fashion (Block Id, naming and other characteristics will be identical in all facilities). This entity defines the
+     yards that share a particular block identified by ybs_gkey yard block.
+     -->
+    <class name="com.navis.argo.business.model.YrdBlkSharedYard" table="argo_yard_shared_block">
+        <meta attribute="n4alias">yby</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.YrdBlkSharedYardHbr</meta>
+        <meta attribute="class-description">Domain entity representing a relationship where a Yard Block is shared between two or more Yards</meta>
+        <meta attribute="n4-entity-name">YrdBlkSharedYard</meta>
+
+        <id name="ybyGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="ybyYard" column="yrd_gkey" class="com.navis.argo.business.model.Yard" not-null="true">
+            <meta attribute="field-description">The Yard in other facility with which a block is shared</meta>
+        </many-to-one>
+
+        <many-to-one name="ybyYrdSupl" column="ybs_gkey" class="com.navis.argo.business.model.YrdBlkSupplement" not-null="true">
+            <meta attribute="field-description">The Yard Block Supplement for which the shared yard block is being defined.</meta>
+        </many-to-one>
+
+        <property name="ybyCreated" column="created" type="timestamp"/>
+        <property name="ybyCreator" column="creator" type="string" length="30"/>
+        <property name="ybyChanged" column="changed" type="timestamp"/>
+        <property name="ybyChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.argo.business.model.CarrierVisit" table="argo_carrier_visit" dynamic-update="true">
+        <meta attribute="n4alias">cv</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.CarrierVisitHbr</meta>
+        <meta attribute="class-description">proxy representing a call of a carrier at a facility</meta>
+        <meta attribute="n4-entity-name">Carrier Visit</meta>
+        <meta attribute="n4-entity-name-plural">Carrier Visits</meta>
+        <meta attribute="carina-index">
+            argo_car_visit_gkey_id_idx(gkey,id);
+            argo_cv_atd_id_idx(atd,id);
+            argo_car_vis_fcy_atd_gkey_idx(fcy_gkey, atd, gkey);
+        </meta>
+        <meta attribute="n4-code-extension-support">true</meta>
+
+        <id name="cvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="cvId" type="string">
+            <meta attribute="field-description">carrier visit id: carrier identifier (vessel/voyage, truck license, etc.)</meta>
+            <column name="id" index="cv_id_idx" length="30" not-null="true"/>
+            <!-- 2004.09.08 JJS: note the column index -->
+        </property>
+
+        <property name="cvCustomsId" type="string">
+            <!-- 2007-02-23 new attribute, added to solve ARGO-6305 by JJS -->
+            <meta attribute="field-description">external reference id for this visit (e.g. customs' ID at PNC)</meta>
+            <column name="customs_id" index="cv_customs_id_idx" not-null="false"/>
+        </property>
+
+        <property name="cvCarrierMode" column="carrier_mode" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" not-null="true">
+            <meta attribute="field-description">the carrier transport mode (vessel, rail or truck)</meta>
+        </property>
+
+        <property name="cvVisitNbr" column="visit_nbr" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">number to disambuguate the visit: 1=first visit, 2=second, etc. (used for trucks and railcars only)
+            </meta>
+        </property>
+
+        <property name="cvVisitPhase" column="phase" type="com.navis.argo.persistence.atoms.UserTypeCarrierVisitPhaseEnum" not-null="true">
+            <meta attribute="field-description">Visit phase (CREATED, INBOUND ARRIVED, ...)</meta>
+        </property>
+
+        <!-- 2006-03-21 (18) charron ARGO-3589 add carrier operator (line, trucking company, railroad) to support instance security -->
+        <many-to-one name="cvOperator" column="operator_gkey" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">The primary operator of this carrier visit.</meta>
+        </many-to-one>
+
+        <many-to-one name="cvComplex" class="com.navis.argo.business.model.Complex">
+            <meta attribute="field-description">The Complex at which this carrier will call</meta>
+            <column name="cpx_gkey" not-null="true"/>
+            <!-- 2004.09.08 JJS: note the column index -->
+        </many-to-one>
+
+        <many-to-one name="cvFacility" class="com.navis.argo.business.model.Facility">
+            <meta attribute="field-description">The Facility at which this carrier will call (if known)</meta>
+            <column name="fcy_gkey" not-null="false"/>
+            <!-- 2004.09.08 JJS: note the column index -->
+        </many-to-one>
+
+        <many-to-one name="cvNextFacility" class="com.navis.argo.business.model.Facility">
+            <meta attribute="field-description">The next Facility this carrier will call. If null, assumption is carrier leaves complex on departure
+            </meta>
+            <column name="next_fcy_gkey" not-null="false"/>
+        </many-to-one>
+
+        <property name="cvATA" column="ata" type="timestamp">
+            <meta attribute="field-description">Actual Time of Arrival</meta>
+        </property>
+
+        <property name="cvATD" column="atd" type="timestamp">
+            <meta attribute="field-description">Actual Time of Departure</meta>
+        </property>
+
+        <!--2012-11-26 rsatish ARGO-40074 Load/Discharge Automation API: Finish API specification, added new columns to CarrierVisit-->
+        <property name="cvSendOnBoardUnitUpdates" column="send_on_board_unit_updates" type="java.lang.Boolean" not-null="false"/>
+
+        <property name="cvSendCraneWorkListUpdates" column="send_crane_work_list_updates" type="java.lang.Boolean" not-null="false"/>
+
+        <!-- really a one-to-one, see Hibernate in Action, page 221 -->
+        <!-- TPM: This field is often null, which violates the uniqueness in SQL Server -->
+        <many-to-one name="cvCvd" class="com.navis.argo.business.model.VisitDetails" cascade="all" unique="false">
+            <meta attribute="field-description">The VisitDetails asscoiated with this CarrierVisit. May be null.</meta>
+            <column name="cvcvd_gkey"/>
+        </many-to-one>
+
+        <!-- 2012-05-04 oviyak v2.4.J ARGO-31869 Add audit trail columns to argo_carrier_visit table-->
+        <property name="cvCreated" column="created" type="timestamp"/>
+        <property name="cvCreator" column="creator" type="string" length="30"/>
+        <property name="cvChanged" column="changed" type="timestamp"/>
+        <property name="cvChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.argo.business.model.VisitDetails" table="argo_visit_details" dynamic-update="true">
+        <meta attribute="n4alias">cvd</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.VisitDetailsHbr</meta>
+        <meta attribute="class-description">Base class for details of a CarrierVisit</meta>
+        <meta attribute="n4-entity-name">Carrier Visit Details</meta>
+        <meta attribute="n4-entity-name-plural">Carrier Visit Details</meta>
+
+        <id name="cvdGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- 2006-10-03 eyu ARGO-4370 v1.2.E Need Archiving/Purging extended to high growth tables -->
+        <one-to-one name="cvdCv" class="com.navis.argo.business.model.CarrierVisit" property-ref="cvCvd">
+            <meta attribute="field-description">The CarrierVisit owning this CarrierVisitDetails</meta>
+        </one-to-one>
+
+        <!-- 2006-03-14 (30) charron ARGO-3589 add carrier operator (line, trucking company, railroad) to support instance security -->
+        <!-- 2006-03-21 (35) charron ARGO-3589 moved to Carrier Visit to support generic visits without details -->
+        <!--many-to-one name="cvdOperator" column="operator_gkey" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">The primary operator of this carrier visit.</meta>
+        </many-to-one-->
+
+        <property name="cvdETA" column="eta" type="timestamp">
+            <meta attribute="field-description">Estimated Time of Arrival</meta>
+        </property>
+
+        <property name="cvdETD" column="etd" type="timestamp">
+            <meta attribute="field-description">Estimated Time of Departure</meta>
+        </property>
+
+        <!-- 2006-02-22 (18) charron ARGO-3045 Add FirstFreeDay, TimeDischargeComplete, TimeFirstAvailable to VisitDetail -->
+        <property name="cvdTimeDischargeComplete" column="time_discharge_complete" type="timestamp">
+            <meta attribute="field-description">Time discharge of entire carrier visit completed</meta>
+        </property>
+
+        <property name="cvdTimeFirstAvailability" column="time_first_availabiltiy" type="timestamp">
+            <meta attribute="field-description">Date/time discharged cargo is available for pickup</meta>
+        </property>
+
+        <property name="cvdInboundFirstFreeDay" column="ffd" type="timestamp">
+            <meta attribute="field-description">Storage First Free Day for inbound cargo</meta>
+        </property>
+
+        <many-to-one name="cvdService" column="service" class="com.navis.argo.business.reference.CarrierService" not-null="false">
+            <meta attribute="field-description">The service of the carrier. Nullable, as truck carriers don't have a service.</meta>
+        </many-to-one>
+
+        <many-to-one name="cvdItinerary" column="itinereray" class="com.navis.argo.business.reference.CarrierItinerary" not-null="false">
+            <meta attribute="field-description">The itinerary of the carrier (most often same as carrier's service's itineray). Nullable, as truck
+                carriers don't have an itinerary.
+            </meta>
+        </many-to-one>
+
+        <property name="cvdInCallNumber" column="in_call_number" type="java.lang.String" length="1">
+            <meta attribute="field-description">Inbound Call Number</meta>
+        </property>
+
+        <property name="cvdOutCallNumber" column="out_call_number" type="java.lang.String" length="1">
+            <meta attribute="field-description">Outbound Call Number</meta>
+        </property>
+
+        <property name="cvdDataSource" column="data_source" type="com.navis.argo.persistence.atoms.UserTypeDataSourceEnum" not-null="true">
+            <meta attribute="field-description">Source of this carrier visit record</meta>
+        </property>
+
+        <!-- 2007.10.25 MEP ARGO-7257 Add all missing Advanced Berth Sceduler fields -->
+        <property name="cvdTimePeriodicStart" column="time_periodic_start" type="timestamp">
+            <meta attribute="field-description">First Periodic Visit time</meta>
+        </property>
+
+        <property name="cvdTimePeriodicEnd" column="time_periodic_end" type="timestamp">
+            <meta attribute="field-description">Last Periodic Visit time</meta>
+        </property>
+
+        <property name="cvdDurationPeriodicRecur" column="periodic_interval" type="java.lang.Long">
+            <meta attribute="field-description">Periodic Visit interval</meta>
+        </property>
+
+        <!-- VisitDetails is marked IObsoleteable only for the MockVisit-subclass purpose -->
+        <property name="cvdLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <joined-subclass name="com.navis.argo.business.model.MockVisit" table="argo_mock_visit" extends="com.navis.argo.business.model.VisitDetails"
+                     dynamic-update="true">
+
+        <meta attribute="n4alias">mockcvd</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.MockVisitHbr</meta>
+        <meta attribute="class-description">JUST FOR UNIT TESTING POLYMORPHIC BEHAVIOR OF CARRIER VISIT</meta>
+
+        <key column="gkey"/>
+    </joined-subclass>
+
+    <class name="com.navis.argo.business.model.Portal" table="argo_portal" dynamic-update="true">
+        <meta attribute="n4alias">prtl</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.PortalHbr</meta>
+        <meta attribute="class-description">Domain entity representing an entry point into a Facility. Gate and Quay are examples.</meta>
+        <meta attribute="n4-entity-name">Portal</meta>
+        <meta attribute="n4-entity-name-plural">Portals</meta>
+
+        <id name="prtlGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="prtlLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!--  Entity : Quay  -->
+    <joined-subclass name="com.navis.argo.business.model.Quay" table="argo_quay" extends="com.navis.argo.business.model.Portal" dynamic-update="true">
+        <meta attribute="n4alias">quay</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.QuayHbr</meta>
+        <meta attribute="class-description">Reference entity representing the Quay</meta>
+        <meta attribute="n4-entity-name">Quay</meta>
+        <meta attribute="n4-entity-name-plural">Quays</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">quayCustomFlexFields</meta>
+
+        <key column="gkey"/>
+
+        <property name="quayId" column="id" type="java.lang.String" length="20" not-null="true">
+            <meta attribute="field-description">Quay identity on which the vessel is hold</meta>
+        </property>
+
+        <property name="quayName" column="name" type="java.lang.String" length="35" not-null="true">
+            <meta attribute="field-description">Name of the Quay</meta>
+        </property>
+
+        <many-to-one name="quayFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility" not-null="true">
+            <meta attribute="field-description">Facility identity in which the Quay is located</meta>
+        </many-to-one>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="quayCustomFlexFields"/>
+
+    </joined-subclass>
+
+    <!--
+      Stores the next number in a sequence for a specific sequence that is generated
+      within some level in the topology (e.g. facility)
+      -->
+    <class name="com.navis.argo.business.model.ArgoSequence" table="argo_sequences">
+        <meta attribute="n4alias">seq</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.ArgoSequenceHbr</meta>
+        <meta attribute="class-description">Argo sequence number manager</meta>
+        <meta attribute="n4-entity-name">Sequence</meta>
+        <meta attribute="n4-entity-name-plural">Sequences</meta>
+
+        <id name="seqGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="seqId" column="id" type="string" length="20" not-null="true">
+            <meta attribute="field-description">Short Id of this sequence</meta>
+        </property>
+
+        <property name="seqTopologyGkey" column="topology_gkey" type="java.lang.Long" length="10" not-null="true">
+            <meta attribute="field-description">Key of yard, facility, complex or operator within which sequence is unique</meta>
+        </property>
+
+        <property name="seqNextValue" column="xml" type="java.lang.Long">
+            <meta attribute="field-description">Next sequential value</meta>
+        </property>
+
+        <property name="seqMaximumDigits" column="maximum_digits" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The maximum length of this sequence</meta>
+        </property>
+
+        <property name="seqPreviousDate" column="previous_date" type="java.sql.Timestamp">
+            <meta attribute="field-description">Time previous sequence was issued (used for sequence within time period)</meta>
+        </property>
+
+    </class>
+
+
+    <class name="com.navis.argo.business.model.ArgoLockType" table="argo_lock_types">
+        <meta attribute="n4alias">locktype</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.ArgoLockTypeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="class-description">Argo process synchronization locking basic type</meta>
+        <meta attribute="n4-entity-name">Lock Type</meta>
+        <meta attribute="n4-entity-name-plural">Lock Types</meta>
+        <meta attribute="n4-business-key">locktypeId</meta>
+
+        <id name="locktypeGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="locktypeId" type="string">
+            <meta attribute="field-description">Short Id of this basic lock type</meta>
+            <column name="id" index="locktype_id_idx" not-null="true" unique-key="unique_key" length="20"/>
+        </property>
+
+        <many-to-one name="locktypeScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this reference entity instance</meta>
+            <column name="reference_set" not-null="true" index="locktype_reference_set" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="locktypeDescription" column="description" type="string" length="80" not-null="true">
+            <meta attribute="field-description">Description of this basic lock type</meta>
+        </property>
+
+        <property name="locktypeUniqueByScope" column="unique_by_scope" type="com.navis.argo.persistence.atoms.UserTypeScopeEnum" not-null="true">
+            <meta attribute="field-description">The Scope Level within which lock is unique by ID</meta>
+        </property>
+
+        <property name="locktypeDbWaitSecs" column="db_wait_secs" type="java.lang.Integer" not-null="false">
+            <meta attribute="field-description">Time in seconds the Database waits to obtain lock</meta>
+        </property>
+
+        <property name="locktypeIsBuiltIn" column="is_built_in" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Lock type is built into system</meta>
+        </property>
+
+        <property name="locktypeLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <set name="locktypeLocks" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Lock entries created (but not necessarily held) for this lock type</meta>
+            <key column="lock_type_gkey"/>
+            <one-to-many class="com.navis.argo.business.model.ArgoLock"/>
+        </set>
+
+        <property name="locktypeCreated" column="created" type="timestamp"/>
+        <property name="locktypeCreator" column="creator" type="string" length="30"/>
+        <property name="locktypeChanged" column="changed" type="timestamp"/>
+        <property name="locktypeChanger" column="changer" type="string" length="30"/>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!--
+         The definition of a LOCK used to single thread the application through critical logic where another thread must be blocked.
+         The lock is assumed be unique by ID within some specific level of the topology.  For example, for an ASC block named "A" only one
+         instance of the land-side transfer zone slot assignment logic can be run.  So application could use the ID "A-LS-TZ".   Since block
+         naming is only unique by facility, the lock scope should be the specific facility where block "A" is located.
+         -->
+    <class name="com.navis.argo.business.model.ArgoLock" table="argo_locks">
+        <meta attribute="n4alias">lock</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.ArgoLockHbr</meta>
+        <meta attribute="class-description">Argo process synchronization locking</meta>
+        <meta attribute="n4-entity-name">Lock</meta>
+        <meta attribute="n4-entity-name-plural">Locks</meta>
+
+        <id name="lockGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="lockLockType" column="lock_type_gkey" class="com.navis.argo.business.model.ArgoLockType" not-null="true"
+                     unique-key="UnqLock">
+            <meta attribute="field-description">Basic lock type of this lock entry</meta>
+        </many-to-one>
+
+        <property name="lockQualifier" column="qualifier" type="string" length="250" not-null="false" unique-key="UnqLock">
+            <meta attribute="field-description">Optional further qualifier for uniqueness within Type and Scope</meta>
+        </property>
+
+        <property name="lockUniqueByScopeGkey" column="unique_by_scope_gkey" type="java.lang.Long" length="10" not-null="true" unique-key="UnqLock">
+            <meta attribute="field-description">Key of scope instance within which lock is unique by TYPE and Qualifer(e.g. specific facility)</meta>
+        </property>
+
+        <property name="lockCreated" column="created" type="timestamp"/>
+        <property name="lockCreator" column="creator" type="string" length="30"/>
+        <property name="lockChanged" column="changed" type="timestamp"/>
+        <property name="lockChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!-- New JJS 2006-02-21.  Note this Class is self-referential: in memory the objects form a tree. -->
+    <!-- NOTE: naming this table with "frm" prefix as it will become part of Carina eventually -->
+    <!-- NOTE: not lazy because we want to cache them, and they have self-referential links -->
+    <!-- smahesh v1.8.F ARGO-16729 Made the entity to load lazy, so BAPLIE/SNX...etc don't load the entire self referencing predicates.
+     Looks Jon intended to cache it but he hasn't done it. Till we implement the caching for this entity making it to load lazy-->
+    <class name="com.navis.argo.business.model.EntityMappingPredicate" table="frm_mapping_predicates">
+        <meta attribute="generated-class">com.navis.argo.business.model.EntityMappingPredicateHbr</meta>
+        <meta attribute="n4alias">emapp</meta>
+        <meta attribute="n4-entity-name">Entity Mapping</meta>
+        <meta attribute="n4-entity-name-plural">Entity Mappings</meta>
+
+        <id name="emappGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="emappVerb" column="verb" type="com.navis.framework.persistence.atoms.UserTypePredicateVerbEnum" not-null="true"/>
+
+        <property name="emappMetafield" column="metafield" type="string" length="70">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <property name="emappValue" column="value" type="string" length="4000"/>
+
+        <property name="emappUiValue" column="uivalue" type="string" length="4000"/>
+
+        <!--property name="emappOrder" column="order" type="java.lang.Long"/-->
+
+        <property name="emappNegated" column="negated" type="java.lang.Boolean" not-null="true"/>
+
+        <many-to-one name="emappNextPredicate" column="next_emapp_gkey" class="com.navis.argo.business.model.EntityMappingPredicate" not-null="false"
+                     cascade="all"/>
+
+        <many-to-one name="emappSubPredicate" column="sub_emapp_gkey" class="com.navis.argo.business.model.EntityMappingPredicate" not-null="false"
+                     cascade="all"/>
+
+        <bag name="emappValues" inverse="true" lazy="false" cascade="all-delete-orphan">
+            <key column="emapp_gkey"/>
+            <one-to-many class="com.navis.argo.business.model.EntityMappingValue"/>
+        </bag>
+
+    </class>
+
+    <!-- New JJS 2006-02-21. Values of an EntityMapping  -->
+    <!-- NOTE: naming this table with "frm" prefix as it will become part of Carina eventually -->
+    <class name="com.navis.argo.business.model.EntityMappingValue" table="frm_mapping_values">
+        <meta attribute="generated-class">com.navis.argo.business.model.EntityMappingValueHbr</meta>
+        <meta attribute="n4alias">emapv</meta>
+        <meta attribute="n4-entity-name">Entity Mapping Value</meta>
+        <meta attribute="n4-entity-name-plural">Entity Mapping Values</meta>
+
+        <id name="emapvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="emapvEmapp" class="com.navis.argo.business.model.EntityMappingPredicate" column="emapp_gkey" not-null="true">
+            <meta attribute="field-description">EntityMappingPredicate to which this belongs</meta>
+        </many-to-one>
+
+        <property name="emapvMetafield" column="metafield" type="string" length="70" not-null="true">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <property name="emapvValue" column="value" type="string" length="4000"/>
+
+        <property name="emapvUiValue" column="uivalue" type="string" length="4000"/>
+
+    </class>
+
+    <!-- ARGO-4370 10/05/06 eyu v.1.2.E Need Archiving/Purging extended to high growth tables -->
+    <class name="com.navis.argo.business.model.PurgedFailedEntity" table="argo_purged_failed_entities">
+        <meta attribute="generated-class">com.navis.argo.business.model.PurgedFailedEntityHbr</meta>
+        <meta attribute="n4alias">pfail</meta>
+        <meta attribute="n4-entity-name">Purged Failed Entity</meta>
+        <meta attribute="n4-entity-name-plural">Purged Failed Entities</meta>
+        <meta attribute="class-description">Table stores entities that failed during the regular purge background job.</meta>
+
+        <id name="pfailGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="pfailComplex" column="complex_name" type="string" length="30">
+            <meta attribute="field-description">The Complex scope name of the user who launched the purge job.</meta>
+        </property>
+
+        <property name="pfailEntityName" column="entity_name" type="string" length="70" not-null="true" unique-key="purgeEntity">
+            <meta attribute="field-description">The name of the entity that failed to be purged.</meta>
+        </property>
+
+        <property name="pfailEntityGkey" column="entity_gkey" type="java.lang.Long" not-null="true" unique-key="purgeEntity">
+            <meta attribute="field-description">The gkey of the entity that failed to be purged.</meta>
+        </property>
+
+        <property name="pfailLastAttempt" column="last_attempt" type="timestamp" not-null="true">
+            <meta attribute="field-description">The last time when the purge machinery attempted to purge this entity.</meta>
+        </property>
+
+        <many-to-one name="pfailStateTable" column="state_gkey" class="com.navis.argo.business.model.ArchivePurgeStateTable" not-null="true">
+            <meta attribute="field-description">The purge query state associated with the failure.</meta>
+        </many-to-one>
+
+        <property name="pfailReason" column="reason" type="string" length="255">
+            <meta attribute="field-description">The reason why the purge failed.</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.argo.business.model.PropertySource" table="argo_property_source" dynamic-update="false">
+        <meta attribute="generated-class">com.navis.argo.business.model.PropertySourceHbr</meta>
+        <meta attribute="class-description">Records the DataSource for a property group for an entity</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">prpsrc</meta>
+        <meta attribute="n4-entity-name">PropertySource</meta>
+        <meta attribute="n4-entity-name-plural">PropertySources</meta>
+
+        <id name="prpsrcGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- 2007-03-13 JJS need to set length here due to MySQL bug http://jira.atlassian.com/browse/CONF-2783 -->
+        <property name="prpsrcAppliedToEntity" column="applied_to_entity" type="string" length="30" not-null="true" unique-key="prpsrc_key">
+            <meta attribute="field-description">EntityName of the owner entity</meta>
+        </property>
+
+        <property name="prpsrcAppliedToPrimaryKey" column="applied_to_gkey" type="java.lang.Long" not-null="true" index="prpsrc_entity_key_idx"
+                  unique-key="prpsrc_key">
+            <meta attribute="field-description">Primary key of the owner entity</meta>
+        </property>
+
+        <!-- 2007-03-13 JJS need to set length here due to MySQL bug http://jira.atlassian.com/browse/CONF-2783 -->
+        <property name="prpsrcPropertyGroup" column="property_group" type="com.navis.argo.persistence.atoms.UserTypePropertyGroupEnum" length="30"
+                  not-null="true" unique-key="prpsrc_key">
+            <meta attribute="field-description">Property Group</meta>
+        </property>
+
+        <property name="prpsrcDataSource" column="data_source" type="com.navis.argo.persistence.atoms.UserTypeDataSourceEnum" not-null="true">
+            <meta attribute="field-description">Source from which the property was populated</meta>
+        </property>
+
+        <property name="prpsrcTimestamp" column="time_updated" type="timestamp" not-null="true"/>
+
+        <property name="prpsrcUserId" column="user_id" type="string" not-null="true"/>
+    </class>
+
+    <!-- CAR-1491 9/11/2007 eyu v.1.4.J BizRole Constrained Privileges -->
+    <class name="com.navis.argo.business.model.ArgoBizRolePrivilege" table="argo_bizrole_priv">
+        <meta attribute="generated-class">com.navis.argo.business.model.ArgoBizRolePrivilegeHbr</meta>
+        <meta attribute="class-description">Business-Role constrained privilege</meta>
+        <meta attribute="n4alias">roprv</meta>
+        <meta attribute="n4-entity-name">ArgoBizRolePrivilege</meta>
+        <meta attribute="n4-entity-name-plural">ArgoBizRolePrivileges</meta>
+
+        <id name="roprvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="roprvPrivId" column="id" type="string" not-null="true">
+            <meta attribute="field-description">privilege Id</meta>
+        </property>
+
+        <property name="roprvRole" column="role" type="com.navis.argo.persistence.atoms.UserTypeBizRoleEnum" not-null="true">
+            <meta attribute="field-description">Role of this business unit: shipping line, agent, etc.</meta>
+        </property>
+
+        <many-to-one name="roprvOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator" not-null="true">
+            <meta attribute="field-description">The Operator to which this ArgoBizRolePrivilege belongs.</meta>
+        </many-to-one>
+
+    </class>
+
+    <!--
+    Table: Line Routing Point Restriction
+    -->
+
+    <class name="com.navis.argo.business.model.LinePortRule" table="argo_line_port_rules" dynamic-update="true">
+        <meta attribute="n4alias">podrule</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.LinePortRuleHbr</meta>
+        <meta attribute="class-description">Domain entity representing Line Port Equipment Restrictions</meta>
+        <meta attribute="n4-entity-name">Line Port Restriction</meta>
+        <meta attribute="n4-entity-name-plural">Line Port Restrictions</meta>
+
+        <id name="podruleGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="podruleLine" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Line operator with port/range restriction</meta>
+            <column name="line_gkey" not-null="true"/>
+        </many-to-one>
+
+        <many-to-one name="podruleRoutingPoint" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Routing Point with this RANGE restricted</meta>
+            <column name="point_gkey" not-null="true"/>
+        </many-to-one>
+
+        <property name="podruleIsRangeUsed" column="is_used" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Serial ranges are not used</meta>
+        </property>
+
+        <property name="podruleSerialRanges" column="serial_ranges" type="string" length="255">
+            <meta attribute="field-description">A list of acceptable serial number ranges, packed into a string</meta>
+        </property>
+
+        <property name="podruleCreated" column="created" type="timestamp"/>
+        <property name="podruleCreator" column="creator" type="string" length="30"/>
+        <property name="podruleChanged" column="changed" type="timestamp"/>
+        <property name="podruleChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.argo.business.xps.model.Che" table="xps_che" dynamic-update="true">
+        <meta attribute="n4alias">che</meta>
+        <meta attribute="generated-class">com.navis.argo.business.xps.model.CheHbr</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="carina-oracle-index">
+            CREATE INDEX che_last_pos_anchor_idx ON xps_che(last_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE SPATIAL INDEX che_last_pos_anchor_idx ON xps_che(last_pos_anchor) WITH ( BOUNDING_BOX = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <id name="cheGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="cheYard" class="com.navis.argo.business.model.Yard">
+            <column name="yard" not-null="true"/>
+        </many-to-one>
+
+        <!-- 2010.03.25 pbennett ARGO-23726 - Added to allow Che to be obsoleteable and thus
+            'deleteable' by XPS user even in the face of foreign key references.  -->
+        <property name="xpeCheLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="false">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="chePkey" column="pkey" index="che_idx" type="java.lang.Long" not-null="true"/>
+
+        <property name="chePoolPkey" column="pool" type="java.lang.Long"/>
+        <many-to-one name="chePool" class="com.navis.argo.business.xps.model.ChePool" column="pool_gkey" not-null="false">
+            <meta attribute="field-description">Pool to which the che belongs</meta>
+        </many-to-one>
+
+        <property name="chePowPkey" column="pow" type="java.lang.Long"/>
+        <many-to-one name="chePointOfWork" class="com.navis.argo.business.xps.model.PointOfWork" column="point_of_work_gkey" not-null="false">
+            <meta attribute="field-description">Pow to which the che is assigned. This method is meaningful for non-QC ches only. For QC ches this field is not populated by XPS. Please use findChePointOfWork() or use PointOfWork.findPointOfWorkByCheId() API directly to get the POw for QC ches</meta>
+        </many-to-one>
+
+        <property name="cheVesselCode" column="vessel_code" type="java.lang.String"
+                  length="255"/>
+        <property name="cheStatus" column="status" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'cheStatusEnum' instead</meta>
+        </property>
+        <property name="cheStatusEnum" column="status_enum" type="com.navis.argo.persistence.atoms.UserTypeCheStatusEnum"/>
+        <property name="cheTalkStatus" column="talk_status" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'cheTalkStatusEnum' instead</meta>
+        </property>
+        <property name="cheTalkStatusEnum" column="talk_status_enum" type="com.navis.argo.persistence.atoms.UserTypeCheTalkStatusEnum"/>
+        <property name="cheMessageStatus" column="message_status" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'cheMessageStatusEnum' instead</meta>
+        </property>
+        <property name="cheMessageStatusEnum" column="message_status_enum" type="com.navis.argo.persistence.atoms.UserTypeCheMessageStatusEnum"/>
+        <property name="cheMtsStatus" column="mts_status" type="java.lang.Long"
+                />
+        <property name="cheIttDispatchMode" column="itt_dispatch_mode" type="java.lang.Long"
+                />
+        <property name="cheLastTime" column="last_time" type="java.util.Date"
+                />
+        <property name="cheTimeCompleteLastJob" column="time_complete_last_job" type="java.util.Date"
+                />
+        <property name="cheTimeLogInOut" column="time_log_in_out" type="java.util.Date"
+                />
+        <property name="cheTimeAvailableUnavailable" column="time_available_unavailable" type="java.util.Date"
+                />
+        <property name="cheTimeOutOfService" column="time_out_of_service" type="java.util.Date"
+                />
+        <property name="cheTimeLift" column="time_lift" type="java.util.Date"
+                />
+        <property name="cheTimeFinish" column="time_finish" type="java.util.Date"
+                />
+        <property name="cheTimeDispatch" column="time_dispatch" type="java.util.Date"
+                />
+        <property name="cheJobDistance" column="job_distance" type="java.lang.Long"
+                />
+        <property name="cheToJobDistance" column="to_job_distance" type="java.lang.Long"
+                />
+        <property name="cheLadenTravel" column="laden_travel" type="java.lang.Long"
+                />
+        <property name="cheEmptyTravel" column="empty_travel" type="java.lang.Long"
+                />
+        <property name="cheTerminal" column="terminal" type="java.lang.String"
+                  length="255"/>
+        <property name="chePlannedTerminal" column="planned_terminal" type="java.lang.String"
+                  length="255"/>
+        <property name="cheMtsPlatformSize" column="mts_platform_size" type="java.lang.Long"
+                />
+        <property name="cheLastPosition" column="last_position" type="java.lang.String"
+                  length="255"/>
+        <property name="cheLastPut" column="last_put" type="java.lang.String"
+                  length="255"/>
+        <property name="chePlanPosition" column="plan_position" type="java.lang.String"
+                  length="255"/>
+        <property name="cheRangeSelBlock" column="range_sel_block" type="java.lang.String"
+                />
+        <property name="cheRangeFirstRow" column="range_first_row" type="java.lang.Long"
+                />
+        <property name="cheRangeLastRow" column="range_last_row" type="java.lang.Long"
+                />
+        <property name="cheRangeFirstColumn" column="range_first_column" type="java.lang.Long"
+                />
+        <property name="cheRangeLastColumn" column="range_last_column" type="java.lang.Long"
+                />
+        <property name="cheLoginName" column="login_name" type="java.lang.String"
+                  length="255"/>
+        <property name="cheAllowedBoxes" column="allowed_boxes" type="java.lang.Long"
+                />
+        <property name="cheCurrentPositionSectionIndex" column="current_position_section_index" type="java.lang.Long"
+                />
+        <property name="cheLastPositionSectionIndex" column="last_position_section_index" type="java.lang.Long"
+                />
+        <!-- NAT 2010-06-02 ARGO-26353 no longer used. Removing it -->
+        <!--<property name="cheAttachedChassis" column="attached_chassis" type="java.lang.Long"
+                />-->
+        <property name="cheNominatedChassisSectionIndex" column="nom_chassis_section_idx" type="java.lang.Long"
+                />
+        <property name="cheAssignedCheId" column="assigned_che" type="java.lang.Long"/>
+        <many-to-one name="cheAssignedChe" class="com.navis.argo.business.xps.model.Che" column="assigned_che_gkey" not-null="false">
+            <meta attribute="field-description">Assigned che</meta>
+        </many-to-one>
+
+        <property name="cheQualifiers" column="qualifiers" type="java.lang.String"
+                  length="255"/>
+        <property name="cheAlternativeRadioId" column="alternative_radio_id" type="java.lang.Long"
+                />
+        <property name="cheDefaultEcCommunicator" column="default_ec_communicator" type="java.lang.Long"
+                />
+        <property name="cheCurrentEcCommunicator" column="current_ec_communicator" type="java.lang.Long"
+                />
+        <property name="cheMaximumWeight" column="maximum_weight" type="java.lang.Long"
+                />
+        <property name="cheFullName" column="full_name" type="java.lang.String"
+                  length="255"/>
+        <!--cheLastWorkInstructionReference is key for a WorkInstruction entity which is in Inventory module...so cannot use foreignkey constraint.-->
+        <property name="cheLastWorkInstructionReference" column="last_wi_reference" type="java.lang.Long"
+                />
+        <property name="cheShortName" column="short_name" type="java.lang.String"
+                  length="255"/>
+        <property name="cheDefaultProgram" column="default_program" type="java.lang.String"
+                  length="255"/>
+        <property name="cheKind" column="kind" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'cheKindEnum' instead</meta>
+        </property>
+        <property name="cheKindEnum" column="kind_enum" type="com.navis.argo.persistence.atoms.UserTypeCheKindEnum"/>
+        <property name="cheOperatingMode" column="operating_mode" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'cheOperatingModeEnum' instead</meta>
+        </property>
+        <property name="cheOperatingModeEnum" column="operating_mode_enum" type="com.navis.argo.persistence.atoms.UserTypeCheOperatingModeEnum"/>
+        <property name="cheHasMdt" column="has_mdt" type="java.lang.Boolean"
+                />
+        <property name="cheMaximumHeight" column="maximum_height" type="java.lang.Long"
+                />
+        <property name="cheIcon" column="icon" type="java.lang.Long"
+                />
+        <property name="cheId" column="id" type="java.lang.Long"
+                />
+        <property name="cheScreenType" column="screen_type" type="java.lang.Long"
+                />
+        <property name="cheScreenHorizontal" column="screen_horizontal" type="java.lang.Long"
+                />
+        <property name="cheScreenVertical" column="screen_vertical" type="java.lang.Long"
+                />
+        <property name="cheInProgram" column="in_program" type="java.lang.Long"
+                />
+        <property name="cheNumFunctionKeys" column="num_function_keys" type="java.lang.Long"
+                />
+        <property name="cheJobStepState" column="job_step_state" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'cheJobStepStateEnum' instead</meta>
+        </property>
+        <property name="cheJobStepStateEnum" column="job_step_state_enum" type="com.navis.argo.persistence.atoms.UserTypeCheJobStepStateEnum"/>
+        <property name="cheJobStepCompleteTime" column="job_step_complete_time" type="java.util.Date"
+                />
+        <property name="cheLastJobstepTransition" column="last_jobstep_transition" type="java.util.Date"
+                />
+        <property name="cheCurrentlyToggledWiRef" column="currently_toggled_wi_ref" type="java.lang.Long"
+                />
+        <property name="cheAcceptJobDonePressTime" column="accept_job_done_press_time" type="java.util.Date"
+                />
+        <property name="cheExtendedAddress" column="extended_address" type="java.lang.String"
+                  length="255"/>
+        <property name="cheMaximumTeu" column="maximum_teu" type="java.lang.Long"
+                />
+        <property name="cheIsInJobStepMode" column="is_in_job_step_mode" type="java.lang.Boolean"
+                />
+        <property name="cheClerkPowReference" column="clerk_pow_reference" type="java.lang.Long"
+                />
+        <property name="cheClerkVesselCode" column="clerk_vessel_code" type="java.lang.String"
+                  length="255"/>
+        <!--cheClerkContainerKey is key for a UnitFacilityVisit entity which is in Inventory module...so cannot use foreignkey constraint.-->
+        <property name="cheClerkContainerKey" column="clerk_container_key" type="java.lang.Long"
+                />
+        <property name="cheClerkLastLandedCheId" column="clerk_last_landed_che" type="java.lang.Long"/>
+        <many-to-one name="cheClerkLastLandedChe" class="com.navis.argo.business.xps.model.Che" column="clerk_last_landed_che_gkey" not-null="false">
+            <meta attribute="field-description">Last che according to clerk</meta>
+        </many-to-one>
+
+        <property name="cheClerkTeuLanded" column="clerk_teu_landed" type="java.lang.Long"
+                />
+        <!--cheTrailer is key for a UnitFacilityVisit entity which is in Inventory module...so cannot use foreignkey constraint.-->
+        <property name="cheTrailer" column="trailer" type="java.lang.Long"
+                />
+        <property name="cheAssistState" column="assist_state" type="java.lang.Long">
+            <meta attribute="field-description">deprecated; use 'cheAssistStateEnum' instead</meta>
+        </property>
+        <property name="cheAssistStateEnum" column="assist_state_enum" type="com.navis.argo.persistence.atoms.UserTypeCheAssistStateEnum"/>
+        <property name="cheScaleOn" column="scale_on" type="java.lang.Boolean"
+                />
+        <property name="cheInCommsFail" column="in_comms_fail" type="java.lang.Boolean"
+                />
+        <property name="cheChassisFetchReq" column="chassis_fetch_req" type="java.lang.Boolean"
+                />
+        <property name="cheNoLoginRequired" column="no_login_required" type="java.lang.Boolean"
+                />
+        <property name="cheAutomationActive" column="automation_active" type="java.lang.Boolean"
+                />
+        <property name="cheDispatchRequested" column="dispatch_requested" type="java.lang.Boolean"
+                />
+        <property name="cheManualDispatch" column="manual_dispatch" type="java.lang.Boolean"
+                />
+        <property name="cheSendsPdsWeight" column="sends_pds_weight" type="java.lang.Boolean"
+                />
+        <property name="cheSuspendAutoDispatch" column="suspend_auto_dispatch" type="java.lang.Boolean"
+                />
+        <property name="cheTwinCarryCapable" column="twin_carry_capable" type="java.lang.Boolean"
+                />
+        <property name="cheManualDispatchPending" column="manual_dispatch_pending" type="java.lang.Boolean"
+                />
+        <property name="cheHasOverheightGear" column="has_overheight_gear" type="java.lang.Boolean"
+                />
+        <property name="cheFirstLiftTookPlace" column="first_lift_took_place" type="java.lang.Boolean"
+                />
+        <property name="cheTwinLiftCapable" column="twin_lift_capable" type="java.lang.Boolean"
+                />
+        <property name="cheMtsDamaged" column="mts_damaged" type="java.lang.Boolean"
+                />
+        <property name="cheUsesPds" column="uses_pds" type="java.lang.Boolean"
+                />
+        <property name="cheConfigurableTrailer" column="configurable_trailer" type="java.lang.Boolean"
+                />
+        <property name="cheNominalLength20Capable" column="nominal_length20_capable" type="java.lang.Boolean"
+                />
+        <property name="cheNominalLength40Capable" column="nominal_length40_capable" type="java.lang.Boolean"
+                />
+        <property name="cheNominalLength45Capable" column="nominal_length45_capable" type="java.lang.Boolean"
+                />
+        <property name="cheNominalLength24Capable" column="nominal_length24_capable" type="java.lang.Boolean"
+                />
+        <property name="cheNominalLength48Capable" column="nominal_length48_capable" type="java.lang.Boolean"
+                />
+        <property name="cheNominalLength53Capable" column="nominal_length53_capable" type="java.lang.Boolean"
+                />
+        <property name="cheNominalLength30Capable" column="nominal_length30_capable" type="java.lang.Boolean"
+                />
+        <property name="cheNominalLength60Capable" column="nominal_length60_capable" type="java.lang.Boolean"
+                />
+        <property name="cheAutoCheTechnicalStatus" column="autoche_technical_status" type="java.lang.String"
+                  length="255"/>
+        <property name="cheAutoCheOperationalStatus" column="autoche_operational_status" type="java.lang.String"
+                  length="255"/>
+        <property name="cheAutoCheWorkStatus" column="autoche_work_status" type="java.lang.String"
+                  length="255"/>
+
+        <!-- 2009.07.02 LASAD ARGO-19466 Twin Lift: The difference in weight between the containers (metric tonnes) that is allowed. -->
+        <property name="cheTwinDiffWgtAllowance" column="twin_Diff_Wgt_Allowance" type="java.lang.Long"
+                />
+
+        <!--2009.11.25 snevasekar ARGO-21700-->
+        <property name="cheScaleWeightUnit" column="scale_weight_unit" type="java.lang.Long"/>
+
+        <property name="relativeQueuePositionForQC" column="rel_queue_pos_for" type="java.lang.Float"/>
+        <property name="waitingForTruckInsert" column="waiting_for_truck_insert" type="java.lang.Boolean"/>
+        <!-- NAT 2010.06.02 ntsyvinsky ARGO-26353 -->
+        <property name="cheAttachedChassisId" column="attached_chassis_id" type="java.lang.String"
+                  length="255"/>
+
+        <!-- 2010.11.11 ccasey ARGO-27039 Migration of multilift -->
+        <property name="cheTandemLiftCapable" column="tandem_lift_capable" type="java.lang.Boolean"
+                />
+        <property name="cheMaxTandemWeight" column="max_tandem_weight" type="java.lang.Long"
+                />
+
+        <!--NAT 2010.12.17 ntsyvinsky ARGO-28802-->
+        <property name="cheProximityRadius" column="proximity_radius" type="java.lang.Integer"/>
+
+        <!-- // 2011.01.31 SDanielson ARGO-27058 Multilift -->
+        <property name="cheQuadLiftCapable" column="quad_lift_capable" type="java.lang.Boolean"
+                />
+        <property name="cheMaxQuadWeight" column="max_quad_weight" type="java.lang.Long"
+                />
+
+        <!--2011.02.11 Jinghan ARGO-30370 PRTT diagnostic tool -->
+        <property name="cheDispatchInfo" column="dispatch_info" type="java.lang.String" length="255"
+                />
+
+        <!--2011.02.15 sadamson ARGO-30344 vessel load swaps-->
+        <property name="cheLane" column="che_lane" type="java.lang.Long"
+                />
+
+        <!--2011.09.07 sadamson ARGO-33203 chassis tracking-->
+        <property name="hasTrailer" column="has_trailer" type="java.lang.Long"
+                />
+
+        <!-- 2013.01.11 AOzhinsky (AO) ARGO-44205-->
+        <property name="cheWorkLoad" column="work_load" type="java.lang.Long"
+                />
+
+        <!--2013.06.04 HGolbasi ARGO-40529-->
+        <property name="cheAutoCheBatteryState" column="autoche_battery_state" type="java.lang.String" length="255"
+                  />
+      	<property name="cheAutoCheRunningHours" column="autoche_running_hours" type="java.lang.Long"
+                  />
+
+        <!--2013.07.09 HGolbasi ARGO-48630-->
+        <property name="cheLiftCapacity" column="lift_capacity" type="java.lang.Long"
+                />
+		<!--2013.07.17 HGolbasi ARGO-48459-->
+        <property name="cheMaximumWeightInKg" column="maximum_weight_in_kg" type="java.lang.Double"
+                />
+		<property name="cheMaxQuadWeightInKg" column="max_quad_weight_in_kg" type="java.lang.Double"
+				/>
+		<property name="cheMaxTandemWeightInKg" column="max_tandem_weight_in_kg" type="java.lang.Double"
+				/>
+		<property name="cheLiftCapacityInKg" column="lift_capacity_in_kg" type="java.lang.Double"
+				/>
+        <property name="cheLiftOperationalStatus" column="lift_operational_status" type="com.navis.argo.persistence.atoms.UserTypeCheLiftOperationalStatusEnum"
+               />
+        <!--2013.07.31 HGolbasi ARGO-50140-->
+        <property name="cheTwinDiffWgtAllowanceInKg" column="twin_diff_wgt_allowance_in_kg" type= "java.lang.Double"
+               />
+        <!--2013.10.10 HGolbasi ARGO-40773-->
+        <property name="cheIsOcrDataBeingAccepted" column="ocr_mode_switch" type="java.lang.Boolean"
+               />
+
+		<!-- 2013.10.26 SDanielson ARGO-52151 adding ECheAcceptsChassisType enum and value to Che model -->
+        <property name="cheAllowedChassisKinds" column="allowed_chassis_kinds" type="java.lang.Long" />
+
+	   <component name="cheLastKnownLocPos" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">Last position</meta>
+
+            <property name="posLocType" column="last_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="last_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="last_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="last_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="last_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="last_pos_name" type="string" length="42"> <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="last_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="last_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="last_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="last_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+            <property name="posOperationalPosId" column="last_ops_pos_id" type="string" length="80">
+                <meta attribute="field-description">XPS operation position (TIP, TQ, LN.4, AGV.AGV01.xyz, QCPLATFORM.QC01.xyz, etc.)</meta>
+            </property>
+        </component>
+
+        <!--2010.03.19 pbnennett ARGO-23726-->
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"
+                />
+
+    </class>
+
+    <class name="com.navis.argo.business.model.GeneralReference" table="argo_general_reference" dynamic-update="true">
+        <meta attribute="n4alias">ref</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.GeneralReferenceHbr</meta>
+        <meta attribute="class-description">Domain entity for general purpose reference data</meta>
+        <meta attribute="n4-entity-name">General Reference</meta>
+        <meta attribute="n4-entity-name-plural">General References</meta>
+
+        <id name="refGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="refType" column="ref_type" type="string" length="20" not-null="true">
+            <meta attribute="field-description">Purpose or type of this reference entry</meta>
+        </property>
+
+        <property name="refId1" column="id1" type="string" length="20" not-null="true">
+            <meta attribute="field-description">First natural identifier</meta>
+        </property>
+
+        <property name="refId2" column="id2" type="string" length="20" not-null="false">
+            <meta attribute="field-description">Second natural identifier</meta>
+        </property>
+
+        <property name="refId3" column="id3" type="string" length="20" not-null="false">
+            <meta attribute="field-description">Third natural identifier</meta>
+        </property>
+
+        <property name="refValue1" column="value1" type="string" length="60">
+            <meta attribute="field-description">First general reference value</meta>
+        </property>
+
+        <property name="refValue2" column="value2" type="string" length="60">
+            <meta attribute="field-description">Second general reference value</meta>
+        </property>
+
+        <property name="refValue3" column="value3" type="string" length="60">
+            <meta attribute="field-description">Third general reference value</meta>
+        </property>
+
+        <property name="refValue4" column="value4" type="string" length="60">
+            <meta attribute="field-description">Fourth general reference value</meta>
+        </property>
+
+        <property name="refValue5" column="value5" type="string" length="60">
+            <meta attribute="field-description">Fifth general reference value</meta>
+        </property>
+
+        <property name="refValue6" column="value6" type="string" length="60">
+            <meta attribute="field-description">Sixth general reference value</meta>
+        </property>
+
+        <many-to-one name="refComplex" column="cpx_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which this Facility belongs</meta>
+        </many-to-one>
+
+        <property name="refCreated" column="created" type="timestamp"/>
+        <property name="refCreator" column="creator" type="string" length="30"/>
+        <property name="refChanged" column="changed" type="timestamp"/>
+        <property name="refChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!-- 2010-04-27 fyazar ARGO-24454 HardwareDevice class is moved to Argo, table name will not be changed -->
+    <class name="com.navis.argo.business.reference.HardwareDevice" table="road_hardware_devices" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable Hardware Device</meta>
+        <meta attribute="generated-class">com.navis.argo.business.reference.HardwareDeviceHbr</meta>
+        <!--meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta-->
+        <meta attribute="n4alias">hw</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Hardware Device</meta>
+        <meta attribute="n4-entity-name-plural">Hardware Devices</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">hwId</meta>
+
+        <id name="hwGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">hw_gkey</param>
+            </generator>
+        </id>
+
+        <discriminator column="class" not-null="false" type="string" length="10"/>
+
+        <property name="hwSubType" column="class" insert="false" update="false"
+                  type="com.navis.argo.persistence.atoms.UserTypeHardwareDeviceTypeEnum">
+            <meta attribute="field-description">Hardware Device subtype, so we can query invisible discriminator</meta>
+        </property>
+
+        <many-to-one name="hwScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" index="hw_reference_set"/>
+        </many-to-one>
+
+        <property name="hwId" type="java.lang.String" column="id" length="8" not-null="true" unique-key="unique_key"/>
+        <property name="hwLocation" type="java.lang.String" column="location" length="80"/>
+        <property name="hwHostAddress" type="java.lang.String" column="host_address" length="80"/>
+
+        <property name="hwCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="hwCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="hwChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="hwChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="hwLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <!--
+        <property name="hwMfgId" type="java.lang.String" column="MFG_ID" length="12"/>
+        <property name="hwvendorId" type="java.lang.String" column="VENDOR_ID" length="8"/>
+        <property name="hwModelNbr" type="java.lang.String" column="MODEL_NBR" length="10"/>
+        <property name="hwMachineType" type="java.lang.String" column="MACHINE_TYPE" length="4"/>
+        <property name="hwSerialNbr" type="java.lang.String" column="SERIAL_NBR" length="15"/>
+        <property name="hwMfgOrderNbr" type="java.lang.Long" column="MFG_ORDER_NBR" length="7"/>
+        <property name="hwWarrantyExpires" type="java.sql.Timestamp" column="WARRANTY_EXPIRES" length="7"/>
+        <property name="hwPortNbr" type="java.lang.String" column="PORT_NBR" length="15"/>
+        <property name="hwEthernetNbr" type="java.lang.String" column="ETHERNET_NBR" length="12"/>
+        <property name="hwInternetId" type="java.lang.String" column="INTERNET_ID" length="25"/>
+        <property name="hwUserId" type="java.lang.String" column="USER_ID" length="8"/>
+        <property name="hwCostCenter" type="java.lang.String" column="COST_CENTER" length="4"/>
+        <property name="hwWkgrpId" type="java.lang.String" column="WKGRP_ID" length="5"/>
+        <property name="hwTerminalId" type="java.lang.String" column="TERMINAL_ID" length="4"/>
+        <property name="hwSensorId" type="java.lang.String" column="SENSOR_ID" length="12"/>
+        <property name="hwSensorRead" type="java.lang.String" column="SENSOR_READ" length="50"/>
+        -->
+
+        <!-- associations -->
+        <many-to-one name="hwComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex">
+            <meta attribute="field-description">The Complex to which this Hard ware belongs.</meta>
+            <meta attribute="use-in-tostring">true</meta>
+        </many-to-one>
+        <!--ARGO-11752 2008-09-02 dvenkatesan Make Gate Consoles and Printers an Obsoleteable entity and allow purge action.-->
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!-- 2010-04-27 fyazar ARGO-24454 -->
+    <subclass name="com.navis.argo.business.reference.Workstation"
+              extends="com.navis.argo.business.reference.HardwareDevice" discriminator-value="CONSOLE"
+              dynamic-update="true">
+        <meta attribute="generated-class">com.navis.argo.business.reference.WorkstationHbr</meta>
+        <meta attribute="n4alias">hwworkstation</meta>
+        <meta attribute="n4-entity-name">Workstation</meta>
+        <meta attribute="n4-entity-name-plural">Workstations</meta>
+
+        <property name="hwconsoleIdExternal" type="java.lang.String" column="console_id" length="30">
+            <meta attribute="field-description">External id of this workstation / console</meta>
+        </property>
+        <property name="hwconsoleMacAddress" type="java.lang.String" column="mac_address" length="30">
+            <meta attribute="field-description">External id of this workstation / console</meta>
+        </property>
+
+        <set name="hwCardReaders" lazy="true" table="argo_workstation_card_readers">
+            <key column="workstation_gkey"/>
+            <one-to-many class="com.navis.argo.business.model.WorkstationCreditCardReader"/>
+        </set>
+    </subclass>
+
+    <!-- 2010-04-27 fyazar ARGO-24454 -->
+    <subclass name="com.navis.argo.business.reference.CreditCardReader"
+              extends="com.navis.argo.business.reference.HardwareDevice" discriminator-value="CARDREADER"
+              dynamic-update="true">
+        <meta attribute="generated-class">com.navis.argo.business.reference.CreditCardReaderHbr</meta>
+        <meta attribute="n4alias">ccrdr</meta>
+        <meta attribute="n4-entity-name">CreditCardReader</meta>
+        <meta attribute="n4-entity-name-plural">CreditCardReaders</meta>
+
+        <property name="hwTimeout" type="java.lang.Long" column="timeout" length="10">
+            <meta attribute="field-description">Credit Card Reader timeout period in seconds</meta>
+        </property>
+
+        <set name="ccrdrWorkstationCreditCardReaders" lazy="true" table="argo_workstation_card_readers">
+            <key column="cardreader_gkey"/>
+            <one-to-many class="com.navis.argo.business.model.WorkstationCreditCardReader"/>
+        </set>
+    </subclass>
+
+    <subclass name="com.navis.argo.business.reference.ArgoPrinter"
+              extends="com.navis.argo.business.reference.HardwareDevice" discriminator-value="PRINTER"
+              dynamic-update="true">
+        <meta attribute="generated-class">com.navis.argo.business.reference.ArgoPrinterHbr</meta>
+        <meta attribute="n4alias">argoprtr</meta>
+        <meta attribute="n4-entity-name">ArgoPrinter</meta>
+        <meta attribute="n4-entity-name-plural">ArgoPrinters</meta>
+
+        <property name="argoprtrDriver" type="com.navis.framework.persistence.atoms.UserTypePrinterDriverEnum" column="printer_driver" length="25">
+            <meta attribute="field-description">Driver needed for the printer.</meta>
+            <meta attribute="scope-get">protected</meta>
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <property name="argoprtrQueueName" type="java.lang.String" column="queue_name" length="60"/>
+    </subclass>
+
+    <!-- 2010-04-27 fyazar ARGO-24454 -->
+    <!-- List of Credit Card Readers associated with a workstation / console -->
+    <class name="com.navis.argo.business.model.WorkstationCreditCardReader" table="argo_workstation_card_readers" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.argo.business.model.WorkstationCreditCardReaderHbr</meta>
+        <meta attribute="n4alias">workstationccrdr</meta>
+        <meta attribute="n4-entity-name">Workstation Credit Card Reader</meta>
+        <meta attribute="n4-entity-name-plural">Workstation Credit Card Readers</meta>
+
+        <id name="workstationccrdrPk" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- associations -->
+        <many-to-one name="workstationccrdrReader" column="cardreader_gkey" class="com.navis.argo.business.reference.CreditCardReader"
+                     cascade="none">
+            <meta attribute="field-description">Reference to credit card reader</meta>
+        </many-to-one>
+
+        <many-to-one name="workstationccrdrWorkstation" column="workstation_gkey" class="com.navis.argo.business.reference.Workstation"
+                     cascade="none">
+            <meta attribute="field-description">Reference to Workstation / Console</meta>
+        </many-to-one>
+
+        <property name="workstationccrdrCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="workstationccrdrCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="workstationccrdrChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="workstationccrdrChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="workstationccrdrLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.argo.business.model.ArgoWebserviceLogEntry" table="argo_webservice_log_entries">
+        <meta attribute="n4alias">wslog</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.ArgoWebserviceLogEntryHbr</meta>
+        <meta attribute="class-description">Log entries for calls to/fro the argo webservice</meta>
+        <meta attribute="n4-entity-name">ArgoWebserviceLogEntry</meta>
+        <meta attribute="n4-entity-name-plural">ArgoWebserviceLogEntries</meta>
+
+        <id name="wslogGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="wslogScopeId" column="scope_id" type="string" length="80" not-null="false">
+            <meta attribute="field-description">Scope id passed in the webservice request</meta>
+        </property>
+
+        <property name="wslogCallTypeId" column="call_type_id" type="string" length="12" not-null="true">
+            <meta attribute="field-description">Type of call - generic or basic</meta>
+        </property>
+
+        <property name="wslogServiceId" column="service_id" type="string" length="60" not-null="false">
+            <meta attribute="field-description">Id of the webservice handler (root element of request)</meta>
+        </property>
+
+        <property name="wslogMessageId" column="message_id" type="string" length="60" not-null="false">
+            <meta attribute="field-description">Id of the message handler (2nd level element)</meta>
+        </property>
+
+        <property name="wslogYYYYMMDD" column="yyyymmdd" type="java.lang.Long" not-null="true" index="wslog_YYYYMMDD_idx">
+            <meta attribute="field-description">Date as a number for quick retrieval</meta>
+        </property>
+
+        <property name="wslogRequestTime" type="java.sql.Timestamp" column="request_time"/>
+        <property name="wslogResponseTime" type="java.sql.Timestamp" column="response_time"/>
+
+        <property name="wslogIsOutbound" column="is_outbound" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the request is outbound from N4</meta>
+        </property>
+
+        <property name="wslogRequest" column="request" type="text" length="16000" not-null="false" lazy="true">
+            <meta attribute="field-description">Text of the request message</meta>
+        </property>
+
+        <property name="wslogResponse" column="response" type="text" length="16000" not-null="false" lazy="true">
+            <meta attribute="field-description">Text of the response message</meta>
+        </property>
+
+        <property name="wslogMessages" column="messages" type="string" length="2000" not-null="false" lazy="true">
+            <meta attribute="field-description">Messages returned</meta>
+        </property>
+
+        <property name="wslogStatusId" column="status_id" type="string" length="12" not-null="false">
+            <meta attribute="field-description">Status Id returned</meta>
+        </property>
+
+        <property name="wslogCvId" column="cv_id" type="string" length="40" not-null="false" index="wslog_cv_id_idx">
+            <meta attribute="field-description">Id of carrier visit referenced in the message</meta>
+        </property>
+
+        <property name="wslogCvGkey" column="cv_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Gkey of carrier visit referenced in the message</meta>
+        </property>
+
+        <property name="wslogCtrId" column="ctr_id" type="string" length="20" not-null="false" index="wslog_ctr_id_idx">
+            <meta attribute="field-description">Id of container referenced in the message</meta>
+        </property>
+
+        <property name="wslogData01" column="data_01" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+        <property name="wslogData02" column="data_02" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+        <property name="wslogData03" column="data_03" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+        <property name="wslogData04" column="data_04" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+        <property name="wslogData05" column="data_05" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+        <property name="wslogData06" column="data_06" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+        <property name="wslogData07" column="data_07" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+        <property name="wslogData08" column="data_08" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+        <property name="wslogData09" column="data_09" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+        <property name="wslogData10" column="data_10" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+        <property name="wslogData11" column="data_11" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+        <property name="wslogData12" column="data_12" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Additional message data</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.argo.business.model.DocumentType" table="road_document_types" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or User Definable Document Type</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.DocumentTypeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4alias">doctype</meta>
+        <meta attribute="n4-entity-name">Document Type</meta>
+        <meta attribute="n4-entity-name-plural">Document Types</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">doctypeId</meta>
+
+        <id name="doctypePk" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="doctypeScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" index="doctype_reference_set"/>
+        </many-to-one>
+
+        <property name="doctypeId" type="java.lang.String" column="id" not-null="true" length="10" unique-key="unique_key"/>
+        <property name="doctypeUsage" column="doc_usage"
+                  type="com.navis.argo.persistence.atoms.UserTypeDocTypeUsageEnum" not-null="true"/>
+        <property name="doctypeDescription" type="java.lang.String" column="description" not-null="true" length="60"/>
+        <property name="doctypeLayout" type="text" column="layout" length="100000000"/>
+        <property name="doctypeCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="doctypeCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="doctypeChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="doctypeChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="doctypeLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <!-- associations -->
+        <many-to-one name="doctypeComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex">
+            <meta attribute="field-description">The Complex to which this Document Type belongs.</meta>
+            <meta attribute="scope-set">public</meta>
+            <meta attribute="use-in-tostring">true</meta>
+        </many-to-one>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!-- Entity: StackStatus -->
+    <class name="com.navis.argo.business.xps.model.StackStatus" table="xps_stackstatus" dynamic-update="true">
+
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4alias">stackstatus</meta>
+        <meta attribute="carina-index">stackstatus_py_idx(pkey,yard)</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.StackStatusHbr</meta>
+
+        <id name="stackstatusGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="stackstatusYard" class="com.navis.argo.business.model.Yard">
+            <column name="yard" not-null="true"/>
+        </many-to-one>
+        <property name="stackstatusPkey" column="pkey" index="stackstatus_idx" type="java.lang.Long" not-null="true"/>
+
+        <property name="stackstatusBinName" column="bin_name" type="java.lang.String" length="255">
+            <meta attribute="field-description">Bin name target of the stack status.</meta>
+        </property>
+        <many-to-one name="stackstatusBin" class="com.navis.spatial.business.model.AbstractBin" column="bin" not-null="false">
+            <meta attribute="field-description">Bin target of the stack status.</meta>
+        </many-to-one>
+
+        <property name="stackstatusGridLane" column="grid_lane" type="java.lang.Long">
+            <meta attribute="field-description">Grid lane target of the stack status.</meta>
+        </property>
+        <property name="stackstatusStatusChars" column="status_chars" type="java.lang.String" length="255">
+            <meta attribute="field-description">Status code of the stack status.</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.argo.business.model.JobStepProjection" table="argo_job_step_projection" dynamic-update="true">
+        <meta attribute="n4alias">jsp</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.JobStepProjectionHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Entity representing projected start and end time for a job step</meta>
+        <meta attribute="n4-entity-name">Job Step Projection</meta>
+        <meta attribute="n4-entity-name-plural">Job Step Projections</meta>
+        <meta attribute="carina-index">argo_jsp_exec_job_step_wa_idx(job_execution_order,job_step_state,work_assignment_gkey)</meta>
+
+        <id name="jspGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="jspJobStepState" column="job_step_state" type="com.navis.argo.persistence.atoms.UserTypeCheJobStepStateEnum" not-null="true">
+            <meta attribute="field-description">Job step state</meta>
+        </property>
+
+        <many-to-one name="jspWorkAssignment" column="work_assignment_gkey" class="com.navis.argo.business.xps.model.WorkAssignment" not-null="true">
+            <meta attribute="field-description">Work assignment for which the projection is computed.</meta>
+        </many-to-one>
+
+        <property name="jspStartTime" column="start_time" type="timestamp">
+            <meta attribute="field-description">Projected start time for a specific job step</meta>
+        </property>
+
+        <property name="jspEndTime" column="end_time" type="timestamp">
+            <meta attribute="field-description">Projected end time for a specific job step</meta>
+        </property>
+
+        <many-to-one name="jspRelatedProjection" class="com.navis.argo.business.model.JobStepProjection" cascade="none" unique="false" not-null="false">
+            <meta attribute="field-description">The other related job step projection; relation type is mentioned by jspRelationType.</meta>
+            <column name="related_projection"/>
+        </many-to-one>
+
+        <property name="jspRelationType" column="relation_type" type="com.navis.argo.persistence.atoms.UserTypeJobStepProjectionRelationTypeEnum"
+                  not-null="false">
+            <meta attribute="field-description">Type of relationship with the other projection</meta>
+        </property>
+
+        <property name="jspJobExecutionOrder" column="job_execution_order" type="com.navis.argo.persistence.atoms.UserTypeJobExecutionOrderEnum"
+                  not-null="true">
+            <meta attribute="field-description">Job execution order</meta>
+        </property>
+    </class>
+
+    <!-- prabhat NFRM-1001 Data Quality -->
+    <class name="com.navis.argo.business.model.DataQuality" table="ref_data_quality" dynamic-update="true">
+        <meta attribute="n4alias">dq</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.DataQualityHbr</meta>
+        <meta attribute="class-description">
+            Data Quality describes the Posting rule for a particular MessageClass and PropertyGroup assigned to Equipment attributes
+        </meta>
+        <meta attribute="n4-entity-name">DataQuality</meta>
+        <meta attribute="n4-entity-name-plural">DataQuality</meta>
+
+        <id name="dqGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="dqComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which this Data quality Rule belongs.</meta>
+        </many-to-one>
+
+        <property name="dqDataSource" column="data_source" type="com.navis.argo.persistence.atoms.UserTypeDataSourceEnum"
+                  not-null="true">
+            <meta attribute="field-description">Message Class to which this rule applies</meta>
+        </property>
+
+        <property name="dqPropertyGroup" column="property_group" type="com.navis.argo.persistence.atoms.UserTypePropertyGroupEnum" not-null="true">
+            <meta attribute="field-description">Property Group to which this rule applies</meta>
+        </property>
+
+        <many-to-one name="dqMapping" class="com.navis.argo.business.model.EntityMappingPredicate" column="mapping_rules" not-null="false"
+                     cascade="all">
+            <meta attribute="field-description">Top node in a EntityMappingPredicate tree defining the rules.</meta>
+        </many-to-one>
+
+        <property name="dqCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="dqCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="dqChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="dqChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>
+
+
+    <class name="com.navis.argo.business.model.Lane" table="argo_lanes" dynamic-update="true">
+        <meta attribute="class-description">Base lane definition</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.LaneHbr</meta>
+        <meta attribute="n4alias">lane</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Lane</meta>
+        <meta attribute="n4-entity-name-plural">Lanes</meta>
+
+        <id name="laneGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="laneFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility" not-null="true"/>
+
+        <property name="laneCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="laneCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="laneChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="laneChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="laneLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="laneId" type="java.lang.String" column="id" length="12"/>
+        <property name="laneClass" type="java.lang.String" formula="''"/>
+
+        <many-to-one name="laneCarrierVisit" column="cv_gkey" class="com.navis.argo.business.model.CarrierVisit">
+            <meta attribute="field-description">Carrier currently occupying this lane</meta>
+        </many-to-one>
+
+        <property name="lanePedestalId" type="java.lang.String" column="pedestal_id" length="15"/>
+        <property name="laneDescription" type="java.lang.String" column="description" not-null="false" length="35"/>
+
+        <property name="laneGosStatus" type="java.lang.String" column="gos_status" length="20"/>
+        <property name="laneGosTvKey" type="java.lang.Long" column="gos_tv_key"/>
+        <property name="laneStatus" type="com.navis.argo.persistence.atoms.UserTypeLaneStatusEnum" length="20"
+                  column="status"/>
+
+        <set name="lanePrinters" lazy="true" table="argo_lane_printers">
+            <key column="lane_gkey"/>
+            <one-to-many class="com.navis.argo.business.model.LanePrinter"/>
+        </set>
+
+        <set name="laneConsoles" lazy="true" table="road_hardware_devices">
+            <key column="lane_selected_gkey"/>
+            <one-to-many class="com.navis.argo.business.reference.Workstation"/>
+        </set>
+
+        <property name="laneAssignmentPriority" type="java.lang.Long" column="assignment_priority"/>
+        <property name="laneAssignmentTime" type="java.sql.Timestamp" column="assignment_time"/>
+        <property name="laneTimeSinceAssignment" type="java.lang.Long" column="time_since_assignment">
+            <meta attribute="field-description">Number of minutes since the lane was assigned</meta>
+        </property>
+        <property name="laneClearedTime" type="java.sql.Timestamp" column="cleared_time"/>
+        <property name="laneClearanceDelaySecs" type="java.lang.Long" column="clearance_delay_secs"/>
+        <property name="laneHasLoopDetector" type="java.lang.Boolean" column="has_loop_detector">
+            <meta attribute="scope-get">protected</meta>
+        </property>
+        <!-- <property name="laneMaxTruckLength" type="java.lang.Integer" column="max_truck_length" length="2"/> -->
+        <property name="laneInLaneTime" type="java.sql.Timestamp" column="in_lane_time"/>
+        <property name="laneTimeSinceInLane" type="java.lang.Long" column="time_since_in_lane">
+            <meta attribute="field-description">Number of minutes since the truck arrived in the lane</meta>
+        </property>
+        <property name="laneMission" type="java.lang.String" column="mission" length="255"/>
+
+        <property name="laneTruckStatus" type="com.navis.argo.persistence.atoms.UserTypeLaneTruckStatusEnum" length="20"
+                  column="truck_status"/>
+
+        <many-to-one name="laneScanSet" class="com.navis.argo.business.model.ScanSetBase" column="scan_gkey" not-null="false">
+            <meta attribute="field-description">Scans associated with this lane</meta>
+        </many-to-one>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <joined-subclass name="com.navis.argo.business.model.ExchangeLane" table="argo_exchange_lanes" extends="com.navis.argo.business.model.Lane"
+                     dynamic-update="true">
+
+        <meta attribute="n4alias">xchln</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.ExchangeLaneHbr</meta>
+        <meta attribute="class-description">Type of lane found at an exchange area or interchange zone</meta>
+        <meta attribute="scope-set">public</meta>
+
+        <key column="gkey"/>
+
+        <property name="xchlnLastMoveTime" type="java.sql.Timestamp" column="last_move_time"/>
+        <property name="xchlnTimeSinceLastMove" type="java.lang.Long" column="time_since_last_move">
+            <meta attribute="field-description">Number of minutes since the last move occurred</meta>
+        </property>
+
+        <property name="xchlnTimeWaitingForMove" type="java.lang.Long" column="time_waiting_for_move">
+            <meta attribute="field-description">Number of minutes waiting for the next move</meta>
+        </property>
+
+        <property name="xchlnMoveCount" type="java.lang.Integer" column="move_count">
+            <meta attribute="field-description">Total number of moves to be performed in the lane</meta>
+        </property>
+
+        <property name="xchlnMovesToGo" type="java.lang.Integer" column="moves_to_go">
+            <meta attribute="field-description">Number of moves still to be performed in the lane</meta>
+        </property>
+
+        <many-to-one name="xchlnXcharea" column="xcharea_gkey" class="com.navis.argo.business.model.ExchangeArea" not-null="true"
+                     cascade="none">
+            <meta attribute="field-description">Exchange Area this Lane belongs to</meta>
+        </many-to-one>
+
+    </joined-subclass>
+
+    <class name="com.navis.argo.business.model.ExchangeArea" table="argo_exchange_areas" dynamic-update="true">
+        <meta attribute="class-description">Domain entity that represents an Exchange Area</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.ExchangeAreaHbr</meta>
+        <meta attribute="n4alias">xcharea</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Exchange Area</meta>
+        <meta attribute="n4-entity-name-plural">Exchange Areas</meta>
+
+        <id name="xchareaGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="xchareaCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="xchareaCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="xchareaChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="xchareaChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="xchareaLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="xchareaId" type="java.lang.String" column="id" length="6"/>
+
+        <many-to-one name="xchareaYard" column="yrd_gkey" class="com.navis.argo.business.model.Yard" not-null="true">
+            <meta attribute="field-description">The Yard to which this Exchange Area belongs</meta>
+        </many-to-one>
+
+        <property name="xchareaLaneAssignmentSequence" column="lane_assignment_sequence"
+                  type="com.navis.argo.persistence.atoms.UserTypeLaneAssignmentSequenceEnum" length="12" not-null="true"/>
+        <property name="xchareaMaxTruckLength" type="java.lang.Integer" column="max_truck_length" length="2"/>
+        <property name="xchareaTruckFlowSeqNbr" type="java.lang.Integer" column="truck_flow_seq_nbr"/>
+
+        <property name="xchareaBufferSize" type="java.lang.Integer" column="buffer_size" length="4"/>
+        <property name="xchareaTrucksStaged" type="java.lang.Integer" column="trucks_staged"/>
+        <property name="xchareaTrucksQueued" type="java.lang.Integer" column="trucks_queued"/>
+
+        <set name="xchareaLanes" lazy="true" table="argo_exchange_lanes" cascade="all-delete-orphan">
+            <key column="xcharea_gkey"/>
+            <one-to-many class="com.navis.argo.business.model.ExchangeLane"/>
+        </set>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <class name="com.navis.argo.business.model.LanePrinter" table="argo_lane_printers" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.argo.business.model.LanePrinterHbr</meta>
+        <meta attribute="n4alias">laneprtr</meta>
+        <meta attribute="n4-entity-name">Lane Printer</meta>
+        <meta attribute="n4-entity-name-plural">Lane Printers</meta>
+
+        <id name="laneprtrPk" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">lane_printer_gkey</param>
+            </generator>
+        </id>
+
+        <!-- associations -->
+        <many-to-one name="laneprtrPrinter" column="printer_gkey" class="com.navis.argo.business.reference.ArgoPrinter"
+                     cascade="none">
+            <meta attribute="field-description">Reference to printer</meta>
+        </many-to-one>
+
+        <many-to-one name="laneprtrLane" column="lane_gkey" class="com.navis.argo.business.model.Lane"
+                     cascade="none">
+            <meta attribute="field-description">Reference to gate lane</meta>
+        </many-to-one>
+
+        <many-to-one name="laneprtrDocType" column="doctype_gkey" class="com.navis.argo.business.model.DocumentType"
+                     cascade="none">
+            <meta attribute="field-description">Reference to document type</meta>
+        </many-to-one>
+
+        <property name="laneprtrCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="laneprtrCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="laneprtrChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="laneprtrChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="laneprtrLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.argo.business.model.ScanSetBase" table="argo_scan_sets" dynamic-update="true">
+        <meta attribute="class-description">Base class for stored OCR scans</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.ScanSetBaseHbr</meta>
+        <meta attribute="n4alias">scan</meta>
+        <meta attribute="n4-entity-name">Scan Set</meta>
+        <meta attribute="n4-entity-name-plural">Scan Sets</meta>
+        <meta attribute="scope-set">public</meta>
+
+        <id name="scanGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">scan_gkey</param>
+            </generator>
+        </id>
+
+        <property name="scanSetId" type="java.lang.Long" column="scan_set_id" index="argo_scan_set_id_idx"/>
+
+    </class>
+
+    <class name="com.navis.argo.business.xps.model.MoveKindAllowed" table="xps_movekindallowed" dynamic-update="true">
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4alias">movekindallowed</meta>
+        <meta attribute="generated-class">com.navis.argo.business.xps.model.MoveKindAllowedHbr</meta>
+        <meta attribute="class-description">Move Kind Allowed</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Move Kind Allowed</meta>
+        <meta attribute="n4-entity-name-plural">Move Kinds Allowed</meta>
+        <meta attribute="carina-index">movekindallowed_py_idx(pkey,yard)</meta>
+
+        <id name="movekindallowedGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="movekindallowedPkey" column="pkey" index="movekindallowed_idx" type="java.lang.Long" not-null="true"/>
+
+        <many-to-one name="movekindallowedYard" class="com.navis.argo.business.model.Yard">
+            <column name="yard" not-null="true"/>
+        </many-to-one>
+
+        <property name="movekindallowedBinName" column="bin_name" type="java.lang.String">
+            <meta attribute="field-description">The bin name against which the move kinds are associated</meta>
+        </property>
+
+        <property name="movekindallowedMoveKinds" column="move_kinds" type="java.lang.String">
+            <meta attribute="field-description">The move kinds allowed for the associated bin name</meta>
+        </property>
+
+        <many-to-one name="movekindallowedBin" class="com.navis.spatial.business.model.AbstractBin" column="bin" not-null="false">
+            <meta attribute="field-description">Bin target of the move kind.</meta>
+        </many-to-one>
+
+    </class>
+
+</hibernate-mapping>
+

@@ -1,0 +1,730 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- PICT Existing data in xml.Created by Adnan Memon  -->
+<SNXDATA>
+<line-operator id="DIM" name="DIAMOND SHIPPING AGENCY" scac="DIM" bic="DIM">
+</line-operator>
+<line-operator id="ADL" name="ADVANCE CONTAINER LINE (PTE)" scac="ADL" bic="ADL">
+</line-operator>
+<line-operator id="APL" name="AMERICAN PRESIDENT LINE" scac="APL" bic="APL">
+</line-operator>
+<line-operator id="AEL" name="ARABIAN EXPRESS LINE LTD." scac="AEL" bic="AEL">
+</line-operator>
+<line-operator id="ASL" name="ATLAS SHIPPING LINES INC." scac="ASL" bic="ASL">
+</line-operator>
+<line-operator id="BLJ" name="BALAJI SHIPPING LTD." scac="BLJ" bic="BLJ">
+</line-operator>
+<line-operator id="CKL" name="CEE KAY LINE" scac="CKL" bic="CKL">
+</line-operator>
+<line-operator id="CEYS" name="CEYLON SHIPPING CORPORATION" scac="CEYS" bic="CEYS">
+</line-operator>
+<line-operator id="CNCC" name="CHINA NATIONAL CHARTERING CORP" scac="CNCC" bic="CNCC">
+</line-operator>
+<line-operator id="COS" name="CHINA OCEAN SHIPPING CO." scac="COS" bic="COS">
+</line-operator>
+<line-operator id="CCN" name="COMPANIA CHELINA DE" scac="CCN" bic="CCN">
+</line-operator>
+<line-operator id="CMA" name="COMPAGNIA MARITIME" scac="CMA" bic="CMA">
+</line-operator>
+<line-operator id="CDL" name="CONSOLIDATED SHIPPING LINE LTD" scac="CDL" bic="CDL">
+</line-operator>
+<line-operator id="CON" name="CONTSHIP LINE" scac="CON" bic="CON">
+</line-operator>
+<line-operator id="DEL" name="DELMAS SHIPPING LINES" scac="DEL" bic="DEL">
+</line-operator>
+<line-operator id="DON" name="DONGNAMA SHIPPING CO." scac="DON" bic="DON">
+</line-operator>
+<line-operator id="ELL" name="ELLERMAN LINE" scac="ELL" bic="ELL">
+</line-operator>
+<line-operator id="EMC" name="EVERGREEN LINES" scac="EMC" bic="EMC">
+</line-operator>
+<line-operator id="GCL" name="GLOBAL CONTAINER LINES" scac="GCL" bic="GCL">
+</line-operator>
+<line-operator id="HLL" name="HAPAG LLOYD" scac="HLL" bic="HLL">
+</line-operator>
+<line-operator id="HMCL" name="HOLLAND MASS CONTAINER LINE" scac="HMCL" bic="HMCL">
+</line-operator>
+<line-operator id="HUB" name="HUB LINE" scac="HUB" bic="HUB">
+</line-operator>
+<line-operator id="HMM" name="HYUNDAI MERCHANT MARINE" scac="HMM" bic="HMM">
+</line-operator>
+<line-operator id="IAL" name="IND-ARB CONTAINER LINE" scac="IAL" bic="IAL">
+</line-operator>
+<line-operator id="IMC" name="IGNAZIO MESSINA &amp; CSPA" scac="IMC" bic="IMC">
+</line-operator>
+<line-operator id="IIC" name="IIC CONTAINER LINE PVT. LTD." scac="IIC" bic="IIC">
+</line-operator>
+<line-operator id="IALI" name="INTERASIA LINE" scac="IALI" bic="IALI">
+</line-operator>
+<line-operator id="IRS" name="IRISL CONTAINER LINE" scac="IRS" bic="IRS">
+</line-operator>
+<line-operator id="KKK" name="KAWASAKI KISEN KAISHA LTD." scac="KKK" bic="KKK">
+</line-operator>
+<line-operator id="LNL" name="LAUREL NAVIGATION LINES" scac="LNL" bic="LNL">
+</line-operator>
+<line-operator id="LLT" name="LIOYD TRIESTINO" scac="LLT" bic="LLT">
+</line-operator>
+<line-operator id="LYK" name="LYKES LINE" scac="LYK" bic="LYK">
+</line-operator>
+<line-operator id="MSK" name="MAERSK SEALAND LINE" scac="MSK" bic="MSK">
+</line-operator>
+<line-operator id="MIS" name="MALAYSIA INT'L SHIPPING CORP." scac="MIS" bic="MIS">
+</line-operator>
+<line-operator id="MSC" name="MEDITERRANEAN SHIPPING COMPANY" scac="MSC" bic="MSC">
+</line-operator>
+<line-operator id="MOL" name="MITSUI O.S.K. LINE  LTD." scac="MOL" bic="MOL">
+</line-operator>
+<line-operator id="MLL" name="MOOR LINE LTD." scac="MLL" bic="MLL">
+</line-operator>
+<line-operator id="NYK" name="NIPPON YUSEN KAISHA" scac="NYK" bic="NYK">
+</line-operator>
+<line-operator id="NOR" name="NORASIA LINES" scac="NOR" bic="NOR">
+</line-operator>
+<line-operator id="OEL" name="ORIENT EXPRESS LINES" scac="OEL" bic="OEL">
+</line-operator>
+<line-operator id="OOL" name="ORIENT OVERSEAS CONTAINER LINE" scac="OOL" bic="OOL">
+</line-operator>
+<line-operator id="OSL" name="ORION SHIPPING CONT. LINE" scac="OSL" bic="OSL">
+</line-operator>
+<line-operator id="PON" name="P &amp; O NEDLLOYD LINE" scac="PON" bic="PON">
+</line-operator>
+<line-operator id="PCL" name="PACIFIC CARRIERS LTD." scac="PCL" bic="PCL">
+</line-operator>
+<line-operator id="PCN" name="PACIFIC CONCORD" scac="PCN" bic="PCN">
+</line-operator>
+<line-operator id="PIL" name="PACIFIC INTERNATIONAL LINE" scac="PIL" bic="PIL">
+</line-operator>
+<line-operator id="PNS" name="PAKISTAN NATIONAL SHIPPING" scac="PNS" bic="PNS">
+</line-operator>
+<line-operator id="POL" name="POLISH OCEAN LINES" scac="POL" bic="POL">
+</line-operator>
+<line-operator id="QCL" name="QUADRANT CONTAINER LINE" scac="QCL" bic="QCL">
+</line-operator>
+<line-operator id="RIK" name="RICKMERS LINE" scac="RIK" bic="RIK">
+</line-operator>
+<line-operator id="SCL" name="SAFMARINE LINE" scac="SCL" bic="SCL">
+</line-operator>
+<line-operator id="SSL" name="SAMUDERA SHIPPING LINE" scac="SSL" bic="SSL">
+</line-operator>
+<line-operator id="SECL" name="SEA CONTAINER LTD." scac="SECL" bic="SECL">
+</line-operator>
+<line-operator id="SEN" name="SENATOR LINES" scac="SEN" bic="SEN">
+</line-operator>
+<line-operator id="SHX" name="SHANGHAI HAIXING SHIPPING CO." scac="SHX" bic="SHX">
+</line-operator>
+<line-operator id="SYS" name="SHIN YANG SHIPPING CO." scac="SYS" bic="SYS">
+</line-operator>
+<line-operator id="UOL" name="UNI-OCEAN LINES" scac="UOL" bic="UOL">
+</line-operator>
+<line-operator id="UAS" name="UNITED ARAB SHIPPING COMPANY" scac="UAS" bic="UAS">
+</line-operator>
+<line-operator id="VAS" name="VASCO" scac="VAS" bic="VAS">
+</line-operator>
+<line-operator id="WHL" name="WAN HAI LINES LTD." scac="WHL" bic="WHL">
+</line-operator>
+<line-operator id="YML" name="YANG MING LINE" scac="YML" bic="YML">
+</line-operator>
+<line-operator id="ADV" name="ADVANCE SHIPPING PVT. LTD." scac="ADV" bic="ADV">
+</line-operator>
+<line-operator id="BRW" name="BARWIL SHIPPING (PVT) LTD" scac="BRW" bic="BRW">
+</line-operator>
+<line-operator id="BCC" name="BURJORJEE COWASJEE &amp; COMPANY" scac="BCC" bic="BCC">
+</line-operator>
+<line-operator id="CIM" name="CIM SHIPPING INTERNATIONAL" scac="CIM" bic="CIM">
+</line-operator>
+<line-operator id="COP" name="COOPER &amp; COMPANY PVT. LTD." scac="COP" bic="COP">
+</line-operator>
+<line-operator id="ESEA" name="EASTERN SEA TRANSPORT PVT. LTD" scac="ESEA" bic="ESEA">
+</line-operator>
+<line-operator id="FPT" name="FRIENDS PVT. LTD." scac="FPT" bic="FPT">
+</line-operator>
+<line-operator id="GLK" name="GLOBELINK PAKISTAN (PVT) LTD." scac="GLK" bic="GLK">
+</line-operator>
+<line-operator id="GOMI" name="GOLD MINE IMPEX" scac="GOMI" bic="GOMI">
+</line-operator>
+<line-operator id="GMSP" name="GULF MARITIME SERVICE PAKISTAN" scac="GMSP" bic="GMSP">
+</line-operator>
+<line-operator id="HTA" name="HUSSAIN TRADING AGENCIES" scac="HTA" bic="HTA">
+</line-operator>
+<line-operator id="MINT" name="M. INTERNATIONAL SERVICES PVT" scac="MINT" bic="MINT">
+</line-operator>
+<line-operator id="MSL" name="MARINE SERVICES PVT. LTD." scac="MSL" bic="MSL">
+</line-operator>
+<line-operator id="MEG" name="MEGA &amp; IN GROUP OF COMPANIES" scac="MEG" bic="MEG">
+</line-operator>
+<line-operator id="RSHP" name="RAHMAT SHIPPING (PVT) LIMITED" scac="RSHP" bic="RSHP">
+</line-operator>
+<line-operator id="RAV" name="RAVIAN MARITIME PVT. LTD." scac="RAV" bic="RAV">
+</line-operator>
+<line-operator id="SRSH" name="S. R. SHIPPING" scac="SRSH" bic="SRSH">
+</line-operator>
+<line-operator id="UMA" name="UNITED MARINE AGENCIES (PVT)" scac="UMA" bic="UMA">
+</line-operator>
+<line-operator id="OCN" name="OCEAN LTD" scac="OCN" bic="OCN">
+</line-operator>
+<line-operator id="SMR" name="SMR" scac="SMR" bic="SMR">
+</line-operator>
+<line-operator id="MSA" name="MERCHANT SHIPPING (PVT.) LTD" scac="MSA" bic="MSA">
+</line-operator>
+<line-operator id="CNC" name="CHENG LIE NAVIGATION CO. LTD." scac="CNC" bic="CNC">
+</line-operator>
+<line-operator id="QTC" name="QAMAR TRADING COMPANY" scac="QTC" bic="QTC">
+</line-operator>
+<line-operator id="RVA" name="RAVIAN INTERNATIONAL" scac="RVA" bic="RVA">
+</line-operator>
+<line-operator id="PAL" name="PAL" scac="PAL" bic="PAL">
+</line-operator>
+<line-operator id="CSL" name="CHINA SHIPPING LINES" scac="CSL" bic="CSL">
+</line-operator>
+<line-operator id="MORI" name="MORAAD INT'L" scac="MORI" bic="MORI">
+</line-operator>
+<line-operator id="MSP" name="M. S. APPARELS" scac="MSP" bic="MSP">
+</line-operator>
+<line-operator id="MISL" name="M. INTERNATIONAL SERVICES" scac="MISL" bic="MISL">
+</line-operator>
+<line-operator id="WASS" name="WAHID ASSOCIATES" scac="WASS" bic="WASS">
+</line-operator>
+<line-operator id="SUT" name="SATURN CONTAINER LINE" scac="SUT" bic="SUT">
+</line-operator>
+<line-operator id="SCRT" name="SECURITY PACKERS" scac="SCRT" bic="SCRT">
+</line-operator>
+<line-operator id="SIN" name="SINOPAK SHIPPING LINE" scac="SIN" bic="SIN">
+</line-operator>
+<line-operator id="SRN" name="SARAN SHIPPING - RAVIAN" scac="SRN" bic="SRN">
+</line-operator>
+<line-operator id="TGS" name="TRANSGLOBE SHIPPING SERVES" scac="TGS" bic="TGS">
+</line-operator>
+<line-operator id="DYN" name="DYNAMIC SHIPPING AGENCIES" scac="DYN" bic="DYN">
+</line-operator>
+<line-operator id="WCC" name="WORLD CARGO CARIS" scac="WCC" bic="WCC">
+</line-operator>
+<line-operator id="FSC" name="FREIGHT SYSTEM CO" scac="FSC" bic="FSC">
+</line-operator>
+<line-operator id="AMU" name="AL-MUQARAB SHIPPING LOGISTIC A" scac="AMU" bic="AMU">
+</line-operator>
+<line-operator id="FRES" name="FREIGHT SYSTEMS &amp; CO." scac="FRES" bic="FRES">
+</line-operator>
+<line-operator id="GACC" name="GAC CARGO SYSTEMS (PVT) LTD." scac="GACC" bic="GACC">
+</line-operator>
+<line-operator id="GACS" name="GAC SHIPPING PAK (PVT) LTD" scac="GACS" bic="GACS">
+</line-operator>
+<line-operator id="MAR" name="MARUBA LINE" scac="MAR" bic="MAR">
+</line-operator>
+<line-operator id="TFC" name="TRANS FREIGHT CORPORATION" scac="TFC" bic="TFC">
+</line-operator>
+<line-operator id="USL" name="UNIVERSAL LINE" scac="USL" bic="USL">
+</line-operator>
+<line-operator id="HMG" name="HMG INTERNATIONAL" scac="HMG" bic="HMG">
+</line-operator>
+<line-operator id="NML" name="NESTLE MILKPAK LTD." scac="NML" bic="NML">
+</line-operator>
+<line-operator id="UBL" name="UNI BENGAL CONTAINER LINE" scac="UBL" bic="UBL">
+</line-operator>
+<line-operator id="OML" name="ORI MARINE LINE" scac="OML" bic="OML">
+</line-operator>
+<line-operator id="SML" name="SUN MARINE LINE" scac="SML" bic="SML">
+</line-operator>
+<line-operator id="TAA" name="T. A. ASIA LINE" scac="TAA" bic="TAA">
+</line-operator>
+<line-operator id="DCL" name="DC CONTAINER LINE" scac="DCL" bic="DCL">
+</line-operator>
+<line-operator id="NEO" name="NEON MARITIME LINE" scac="NEO" bic="NEO">
+</line-operator>
+<line-operator id="TMID" name="THERMOSOLE INDUSTRIES LTD." scac="TMID" bic="TMID">
+</line-operator>
+<line-operator id="LMT" name="LLOYDS MARITME TRADING-MMI" scac="LMT" bic="LMT">
+</line-operator>
+<line-operator id="BTL" name="BENGAL TIGER LINES" scac="BTL" bic="BTL">
+</line-operator>
+<line-operator id="MAHT" name="MAHI TRADING" scac="MAHT" bic="MAHT">
+</line-operator>
+<line-operator id="MAL" name="MAL SHIP CEYLON LTD." scac="MAL" bic="MAL">
+</line-operator>
+<line-operator id="RFS" name="RELIANCE FREIGHT SYSTEM  CIM" scac="RFS" bic="RFS">
+</line-operator>
+<line-operator id="HJN" name="HANJIN SHIPPING" scac="HJN" bic="HJN">
+</line-operator>
+<line-operator id="PYR" name="PYRAMID" scac="PYR" bic="PYR">
+</line-operator>
+<line-operator id="MDV" name="MEHADEV ENT." scac="MDV" bic="MDV">
+</line-operator>
+<line-operator id="CEL" name="CEL" scac="CEL" bic="CEL">
+</line-operator>
+<line-operator id="NEC" name="NEC - CIM" scac="NEC" bic="NEC">
+</line-operator>
+<line-operator id="ATNT" name="ASIA TRADE AND TRANSPORT" scac="ATNT" bic="ATNT">
+</line-operator>
+<line-operator id="WCL" name="WORLD CONTAINER LINE" scac="WCL" bic="WCL">
+</line-operator>
+<line-operator id="AQUA" name="AQUA SHIPPING" scac="AQUA" bic="AQUA">
+</line-operator>
+<line-operator id="OYL" name="OYESTER CONTAINER LINE" scac="OYL" bic="OYL">
+</line-operator>
+<line-operator id="BAY" name="BAY LINE" scac="BAY" bic="BAY">
+</line-operator>
+<line-operator id="ARC" name="ARC CONTAINER LINE" scac="ARC" bic="ARC">
+</line-operator>
+<line-operator id="PSL" name="PERMA SHIPPING LINE" scac="PSL" bic="PSL">
+</line-operator>
+<line-operator id="MAC" name="MAC ANDREW SHIPPING" scac="MAC" bic="MAC">
+</line-operator>
+<line-operator id="SRPL" name="S.R.P.L" scac="SRPL" bic="SRPL">
+</line-operator>
+<line-operator id="GCE" name="GCE" scac="GCE" bic="GCE">
+</line-operator>
+<line-operator id="SGPT" name="SEA GOLD TRADING CO." scac="SGPT" bic="SGPT">
+</line-operator>
+<line-operator id="FFZR" name="FAUJI FERTILIZER" scac="FFZR" bic="FFZR">
+</line-operator>
+<line-operator id="TNI" name="TRANS NET INTERNATIONAL" scac="TNI" bic="TNI">
+</line-operator>
+<line-operator id="OSS" name="ORIENT SHIPPING SERVICES" scac="OSS" bic="OSS">
+</line-operator>
+<line-operator id="TPL" name="TLPL DELTA LOGISTIC" scac="TPL" bic="TPL">
+</line-operator>
+<line-operator id="SST" name="SEA STAR SHIPPING AGENCY" scac="SST" bic="SST">
+</line-operator>
+<line-operator id="CLL" name="CLIP LINE-RAVIAN" scac="CLL" bic="CLL">
+</line-operator>
+<line-operator id="SLP" name="SIRIUS LOGISTICS PAKISTAN" scac="SLP" bic="SLP">
+</line-operator>
+<line-operator id="ARG" name="ARGONAFTIS (PVT) LTD" scac="ARG" bic="ARG">
+</line-operator>
+<line-operator id="PXC" name="POLLUX &amp; CASTOR" scac="PXC" bic="PXC">
+</line-operator>
+<line-operator id="RLO" name="RAHMAT LOGISTICS (PVT) LTD" scac="RLO" bic="RLO">
+</line-operator>
+<line-operator id="ELO" name="EVERGREEN LOGISTICS" scac="ELO" bic="ELO">
+</line-operator>
+<line-operator id="OEA" name="OCEAN EXPRESS AGENCIES" scac="OEA" bic="OEA">
+</line-operator>
+<line-operator id="UNW" name="UNIWORLD SHIPPING (PVT) LTD." scac="UNW" bic="UNW">
+</line-operator>
+<line-operator id="DMK" name="DMK LOGISTICS" scac="DMK" bic="DMK">
+</line-operator>
+<line-operator id="CPS" name="CP SHIPS" scac="CPS" bic="CPS">
+</line-operator>
+<line-operator id="ALM" name="AL-HAMZA MARITIME" scac="ALM" bic="ALM">
+</line-operator>
+<line-operator id="BSC" name="BALTIC SHIPPING (PVT LTD." scac="BSC" bic="BSC">
+</line-operator>
+<line-operator id="NWL" name="NEW WAVE LOGISTICS-JF" scac="NWL" bic="NWL">
+</line-operator>
+<line-operator id="TLI" name="TARGET LOGISTICS INTERNATIONAL" scac="TLI" bic="TLI">
+</line-operator>
+<line-operator id="ILMA" name="INTEGRATED LOGISTIC MANAGEMENT" scac="ILMA" bic="ILMA">
+</line-operator>
+<line-operator id="SSAL" name="SEA STAR ASIA LINE" scac="SSAL" bic="SSAL">
+</line-operator>
+<line-operator id="AAL" name="AARAR CONTAINER LINE" scac="AAL" bic="AAL">
+</line-operator>
+<line-operator id="GOM" name="GOODRICH MARITIME" scac="GOM" bic="GOM">
+</line-operator>
+<line-operator id="SHS" name="SEA HAWK SHIPPING LINE." scac="SHS" bic="SHS">
+</line-operator>
+<line-operator id="SWPL" name="SHIPWELL (PVT) LTD" scac="SWPL" bic="SWPL">
+</line-operator>
+<line-operator id="ATL" name="ASIAN TIGER LINE" scac="ATL" bic="ATL">
+</line-operator>
+<line-operator id="STL" name="STALCO LINE" scac="STL" bic="STL">
+</line-operator>
+<line-operator id="HNH" name="HUSSAIN HOME" scac="HNH" bic="HNH">
+</line-operator>
+<line-operator id="PFG" name="PFG" scac="PFG" bic="PFG">
+</line-operator>
+<line-operator id="MRU" name="MRU" scac="MRU" bic="MRU">
+</line-operator>
+<line-operator id="PSM" name="PSM" scac="PSM" bic="PSM">
+</line-operator>
+<line-operator id="STX" name="STX - PAN OCEAN LINE" scac="STX" bic="STX">
+</line-operator>
+<line-operator id="ESLP" name="EMIRATES SHIPPING AGENCIES PVT" scac="ESLP" bic="ESLP">
+</line-operator>
+<line-operator id="SPD" name="SPEEDA SHIPPING" scac="SPD" bic="SPD">
+</line-operator>
+<line-operator id="ASC" name="ASIA STAR CONTAINER LINES LTD" scac="ASC" bic="ASC">
+</line-operator>
+<line-operator id="EPC" name="EP CARRIER" scac="EPC" bic="EPC">
+</line-operator>
+<line-operator id="SJK" name="SARJAK" scac="SJK" bic="SJK">
+</line-operator>
+<line-operator id="PAMA" name="PAMA SHIPPING" scac="PAMA" bic="PAMA">
+</line-operator>
+<line-operator id="SSF" name="SIMATECH SHIPPING (UK) LTD" scac="SSF" bic="SSF">
+</line-operator>
+<line-operator id="GDR" name="GDR" scac="GDR" bic="GDR">
+</line-operator>
+<line-operator id="ROM" name="ROMAV CONTAINER LINE" scac="ROM" bic="ROM">
+</line-operator>
+<line-operator id="MER" name="MERLION HOLDINGS (PTE)" scac="MER" bic="MER">
+</line-operator>
+<line-operator id="MXL" name="MAXICON CONTAINER LINE" scac="MXL" bic="MXL">
+</line-operator>
+<line-operator id="AAS" name="AARAS" scac="AAS" bic="AAS">
+</line-operator>
+<line-operator id="HPL" name="HALCON PRIMO LOGISTICS" scac="HPL" bic="HPL">
+</line-operator>
+<line-operator id="FLS" name="FLEET SHIPPING LINE" scac="FLS" bic="FLS">
+</line-operator>
+<line-operator id="SSC" name="SETH SHIPPING CORPORATION" scac="SSC" bic="SSC">
+</line-operator>
+<line-operator id="ABR" name="ABRAO SHIPPING" scac="ABR" bic="ABR">
+</line-operator>
+<line-operator id="MRL" name="MERIDIAN LINES" scac="MRL" bic="MRL">
+</line-operator>
+<line-operator id="H&amp;H" name="Hull &amp; Hatch Lines Limited." scac="H&amp;H" bic="H&amp;H">
+</line-operator>
+<line-operator id="IGM" name="INTERGLOBE MARINE AGENCIES" scac="IGM" bic="IGM">
+</line-operator>
+<line-operator id="ISL" name="IRAN INTERNATIOAL SHIPPING LI" scac="ISL" bic="ISL">
+</line-operator>
+<line-operator id="ISS" name="INCHCAPE SHIPPING SERVICES" scac="ISS" bic="ISS">
+</line-operator>
+<line-operator id="MGA" name="MEGA FEEDER (PVT) LTD" scac="MGA" bic="MGA">
+</line-operator>
+<line-operator id="RCLF" name="RCL FEEDER PTE LTD" scac="RCLF" bic="RCLF">
+</line-operator>
+<line-operator id="ANB" name="IAL CONTAINER LINE UK LIMITED" scac="ANB" bic="ANB">
+</line-operator>
+<line-operator id="OYS" name="OYSTER SHIPPING AGENCIES" scac="OYS" bic="OYS">
+</line-operator>
+<line-operator id="SUN" name="SUN LOGISTICS" scac="SUN" bic="SUN">
+</line-operator>
+<line-operator id="ODS" name="ODESSY SHIPPING LINE" scac="ODS" bic="ODS">
+</line-operator>
+<line-operator id="NSE" name="NORTH SEA" scac="NSE" bic="NSE">
+</line-operator>
+<line-operator id="HGB" name="HOYER GLOBAL" scac="HGB" bic="HGB">
+</line-operator>
+<line-operator id="SHRS" name="SHREYAS SHIPPING" scac="SHRS" bic="SHRS">
+</line-operator>
+<line-operator id="LMTS" name="LLOYDS MARITME TRADING-SBI" scac="LMTS" bic="LMTS">
+</line-operator>
+<line-operator id="SSHP" name="SHERYAS SHIPPING LINE" scac="SSHP" bic="SSHP">
+</line-operator>
+<line-operator id="OIS" name="OIS" scac="OIS" bic="OIS">
+</line-operator>
+<line-operator id="HRC" name="HRC" scac="HRC" bic="HRC">
+</line-operator>
+<line-operator id="SMC" name="SMC" scac="SMC" bic="SMC">
+</line-operator>
+<line-operator id="SGL" name="SCAN GULF" scac="SGL" bic="SGL">
+</line-operator>
+<line-operator id="OSC" name="OCEAN STAR CONTAINER LINE" scac="OSC" bic="OSC">
+</line-operator>
+<line-operator id="MOS" name="MITSUOKI PAKISTAN" scac="MOS" bic="MOS">
+</line-operator>
+<line-operator id="TOR" name="TOR LINE" scac="TOR" bic="TOR">
+</line-operator>
+<line-operator id="TMN" name="THE MARINERS INTERNATIONAL PVT" scac="TMN" bic="TMN">
+</line-operator>
+<line-operator id="UNS" name="UNITED ASIA SHIPPING LINE" scac="UNS" bic="UNS">
+</line-operator>
+<line-operator id="HSD" name="SUD HAMBURG" scac="HSD" bic="HSD">
+</line-operator>
+<line-operator id="ANL" name="AUSTRALIAN NATIONAL LINE" scac="ANL" bic="ANL">
+</line-operator>
+<line-operator id="ANV" name="ANL AQUARIUS NAVIGATION LINE" scac="ANV" bic="ANV">
+</line-operator>
+<line-operator id="SSA" name="SEA SWIFT SHIPPING AGENCY" scac="SSA" bic="SSA">
+</line-operator>
+<line-operator id="GML" name="GENERAL MARITIME (PVT) LTD." scac="GML" bic="GML">
+</line-operator>
+<line-operator id="RZ" name="RZ" scac="RZ" bic="RZ">
+</line-operator>
+<line-operator id="MH" name="MH" scac="MH" bic="MH">
+</line-operator>
+<line-operator id="CSV" name="Compania Sudamericana De Vapor" scac="CSV" bic="CSV">
+</line-operator>
+<line-operator id="WLK" name="WATER LINK" scac="WLK" bic="WLK">
+</line-operator>
+<line-operator id="AGS" name="ASIAN GROUPAGE SERVICES" scac="AGS" bic="AGS">
+</line-operator>
+<line-operator id="PGL" name="PAN GLOBLE LINE" scac="PGL" bic="PGL">
+</line-operator>
+<line-operator id="MAT" name="MATT CARGO" scac="MAT" bic="MAT">
+</line-operator>
+<line-operator id="PFL" name="PACIFIC FREIGHT LINKS" scac="PFL" bic="PFL">
+</line-operator>
+<line-operator id="RSO" name="RCL SOC" scac="RSO" bic="RSO">
+</line-operator>
+<line-operator id="CSO" name="CONSOLIDATION SHIPPING &amp; LOG" scac="CSO" bic="CSO">
+</line-operator>
+<line-operator id="INTL" name="INTERLINE CORPORATION" scac="INTL" bic="INTL">
+</line-operator>
+<line-operator id="RCL" name="REGIONAL CONTAINER LINE" scac="RCL" bic="RCL">
+</line-operator>
+<line-operator id="OVL" name="OVERSEAS VENTURE CONT.  LINE" scac="OVL" bic="OVL">
+</line-operator>
+<line-operator id="PTSL" name="PAKISTAN TRANSCONTINENTAL SHIP" scac="PTSL" bic="PTSL">
+</line-operator>
+<line-operator id="PDZ" name="PDZ LINE" scac="PDZ" bic="PDZ">
+</line-operator>
+<line-operator id="OSCL" name="ORION SHIPPING LINE" scac="OSCL" bic="OSCL">
+</line-operator>
+<line-operator id="SMS" name="SEA MASTER SHIPPING &amp; LOGISTIC" scac="SMS" bic="SMS">
+</line-operator>
+<line-operator id="TSL" name="TSL" scac="TSL" bic="TSL">
+</line-operator>
+<line-operator id="CNS" name="CNS" scac="CNS" bic="CNS">
+</line-operator>
+<line-operator id="ECL" name="EAGLE CONTAINER LINE" scac="ECL" bic="ECL">
+</line-operator>
+<line-operator id="HWS" name="HIAP WOON SHIPPING" scac="HWS" bic="HWS">
+</line-operator>
+<line-operator id="CSA" name="CAPITAL SHIPPING AGENCY" scac="CSA" bic="CSA">
+</line-operator>
+<line-operator id="SBI" name="SEABIZ INT'L" scac="SBI" bic="SBI">
+</line-operator>
+<line-operator id="STRI" name="SEA TRADER INTERNATIONAL" scac="STRI" bic="STRI">
+</line-operator>
+<line-operator id="WGE" name="WORLD GATE EXPRESS" scac="WGE" bic="WGE">
+</line-operator>
+<line-operator id="CWT" name="CWT Globe Link" scac="CWT" bic="CWT">
+</line-operator>
+<line-operator id="TML" name="TASAMARINE &amp; LOGISTIC" scac="TML" bic="TML">
+</line-operator>
+<line-operator id="DSR" name="DSR" scac="DSR" bic="DSR">
+</line-operator>
+<line-operator id="SLAG" name="STAR LINE AGENCY" scac="SLAG" bic="SLAG">
+</line-operator>
+<line-operator id="MCN" name="MAC NELS" scac="MCN" bic="MCN">
+</line-operator>
+<line-operator id="SIMA" name="SIMATECH" scac="SIMA" bic="SIMA">
+</line-operator>
+<line-operator id="MPEX" name="MEGA IMPEX PAKISTAN PVT LTD." scac="MPEX" bic="MPEX">
+</line-operator>
+<line-operator id="UNI" name="UNGLORY" scac="UNI" bic="UNI">
+</line-operator>
+<line-operator id="TMM" name="Transportación Maritima Mexica" scac="TMM" bic="TMM">
+</line-operator>
+<line-operator id="TAL" name="TRANS ASIA LINE" scac="TAL" bic="TAL">
+</line-operator>
+<line-operator id="SYL" name="SYNERGY LINE" scac="SYL" bic="SYL">
+</line-operator>
+<line-operator id="FST" name="FSL" scac="FST" bic="FST">
+</line-operator>
+<line-operator id="TWF" name="TWF" scac="TWF" bic="TWF">
+</line-operator>
+<line-operator id="GGF" name="GGF" scac="GGF" bic="GGF">
+</line-operator>
+<line-operator id="CRV" name="CARAVEL LINES" scac="CRV" bic="CRV">
+</line-operator>
+<line-operator id="WWS" name="WATER WAYS SHIPPING" scac="WWS" bic="WWS">
+</line-operator>
+<line-operator id="ILS" name="INTER LINE SHIPPING" scac="ILS" bic="ILS">
+</line-operator>
+<line-operator id="SLK" name="SILKARGO CIM" scac="SLK" bic="SLK">
+</line-operator>
+<line-operator id="STC" name="SATHICA CONTAINER LINE" scac="STC" bic="STC">
+</line-operator>
+<line-operator id="LDS" name="LOGISTICS DISTRIBUTION SYSTEMS" scac="LDS" bic="LDS">
+</line-operator>
+<line-operator id="RMT" name="RMT" scac="RMT" bic="RMT">
+</line-operator>
+<line-operator id="ECU" name="ECU LINE PAKISTAN (PVT) LTD" scac="ECU" bic="ECU">
+</line-operator>
+<line-operator id="ILM" name="INTERNATIONAL LOGISTICS MASTER" scac="ILM" bic="ILM">
+</line-operator>
+<line-operator id="EMS" name="EMKAY SHIPPIN SERVICES" scac="EMS" bic="EMS">
+</line-operator>
+<line-operator id="UGS" name="UNIGREEN SHIPPING CO." scac="UGS" bic="UGS">
+</line-operator>
+<line-operator id="HBG" name="HBG (PVT.) LTD" scac="HBG" bic="HBG">
+</line-operator>
+<line-operator id="SCP" name="SEA CONSORTIUM PAKISTAN" scac="SCP" bic="SCP">
+</line-operator>
+<line-operator id="LJLO" name="L. J LOGISTIC" scac="LJLO" bic="LJLO">
+</line-operator>
+<line-operator id="MGT" name="MEGATRANS PAKISTAN PVT LTD." scac="MGT" bic="MGT">
+</line-operator>
+<line-operator id="FIZ" name="FAIZ CARGO (PVT) LTD" scac="FIZ" bic="FIZ">
+</line-operator>
+<line-operator id="GCS" name="GULF CARGO SYSTEM-GAC" scac="GCS" bic="GCS">
+</line-operator>
+<line-operator id="CFP" name="COMBINED FREIGHT (PVT) LTD." scac="CFP" bic="CFP">
+</line-operator>
+<line-operator id="TKM" name="TKM LINES" scac="TKM" bic="TKM">
+</line-operator>
+<line-operator id="TLO" name="TRANSLOGISTICS" scac="TLO" bic="TLO">
+</line-operator>
+<line-operator id="SSR" name="STAR SHIPPING SERVICES" scac="SSR" bic="SSR">
+</line-operator>
+<line-operator id="STI" name="SEA TRADE INTERNATIONAL" scac="STI" bic="STI">
+</line-operator>
+<line-operator id="GL" name="GENERAL LINE" scac="GL" bic="GL">
+</line-operator>
+<line-operator id="DTLT" name="DIGITAL TRANSE" scac="DTLT" bic="DTLT">
+</line-operator>
+<line-operator id="RAIN" name="RAZIQ INTERNATIONAL" scac="RAIN" bic="RAIN">
+</line-operator>
+<line-operator id="ESL" name="EMIRATES SHIPPING LINE" scac="ESL" bic="ESL">
+</line-operator>
+<line-operator id="CGS" name="CARGO GULF SYSTEM" scac="CGS" bic="CGS">
+</line-operator>
+<line-operator id="CNO" name="CONTAINER OASIS" scac="CNO" bic="CNO">
+</line-operator>
+<line-operator id="MAH" name="MAH CARGO" scac="MAH" bic="MAH">
+</line-operator>
+<line-operator id="ICM" name="INTERNATIONAL CARGO MANAGEMENT" scac="ICM" bic="ICM">
+</line-operator>
+<line-operator id="TRS" name="TRANSLINER" scac="TRS" bic="TRS">
+</line-operator>
+<line-operator id="SGOL" name="S. G. LOGISTICS" scac="SGOL" bic="SGOL">
+</line-operator>
+<line-operator id="ONS" name="OCEAN SHIPPING &amp; LOGISTICS" scac="ONS" bic="ONS">
+</line-operator>
+<line-operator id="ASX" name="ASIAN EXPRESS" scac="ASX" bic="ASX">
+</line-operator>
+<line-operator id="TLR" name="TLPL-RAHMAT SHIPPING" scac="TLR" bic="TLR">
+</line-operator>
+<line-operator id="SWF" name="SWIFT SHIPPING (PVT.) LTD." scac="SWF" bic="SWF">
+</line-operator>
+<line-operator id="RSL" name="RSL" scac="RSL" bic="RSL">
+</line-operator>
+<line-operator id="SWA" name="SEAWORLD MARITIME AGENCIES" scac="SWA" bic="SWA">
+</line-operator>
+<line-operator id="DTPL" name="DELTA TRANSPORT (PVT) LTD" scac="DTPL" bic="DTPL">
+</line-operator>
+<line-operator id="KEN" name="KENT SHIPPING P.T.E. LTD" scac="KEN" bic="KEN">
+</line-operator>
+<line-operator id="CSS" name="CARGO SERVICES SHIPPING" scac="CSS" bic="CSS">
+</line-operator>
+<line-operator id="ASEX" name="ASIA EXPRESS" scac="ASEX" bic="ASEX">
+</line-operator>
+<line-operator id="TMI" name="THE MARINERS INSTITUTES" scac="TMI" bic="TMI">
+</line-operator>
+<line-operator id="GUI" name="GULF INTERNATIONAL" scac="GUI" bic="GUI">
+</line-operator>
+<line-operator id="TSK" name="TSK" scac="TSK" bic="TSK">
+</line-operator>
+<line-operator id="HYR" name="HOYER GLOBAL TRANSPORT" scac="HYR" bic="HYR">
+</line-operator>
+<line-operator id="COL" name="CONTINENTAL LINKERS" scac="COL" bic="COL">
+</line-operator>
+<line-operator id="TH" name="TH" scac="TH" bic="TH">
+</line-operator>
+<line-operator id="SXP" name="SEA EXPRESS" scac="SXP" bic="SXP">
+</line-operator>
+<line-operator id="SRP" name="S R TRANSPORT" scac="SRP" bic="SRP">
+</line-operator>
+<line-operator id="PLS" name="PAKLINK SHIPPING" scac="PLS" bic="PLS">
+</line-operator>
+<line-operator id="SGO" name="SEAGOLD (PVT) LTD." scac="SGO" bic="SGO">
+</line-operator>
+<line-operator id="MCL" name="MEGA CONTAINER LINE." scac="MCL" bic="MCL">
+</line-operator>
+<line-operator id="SIK" name="SIK" scac="SIK" bic="SIK">
+</line-operator>
+<line-operator id="MNS" name="MALDIVES NATIONAL SHIPPING LTD" scac="MNS" bic="MNS">
+</line-operator>
+<line-operator id="WSA" name="WSA LINES PAKISTAN" scac="WSA" bic="WSA">
+</line-operator>
+<line-operator id="ILE" name="INDIA LANKA EXPRESS LINE" scac="ILE" bic="ILE">
+</line-operator>
+<line-operator id="SWS" name="SEAWORLD SHIPPING AGENCIES" scac="SWS" bic="SWS">
+</line-operator>
+<line-operator id="HTM" name="HATSU MARINE" scac="HTM" bic="HTM">
+</line-operator>
+<line-operator id="LIC" name="LOCAL ISPI CORPORATION LTD" scac="LIC" bic="LIC">
+</line-operator>
+<line-operator id="LMP" name="LOCAL MAERSK PAKISTAN" scac="LMP" bic="LMP">
+</line-operator>
+<line-operator id="TBY" name="TABY LINE" scac="TBY" bic="TBY">
+</line-operator>
+<line-operator id="ITS" name="ITALIAN MARITTIMA SPA" scac="ITS" bic="ITS">
+</line-operator>
+<line-operator id="MRH" name="MARSHALL SHIPPING CO" scac="MRH" bic="MRH">
+</line-operator>
+<line-operator id="GGL" name="GOLDEN GULF LINE" scac="GGL" bic="GGL">
+</line-operator>
+<line-operator id="SGP" name="SEA GOLD PRIVATE LIMITED." scac="SGP" bic="SGP">
+</line-operator>
+<line-operator id="BLK" name="BULKHUAL SINGAPORE PVT LTD." scac="BLK" bic="BLK">
+</line-operator>
+<line-operator id="RTW" name="RTW" scac="RTW" bic="RTW">
+</line-operator>
+<line-operator id="MOP" name="MITSUI O.S.K. LINE PAKISTAN" scac="MOP" bic="MOP">
+</line-operator>
+<line-operator id="ISPL" name="INTERLINE SHIPPING PVT LTD." scac="ISPL" bic="ISPL">
+</line-operator>
+<line-operator id="SWR" name="SWIRE - JAMES FINLAYS" scac="SWR" bic="SWR">
+</line-operator>
+<line-operator id="VGL" name="VANGUARD CONTAINER LINES" scac="VGL" bic="VGL">
+</line-operator>
+<line-operator id="CPW" name="CP WORLD" scac="CPW" bic="CPW">
+</line-operator>
+<line-operator id="RFL" name="R. M. I. FOOD LOGISTIC- RFL.GM" scac="RFL" bic="RFL">
+</line-operator>
+<line-operator id="PAM" name="PARAMOUNT" scac="PAM" bic="PAM">
+</line-operator>
+<line-operator id="FOL" name="FLORANCE" scac="FOL" bic="FOL">
+</line-operator>
+<line-operator id="GOL" name="GLOBAL MARITIME (PVT) LTD" scac="GOL" bic="GOL">
+</line-operator>
+<line-operator id="IMS" name="INTERNATIONAL MARITIME SERVICE" scac="IMS" bic="IMS">
+</line-operator>
+<line-operator id="NLS" name="N.L.S" scac="NLS" bic="NLS">
+</line-operator>
+<line-operator id="SUC" name="SETMIL UNITED CARGO LINE" scac="SUC" bic="SUC">
+</line-operator>
+<line-operator id="MOLP" name="MITSUI O.S.K. LINE PAK PVT LTD" scac="MOLP" bic="MOLP">
+</line-operator>
+<line-operator id="NYKP" name="NYK LINE PAKISTAN (PVT) LTD" scac="NYKP" bic="NYKP">
+</line-operator>
+<line-operator id="AMS" name="ABDUL MUHSEN SHIPPING LINE" scac="AMS" bic="AMS">
+</line-operator>
+<line-operator id="HGA" name="HEUNG-A SHIPPING" scac="HGA" bic="HGA">
+</line-operator>
+<line-operator id="AUS" name="AUSTRALIAN NAVIGATION LINE" scac="AUS" bic="AUS">
+</line-operator>
+<line-operator id="ACE" name="ACE LINE" scac="ACE" bic="ACE">
+</line-operator>
+<line-operator id="TYS" name="TYS LINE" scac="TYS" bic="TYS">
+</line-operator>
+<line-operator id="C&amp;L" name="C &amp; LINE CO. LTD." scac="C&amp;L" bic="C&amp;L">
+</line-operator>
+<line-operator id="AMP" name="AMPLE SHIPPING &amp; LOGISTIC SER." scac="AMP" bic="AMP">
+</line-operator>
+<line-operator id="BKV" name="BAKSH INVESTMENT LIMITED" scac="BKV" bic="BKV">
+</line-operator>
+<line-operator id="UAF" name="United Africa Feeder Line" scac="UAF" bic="UAF">
+</line-operator>
+<line-operator id="SLM" name="SL MISC" scac="SLM" bic="SLM">
+</line-operator>
+<line-operator id="GSL" name="GOLDEN SHIPPING LINE" scac="GSL" bic="GSL">
+</line-operator>
+<line-operator id="NMP" name="NAUKSHARTO MARINES (PVT.) LTD." scac="NMP" bic="NMP">
+</line-operator>
+<line-operator id="FML" name="FML CONTAINER LINE LTD." scac="FML" bic="FML">
+</line-operator>
+<line-operator id="OEP" name="OCEAN EMPIRE LINE (S) PTE LTD." scac="OEP" bic="OEP">
+</line-operator>
+<line-operator id="ALS" name="ALLIED LOGISTICS SERVICES." scac="ALS" bic="ALS">
+</line-operator>
+<line-operator id="APTS" name="AL-PINE ARTS" scac="APTS" bic="APTS">
+</line-operator>
+<line-operator id="SWL" name="SEA WIND CONTAINER LINE" scac="SWL" bic="SWL">
+</line-operator>
+<line-operator id="MEI" name="MEI" scac="MEI" bic="MEI">
+</line-operator>
+<line-operator id="SWSG" name="SWISS LOGISTICS" scac="SWSG" bic="SWSG">
+</line-operator>
+<line-operator id="CFI" name="CLEAR FREIGHT INTERNATIONAL" scac="CFI" bic="CFI">
+</line-operator>
+<line-operator id="WFS" name="WORLD FREIGHT SYSTEM" scac="WFS" bic="WFS">
+</line-operator>
+<line-operator id="SYM" name="Shandong Yantai INT'L Marine" scac="SYM" bic="SYM">
+</line-operator>
+<line-operator id="PAN" name="PAN ASIA SHIPPING" scac="PAN" bic="PAN">
+</line-operator>
+<line-operator id="NSL" name="NOAH SHIPPING LINE" scac="NSL" bic="NSL">
+</line-operator>
+<line-operator id="INP" name="INTERNATION (PVT.) LTD." scac="INP" bic="INP">
+</line-operator>
+<line-operator id="AIG" name="AIG SHIPPING LTD." scac="AIG" bic="AIG">
+</line-operator>
+<line-operator id="CEY" name="CEYSERV LINE" scac="CEY" bic="CEY">
+</line-operator>
+<line-operator id="AFS" name="A.F.CONTAINER SERVICES PVT LTD" scac="AFS" bic="AFS">
+</line-operator>
+</SNXDATA>

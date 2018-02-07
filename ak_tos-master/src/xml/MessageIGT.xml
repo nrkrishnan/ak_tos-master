@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<MessageMapping>
+	<File name="inGate" />
+	<Field name="port" msgTag="igtPort" dbType="String" />
+	<Field name="ctnrNumber" msgTag="eqNumber" dbType="String" />
+	<Field name="time1" msgTag="igtTime" dbType="Date" />
+</MessageMapping>

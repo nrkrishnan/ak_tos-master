@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false">
+
+    <meta attribute="JavaClassPrefix">Localization</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <!-- a set of resources bundled by language -->
+    <class name="com.navis.framework.configuration.localization.business.PersistentResourceBundle" table="config_resource_bundle">
+        <meta attribute="n4alias">cfgbund</meta>
+        <meta attribute="generated-class">com.navis.framework.configuration.localization.business.PersistentResourceBundleHbr</meta>
+        <meta attribute="n4-entity-name">Resource Bundle</meta>
+        <meta attribute="n4-entity-name-plural">Resource Bundles</meta>
+        <meta attribute="n4-scope-description">global</meta>
+
+        <id name="cfgbundGkey" column="cfgbund_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="cfgbundName" column="cfgbund_name" unique="true" type="string" length="40" not-null="true">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+        <property name="cfgbundDescription" column="cfgbund_description" type="string" length="255">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <!-- locale, 2 digit2 ISO codes, try to look for hibernate locale component -->
+        <property name="cfgbundLocaleLanguage" column="cfgbund_loc_language" type="string" length="2" not-null="true">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+        <property name="cfgbundLocaleCountry" column="cfgbund_loc_country" type="string" length="2">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <bag name="cfgbundResources" lazy="true" inverse="true" cascade="all-delete-orphan">
+            <meta attribute="scope-set">protected</meta>
+            <key column="cfgrsrc_bundle_id"/>
+            <one-to-many class="com.navis.framework.configuration.localization.business.PersistentResource"/>
+        </bag>
+
+    </class>
+
+    <class name="com.navis.framework.configuration.localization.business.PersistentResource" table="config_string_resource">
+        <meta attribute="n4alias">cfgrsrc</meta>
+        <meta attribute="generated-class">com.navis.framework.configuration.localization.business.PersistentResourceHbr</meta>
+        <meta attribute="n4-entity-name">Resource</meta>
+        <meta attribute="n4-entity-name-plural">Resources</meta>
+        <meta attribute="n4-scope-description">relational to PersistentResourceBundle</meta>
+
+        <id name="cfgrsrcGkey" column="cfgrsrc_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="cfgrsrcResourceType" column="cfgrsrc_resourcetype" type="com.navis.framework.persistence.atoms.UserTypeResourceTypeEnum" length="64" not-null="true">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+        <property name="cfgrsrcPropertyKey" column="nesg_property_key" type="string" length="512" not-null="true">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+        <property name="cfgrsrcValue" column="nesg_value" type="string" length="255" not-null="true">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <many-to-one name="cfgbundle" class="com.navis.framework.configuration.localization.business.PersistentResourceBundle"
+                     column="cfgrsrc_bundle_id" not-null="true" index="conf_str_res_cfgrsrc_bid_fki"/>
+
+    </class>
+
+</hibernate-mapping>

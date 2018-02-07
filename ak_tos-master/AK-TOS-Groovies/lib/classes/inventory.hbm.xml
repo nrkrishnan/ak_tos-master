@@ -1,0 +1,2937 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2011 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Inventory</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!--
+    INVENTORY
+    -->
+    <class name="com.navis.inventory.business.units.Unit" table="inv_unit" dynamic-update="true">
+        <meta attribute="n4alias">unit</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.UnitHbr</meta>
+        <meta attribute="class-description">Domain entity representing a unit of movement</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Unit</meta>
+        <meta attribute="n4-entity-name-plural">Units</meta>
+        <meta attribute="n4-code-extension-support">true</meta>
+        <meta attribute="carina-index">inv_unit_gkey_id_idx(gkey,id);inv_unit_catgkey_idx(category,gkey);</meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE INDEX inv_unit_vstate_tdcalc_idx ON inv_unit ( visit_state, time_denorm_calc);
+        </meta>
+
+        <id name="unitGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="unitId" column="id" type="string" length="30" index="inv_unit_id_idx">
+            <meta attribute="field-description">Unit Identifier:Container number, Chassis number, Marks and Numbers, etc. An name by which people identify this Unit.</meta>
+        </property>
+
+        <property name="unitForeignHostKey" column="foreignhost_key" type="string" length="40" index="inv_unit_foreignhost_key_index">
+            <meta attribute="field-description">Unique key of the Unit in a foreign host (if any).</meta>
+        </property>
+
+        <property name="unitVisitState" column="visit_state" type="com.navis.inventory.persistence.atoms.UserTypeUnitVisitStateEnum"
+                  not-null="true" index="inv_unit_visit_state_index">
+            <meta attribute="field-description">The current state of the Unit.</meta>
+        </property>
+
+        <property name="unitNeedsReview" column="needs_review" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">If true, Unit was created on-the-fly and needs to be manually reviewed.</meta>
+        </property>
+
+        <property name="unitArePlacardsMismatched" column="placards_mismatched" type="java.lang.Boolean">
+            <meta attribute="field-description">False if Unit's Hazard placards and observed placards match, True otherwise</meta>
+        </property>
+
+        <!-- 2006-03-17 JJS v1.0.10 added -->
+        <property name="unitCreateTime" column="create_time" type="timestamp" index="unit_create_time_idx">
+            <meta attribute="field-description">Time Unit was first instantiated</meta>
+        </property>
+
+        <!--
+        <property name="unitArrivalMode" column="arrvl_mode" type="com.navis.argo.persistence.atoms.UserTypeCarrierModeEnum" not-null="true">
+            <meta attribute="field-description">The mode (vessel, rail or truck) by which unit will arrive at the Complex</meta>
+        </property>
+        -->
+
+        <many-to-one name="unitDeclaredIbCv" column="declrd_ib_cv" class="com.navis.argo.business.model.CarrierVisit" not-null="true">
+            <meta attribute="field-description">The declared/documented inbound carrier to the Complex, which may differ from the actual</meta>
+        </many-to-one>
+
+        <property name="unitCategory" column="category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum"
+                  not-null="true" index="inv_unit_category_idx">
+            <meta attribute="field-description">The Category of the Unit (Import, Export, ...).</meta>
+        </property>
+
+        <property name="unitFreightKind" column="freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum" not-null="true">
+            <meta attribute="field-description">Freight Kind of Unit: MTY,FCL,LCL,BBK</meta>
+        </property>
+
+        <property name="unitDrayStatus" column="dray_status" type="com.navis.argo.persistence.atoms.UserTypeDrayStatusEnum">
+            <meta attribute="field-description">Dray Status of Unit: FORWARD,RETURN,DRAYIN</meta>
+        </property>
+
+        <many-to-one name="unitComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which this Unit belongs.</meta>
+            <meta attribute="use-in-tostring">true</meta>
+        </many-to-one>
+
+        <!-- really a one-to-one, see Hibernate in Action, page 221 -->
+        <!-- TPM: This field is often null, which violates the uniqueness in SQL Server -->
+        <many-to-one name="unitGoods" column="goods" class="com.navis.inventory.business.units.GoodsBase" cascade="all" unique="false">
+            <meta attribute="field-description">The Goods asscoiated with this Unit. May be null.</meta>
+        </many-to-one>
+
+        <!-- special stowage requirements -->
+        <many-to-one name="unitSpecialStow" column="special_stow_gkey" class="com.navis.argo.business.reference.SpecialStow">
+            <meta attribute="field-description">Special stowage #1 requirements</meta>
+        </many-to-one>
+
+        <many-to-one name="unitSpecialStow2" column="special_stow2_gkey" class="com.navis.argo.business.reference.SpecialStow">
+            <meta attribute="field-description">Special stowage #2 requirements</meta>
+        </many-to-one>
+
+        <many-to-one name="unitSpecialStow3" column="special_stow3_gkey" class="com.navis.argo.business.reference.SpecialStow">
+            <meta attribute="field-description">Special stowage #3 requirements</meta>
+        </many-to-one>
+
+        <property name="unitDeckRqmnt" column="deck_rqmnt" type="com.navis.inventory.persistence.atoms.UserTypeVslDeckRqmntEnum" not-null="true">
+            <meta attribute="field-description">A stowage requirement: Above Deck Only, Below Deck Only, or Don't Care</meta>
+        </property>
+
+        <!-- reefer info (see also Goods for more detail)-->
+        <property name="unitRequiresPower" column="requires_power" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if Unit needs power to its reefer unit, or, in case of porthole reefer, forced air</meta>
+        </property>
+
+        <property name="unitIsPowered" column="is_powered" type="java.lang.Boolean" not-null="true" index="inv_unit_is_powered_idx">
+            <meta attribute="field-description">True if Unit is connected to electrical supply or, in case of porthole reefer, forced air exchange</meta>
+        </property>
+
+        <property name="unitWantPowered" column="want_powered" type="java.lang.Boolean" not-null="true" index="inv_unit_want_powered_idx">
+            <meta attribute="field-description">True if opertions wants Unit connected to electrical supply or, in case of porthole reefer, forced air exchange</meta>
+        </property>
+
+        <property name="unitPowerRqstTime" column="power_rqst_time" type="timestamp">
+            <meta attribute="field-description">Time of last power state change request</meta>
+        </property>
+
+        <property name="unitIsAlarmOn" column="is_alarm_on" type="java.lang.Boolean">
+            <meta attribute="field-description">True if Unit alarm is on</meta>
+        </property>
+
+        <!-- Out-of-Gauge Info -->
+        <!-- denormalized to use this field in queries (lbarman 07182005) -->
+        <property name="unitIsOog" column="is_oog" type="java.lang.Boolean">
+            <meta attribute="field-description">Unit is OOG</meta>
+        </property>
+        <property name="unitOogBackCm" column="oog_back_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Back, in Centimeters</meta>
+        </property>
+        <property name="unitOogFrontCm" column="oog_front_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Front, in Centimeters</meta>
+        </property>
+        <property name="unitOogLeftCm" column="oog_left_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Left, in Centimeters</meta>
+        </property>
+        <property name="unitOogRightCm" column="oog_right_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Right, in Centimeters</meta>
+        </property>
+        <property name="unitOogTopCm" column="oog_top_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Top, in Centimeters</meta>
+        </property>
+
+        <!-- orders info needed by SPARCS -->
+        <property name="unitValidateReleaseGroup" column="vldt_rlgp" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if release group must be validated</meta>
+        </property>
+
+        <property name="unitIsTransferableRelease" column="xfer_rlgp" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if release can be transferred to another Unit</meta>
+        </property>
+
+        <many-to-one name="unitLineOperator" column="line_op" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false" cascade="none">
+            <meta attribute="field-description">Line Operator of the Unit</meta>
+        </many-to-one>
+
+        <!-- weight -->
+        <!-- 2007-01-05 ARGO-5310 eyu v1.2.O Change all WEIGHT fields from Long to Double -->
+        <property name="unitGoodsAndCtrWtKg" column="goods_and_ctr_wt_kg" type="java.lang.Double">
+            <meta attribute="field-description">Goods and Container weight in Kgs (gross weight)</meta>
+        </property>
+
+        <!--2007-03-20 ssampath ARGO-10605 v1.5L/M, POTA needs to track the weight of the container at the time it was preadvised-->
+        <property name="unitGoodsAndCtrWtKgAdvised" column="goods_ctr_wt_kg_advised" type="java.lang.Double">
+            <meta attribute="field-description">Goods and Container weight in Kgs (gross weight) when the container was booked/advised.</meta>
+        </property>
+
+        <!--2007-03-20 ssampath ARGO-10605 v1.5L/M POTA, The is the weight of the container as measured by gate scales-->
+        <property name="unitGoodsAndCtrWtKgGateMeasured" column="goods_ctr_wt_kg_gate_measured" type="java.lang.Double">
+            <meta attribute="field-description">Goods and Container weight in Kgs (gross weight) as recorded by gate scales.</meta>
+        </property>
+
+        <!--2007-03-20 ssampath ARGO-10605 v1.5L/M PNC, The is the weight of the container as measured by RTG/RMG equipped with weigh cells-->
+        <property name="unitGoodsAndCtrWtKgYardMeasured" column="goods_ctr_wt_kg_yard_measured" type="java.lang.Double">
+            <meta attribute="field-description">Goods and Container weight in Kgs (gross weight) as recorded by CHE in yard.</meta>
+        </property>
+
+        <!--2013-07-23 padhymi ARGO-44385 v3.0, The is the weight of the container as measured by quay crane-->
+        <property name="unitGoodsAndCtrWtKgQcMeasured" column="goods_ctr_wt_kg_qc_measured" type="java.lang.Double">
+            <meta attribute="field-description">Goods and Container weight in Kgs (gross weight) as recorded by Quay Crane.</meta>
+        </property>
+
+        <property name="unitGoodsAndCtrWtKgVerfiedGross" column="goods_ctr_wt_kg_vgm" type="java.lang.Double">
+            <meta attribute="field-description">Goods and Container weight in Kgs (VGM-Verified Gross Mass) as verified by Terminal.</meta>
+        </property>
+
+        <property name="unitGrossWeightSource" column="unit_gross_weight_source" type="com.navis.inventory.persistence.atoms.UserTypeGrossWeightSourceEnum">
+            <meta attribute="field-description">Source for the Verified Gross Mass in Unit</meta>
+        </property>
+
+        <property name="unitVgmEntity" column="unit_vgm_entity" type="string" length="256" >
+            <meta attribute="field-description">Verifier of the Gross Mass Ex: Load port, Shipper.</meta>
+        </property>
+
+        <property name="unitVgmVerifiedDate" column="unit_vgm_verified_date" type="timestamp" not-null="false" >
+            <meta attribute="field-description">Verified Date of the VGM</meta>
+        </property>
+
+        <property name="unitIgnorePayloadWeights" column="ign_pyld_wghts" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">If true, do not add weight of payload units when calculating total weight</meta>
+        </property>
+
+        <property name="unitIgnorePayloadHeights" column="ign_pyld_hghts" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">If true, do not add height of payload units when calculating total height</meta>
+        </property>
+
+        <property name="unitIsStowplanPosted" column="is_stowplan_posted" type="java.lang.Boolean">
+            <meta attribute="field-description">If the equipment use is for a container arriving the terminal by Vessel, whether the Baplie message
+                for that particular Vessel has the container.
+            </meta>
+        </property>
+
+        <!-- Seals -->
+        <property name="unitSealNbr1" column="seal_nbr1" type="string" length="15">
+            <meta attribute="field-description">Seal Nbr 1</meta>
+        </property>
+        <property name="unitSealNbr2" column="seal_nbr2" type="string" length="15">
+            <meta attribute="field-description">Seal Nbr 2</meta>
+        </property>
+        <property name="unitSealNbr3" column="seal_nbr3" type="string" length="15">
+            <meta attribute="field-description">Seal Nbr 3</meta>
+        </property>
+        <property name="unitSealNbr4" column="seal_nbr4" type="string" length="15">
+            <meta attribute="field-description">Seal Nbr 4</meta>
+        </property>
+
+        <!--2012-03-15 azharad ARGO-37067: Add Seal Y/N field to record seal presence detected in the Inventory module -->
+        <property name="unitIsCtrSealed" column="is_ctr_sealed" type="java.lang.Boolean">
+            <meta attribute="field-description">True if any of the four seals has a value</meta>
+        </property>
+
+        <property name="unitIsBundle" column="is_bundle" type="java.lang.Boolean">
+            <meta attribute="field-description">True if Unit is a Bundle</meta>
+        </property>
+
+        <!-- child UnitFacilityVisits -->
+        <set name="unitUfvSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="unit_gkey"/>
+            <one-to-many class="com.navis.inventory.business.units.UnitFacilityVisit"/>
+        </set>
+
+        <many-to-one name="unitActiveUfv" column="active_ufv" class="com.navis.inventory.business.units.UnitFacilityVisit" cascade="none">
+            <meta attribute="field-description">The most recently activated child UFV, though not necessarily ACTIVE now</meta>
+            <meta attribute="scope-get">protected</meta>
+        </many-to-one>
+
+        <!-- child UnitEquipment -->
+        <set name="unitUeSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">The set of all UnitFacilityVisits for this Unit.</meta>
+            <key column="unit_gkey"/>
+            <one-to-many class="com.navis.inventory.business.units.UnitEquipment"/>
+        </set>
+
+        <many-to-one name="unitPrimaryUe" column="primary_ue" class="com.navis.inventory.business.units.UnitEquipment" cascade="none" lazy="false">
+            <meta attribute="field-description">A direct (denormalized) pointer to the primary unit equipment. Can be null.</meta>
+        </many-to-one>
+
+        <many-to-one name="unitCarriageUe" column="carriage_ue" class="com.navis.inventory.business.units.UnitEquipment" cascade="none">
+            <meta attribute="field-description">A direct (denormalized) pointer to the carriage unit equipment. Can be null.</meta>
+        </many-to-one>
+
+        <!-- child ReeferRecords -->
+        <set name="unitReeferRecordSet" inverse="true" lazy="true" cascade="all-delete-orphan" order-by="recording_time desc">
+            <key column="unit_gkey"/>
+            <one-to-many class="com.navis.inventory.business.units.ReeferRecord"/>
+        </set>
+
+        <!-- 2009.02.04, ARGO-16826 , RMK Adding support for observed placards. -->
+        <set name="unitObservedPlacards" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="unit_gkey"/>
+            <one-to-many class="com.navis.inventory.business.imdg.ObservedPlacard"/>
+        </set>
+
+        <!-- Routing (modelled as a Hibernate 'Component')-->
+        <component name="unitRouting" class="com.navis.inventory.business.units.Routing">
+            <meta attribute="generated-class">com.navis.inventory.business.units.RoutingHbr</meta>
+            <meta attribute="field-description">The routing of this Unit</meta>
+            <meta attribute="scope-set">public</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <many-to-one name="rtgOPL" column="opl_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+                <meta attribute="field-description">Original Port of Loading (international cargo was relayed through a domestic port of loading)</meta>
+            </many-to-one>
+
+            <many-to-one name="rtgPOL" column="pol_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+                <meta attribute="field-description">Port of Loading</meta>
+            </many-to-one>
+
+            <many-to-one name="rtgDeclaredCv" column="cv_gkey" class="com.navis.argo.business.model.CarrierVisit" not-null="true" cascade="none">
+                <meta attribute="field-description">Declared Carrier Visit (may differ from actual!)</meta>
+            </many-to-one>
+            <many-to-one name="rtgCarrierService" column="service_gkey" class="com.navis.argo.business.reference.CarrierService" cascade="none">
+                <meta attribute="field-description">Declared Carrier's Service</meta>
+            </many-to-one>
+            <many-to-one name="rtgPOD1" column="pod1_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+                <meta attribute="field-description">First Port of Discharge</meta>
+            </many-to-one>
+            <many-to-one name="rtgPOD2" column="pod2_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+                <meta attribute="field-description">Second Port of Discharge</meta>
+            </many-to-one>
+            <many-to-one name="rtgOPT1" column="opt1_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+                <meta attribute="field-description">First optional point of discharge</meta>
+            </many-to-one>
+            <many-to-one name="rtgOPT2" column="opt2_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+                <meta attribute="field-description">Second optional point of discharge</meta>
+            </many-to-one>
+            <many-to-one name="rtgOPT3" column="opt3_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+                <meta attribute="field-description">Third optional point of discharge</meta>
+            </many-to-one>
+            <many-to-one name="rtgGroup" column="group_gkey" class="com.navis.argo.business.reference.Group" cascade="none">
+                <meta attribute="field-description">Routing Group</meta>
+            </many-to-one>
+            <property name="rtgDescription" column="description" type="string" length="255">
+                <meta attribute="field-description">Source of the instructions for the routing change (fax received, e-mail, etc.)</meta>
+            </property>
+            <!--2006-1-30 lbarman v1.0.4 ARGO-2861  Added new field export clearance number-->
+            <property name="rtgExportClearanceNbr" column="export_clearance_nbr" type="string" length="35">
+                <meta attribute="field-description">Export Clearance Number</meta>
+            </property>
+            <property name="rtgReturnToLocation" column="return_to_location" type="string" length="15">
+                <meta attribute="field-description">Return location</meta>
+            </property>
+            <many-to-one name="rtgTruckingCompany" column="trucking_company" class="com.navis.argo.business.reference.ScopedBizUnit" cascade="none">
+                <meta attribute="field-description">Option to change from the one that is associated with the delivery group</meta>
+            </many-to-one>
+            <!-- 2008.01.13, rkhawaja, v1.15.E, ARGO-8715 Add pin code to Units -->
+            <!--2010-08-03 vkotha v2.1.W, 2.2.A ARGO-27405 increase pin_nbr length-->
+            <property name="rtgPinNbr" column="pin_nbr" type="string" length="60" not-null="false">
+                <meta attribute="field-description">Pin Number</meta>
+            </property>
+
+            <!--2009-05-11 spabbala 1.9.F ARGO-18588 Add Bonded Trucking company in the Unit and the Delivery Requirements.-->
+            <many-to-one name="rtgBondTruckingCompany" column="bond_trucking_company" class="com.navis.argo.business.reference.ScopedBizUnit"
+                         cascade="none">
+                <meta attribute="field-description">Trucking Company which is responsible to pick up the Container that has been marked for either Offsite
+                    Exam or is being taken Offsite into Inbond
+                </meta>
+            </many-to-one>
+
+            <!--2009-05-14 spabbala 1.9.F ARGO-18588 Add Bonded Trucking company in the Unit and the Delivery Requirements.-->
+            <!--2010-07-05 pmelappalayam ARGO-26741 Added index to the column-->
+            <!-- 2012-12-29 bbakthavachalam ARGO-43847 Increase bonded_destination length from 15 to 255 as BOL.bonded_destination is of length 255-->
+            <property name="rtgBondedDestination" column="bonded_destination" type="string" index="rtg_bonded_dest_idx" length="255">
+                <meta attribute="field-description">Bonded Destination</meta>
+            </property>
+        </component>
+
+        <many-to-one name="unitImportDeliveryOrder" column="ido_gkey" class="com.navis.inventory.business.units.ImportDeliveryOrder" cascade="none">
+            <meta attribute="field-description">Import Delivery Order</meta>
+        </many-to-one>
+
+        <property name="unitImportDeliveryOrderExpiryDate" column="ido_expiry_date" type="timestamp" not-null="false">
+            <meta attribute="field-description">The time this individual container's delivery order expires.</meta>
+        </property>
+
+        <!-- Denormalized flags -->
+        <property name="unitTimeDenormalizeCalc" column="time_denorm_calc" type="timestamp" index="time_denorm_calc_index" not-null="false">
+            <meta attribute="field-description">The last time at which denormalized fields were recalculated.</meta>
+        </property>
+
+        <property name="unitTimeLastStateChange" column="time_state_change" type="timestamp" index="time_state_change_index" not-null="false">
+            <meta attribute="field-description">The last time at which the UnitVisitState changed.</meta>
+        </property>
+
+        <property name="unitStoppedVessel" column="stopped_vessel" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Denormalized stop flag for SPARCS: if TRUE, vessel load is disallowed</meta>
+        </property>
+
+        <property name="unitStoppedRail" column="stopped_rail" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Denormalized stop flag for SPARCS: if TRUE, rail load is disallowed</meta>
+        </property>
+
+        <property name="unitStoppedRoad" column="stopped_road" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Denormalized stop flag for SPARCS: if TRUE, road delivery is disallowed</meta>
+        </property>
+
+        <property name="unitImpedimentVessel" column="imped_vessel" type="string" not-null="false">
+            <meta attribute="field-description">Impediments for Vessel Load</meta>
+        </property>
+
+        <property name="unitImpedimentRail" column="imped_rail" type="string" not-null="false">
+            <meta attribute="field-description">Impediments for Rail Delivery</meta>
+        </property>
+
+        <property name="unitImpedimentRoad" column="imped_road" type="string" not-null="false">
+            <meta attribute="field-description">Impediments for Road Delivery</meta>
+        </property>
+
+        <!--
+        <property name="ufvTimeOkFlagCalculation" column="time_ok_calc" type="timestamp" not-null="false">
+            <meta attribute="field-description">The time at which the 'ok' flags were last evaluated.</meta>
+        </property>
+        -->
+
+        <!-- Sparcs "Remark" -->
+        <property name="unitRemark" column="remark" type="string" length="255">
+            <meta attribute="field-description">Remarks</meta>
+        </property>
+
+        <!-- 2009-03-05 snayak ARGO-16950 v 1.9 Added the fields waybill number and waybill date as specified in the NFRM 309.-->
+        <property name="unitWayBillNbr" column="way_bill_nbr" type="string" length="15">
+            <meta attribute="field-description">Way Bill Number</meta>
+        </property>
+
+        <property name="unitWayBillDate" column="way_bill_date" type="timestamp">
+            <meta attribute="field-description">Way Bill Date</meta>
+        </property>
+
+        <property name="unitExportReleaseNbr" column="export_release_nbr" type="string" length="10">
+            <meta attribute="field-description">Export Release Number</meta>
+        </property>
+
+        <property name="unitExportReleaseDate" column="export_release_date" type="timestamp">
+            <meta attribute="field-description">Export Release Date</meta>
+        </property>
+
+        <!-- Flex fields-->
+        <property name="unitFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="unitFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="unitFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+
+        <property name="unitFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <!-- 2007-07-30 Shan V1.4.G ARGO-7626 added more flex fields -->
+        <property name="unitFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+
+        <property name="unitFlexString06" column="flex_string06" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+
+        <property name="unitFlexString07" column="flex_string07" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+
+        <property name="unitFlexString08" column="flex_string08" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+
+        <property name="unitFlexString09" column="flex_string09" type="string" length="255">
+            <meta attribute="field-description">String flex-field #09</meta>
+        </property>
+
+        <property name="unitFlexString10" column="flex_string10" type="string" length="255">
+            <meta attribute="field-description">String flex-field #10</meta>
+        </property>
+
+        <!--2007-03-20 ssampath ARGO-8885 v1.5L/M MAT, Additional flex fields requested by MAT -->
+        <property name="unitFlexString11" column="flex_string11" type="string" length="255">
+            <meta attribute="field-description">String flex-field #11</meta>
+        </property>
+
+        <property name="unitFlexString12" column="flex_string12" type="string" length="255">
+            <meta attribute="field-description">String flex-field #12</meta>
+        </property>
+
+        <property name="unitFlexString13" column="flex_string13" type="string" length="255">
+            <meta attribute="field-description">String flex-field #13</meta>
+        </property>
+
+        <property name="unitFlexString14" column="flex_string14" type="string" length="255">
+            <meta attribute="field-description">String flex-field #14</meta>
+        </property>
+
+        <property name="unitFlexString15" column="flex_string15" type="string" length="255">
+            <meta attribute="field-description">String flex-field #15</meta>
+        </property>
+
+        <property name="unitTouchCtr" column="touch_ctr" type="java.lang.Long">
+            <meta attribute="field-description">To force database updates</meta>
+        </property>
+
+        <!-- 2009-04-08 rsatish v1.9.D ARGO-17303 new inbond movement fields-->
+        <property name="unitInbond" column="inbond" type="com.navis.argo.persistence.atoms.UserTypeInbondEnum">
+            <meta attribute="field-description">Container is marked to leave the terminal on a bonded trucker (going inbond, inbond and cancel)</meta>
+        </property>
+
+        <property name="unitExam" column="exam" type="com.navis.argo.persistence.atoms.UserTypeExamEnum">
+            <meta attribute="field-description">Container is marked to leave the terminal on a bonded trucker for an exam
+                (onsite, offsite, offsite&amp;return and cancel)
+            </meta>
+        </property>
+
+        <!--2010-05-12 mnarasimharao ARGO-12989: Modified the synthetic field to DB field to allow quick filter search-->
+        <property name="unitAcryEquipIds" column="acry_equip_ids" type="string">
+            <meta attribute="field-description">Accessory Equipment Number</meta>
+        </property>
+
+        <!-- ARGO-37765 natarma Added an index to customs_id column to improve performance of query execution -->
+        <property name="unitCustomsId" column="customs_id" type="string" length="50" index="inv_unit_customsid_idx">
+            <meta attribute="field-description">Customs id - additional information to identify unit</meta>
+        </property>
+
+        <!--2009-12-14 spabbala v2.1.E ARGO-22643 Support Associating Agents with Units (NFRM-521 Jan Delivery for Haifa)-->
+        <!--adding unitAgent1 and unitAgent2-->
+        <many-to-one name="unitAgent1" column="agent1" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false" cascade="none">
+            <meta attribute="field-description">Agent of the Unit</meta>
+        </many-to-one>
+        <many-to-one name="unitAgent2" column="agent2" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false" cascade="none">
+            <meta attribute="field-description">Agent of the Unit</meta>
+        </many-to-one>
+
+        <!--2010-09-28 v2.2.D spabbala ARGO-28364 Add audit information changed to inv_unit-->
+        <property name="unitChanged" column="changed" type="timestamp"/>
+
+        <property name="unitCargoQuantity" column="cargo_quantity" type="java.lang.Double">
+            <meta attribute="field-description">Cargo quantity</meta>
+        </property>
+
+        <property name="unitCargoQuantityUnit" column="cargo_quantity_unit"
+                  type="com.navis.argo.persistence.atoms.UserTypeServiceQuantityUnitEnum">
+            <meta attribute="field-description">Volume or weight units (kilograms, gallons, etc.) of cargo quantity</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.inventory.business.units.EqBaseOrderItem" table="inv_eq_base_order_item" dynamic-update="true">
+        <meta attribute="n4alias">eqboi</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.EqBaseOrderItemHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Base class for orders/reservations items for Equipment</meta>
+        <meta attribute="n4-entity-name">Equipment Order Item</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Order Items</meta>
+
+        <id name="eqboiGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="eqboiOrder" column="eqo_gkey" class="com.navis.inventory.business.units.EqBaseOrder" not-null="true">
+            <meta attribute="field-description">The Equipment Order item is listed on</meta>
+        </many-to-one>
+
+        <!-- child Recieved Equipment
+        <set name="EqboiArriveUnitEquipment" inverse="true" lazy="true">
+            <meta attribute="field-description">The set of all Received UNIT_EQUIPMENT for this item.</meta>
+            <key column="arrive_order_item_gkey"/>
+            <one-to-many class="com.navis.inventory.business.units.UnitEquipment"/>
+        </set>
+
+         child Delivered or Reserved Equipment
+        <set name="EqboiDepartUnitEquipment" inverse="true" lazy="true">
+            <meta attribute="field-description">The set of all Reserved or Departed UNIT_EQUIPMENT for this item.</meta>
+            <key column="depart_order_item_gkey"/>
+            <one-to-many class="com.navis.inventory.business.units.UnitEquipment"/>
+        </set>
+        -->
+
+        <!-- 2006-11-01 lbarman v1.2.F ARGO-5352: audit fields added to superclass-->
+        <property name="eqboiCreated" column="created" type="timestamp"/>
+        <property name="eqboiCreator" column="creator" type="string" length="30"/>
+        <property name="eqboiChanged" column="changed" type="timestamp"/>
+        <property name="eqboiChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <class name="com.navis.inventory.business.units.EqBaseOrder" table="inv_eq_base_order" discriminator-value="null" dynamic-update="true">
+        <meta attribute="n4alias">eqbo</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.EqBaseOrderHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Base class for orders/reservations for Equipment</meta>
+        <meta attribute="n4-entity-name">Equipment Order</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Orders</meta>
+        <meta attribute="carina-index">
+            inv_eq_ord_sub_type_created(sub_type, created);
+        </meta>
+        <id name="eqboGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <discriminator column="sub_type" not-null="false" type="string" length="10"/>
+
+        <property name="eqboSubType" column="sub_type" insert="false" update="false"
+                  type="com.navis.argo.persistence.atoms.UserTypeEquipmentOrderSubTypeEnum" index="eqo_sub_type_idx">
+            <meta attribute="field-description">Order subtype, so we can query invisible descriminator</meta>
+        </property>
+
+        <property name="eqboNbr" column="nbr" type="string" length="30">
+            <meta attribute="field-description">Order number, just so we can display this in inventory</meta>
+        </property>
+
+        <set name="eqboOrderItems" lazy="true" inverse="true" table="inv_eq_base_order_items" cascade="all-delete-orphan">
+            <key column="eqo_gkey"/>
+            <one-to-many class="com.navis.inventory.business.units.EqBaseOrderItem"/>
+        </set>
+
+        <!--    Audit Data -->
+        <!-- 2006-May-26 svaitheas v1.1.2.0 ARGO-3844 Moved these fields from orders.hbm.xml to here-->
+        <property name="eqboCreated" column="created" type="timestamp"/>
+        <property name="eqboCreator" column="creator" type="string" length="30"/>
+        <property name="eqboChanged" column="changed" type="timestamp"/>
+        <property name="eqboChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!-- 2007-08-15 JJS v1.4.H ARGO-8017 (new) -->
+    <class name="com.navis.inventory.business.units.EquipmentState" table="inv_eq_state" dynamic-update="true">
+        <meta attribute="n4alias">eqs</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.EquipmentStateHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Represents the state of an Equipment from perspective of an Operator</meta>
+        <meta attribute="n4-entity-name">Equipment State</meta>
+        <meta attribute="n4-entity-name-plural">Equipment States</meta>
+
+        <id name="eqsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="eqsOperator" class="com.navis.argo.business.model.Operator">
+            <meta attribute="field-description">The (Topology) Operator whose perspective is being modeled</meta>
+            <column name="opr_gkey" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <many-to-one name="eqsEquipment" class="com.navis.argo.business.reference.Equipment">
+            <meta attribute="field-description">The Equipment of this EquipmentState</meta>
+            <column name="eq_gkey" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <many-to-one name="eqsEqOperator" column="eq_operator_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="true">
+            <meta attribute="field-description">Current operator of the Equipment</meta>
+        </many-to-one>
+
+        <many-to-one name="eqsEqPreviousOperator" column="eq_prev_operator_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"
+                     not-null="false">
+            <meta attribute="field-description">Previous operator of the Equipment, if known</meta>
+        </many-to-one>
+
+        <many-to-one name="eqsEqOwner" column="eq_owner_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Owner of the Equipment, if known</meta>
+        </many-to-one>
+
+        <property name="eqsEqUseMode" column="eq_use_mode" type="com.navis.inventory.persistence.atoms.UserTypeUnitEquipmentUseModeEnum"
+                  not-null="true">
+            <meta attribute="field-description">Mode of use of the Equipment</meta>
+        </property>
+
+        <many-to-one name="eqsGradeID" column="grade_gkey" class="com.navis.argo.business.reference.EquipGrade">
+            <meta attribute="field-description">Equipment grade</meta>
+        </many-to-one>
+        <!-- 2009-02-21 rsatish v1.8.F ARGO-16802 damages re-factoring: taking back damages to the old model -->
+        <property name="eqsObsoleteDamageSeverity" column="damage" type="com.navis.inventory.persistence.atoms.UserTypeEqDamageSeverityEnum"
+                  not-null="false">
+            <meta attribute="field-description">NONE/MINOR/MAJOR</meta>
+        </property>
+
+        <many-to-one name="eqsObsoleteDamages" column="dmgs_gkey" class="com.navis.inventory.business.units.UnitEquipDamages" cascade="all">
+            <meta attribute="field-description">The Damages asscoiated with this Unit Equipment. May be null.</meta>
+        </many-to-one>
+
+        <property name="eqsOffhireLocation" column="return_to_location" type="string" length='30'>
+            <meta attribute="field-description">Off-hire location for this piece of Equipment</meta>
+        </property>
+
+        <property name="eqsLastPosLocType" column="last_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                  not-null="true">
+            <meta attribute="field-description">An Enum giving the type of position of the Equipment's last known position</meta>
+        </property>
+
+        <property name="eqsLastPosName" column="last_pos_name" type="string" length="100">
+            <meta attribute="field-description">A String formatted for the user that represents the last known position</meta>
+        </property>
+
+        <many-to-one name="eqsLastFacility" column="last_fcy_gkey" class="com.navis.argo.business.model.Facility" not-null="false">
+            <meta attribute="field-description">The Facility of the last position, if known</meta>
+        </many-to-one>
+
+        <property name="eqsTimeLastMove" column="time_move" type="timestamp">
+            <meta attribute="field-description">Time this Equipment was last moved</meta>
+        </property>
+
+        <property name="eqsFlexString01" column="flex_string01" type="string" length="100">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="eqsFlexString02" column="flex_string02" type="string" length="100">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="eqsFlexString03" column="flex_string03" type="string" length="100">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+        <property name="eqsTripCount" column="eq_trip_count" type="java.lang.Long">
+            <meta attribute="field-description">Number that represents equipment trip count</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.inventory.business.units.UnitEquipment" table="inv_unit_equip" dynamic-update="true">
+        <meta attribute="n4alias">ue</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.UnitEquipmentHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing the use of an Equipment by a Unit</meta>
+        <meta attribute="n4-entity-name">Unit Equipment</meta>
+        <meta attribute="n4-entity-name-plural">Unit Equipment</meta>
+
+        <id name="ueGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="ueEqRole" column="eq_role" type="com.navis.inventory.persistence.atoms.UserTypeEqUnitRoleEnum" not-null="true">
+            <meta attribute="field-description">The role the Equipment plays with respect to the Unit.</meta>
+        </property>
+        <property name="ueAttachTime" column="attach_time" type="timestamp">
+            <meta attribute="field-description">The time the Equipment was first attached to the Unit</meta>
+        </property>
+        <property name="ueDetachTime" column="detach_time" type="timestamp">
+            <meta attribute="field-description">The time the Equipment was detached from the Unit</meta>
+        </property>
+        <many-to-one name="ueUnit" column="unit_gkey" class="com.navis.inventory.business.units.Unit" not-null="true">
+            <meta attribute="field-description">The Unit of this UnitEquipment</meta>
+        </many-to-one>
+        <many-to-one name="ueEquipment" column="eq_gkey" class="com.navis.argo.business.reference.Equipment" not-null="true">
+            <meta attribute="field-description">The Equipment of this UnitEquipment</meta>
+        </many-to-one>
+        <!-- 2007-08-15 JJS v1.4.H ARGO-8017 (new) Would like this to be non-null, but can't make it so when adding to existing table -->
+        <many-to-one name="ueEquipmentState" column="eqs_gkey" class="com.navis.inventory.business.units.EquipmentState" not-null="false">
+            <meta attribute="field-description">The EquipmentState of the Equipment (which makes ueEquipment redundant)</meta>
+        </many-to-one>
+
+        <!--RMK ARGO-11056, Originally requested by Antwerp as one of the attributes of Unit -->
+        <!-- todo As per discussion with Jon we may have to add a config setting to allow use cases where this -->
+        <!-- attribute will be at the EquipmentState entity level, but for now we are just doing it at one place -->
+        <many-to-one name="ueConditionID" column="condition_gkey" class="com.navis.argo.business.reference.EquipCondition" not-null="false">
+            <meta attribute="field-description">Equipment condition</meta>
+        </many-to-one>
+
+        <!-- 2007-08-15 JJS v1.4.H ARGO-8017 the following fields, renamed with "Obsolete", are moved to the EquipmentState entity -->
+        <many-to-one name="ueObsoleteEqOperator" column="eq_operator_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Current operator of the unit equipment</meta>
+        </many-to-one>
+
+        <property name="ueObsoleteEqUseMode" column="eq_use_mode" type="com.navis.inventory.persistence.atoms.UserTypeUnitEquipmentUseModeEnum"
+                  not-null="true">
+            <meta attribute="field-description">Mode of use of the unit equipment</meta>
+        </property>
+
+        <many-to-one name="ueObsoleteGradeID" column="grade_gkey" class="com.navis.argo.business.reference.EquipGrade">
+            <meta attribute="field-description">Equipment grade</meta>
+        </many-to-one>
+
+        <!-- 2009-02-21 rsatish v1.8.F ARGO-16802 damages re-factoring: taking back damages to the old model -->
+        <property name="ueDamageSeverity" column="damage" type="com.navis.inventory.persistence.atoms.UserTypeEqDamageSeverityEnum"
+                  not-null="false">
+            <meta attribute="field-description">NONE/MINOR/MAJOR</meta>
+        </property>
+
+        <!-- 2008-07-11 vkotha v1.5.10 v1.7.A ARGO-11805 Increase inv_unit_equip.bad_nbr length from 12 to 30 as inv_unit.id is of length 30 -->
+        <property name="ueBadNbr" column="bad_nbr" type="string" length="30">
+            <meta attribute="field-description">Records the original EquipId when User has redefined ueEquipment</meta>
+        </property>
+
+        <property name="ueIsFolded" column="is_folded" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if this is a folded flatrack</meta>
+        </property>
+
+        <!-- 2007-08-03 lbarman v1.4.G, v1.3.11 ARGO-7677: the sparcs damage codes are currently saved as a String; once the mapping is complete,
+        this might be calculated on the fly -->
+        <property name="ueSparcsDamageCode" column="sparcs_damage_code" type="string" not-null="false" length="20">
+            <meta attribute="field-description">The sparcs damage code representing the damages of this unit equipment.</meta>
+        </property>
+
+        <!-- 2009-02-21 rsatish v1.8.F ARGO-16802 damages re-factoring: taking back damages to the old model -->
+        <many-to-one name="ueDamages" column="dmgs_gkey" class="com.navis.inventory.business.units.UnitEquipDamages" cascade="all">
+            <meta attribute="field-description">The Damages asscoiated with this Unit Equipment. May be null.</meta>
+        </many-to-one>
+
+        <many-to-one name="ueArrivalOrderItem" column="arrive_order_item_gkey"
+                     class="com.navis.inventory.business.units.EqBaseOrderItem" not-null="false">
+            <meta attribute="field-description">The order via which the subject Equipment will/has arrived at the Complex</meta>
+        </many-to-one>
+
+        <many-to-one name="ueDepartureOrderItem" column="depart_order_item_gkey" class="com.navis.inventory.business.units.EqBaseOrderItem"
+                     not-null="false">
+            <meta attribute="field-description">The order via which the subject Equipment will/has departed the Complex</meta>
+        </many-to-one>
+
+        <!-- 2006-05-29 lbarman v1.1.2 ARGO- 4337: the is reserved flag helps to distinguish between units that are reserved or delivered against a
+        booking in comparison to units that were preadvised or received against a booking -->
+        <property name="ueIsReserved" column="is_reserved" type="java.lang.Boolean">
+            <meta attribute="field-description">True if this unit is reserved for or went out against an order</meta>
+        </property>
+
+        <!-- 2006-11-08 JJS v1.2.E ARGO-5583 flag for 'current use'-->
+        <!-- 2007-11-06 JJS v1.4.0 ARGO-8369 this flag is now deprecated: not needed now that we have EquipmentState (after one year...)-->
+        <property name="ueObsoleteIsCurrentUse" column="is_current_use" type="java.lang.Boolean">
+            <meta attribute="field-description">True if this UE represents the current use of the Equipment for this Operator</meta>
+        </property>
+
+        <!-- 2007-07-19 Shan v1.4.F ARGO-7714 return to location for UE -->
+        <property name="ueObsoleteReturnToLocation" column="return_to_location" type="string" length='30'>
+            <meta attribute="field-description">Return to location for this UE</meta>
+        </property>
+
+        <!-- jwang 2008-05-01 ARGO-11406: add MnR Status field -->
+        <many-to-one name="ueMnrStatus" column="mnr_status_gkey" class="com.navis.argo.business.reference.MnrStatus" not-null="false">
+            <meta attribute="field-description">The M&amp;R Status</meta>
+        </many-to-one>
+
+        <!-- jwang 2008-05-05 ARGO-11113: add Placarded field -->
+        <property name="uePlacarded" column="placarded" type="com.navis.inventory.persistence.atoms.UserTypePlacardedEnum" not-null="false">
+            <meta attribute="field-description">Has the unit equipment been placarded</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.inventory.business.units.GoodsBase" table="inv_goods" dynamic-update="true">
+        <meta attribute="n4alias">gds</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.GoodsBaseHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing the valuables/goods being transported</meta>
+        <meta attribute="n4-entity-name">Goods</meta>
+        <meta attribute="n4-entity-name-plural">Goods</meta>
+
+        <id name="gdsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- The other way of doing this mapping.  See Hibernate in Action page 222.
+        <id name="gdsGkey" column="gds_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="foreign">
+                <param name="property">gdsUnit</param>
+            </generator>
+        </id>
+        -->
+
+        <one-to-one name="gdsUnit" class="com.navis.inventory.business.units.Unit" property-ref="unitGoods">
+            <meta attribute="field-description">The Unit owning these Goods.</meta>
+        </one-to-one>
+
+        <!-- 2007-03-14 JJS ARGO-6477 1.3.C gdsShipper and gdsConsignee converted from Strings to ScopedBizUnits -->
+        <property name="gdsObsoleteConsignee" column="consignee" type="string" length='30'>
+            <meta attribute="field-description">Consignee Id</meta>
+        </property>
+
+        <property name="gdsObsoleteShipper" column="shipper" type="string" length='30'>
+            <meta attribute="field-description">Shipper (information only)</meta>
+        </property>
+
+        <many-to-one name="gdsConsigneeBzu" column="consignee_bzu" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Consignee ScopedBizUnit</meta>
+        </many-to-one>
+
+        <many-to-one name="gdsShipperBzu" column="shipper_bzu" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Shipper ScopedBizUnit</meta>
+        </many-to-one>
+        <!-- 2007-03-14 JJS ARGO-6477 1.3.C end changes -->
+
+        <many-to-one name="gdsCommodity" column="commodity_gkey" class="com.navis.argo.business.reference.Commodity">
+            <meta attribute="field-description">Commodity Summary (from reference table)</meta>
+        </many-to-one>
+
+        <property name="gdsOrigin" column="origin" type="string" length="30">
+            <meta attribute="field-description">Origin</meta>
+        </property>
+
+        <property name="gdsDestination" column="destination" type="string" length="30" index="inv_goods_destinat_idx">
+            <meta attribute="field-description">Final Destination</meta>
+        </property>
+
+        <!-- NEW 2006-05-15 JJS v1.1.2 ARGO-4250 denormalize attributes -->
+        <property name="gdsIsHazardous" column="hazardous" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">TRUE if the Goods contain hazardous substances (denormalization)</meta>
+        </property>
+
+        <!-- NEW 2006-05-15 JJS v1.1.2 ARGO-4250 denormalize attributes -->
+        <property name="gdsImdgTypes" column="imdg_types" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Comma delimitted list of IMDG types within the Unit (denormalization)</meta>
+        </property>
+
+        <!-- 2012.12.19 LASAD ARGO-38343 De-normalize 3 top UN Hazards. -->
+        <property name="gdsThreeMainHazardUNNumbers" column="hazard_un_nums" type="string" length="15" not-null="false">
+            <meta attribute="field-description">The UN numbers of the three most severe hazards.</meta>
+        </property>
+
+        <!-- NEW 2006-09-22 shivajic v 1.2.D ARGO-5285 denormalize attributes -->
+        <property name="gdsBlNbr" column="bl_nbr" type="string" length="31">
+            <meta attribute="field-description">Bill of Lading number</meta>
+        </property>
+
+        <many-to-one name="gdsHazards" column="hazards_gkey" class="com.navis.inventory.business.imdg.Hazards" cascade="all">
+            <meta attribute="field-description">The Hazards asscoiated with these Goods. May be null.</meta>
+        </many-to-one>
+
+        <set name="gdsDeclaration" inverse="true" lazy="true" table="inv_goods_declaration" cascade="all-delete-orphan">
+            <key column="goods_gkey"/>
+            <one-to-many class="com.navis.inventory.business.units.GoodsDeclaration"/>
+        </set>
+
+        <component name="gdsReeferRqmnts" class="com.navis.inventory.business.units.ReeferRqmnts">
+            <meta attribute="generated-class">com.navis.inventory.business.units.ReeferRqmntsHbr</meta>
+            <meta attribute="field-description">Refrigeration requirements</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="rfreqTempRequiredC" column="temp_reqd_C" type="java.lang.Double">
+                <meta attribute="field-description">Temperature required, degrees Centigrade</meta>
+            </property>
+
+            <property name="rfreqTempLimitMaxC" column="temp_max_C" type="java.lang.Double">
+                <meta attribute="field-description">Max allowed temperature, degrees Centigrade</meta>
+            </property>
+
+            <property name="rfreqTempLimitMinC" column="temp_min_C" type="java.lang.Double">
+                <meta attribute="field-description">Min allowed temperature, degrees Centigrade</meta>
+            </property>
+
+            <property name="rfreqTempShowFahrenheit" column="temp_show_fahrenheit" type="java.lang.Boolean">
+                <meta attribute="field-description">If TRUE, users want to see temperatures for this in Fahrenheit, not Centigrade</meta>
+            </property>
+
+            <!-- 2006-10-17 svaitheas v1.2.E ARGO-4696 ARGO-4699 :Correct update reefer requirements form vent settings to conform to functional requirements  -->
+            <!-- Renamed the property -->
+            <!-- 2006-10-30 svaitheas v1.2.F ARGO-5480 :Rename Vent Settings to VentRequired  -->
+            <property name="rfreqVentRequired" column="vent_required_pct" type="java.lang.Double">
+                <meta attribute="field-description">Ventilation that is required</meta>
+            </property>
+
+            <property name="rfreqVentUnit" column="vent_unit" type="com.navis.argo.persistence.atoms.UserTypeVentUnitEnum" length="40">
+                <meta attribute="field-description">Unit (%,cubic feet per minute, etc.) that goes with the vent required field</meta>
+            </property>
+
+            <property name="rfreqHumidityPct" column="humidity_required_pct" type="java.lang.Double">
+                <meta attribute="field-description">Humidity required, %</meta>
+            </property>
+
+            <property name="rfreqO2Pct" column="O2_pct" type="java.lang.Double">
+                <meta attribute="field-description">Oxygen required, %</meta>
+            </property>
+
+            <property name="rfreqCO2Pct" column="CO2_pct" type="java.lang.Double">
+                <meta attribute="field-description">Carbon Dioxide required, %</meta>
+            </property>
+
+            <property name="rfreqLatestOnPowerTime" column="on_power" type="timestamp">
+                <meta attribute="field-description">Time by which the Unit must be on-power to meet customer requirements</meta>
+            </property>
+
+            <!-- 2007-10-22 lbarman ARGO-8620: add field for requested power off time of reefer requirements -->
+            <property name="rfreqRequestedOffPowerTime" column="off_power_time" type="timestamp">
+                <meta attribute="field-description">Time by which the Unit should be taken off-power</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor1" column="time_mon1" type="timestamp">
+                <meta attribute="field-description">1st time by which reefer should be monitored</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor2" column="time_mon2" type="timestamp">
+                <meta attribute="field-description">2nd time by which reefer should be monitored</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor3" column="time_mon3" type="timestamp">
+                <meta attribute="field-description">3rd time by which reefer should be monitored</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor4" column="time_mon4" type="timestamp">
+                <meta attribute="field-description">4th time by which reefer should be monitored</meta>
+            </property>
+
+            <!-- 2010-07-16 bshrinevas Add a new Integer attribute rfreqMinutesBeforeUnplugWarning in the ReeferRequirements entity -->
+            <property name="rfreqMinutesBeforeUnplugWarning" column="unplug_warn_min" type="java.lang.Integer">
+                <meta attribute="field-description">Number of minutes Reefer can be unplugged without damaging contents</meta>
+            </property>
+            <!--2012.12.14 (250010) rkasindula ARGO-42447 ext_time_monitors column is added to ReeferRqmnts -->
+            <property name="rfreqExtendedTimeMonitors" column="ext_time_monitors" type="java.lang.Boolean">
+                <meta attribute="field-description">Determines reefer requires additional monitor times. If TRUE, requires additional
+                    monitoring times</meta>
+            </property>
+
+
+        </component>
+
+    </class>
+
+    <class name="com.navis.inventory.business.units.UnitFacilityVisit" table="inv_unit_fcy_visit" dynamic-update="true">
+        <meta attribute="n4alias">ufv</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.UnitFacilityVisitHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing the passage of a Unit through a Facility</meta>
+        <meta attribute="n4-entity-name">Unit Facility Visit</meta>
+        <meta attribute="n4-entity-name-plural">Unit Facility Visits</meta>
+        <meta attribute="carina-index">inv_unit_fcy_vst_horzn_idx(fcy_gkey,horizon);inv_ufv_fgkey_lpb_gkey_idx(fcy_gkey,last_pos_bin,gkey)</meta>
+        <meta attribute="n4-code-extension-support">true</meta>
+        <!-- We should use function based index for Oracle. It is free for all Oracle editions.
+        It supposed to help in selecting striped time out of Datetime field. The index looks like this:
+        create index ufvtime_in_one_idx on inv_unit_fcy_visit(to_char(time_in, 'HH24:MI'));
+        -->
+        <meta attribute="carina-oracle-index">
+            CREATE INDEX invunitfv_vissp_visst_idx on inv_unit_fcy_visit(visible_sparcs,visit_state);
+            CREATE INDEX invunitfv_tmove_hor_idx on inv_unit_fcy_visit(time_move,horizon);
+            CREATE INDEX ufv_arrv_pos_anchor_idx ON inv_unit_fcy_visit(arrive_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            CREATE INDEX ufv_last_pos_anchor_idx ON inv_unit_fcy_visit(last_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            create index ufvtime_in_one_idx on inv_unit_fcy_visit(to_char(time_in, 'HH24:MI'));
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE INDEX ufv_fcy_horizon_idx ON inv_unit_fcy_visit (fcy_gkey, horizon) include (time_move, unit_gkey);
+            CREATE INDEX iunitfv_stobcvugkey_idx on inv_unit_fcy_visit(visit_state, actual_ob_cv, unit_gkey);
+            CREATE INDEX ufv_visitstate_vsparcs_idx ON inv_unit_fcy_visit (visit_state, visible_sparcs) include(time_complete, last_pos_loctype);
+            CREATE SPATIAL INDEX ufv_arrv_pos_anchor_idx ON inv_unit_fcy_visit(arrive_pos_anchor) WITH ( BOUNDING_BOX = ( 0, 0, 1000000, 1000000 ) );
+            CREATE SPATIAL INDEX ufv_last_pos_anchor_idx ON inv_unit_fcy_visit(last_pos_anchor) WITH ( BOUNDING_BOX = ( 0, 0, 1000000, 1000000 ) );
+            CREATE INDEX ufvtime_in_one_idx on inv_unit_fcy_visit(time_in);
+        </meta>
+        <meta attribute="carina-mysql-index">
+            CREATE INDEX ufvtime_in_one_idx on inv_unit_fcy_visit(time_in);
+        </meta>
+
+        <id name="ufvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- multicolumn index by horizon and fcy_gkey-->
+        <!-- 2008-11-04 (8012) rsatish ARGO-15279 1.8.B  Adding multi-column index using upgrade action so removing it from here -->
+        <property name="ufvHorizon" column="horizon" type="java.lang.Long">
+            <meta attribute="field-description">number that presents time_out as horizon</meta>
+        </property>
+
+        <!--  2004.09.10 JJS REMOVED THIS (now tracking this by relationship to Unit) -->
+        <!--  2006.01.13 RE-INSTATED THIS! (makes reporting easier) -->
+        <property name="ufvVisitState" column="visit_state" type="com.navis.inventory.persistence.atoms.UserTypeUnitVisitStateEnum"
+                  not-null="true" index="inv_unit_fcy_visit_state_index">
+            <meta attribute="field-description">The current state of the Unit with respect to this Facility.</meta>
+        </property>
+
+        <!--  2006.06.06 JJS ARGO-4398 v1.1.2 -->
+        <property name="ufvTransitState" column="transit_state" type="com.navis.inventory.persistence.atoms.UserTypeUfvTransitStateEnum"
+                  not-null="false" index="ufv_transit_state_idx">
+            <meta attribute="field-description">Describes the UFV's transit through the Facility.</meta>
+        </property>
+
+        <!-- 2006-03-17 JJS v1.0.10 added -->
+        <property name="ufvCreateTime" column="create_time" type="timestamp">
+            <meta attribute="field-description">Time UFV was first instantiated</meta>
+        </property>
+
+        <component name="ufvArrivePosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The position on arrival. Will be a truck, train, or vessel position</meta>
+            <meta attribute="extends">com.navis.spatial.business.model.Position</meta>
+
+            <property name="posLocType" column="arrive_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="true">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="arrive_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="arrive_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="arrive_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="arrive_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="arrive_pos_name" type="string" length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <property name="posOperationalPosId" column="arrive_ops_pos_id" type="string" length="80">
+                <meta attribute="field-description">XPS operation position (TIP, TQ, LN.4, etc.)</meta>
+            </property>
+            <!-- 2009-10-30 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="arrive_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="arrive_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="arrive_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="arrive_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <component name="ufvLastKnownPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The last known position of the Unit from the perspective of this facility</meta>
+            <meta attribute="extends">com.navis.spatial.business.model.Position</meta>
+
+            <property name="posLocType" column="last_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="true">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="last_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="last_pos_loc_gkey" type="java.lang.Long" index="inv_unfcyvis_lplgkey_idx">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="last_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="last_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="last_pos_name" type="string" length="42" index="inv_unit_fcy_vst_lastposnm_idx">
+                <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <property name="posOperationalPosId" column="last_ops_pos_id" type="string" length="80">
+                <meta attribute="field-description">XPS operation position (TIP, TQ, LN.4, etc.)</meta>
+            </property>
+            <!-- 2009-10-30 pji Created to support persistent bin model. -->
+            <many-to-one name="posBin" column="last_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="last_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="last_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="last_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <property name="ufvTimeOfLastMove" column="time_move" type="timestamp" index="time_move_index">
+            <meta attribute="field-description">The time at which the ufvLastKnownPosition was most recently updated.</meta>
+        </property>
+
+        <property name="ufvTimeOfLoading" column="time_load" type="timestamp">
+            <meta attribute="field-description">The time at which the ufv was loaded to the outbound carrier.</meta>
+        </property>
+
+        <property name="ufvTimeEcIn" column="time_rnd" type="timestamp">
+            <meta attribute="field-description">Time at which the EC-IN UFV state began (=discharge time for imports)</meta>
+        </property>
+
+        <property name="ufvTimeEcOut" column="time_ecout" type="timestamp">
+            <meta attribute="field-description">Time at which the EC-OUT UFV state began (gate transaction complete for delivery)</meta>
+        </property>
+
+        <property name="ufvTimeIn" column="time_in" type="timestamp">
+            <meta attribute="field-description">The time at which the Unit was received into the facility.</meta>
+        </property>
+
+        <property name="ufvTimeOut" column="time_out" type="timestamp">
+            <meta attribute="field-description">The time at which the Unit was delivered from the facility.</meta>
+        </property>
+
+        <property name="ufvDlvTimeAppntmnt" column="time_dlv_appmnt" type="timestamp">
+            <meta attribute="field-description">The scheduled time of the delivery appointment.</meta>
+        </property>
+
+        <!--2013-02-05 mahalma ARGO-43411 added the "appt_Nbr" column to inv_unit_fcy_visit -->
+        <property name="ufvGapptNbr" column="appt_nbr" type="java.lang.Long">
+            <meta attribute="field-description">The operator unique appointment id</meta>
+        </property>
+
+        <property name="ufvTimeInventory" column="time_inv" type="timestamp">
+            <meta attribute="field-description">The time at which the Unit's yard position was last confirmed.</meta>
+        </property>
+        <!--2009-11-26 spabbala v2.1.C, v2.0.0 ARGO-21269  create new index: create index inv_unitfv_timecomp_ind on
+         inv_unit_fcy_visit(time_complete);-->
+        <property name="ufvTimeComplete" column="time_complete" type="timestamp" index="inv_unitfv_timecomp_ind">
+            <meta attribute="field-description">The time at which this UFV became a historical UFV. If null, it is 'live'.</meta>
+        </property>
+
+        <many-to-one name="ufvUnit" column="unit_gkey" class="com.navis.inventory.business.units.Unit" not-null="true" lazy="false">
+            <meta attribute="field-description">The Unit to which this UnitFacilityVisit belongs</meta>
+        </many-to-one>
+
+        <!-- multicolumn index by horizon and fcy_gkey-->
+        <!-- 2008-11-04 (8012) rsatish ARGO-15279 1.8.B  Adding multi-column index using upgrade action so removing it from here -->
+        <many-to-one name="ufvFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility" not-null="true">
+            <meta attribute="field-description">The Facility of this UnitFacilityVisit</meta>
+        </many-to-one>
+
+        <property name="ufvSequence" column="sequence" type="java.lang.Long">
+            <meta attribute="field-description">The facility calling sequence: 1=first facility, 2=second, etc. 0=unknown</meta>
+        </property>
+
+        <!--
+        many-to-one name="ufvActiveUyv" column="active_uyv" class="com.navis.inventory.business.units.UnitYardVisit" cascade="none">
+            <meta attribute="field-description">The ACTIVE UnitYardVisit for this Ufv, if any (can be null).</meta>
+        </many-to-one
+        2006-01-24 JJS we don't need this....the LastKnownPosition indicates the yard.
+        -->
+
+        <bag name="ufvUyvList" inverse="true" lazy="true" cascade="all">
+            <key column="ufv_gkey"/>
+            <one-to-many class="com.navis.inventory.business.units.UnitYardVisit"/>
+        </bag>
+
+        <many-to-one name="ufvIntendedObCv" column="intend_ob_cv" class="com.navis.argo.business.model.CarrierVisit" not-null="true">
+            <meta attribute="field-description">The intended outbound carrier, which may differ from the actual</meta>
+        </many-to-one>
+
+        <property name="ufvRestowType" column="restow_typ" type="com.navis.argo.persistence.atoms.UserTypeRestowTypeEnum" not-null="true">
+            <meta attribute="field-description">Restow (aka Rehandle) type (if any)</meta>
+        </property>
+
+        <property name="ufvHandlingReason" column="hndlg_rsn" type="com.navis.inventory.persistence.atoms.UserTypeHandlingReasonEnum" not-null="true">
+            <meta attribute="field-description">Enum giving reason for handling</meta>
+        </property>
+
+        <property name="ufvYardStowageType" column="yrd_stwge" type="com.navis.inventory.persistence.atoms.UserTypeYardStowRqmntEnum" not-null="true">
+            <meta attribute="field-description">Enum giving type of yard stowage required: stacked, wheeled, either</meta>
+        </property>
+
+        <!-- Some special Sparcs fields -->
+        <property name="ufvIsSparcsStopped" column="sparcs_stopped" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if the simple SPARCS-originated 'stop' is placed on this Unit</meta>
+        </property>
+
+        <property name="ufvSparcsNote" column="sparcs_note" type="string" length="255">
+            <meta attribute="field-description">Sparcs Note</meta>
+        </property>
+
+        <property name="ufvHasChanged" column="has_changed" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if SPARCS user has not cleared the change flag</meta>
+        </property>
+
+        <property name="ufvVerifiedForLoad" column="vrfd_load" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if SPARCS user has verified the Unit for loading</meta>
+        </property>
+
+        <property name="ufvVerifiedYardPosition" column="vrfd_yard" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if SPARCS user has verified the Unit's yard position</meta>
+        </property>
+
+        <property name="ufvAnomalyForExpDkng" column="ed_anomaly" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if SPARCS should ignore this Unit when evaluating types of Units present in Expert Decking</meta>
+        </property>
+
+        <!--  No need to store these: can be obtained from the arrive/last Position's posLocId.  Or should we denormalize?
+        2005.07.06 JJS: decided to go ahead and add ufvActualIbCv & ufvActualObCv fields explicitly to the UFV!
+       -->
+        <many-to-one name="ufvActualIbCv" column="actual_ib_cv" class="com.navis.argo.business.model.CarrierVisit" not-null="false">
+            <meta attribute="field-description">The actual inbound carrier, i.e., the one the Unit physically arrived upon. Defined upon facility arrival.</meta>
+        </many-to-one>
+
+        <many-to-one name="ufvActualObCv" column="actual_ob_cv" class="com.navis.argo.business.model.CarrierVisit" not-null="false">
+            <meta attribute="field-description">The actual outbound carrier, i.e., the one the Unit physically departed upon. Defined upon facility departure.</meta>
+        </many-to-one>
+
+        <property name="ufvLastFreeDay" column="last_free_day" type="timestamp">
+            <meta attribute="field-description">Last Free Day for Storage</meta>
+        </property>
+
+        <property name="ufvPaidThruDay" column="paid_thru_day" type="timestamp">
+            <meta attribute="field-description">Day thru which demurrage charges have been paid for Storage</meta>
+        </property>
+
+        <property name="ufvGuaranteeThruDay" column="guarantee_thru_day" type="timestamp">
+            <meta attribute="field-description">Day thru which demurrage charges have been guaranteed for Storage</meta>
+        </property>
+
+        <many-to-one name="ufvGuaranteeParty" column="guarantee_party_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">The business party agreeing to guarantee storage charges for Storage</meta>
+        </many-to-one>
+
+        <property name="ufvPowerLastFreeDay" column="power_last_free_day" type="timestamp">
+            <meta attribute="field-description">Last Free Day for reefer Power charge</meta>
+        </property>
+
+        <property name="ufvPowerPaidThruDay" column="power_paid_thru_day" type="timestamp">
+            <meta attribute="field-description">Day thru which reefer power charges have been paid</meta>
+        </property>
+
+        <property name="ufvPowerGuaranteeThruDay" column="power_guarantee_thru_day" type="timestamp">
+            <meta attribute="field-description">Day thru which reefer charges have been guaranteed for Power</meta>
+        </property>
+
+        <many-to-one name="ufvPowerGuaranteeParty" column="power_guarantee_party_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"
+                     not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">The business party agreeing to guarantee reefer charges for Power</meta>
+        </many-to-one>
+
+        <property name="ufvLineLastFreeDay" column="line_last_free_day" type="timestamp">
+            <meta attribute="field-description">Last Free Day for Line Storage</meta>
+        </property>
+
+        <property name="ufvLinePaidThruDay" column="line_paid_thru_day" type="timestamp">
+            <meta attribute="field-description">Day thru which demurrage charges have been paid for Line Storage</meta>
+        </property>
+
+        <property name="ufvLineGuaranteeThruDay" column="line_guarantee_thru_day" type="timestamp">
+            <meta attribute="field-description">Day thru which demurrage charges have been guaranteed for Line Storage</meta>
+        </property>
+
+        <many-to-one name="ufvLineGuaranteeParty" column="line_guarantee_party_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"
+                     not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">The business party agreeing to guarantee storage charges for Line Storage</meta>
+        </many-to-one>
+
+        <property name="ufvVisibleInSparcs" column="visible_sparcs" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">If TRUE, this Unit is visible in SPARCS</meta>
+        </property>
+
+        <!-- ARGO-5445 eyu 10/25/2006 v1.2.F create Flex fields-->
+        <property name="ufvFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="ufvFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="ufvFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+
+        <property name="ufvFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <!--2007-03-20 ssampath ARGO-8885 v1.5L/M MAT, Additional flex fields requested by MAT -->
+        <property name="ufvFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+
+        <property name="ufvFlexString06" column="flex_string06" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+
+        <property name="ufvFlexString07" column="flex_string07" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+
+        <property name="ufvFlexString08" column="flex_string08" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+
+        <property name="ufvFlexString09" column="flex_string09" type="string" length="255">
+            <meta attribute="field-description">String flex-field #09</meta>
+        </property>
+
+        <property name="ufvFlexString10" column="flex_string10" type="string" length="255">
+            <meta attribute="field-description">String flex-field #10</meta>
+        </property>
+
+        <property name="ufvFlexDate01" column="flex_date01" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+
+        <property name="ufvFlexDate02" column="flex_date02" type="timestamp">
+            <meta attribute="field-description">Date flex-field #02</meta>
+        </property>
+
+        <property name="ufvFlexDate03" column="flex_date03" type="timestamp">
+            <meta attribute="field-description">Date flex-field #03</meta>
+        </property>
+
+        <property name="ufvFlexDate04" column="flex_date04" type="timestamp">
+            <meta attribute="field-description">Date flex-field #04</meta>
+        </property>
+
+        <!-- 2007-07-30 Shan V1.4.G ARGO-7626 added more flex fields -->
+        <property name="ufvFlexDate05" column="flex_date05" type="timestamp">
+            <meta attribute="field-description">Date flex-field #05</meta>
+        </property>
+
+        <property name="ufvFlexDate06" column="flex_date06" type="timestamp">
+            <meta attribute="field-description">Date flex-field #06</meta>
+        </property>
+
+        <property name="ufvFlexDate07" column="flex_date07" type="timestamp">
+            <meta attribute="field-description">Date flex-field #07</meta>
+        </property>
+
+        <property name="ufvFlexDate08" column="flex_date08" type="timestamp">
+            <meta attribute="field-description">Date flex-field #08</meta>
+        </property>
+
+        <!--2010-01-22 spabbala v2.1.G ARGO-23322 Add a new attribute to UnitFacilityVisit NFRM-252 -->
+        <property name="ufvIsDirectIbToObMove" column="is_direct_ib_to_ob_move" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the discharge/load is a direct move to/from road truck.</meta>
+        </property>
+
+        <!--2010-03-05 spabbala v2.1.J ARGO-23434 new custom field to log errors for marry request-->
+        <property name="ufvValidateMarryErrors" column="validate_marry_errors" type="string" length="255">
+            <meta attribute="field-description">Any error that occurred during the container-chassis marry request.</meta>
+        </property>
+        <!--2010-07-16 RKHAWAJA v2.1.V ARGO-27181  new field for XPS to stuff stowFactor. -->
+        <property name="ufvStowFactor" column="stow_factor" type="string" length="60" not-null="false">
+            <meta attribute="field-description">Stow Factor for the Unit. The field is computed and managed by XPS.</meta>
+        </property>
+
+        <property name="ufvReturnToYard" column="return_to_yard" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If set to true then a UNIT_DELIVER_REJECTED event will be generated when the unit is unloaded</meta>
+        </property>
+
+        <property name="ufvMoveCount" column="move_count" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">No. of moves done for a unit during its unit facility visit</meta>
+        </property>
+
+	<property name="ufvIsRASPriority" column="ras_priority" type="java.lang.Boolean" not-null="false">
+	    <meta attribute="field-description">True if the Unit should be prioritized by Rail AutoStow</meta>
+	</property>
+
+        <!-- 2012.07.25 AOzhinsky (AO) ARGO-39548 new housekeeping fields for XPS. -->
+	<property name="ufvHousekeepingCurrentSlot" column="housekp_cur_slot" type="string" length="15" not-null="false">
+	    <meta attribute="field-description">Housekeeping Current Slot</meta>
+	</property>
+
+	<property name="ufvHousekeepingFutureSlot" column="housekp_ftr_slot" type="string" length="15" not-null="false">
+	    <meta attribute="field-description">Housekeeping Future Slot</meta>
+	</property>
+
+	<property name="ufvHousekeepingCurrentScore" column="housekp_cur_score" type="java.lang.Long" not-null="false">
+	    <meta attribute="field-description">Housekeeping Current Score</meta>
+	</property>
+
+	<property name="ufvHousekeepingFutureScore" column="housekp_ftr_score" type="java.lang.Long" not-null="false">
+	    <meta attribute="field-description">Housekeeping Future Score</meta>
+	</property>
+
+	<property name="ufvHousekeepingTimeStamp" column="housekp_timestamp" type="timestamp">
+	    <meta attribute="field-description">Housekeeping Time Stamp</meta>
+	</property>
+
+        <!-- 2012.08.02 AOzhinsky (AO) ARGO-40156 Stacking and Section factors -->
+        <property name="ufvStackingFactor" column="stacking_factor" type="string" length="60" not-null="false">
+            <meta attribute="field-description">Stacking Factor for the Unit. The field is computed and managed by XPS.</meta>
+        </property>
+
+        <property name="ufvSectionFactor" column="section_factor" type="string" length="60" not-null="false">
+            <meta attribute="field-description">Section Factor for the Unit. The field is computed and managed by XPS.</meta>
+        </property>
+
+        <!-- 2012.11.30 rsatish ARGO-40074 CAS reference IDs -->
+        <property name="ufvCasUnitReference" column="cas_unit_reference" type="string" length="128">
+            <meta attribute="field-description">CAS reference id for unit</meta>
+        </property>
+
+        <property name="ufvCasTransactionReference" column="cas_tran_reference" type="string" length="128">
+            <meta attribute="field-description">CAS reference id for lift</meta>
+        </property>
+
+        <!-- 2013.04.18 mpadhye ARGO-47018 Add column for preferred TransferZone Type at next Transfer -->
+        <property name="ufvPreferredTransferLocation" column="preferred_transfer_location"
+                  type="com.navis.argo.persistence.atoms.UserTypeTransferLocationEnum" not-null="false">
+            <meta attribute="field-description">Preferred transfer location at the origin</meta>
+        </property>
+
+        <!-- 2013.07.16 azharad ARGO-23801 Add column to compute and keep track of door direction based on current position orientation-->
+        <property name="ufvDoorDirection" column="door_direction" type="com.navis.inventory.persistence.atoms.UserTypeDoorDirectionEnum"
+                  not-null="false" length="8">
+            <meta attribute="field-description">Computed Field to maintain Door Direction based on current Yard Block direction</meta>
+        </property>
+
+        <!--suppress HibernateMappingDomInspection -->
+        <property name="ufvOptimalRailTZSlot" column="optimal_rail_tz_slot" type="java.lang.String" length="12" not-null="false">
+            <meta attribute="field-description">Optimal Rail Transfer Zone Slot populated by N4. Readonly for XPS and ECN4</meta>
+        </property>
+        <!--azharad ARGO-53604: New field to manage carrier incompatibility reason to prevent Load-->
+        <property name="ufvCarrierIncompatibleReason" column="carrier_incompatible_reason"
+                  type="com.navis.inventory.persistence.atoms.UserTypeCarrierIncompatibilityReasonEnum" not-null="false">
+            <meta attribute="field-description">Field to manage any carrier incompatibility reason to prevent Load</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.inventory.business.units.UnitYardVisit" table="inv_unit_yrd_visit" dynamic-update="true">
+        <meta attribute="n4alias">uyv</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.UnitYardVisitHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing the handling of a Unit within a Yard</meta>
+        <meta attribute="n4-entity-name">Unit Yard Visit</meta>
+        <meta attribute="n4-entity-name-plural">Unit Yard Visits</meta>
+        <meta attribute="n4-code-extension-support">true</meta>
+
+        <id name="uyvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="uyvUfv" column="ufv_gkey" class="com.navis.inventory.business.units.UnitFacilityVisit" not-null="true">
+            <meta attribute="field-description">The UnitFacilityVisit to which this UnitYardVisit belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="uyvYard" column="yrd_gkey" class="com.navis.argo.business.model.Yard" not-null="true">
+            <meta attribute="field-description">The Yard of this UnitFacilityVisit</meta>
+        </many-to-one>
+
+        <property name="uyvPkey" column="pkey" type="java.lang.Long">
+            <meta attribute="field-description">The SPARCS index for this UYV. This is ONLY used in SPARCS Import processing.</meta>
+        </property>
+
+        <bag name="uyvWiList" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="uyv_gkey"/>
+            <!-- <index column="move_number"/> 2006.11.16 MEP ARGO-5205 list changed to bag to allow duplicates -->
+            <one-to-many class="com.navis.inventory.business.moves.WorkInstruction"/>
+        </bag>
+
+    </class>
+
+    <class name="com.navis.inventory.business.imdg.Hazards" table="inv_hazards" dynamic-update="true">
+        <meta attribute="n4alias">hzrd</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.imdg.HazardsHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing a batch of hazardous cargo</meta>
+        <meta attribute="n4-entity-name">Hazards</meta>
+        <meta attribute="n4-entity-name-plural">Hazards</meta>
+
+        <id name="hzrdGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="hzrdOwnerEntityName" column="owner_entity" type="string" length='20'>
+            <meta attribute="field-description">The Entity Name of the owner entity</meta>
+        </property>
+
+        <property name="hzrdOwnerEntityGkey" column="owner_gkey" type="java.lang.Long">
+            <meta attribute="field-description">The Gkey of the owner entity</meta>
+        </property>
+
+        <many-to-one name="hzrdWorstFireCode" column="firecode_gkey" class="com.navis.inventory.business.imdg.HazardFireCode" not-null="false">
+            <meta attribute="field-description">The worst fire code</meta>
+        </many-to-one>
+
+        <bag name="hzrdItems" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="hzrd_gkey"/>
+            <one-to-many class="com.navis.inventory.business.imdg.HazardItem"/>
+        </bag>
+
+    </class>
+
+    <class name="com.navis.inventory.business.imdg.HazardItem" table="inv_hazard_items" dynamic-update="true">
+        <meta attribute="n4alias">hzrdi</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.imdg.HazardItemHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing a component of hazardous cargo</meta>
+        <meta attribute="n4-entity-name">Hazard Item</meta>
+        <meta attribute="n4-entity-name-plural">Hazard Items</meta>
+
+        <id name="hzrdiGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="hzrdiHazards" column="hzrd_gkey" class="com.navis.inventory.business.imdg.Hazards" not-null="true">
+            <meta attribute="field-description">The owner Hazards object</meta>
+        </many-to-one>
+
+        <property name="hzrdiImdgClass" column="imdg_class" type="com.navis.inventory.business.imdg.UserTypeImdgClass" not-null="true">
+            <meta attribute="field-description">IMDG Class</meta>
+        </property>
+
+        <!--
+        This is to store the calculated segregation rules.  Leaving this out for now.  JJS 2004.08.11
+
+        <property name="hzrdiSegRuleRec" column="hzdri_seg_rule" type="string" length='20'>
+            <meta attribute="field-description">Requirements for stowage and subsidiary risk description</meta>
+        </property>
+        -->
+
+        <property name="hzrdiUNnum" column="un_num" type="string" length='4'>
+            <meta attribute="field-description">UN Number</meta>
+        </property>
+        <!--2009-09-02 pmelappalyam ver2.0.H ARGO-6020 - Adding column Hazard Number Type-->
+        <property name="hzrdiNbrType" column="hzrdi_nbr_type" type="com.navis.inventory.persistence.atoms.UserTypeHazardsNumberTypeEnum">
+            <meta attribute="field-description">The Hazard Number classification (United Nations / North America)</meta>
+        </property>
+
+        <property name="hzrdiLtdQty" column="ltd_qty" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Limited Quantity Flag</meta>
+        </property>
+
+        <property name="hzrdiPackageType" column="package_type" type="string" length='7'>
+            <meta attribute="field-description">Package Type description</meta>
+        </property>
+
+        <property name="hzrdiInhalationZone" column="inhalation_zone" type="string" length='1'>
+            <meta attribute="field-description">DANCARG inhalation zone</meta>
+        </property>
+
+        <property name="hzrdiImdgCode" column="imdg_code" type="com.navis.inventory.business.imdg.UserTypeImdgClass">
+            <meta attribute="field-description">Base IMDG Class as a string (does not include explosive class, i.e. 1.2, not 1.2B</meta>
+        </property>
+
+        <property name="hzrdiExplosiveClass" column="explosive_class" type="string" length='1'>
+            <meta attribute="field-description">Explosive class: "A", "B", etc.</meta>
+        </property>
+
+        <property name="hzrdiPageNumber" column="page_number" type="string" length='7'>
+            <meta attribute="field-description">IMDG Page Number</meta>
+        </property>
+
+        <property name="hzrdiFlashPoint" column="flash_point" type="java.lang.Double" length='6'>
+            <meta attribute="field-description">flash point temperature, centigrade</meta>
+        </property>
+
+        <property name="hzrdiTechName" column="tech_name" type="string" length='300'>
+            <meta attribute="field-description">Technical Name of the goods</meta>
+        </property>
+
+        <property name="hzrdiProperName" column="proper_name" type="string" length='300'>
+            <meta attribute="field-description">Proper Shipping Name</meta>
+        </property>
+
+        <property name="hzrdiEMSNumber" column="ems_number" type="string" length='15'>
+            <meta attribute="field-description">emergency schedule number</meta>
+        </property>
+
+        <!-- 2007-07-11 lbarman v1.4.E ARGO-7551: add hazard item emergency response guide number and notes fields -->
+        <property name="hzrdiERGNumber" column="ems_response_guide_number" type="string" length='5'>
+            <meta attribute="field-description">The Emergency Response Guide Number that defines how accidents need to be handled.</meta>
+        </property>
+
+        <property name="hzrdiMFAG" column="mfag" type="string" length='15'>
+            <meta attribute="field-description">medical first aid guide number</meta>
+        </property>
+
+        <property name="hzrdiPackingGroup" column="packing_group" type="com.navis.inventory.persistence.atoms.UserTypeHazardPackingGroupEnum">
+            <meta attribute="field-description">Packing Group</meta>
+        </property>
+
+        <property name="hzrdiHazIdUpper" column="haz_id_upper" type="string" length='4'>
+            <meta attribute="field-description">Hazard Identification number, upper part.</meta>
+        </property>
+
+        <property name="hzrdiSubstanceLower" column="substance_lower" type="string" length='4'>
+            <meta attribute="field-description">Substance Identification number, lower part.</meta>
+        </property>
+
+        <property name="hzrdiWeight" column="weight" type="java.lang.Double" length='5'>
+            <meta attribute="field-description">Net weight in kilos of the hazardous material</meta>
+        </property>
+
+        <!-- 2011-08-08 SPerumal ARGO-32486: increased the length of planner_ref from 6 to 20 -->
+        <property name="hzrdiPlannerRef" column="planner_ref" type="string" length='20'>
+            <meta attribute="field-description">DG-reference number as allocated by the central planner</meta>
+        </property>
+
+        <property name="hzrdiQuantity" column="quantity" type="java.lang.Long">
+            <meta attribute="field-description">Quantity of items (barrels, boxes, etc)</meta>
+        </property>
+
+        <property name="hzrdiMoveMethod" column="move_method" type="string" length='5'>
+            <meta attribute="field-description">Originated from customer BCT: method by which the CFS will be moved (FORK, etc)</meta>
+        </property>
+
+        <property name="hzrdiSecondaryIMO1" column="secondary_imo_1" type="com.navis.inventory.business.imdg.UserTypeImdgClass">
+            <meta attribute="field-description">DANCARG secondary IMO field</meta>
+        </property>
+
+        <property name="hzrdiSecondaryIMO2" column="secondary_imo_2" type="com.navis.inventory.business.imdg.UserTypeImdgClass">
+            <meta attribute="field-description">DANCARG secondary IMO field</meta>
+        </property>
+
+        <property name="hzrdiDeckRestrictions" column="deck_restrictions" type="string" length='1'>
+            <meta attribute="field-description">DANCARG deck restriction</meta>
+        </property>
+
+        <property name="hzrdiMarinePollutants" column="marine_pollutants" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">DANCARG marine pollutants</meta>
+        </property>
+
+        <property name="hzrdiDcLgRef" column="dc_lg_ref" type="string" length='10'>
+            <meta attribute="field-description">DANCARG DC-lg-refno</meta>
+        </property>
+
+        <property name="hzrdiEmergencyTelephone" column="emergency_telephone" type="string" length="35">
+            <meta attribute="field-description">Emergency contact phone number</meta>
+        </property>
+
+        <!-- 2007-07-11 lbarman v1.4.E ARGO-7551: add hazard item emergency response guide number and notes fields -->
+        <property name="hzrdiNotes" column="notes" type="string" length="255">
+            <meta attribute="field-description">Some notes for this hazard item.</meta>
+        </property>
+
+        <set name="hzrdiPlacardSet" lazy="true" inverse="true" table="inv_hazard_item_placards" cascade="all-delete-orphan">
+            <key column="hzrdi_gkey"/>
+            <one-to-many class="com.navis.inventory.business.imdg.HazardItemPlacard"/>
+        </set>
+
+        <many-to-one name="hzrdiFireCode" column="firecode_gkey" class="com.navis.inventory.business.imdg.HazardFireCode" not-null="false">
+            <meta attribute="field-description">The fire code for this hazard item</meta>
+        </many-to-one>
+
+        <!--2010-09-21 spabbala v2.2.C ARGO-26456 add Sequence Number on Hazardous Entries -->
+        <property name="hzrdiSeq" column="hazard_item_seq" type="java.lang.Long" length="50">
+            <meta attribute="field-description">Sequence Number for this hazard item</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.inventory.business.imdg.HazardItemPlacard" table="inv_hazard_item_placards" dynamic-update="true">
+        <meta attribute="n4alias">hzrdip</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.imdg.HazardItemPlacardHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing Labels for Hazardous Item</meta>
+        <meta attribute="n4-entity-name">Hazard Placard</meta>
+        <meta attribute="n4-entity-name-plural">Hazard Placards</meta>
+
+        <id name="hzrdipGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="hzrdipHazardItem" column="hzrdi_gkey" class="com.navis.inventory.business.imdg.HazardItem" not-null="true">
+            <meta attribute="field-description">The owner HazardItem object</meta>
+        </many-to-one>
+
+        <many-to-one name="hzrdipPlacard" column="placard_gkey" class="com.navis.inventory.business.imdg.Placard">
+
+            <meta attribute="field-description">Dangerous Goods Label Markings. It's fairly normal to have up to 5 placards but there could be more.</meta>
+        </many-to-one>
+
+        <property name="hzrdipDescription" column="description" type="string" length='70'>
+            <meta attribute="field-description">Description of hazard item label. The hazards/risks can be described here.</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.inventory.business.imdg.Placard" table="ref_placards" dynamic-update="true">
+        <meta attribute="n4alias">placard</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.imdg.PlacardHbr</meta>
+        <meta attribute="class-description">Scoped entity representing Placards in inventory model</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4-entity-name">Placard</meta>
+        <meta attribute="n4-entity-name-plural">Placards</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">placardText</meta>
+
+        <id name="placardGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="placardScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="placardText" column="text" type="string" length='70' not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">Brief Description about placard</meta>
+        </property>
+
+        <property name="placardFurtherExplanation" column="explanation" type="string" length='70'>
+            <meta attribute="field-description">Additional information about placard</meta>
+        </property>
+
+        <!-- 2007-01-05 ARGO-5310 eyu v1.2.O Change all WEIGHT fields from Long to Double -->
+        <property name="placardMinWtKg" column="min_wt_kg" type="java.lang.Double">
+            <meta attribute="field-description">Minimum weight for this placard</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.inventory.business.imdg.HazardFireCode" table="inv_hazard_fire_code" dynamic-update="true">
+        <meta attribute="n4alias">firecode</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.imdg.HazardFireCodeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing the mapping for the local hazard fire codes</meta>
+        <meta attribute="n4-entity-name">Hazard Fire Code</meta>
+        <meta attribute="n4-entity-name-plural">Hazard Fire Codes</meta>
+
+        <id name="firecodeGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="firecodeImdgClass" column="imdg_class" type="com.navis.inventory.business.imdg.UserTypeImdgClass" not-null="true">
+            <meta attribute="field-description">IMDG Class</meta>
+        </property>
+
+        <property name="firecodeUnNbr" column="un_nbr" type="string" length='4' not-null="true">
+            <meta attribute="field-description">UN Number</meta>
+        </property>
+
+        <property name="firecodeFireCode" column="fire_code" type="string" length='12' not-null="true">
+            <meta attribute="field-description">Local fire code</meta>
+        </property>
+
+        <property name="firecodeFireCodeClass" column="fire_code_class" type="string" length='4' not-null="true">
+            <meta attribute="field-description">Local fire class</meta>
+        </property>
+
+        <property name="firecodeDescription" column="description" type="string" length='80'>
+            <meta attribute="field-description">Description</meta>
+        </property>
+
+        <many-to-one name="firecodeComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">Complex for this local fire code mapping</meta>
+        </many-to-one>
+
+        <property name="firecodeCreated" column="created" type="timestamp"/>
+        <property name="firecodeCreator" column="creator" type="string" length="30"/>
+        <property name="firecodeChanged" column="changed" type="timestamp"/>
+        <property name="firecodeChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.inventory.business.units.UnitEquipDamages" table="inv_unit_equip_damages" dynamic-update="true">
+        <meta attribute="n4alias">dmgs</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.UnitEquipDamagesHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing collection of damages for unit equipment</meta>
+        <meta attribute="n4-entity-name">Equipment Damage</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Damages</meta>
+
+        <id name="dmgsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="dmgsOwnerEntityName" column="owner_entity" type="string" length='30'>
+            <meta attribute="field-description">The Entity Name of the owner entity</meta>
+        </property>
+
+        <property name="dmgsOwnerEntityGkey" column="owner_gkey" type="java.lang.Long">
+            <meta attribute="field-description">The Gkey of the owner entity</meta>
+        </property>
+
+        <bag name="dmgsItems" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="dmgs_gkey"/>
+            <one-to-many class="com.navis.inventory.business.units.UnitEquipDamageItem"/>
+        </bag>
+
+        <!--    Audit Data -->
+        <property name="dmgsCreated" column="created" type="timestamp"/>
+        <property name="dmgsCreator" column="creator" type="string" length="30"/>
+        <property name="dmgsChanged" column="changed" type="timestamp"/>
+        <property name="dmgsChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <!--
+    1. Damage Type   Examples are BT=BENT, BW=BOWED, CU=CUT, HD=HOLE
+    2. Damage Component   Examples DAH=Door with Hardware, CPA =Corner Post Assembly, FPB = Flooring-Plain Blank, PAA = Panel Assembly
+    3. Damage Quantity   Optional entry   Used for things like multiple cracks, pin-holes, etc.
+    4. Damage location   Free form entry field which for MnR typically involves something like LT13 (Left Top panels 1 through 3).  Typically 4 characters for MnR but could be extended to something that allows additional entry.
+    5. Damage Size   Length and Width in default units that they want to capture   Optional entry
+
+    The above are based on standard MnR codes and measurements.  I m enclosing ISO pdf doc on MnR the full set of codes.  Note that most of these codes are already within MnR
+    -->
+    <class name="com.navis.inventory.business.units.UnitEquipDamageItem" table="inv_unit_equip_damage_item" dynamic-update="true">
+        <meta attribute="n4alias">dmgitem</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.UnitEquipDamageItemHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing damage of the unit equipment</meta>
+        <meta attribute="n4-entity-name">Equipment Damage Item</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Damage Items</meta>
+
+        <id name="dmgitemGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="dmgitemDmgs" column="dmgs_gkey" class="com.navis.inventory.business.units.UnitEquipDamages" not-null="true">
+            <meta attribute="field-description">The collection of damages this item belongs to</meta>
+        </many-to-one>
+
+        <many-to-one name="dmgitemType" column="type_gkey" class="com.navis.argo.business.reference.EquipDamageType" not-null="true">
+            <meta attribute="field-description">Damage Type: Examples are BT=BENT, BW=BOWED, CU=CUT, HD=HOLE</meta>
+        </many-to-one>
+
+        <many-to-one name="dmgitemComponent" column="component_gkey" class="com.navis.argo.business.reference.EqComponent" not-null="true">
+            <meta attribute="field-description">Damage Component: Examples DAH=Door with Hardware, CPA =Corner Post Assembly, FPB = Flooring-Plain Blank, PAA = Panel Assembly</meta>
+        </many-to-one>
+
+        <property name="dmgitemLocation" column="location" type="string" length="6">
+            <meta attribute="field-description">Damage Location: Free form entry field which for MnR typically involves something like LT13 (Left Top panels 1 through 3).</meta>
+        </property>
+
+        <property name="dmgitemQuantity" column="quantity" type="java.lang.Long">
+            <meta attribute="field-description">Damage Quantity: Used for things like multiple cracks, pin-holes, etc. Optional entry</meta>
+        </property>
+
+        <property name="dmgitemLength" column="length" type="java.lang.Double">
+            <meta attribute="field-description">Damage Length: Length of damaged area (optional)</meta>
+        </property>
+
+        <property name="dmgitemWidth" column="width" type="java.lang.Double">
+            <meta attribute="field-description">Damage Width: Width of damaged area (optional)</meta>
+        </property>
+
+        <property name="dmgitemDepth" column="depth" type="java.lang.Double">
+            <meta attribute="field-description">Damage Depth: Depth of damaged area (optional)</meta>
+        </property>
+
+        <property name="dmgitemSeverity" column="severity" type="com.navis.inventory.persistence.atoms.UserTypeEqDamageSeverityEnum" not-null="true">
+            <meta attribute="field-description">Damage Severity</meta>
+        </property>
+
+        <property name="dmgitemReported" column="reported" type="timestamp">
+            <meta attribute="field-description">Damage Reported</meta>
+        </property>
+
+        <property name="dmgitemRepaired" column="repaired" type="timestamp">
+            <meta attribute="field-description">Damage Repaired</meta>
+        </property>
+
+        <property name="dmgitemDescription" column="description" type="string" length='70'>
+            <meta attribute="field-description">Description of damage item.</meta>
+        </property>
+
+        <!--    Audit Data -->
+        <property name="dmgitemCreated" column="created" type="timestamp"/>
+        <property name="dmgitemCreator" column="creator" type="string" length="30"/>
+        <property name="dmgitemChanged" column="changed" type="timestamp"/>
+        <property name="dmgitemChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!-- 2009.02.04, ARGO-16826 , RMK Adding support for observed placards. -->
+    <class name="com.navis.inventory.business.imdg.ObservedPlacard" table="inv_unit_observed_pacards" dynamic-update="true">
+        <meta attribute="n4alias">obsplacard</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.ObservedPlacardHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing a single observed placard</meta>
+        <meta attribute="n4-entity-name">Observed Placard</meta>
+        <meta attribute="n4-entity-name-plural">Observed Placards</meta>
+
+        <id name="obsplacardGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="obsplacardUnit" column="unit_gkey" class="com.navis.inventory.business.units.Unit" not-null="true">
+            <meta attribute="field-description">The Unit to which this ObservedPlacard pertains</meta>
+        </many-to-one>
+
+        <property name="obsplacardRemark" column="remark" type="string" length="40">
+            <meta attribute="field-description">Remarks.</meta>
+        </property>
+
+        <many-to-one name="obsplacardPlacard" column="placard_gkey" class="com.navis.inventory.business.imdg.Placard">
+            <meta attribute="field-description">Dangerous Goods Label Markings. It's fairly normal to have up to 5 placards but there could be more.</meta>
+        </many-to-one>
+
+        <property name="obsplacardCreated" column="created" type="timestamp"/>
+        <property name="obsplacardCreator" column="creator" type="string" length="30"/>
+        <property name="obsplacardChanged" column="changed" type="timestamp"/>
+        <property name="obsplacardChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.inventory.business.units.ReeferRecord" table="inv_unit_reefer_records" dynamic-update="true">
+        <meta attribute="n4alias">rfrec</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.ReeferRecordHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing a single reefer recording</meta>
+        <meta attribute="n4-entity-name">Reefer Recording</meta>
+        <meta attribute="n4-entity-name-plural">Reefer Recordings</meta>
+
+        <id name="rfrecGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="rfrecUnit" column="unit_gkey" class="com.navis.inventory.business.units.Unit" not-null="true">
+            <meta attribute="field-description">The Unit to which this ReeferRecord pertains</meta>
+        </many-to-one>
+
+        <property name="rfrecTime" column="recording_time" type="timestamp">
+            <meta attribute="field-description">Time of this recording</meta>
+        </property>
+
+        <property name="rfrecReturnTmp" column="return_tmp" type="java.lang.Double">
+            <meta attribute="field-description">Return temperature</meta>
+        </property>
+        <!-- 2006-10-17 svaitheas v1.2.E ARGO-4696 ARGO-5402 :Correct 'record reefer reading' form vent settings to conform to functional requirements -->
+        <!-- Renamed the property -->
+        <property name="rfrecVentSetting" column="vent" type="java.lang.Double">
+            <meta attribute="field-description">Vent setting recorded.</meta>
+        </property>
+
+        <property name="rfrecVentUnit" column="vent_unit" type="com.navis.argo.persistence.atoms.UserTypeVentUnitEnum" length="40">
+            <meta attribute="field-description">Unit(%,cubic feet per minute, etc. that goes with the vent setting field)</meta>
+        </property>
+
+        <property name="rfrecHmdty" column="humdity" type="java.lang.Double">
+            <meta attribute="field-description">Humidity setting recorded.</meta>
+        </property>
+
+        <property name="rfrecO2" column="o2" type="java.lang.Double">
+            <meta attribute="field-description">O2 setting recorded.</meta>
+        </property>
+
+        <property name="rfrecCO2" column="co2" type="java.lang.Double">
+            <meta attribute="field-description">CO2 setting recorded.</meta>
+        </property>
+
+        <property name="rfrecFaultCode" column="fault_code" type="string" length="8">
+            <meta attribute="field-description">Fault Code.</meta>
+        </property>
+
+        <property name="rfrecDataSource" column="data_source" type="com.navis.argo.persistence.atoms.UserTypeDataSourceEnum" not-null="true">
+            <meta attribute="field-description">Source of data</meta>
+        </property>
+
+        <property name="rfrecIsPowered" column="powered" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Is the reefer connected (Y/N).</meta>
+        </property>
+
+        <property name="rfrecHasMalfunction" column="has_malfunctioned" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Container malfunctioned.</meta>
+        </property>
+
+        <property name="rfrecIsBulbOn" column="is_bulb_on" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Bulb mode (0 - Off; 1 - On)</meta>
+        </property>
+
+        <property name="rfrecDefrostIntervalHours" column="defrost_interval" type="java.lang.Double">
+            <meta attribute="field-description">Defrost interval in hours.</meta>
+        </property>
+
+        <property name="rfrecReeferHours" column="reefer_hours" type="java.lang.Double">
+            <meta attribute="field-description">Number of hours in operation.</meta>
+        </property>
+
+        <property name="rfrecAreDrainsOpen" column="drains_open" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Status of drains (O - Open; C - Closed).</meta>
+        </property>
+
+        <property name="rfrecFanSetting" column="fan_setting" type="string" length="1">
+            <meta attribute="field-description">Fan setting (H - High; L - Low; A - Alt)</meta>
+        </property>
+
+        <property name="rfrecMinMonitoredTmp" column="min_tmp" type="java.lang.Double">
+            <meta attribute="field-description">Minimum temperature from monitoring device.</meta>
+        </property>
+
+        <property name="rfrecMaxMonitoredTmp" column="max_tmp" type="java.lang.Double">
+            <meta attribute="field-description">Maximum temperature from monitoring device.</meta>
+        </property>
+
+        <property name="rfrecDefrostTmp" column="defrost_tmp" type="java.lang.Double">
+            <meta attribute="field-description">Defrost temperature</meta>
+        </property>
+
+        <property name="rfrecSetPointTmp" column="set_point_tmp" type="java.lang.Double">
+            <meta attribute="field-description">Actual temperature setpoint.</meta>
+        </property>
+
+        <property name="rfrecSupplyTmp" column="supply_tmp" type="java.lang.Double">
+            <meta attribute="field-description">Supply temperature.</meta>
+        </property>
+
+        <!--ARGO-13906, NFRM-112 New fields to support XML Reefer APIs (2009.03.27, RMK)-->
+
+        <property name="rfrecSensor1Tmp" column="sensor1_tmp" type="java.lang.Double">
+            <meta attribute="field-description">Temperature read at sensor 1 inside the reefer container (USDA mandated).</meta>
+        </property>
+
+        <property name="rfrecSensor2Tmp" column="sensor2_tmp" type="java.lang.Double">
+            <meta attribute="field-description">Temperature read at sensor 2 inside the reefer container (USDA mandated).</meta>
+        </property>
+
+        <property name="rfrecSensor3Tmp" column="sensor3_tmp" type="java.lang.Double">
+            <meta attribute="field-description">Temperature read at sensor 3 inside the reefer container (USDA mandated).</meta>
+        </property>
+
+        <property name="rfrecSensor4Tmp" column="sensor4_tmp" type="java.lang.Double">
+            <meta attribute="field-description">Temperature read at sensor 4 inside the reefer container (USDA mandated).</meta>
+        </property>
+
+        <property name="rfrecIsAlarmOn" column="is_alarm_on" type="java.lang.Boolean">
+            <meta attribute="field-description">True if Reefer alarm is on.</meta>
+        </property>
+
+        <property name="rfrecFuelLevel" column="fuel_level" type="java.lang.Double">
+            <meta attribute="field-description">Fuel Level.</meta>
+        </property>
+
+        <property name="rfrecComputerId" column="computer_id" type="string" length="40">
+            <meta attribute="field-description">computer ID.</meta>
+        </property>
+
+        <property name="rfrecTaskId" column="task_id" type="string" length="40">
+            <meta attribute="field-description">Task ID.</meta>
+        </property>
+
+        <property name="rfrecRemark" column="remark" type="string" length="40">
+            <meta attribute="field-description">Remarks.</meta>
+        </property>
+
+        <property name="rfrecCreationRefId" column="creation_ref_id" type="string" length="50" unique="true">
+            <meta attribute="field-description">unique creation reference; used in code for reference to create new reefer record by unit</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.inventory.business.units.StorageRule" table="inv_storage_rule" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.inventory.business.units.StorageRuleHbr</meta>
+        <meta attribute="n4alias">srule</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4-entity-name">Storage Rule</meta>
+        <meta attribute="n4-entity-name-plural">Storage Rules</meta>
+
+        <id name="sruleGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="sruleId" column="id" type="string" index="srule_id_idx" length="100" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">User defined storage Rule Id</meta>
+        </property>
+
+        <many-to-one name="sruleScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="sruleStartDay" column="start_day" type="string" length="500" not-null="false">
+            <meta attribute="field-description">Start date Uivalue</meta>
+        </property>
+
+        <property name="sruleIsStartDayIncluded" column="is_start_day_included" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Is start day included (Y/N).</meta>
+        </property>
+
+        <!--2010-11-24 psethuraman ARGO-27225: added column for custom storage days calculation-->
+        <many-to-one name="sruleStartDayExtension" column="start_day_extension" class="com.navis.extension.business.Extension" not-null="false">
+            <meta attribute="field-description">Custom Start Day Extension</meta>
+        </many-to-one>
+
+        <property name="sruleEndDay" column="end_daty" type="string" length="500" not-null="false">
+            <meta attribute="field-description">End date Uivalue</meta>
+        </property>
+
+        <property name="sruleIsEndDayIncluded" column="is_end_day_included" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Is end day included (Y/N).</meta>
+        </property>
+
+        <!--2010-11-24 psethuraman ARGO-27225: added column for custom storage days calculation-->
+        <many-to-one name="sruleEndDayExtension" column="end_day_extension" class="com.navis.extension.business.Extension" not-null="false">
+            <meta attribute="field-description">Custom End Day Extension</meta>
+        </many-to-one>
+
+        <property name="sruleIsFreedaysIncluded" column="is_freedays_included" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Is freedays included (Y/N).</meta>
+        </property>
+
+        <property name="sruleIsGratisIncluded" column="is_gratis_included" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Is gratis included (Y/N).</meta>
+        </property>
+
+        <property name="sruleRoundUpHours" column="round_up_hours" type="java.lang.Long">
+            <meta attribute="field-description">Roundup the hours as days. Example: 12 - means 12 hour and above will be rounded to 1 day.
+                0 Means no rounding - default
+            </meta>
+        </property>
+
+        <property name="sruleRoundUpMinutes" column="round_up_minutes" type="java.lang.Long">
+            <meta attribute="field-description">Roundup the minutes as hours. Example: 30 - means 30 and above minutes will be rounded as 1 hour.
+                0 Means no rounding - default
+            </meta>
+        </property>
+
+        <property name="sruleIsRuleForPower" column="is_rule_for_power" type="java.lang.Boolean">
+            <meta attribute="field-description">Is rule is applicable for Storage or Reefer Power charge (Y/N) (default is for Storage (N).</meta>
+        </property>
+
+        <property name="sruleStartDayCuttOffHours" column="start_day_cutoff_hours" type="java.lang.Long">
+            <meta attribute="field-description">Reefer power day is counted if the start date hour is before the cut off hours</meta>
+        </property>
+
+        <property name="sruleEndDayCuttOffHours" column="end_day_cutoff_hours" type="java.lang.Long">
+            <meta attribute="field-description">Reefer power day is counted if the end date hour is before the cut off hours</meta>
+        </property>
+
+        <property name="srulePowerChargeBy" column="power_charge_by" type="com.navis.argo.persistence.atoms.UserTypePowerChargeEnum" not-null="false">
+            <meta attribute="field-description">Power charge is computed by HOUR or DAYS..</meta>
+        </property>
+
+        <property name="srulePowerFirstTierRounding" column="power_first_tier_rounding" type="java.lang.Long">
+            <meta attribute="field-description">Reefer power first tier is rounded to 24 or 12</meta>
+        </property>
+
+        <property name="srulePowerOtherTierRounding" column="power_other_tier_rounding" type="java.lang.Long">
+            <meta attribute="field-description">Reefer power after first tier is rounded to 8 or 6</meta>
+        </property>
+
+        <property name="sruleIsFreeTimeChgedIfExceeded" column="is_free_time_chged_if_exceeded" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Charge free time if free period is exceeded. (default value is False)</meta>
+        </property>
+
+        <many-to-one name="sruleCalendar" column="calendar_gkey" class="com.navis.argo.business.calendar.ArgoCalendar" not-null="false">
+            <meta attribute="field-description">Calendar used by rule</meta>
+        </many-to-one>
+        <!--2013-12-02 Murali R ARGO-53280 Storage Calculation custom Extension-->
+        <many-to-one name="sruleCalculationExtension" column="calculation_extension" class="com.navis.extension.business.Extension" not-null="false">
+            <meta attribute="field-description">Unit Storage Calculation class Extension</meta>
+        </many-to-one>
+
+        <property name="sruleCreated" column="created" type="timestamp"/>
+        <property name="sruleCreator" column="creator" type="string" length="30"/>
+        <property name="sruleChanged" column="changed" type="timestamp"/>
+        <property name="sruleChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!--
+    TbdUnit: a to-be-determined "placeholder" Unit
+    -->
+    <class name="com.navis.inventory.business.units.TbdUnit" table="inv_tbd_unit" dynamic-update="true">
+        <meta attribute="n4alias">tbdu</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.TbdUnitHbr</meta>
+        <meta attribute="class-description">A To Be Determined Unit - a placeholder for Unit for which we do not yet know the equipment</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">TbdUnit</meta>
+        <meta attribute="n4-entity-name-plural">TbdUnits</meta>
+
+        <!-- system identity -->
+
+        <id name="tbduGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="tbduPkey" column="pkey" type="java.lang.Long" not-null="false" index="tbdu_pkey_idx">
+            <meta attribute="field-description">SPARCS key for the TbdUnit</meta>
+        </property>
+
+        <many-to-one name="tbduFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility" not-null="true">
+            <meta attribute="field-description">The Facility of this TbdUnit</meta>
+        </many-to-one>
+
+        <property name="tbduCreateTime" column="create_time" type="timestamp" index="tbdu_create_time_idx">
+            <meta attribute="field-description">Time Unit was first instantiated</meta>
+        </property>
+
+        <property name="tbduTruckTransactionGkey" column="truck_tran_gkey" type="java.lang.Long" not-null="false" index="tbdu_truck_tran_idx">
+            <meta attribute="field-description">The gKey of the Truck Transaction that created this TbdUnit</meta>
+        </property>
+
+        <!-- functional identity -->
+
+        <property name="tbduCategory" column="category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum" not-null="true"
+                  index="tbdu_category_idx">
+            <meta attribute="field-description">The Category of the Unit (Import, Export, ...).</meta>
+        </property>
+
+        <property name="tbduFreightKind" column="freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum" not-null="true"
+                  index="tbdu_freight_kind_idx">
+            <meta attribute="field-description">Freight Kind of Unit: MTY,FCL,LCL,BBK</meta>
+        </property>
+
+        <property name="tbduVisitState" column="visit_state" type="com.navis.inventory.persistence.atoms.UserTypeUnitVisitStateEnum" not-null="true">
+            <meta attribute="field-description">The current state of the Unit with respect to this Facility.</meta>
+        </property>
+
+        <many-to-one name="tbduSpecialStow" column="special_stow_gkey" class="com.navis.argo.business.reference.SpecialStow">
+            <meta attribute="field-description">Special stowage #1 requirements</meta>
+        </many-to-one>
+
+        <property name="tbduRestowType" column="restow_type" type="com.navis.argo.persistence.atoms.UserTypeRestowTypeEnum" not-null="true">
+            <meta attribute="field-description">Restow (aka Rehandle) type (if any)</meta>
+        </property>
+
+        <!-- equipment type -->
+
+        <property name="tbduClass" column="class" type="com.navis.argo.persistence.atoms.UserTypeEquipClassEnum" not-null="true">
+            <meta attribute="field-description">The class of Equipment: Container, Chassis, ....</meta>
+        </property>
+
+        <many-to-one name="tbduEquipType" column="eqtyp_gkey" class="com.navis.argo.business.reference.EquipType" not-null="true">
+            <meta attribute="field-description">An example equipment type code</meta>
+            <meta attribute="use-in-tostring">true</meta>
+        </many-to-one>
+
+        <!-- selection criteria -->
+
+        <property name="tbduPickInstruction" column="pick_instruction" type="string" length="255">
+            <meta attribute="field-description">A human-readable, non-parseable instruction to the CHE operator describing the desired container</meta>
+        </property>
+
+        <property name="tbduSerialRanges" column="serial_ranges" type="string" length="255">
+            <meta attribute="field-description">A list of acceptable serial number ranges, packed into a string</meta>
+        </property>
+
+        <property name="tbduBlNbr" column="bl_nbr" type="string" index="tbdu_bl_nbr_idx">
+            <meta attribute="field-description">Bill of Lading number</meta>
+        </property>
+
+        <property name="tbduBkgNbr" column="bkg_nbr" type="string" index="tbdu_bkg_nbr_idx">
+            <meta attribute="field-description">Booking number</meta>
+        </property>
+
+        <!-- physical state -->
+
+        <many-to-one name="tbduGradeID" column="grade_gkey" class="com.navis.argo.business.reference.EquipGrade">
+            <meta attribute="field-description">Equipment grade</meta>
+        </many-to-one>
+
+        <property name="tbduDamageSeverity" column="damage" type="com.navis.inventory.persistence.atoms.UserTypeEqDamageSeverityEnum"
+                  not-null="true">
+            <meta attribute="field-description">NONE/MINOR/MAJOR</meta>
+        </property>
+
+        <property name="tbduRequiresPower" column="requires_power" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if Unit needs power to its reefer unit, or, in case of porthole reefer, forced air</meta>
+        </property>
+
+        <property name="tbduTemp1C" column="temp_reqd_C" type="java.lang.Double">
+            <meta attribute="field-description">Temperature required, degrees Centigrade</meta>
+        </property>
+
+        <property name="tbduGoodsAndCtrWtKg" column="goods_and_ctr_wt_kg" type="java.lang.Double">
+            <meta attribute="field-description">Goods and Container weight in Kgs (gross weight)</meta>
+        </property>
+
+        <property name="tbduIsOog" column="is_oog" type="java.lang.Boolean">
+            <meta attribute="field-description">Unit is OOG</meta>
+        </property>
+        <property name="tbduOogBackCm" column="oog_back_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Back, in Centimeters</meta>
+        </property>
+        <property name="tbduOogFrontCm" column="oog_front_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Front, in Centimeters</meta>
+        </property>
+        <property name="tbduOogLeftCm" column="oog_left_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Left, in Centimeters</meta>
+        </property>
+        <property name="tbduOogRightCm" column="oog_right_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Right, in Centimeters</meta>
+        </property>
+        <property name="tbduOogTopCm" column="oog_top_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Top, in Centimeters</meta>
+        </property>
+
+        <many-to-one name="tbduCommodity" column="commodity_gkey" class="com.navis.argo.business.reference.Commodity">
+            <meta attribute="field-description">Commodity Summary (from reference table)</meta>
+        </many-to-one>
+
+        <property name="tbduIsHazardous" column="hazardous" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">TRUE if the Goods contain hazardous substances (denormalization)</meta>
+        </property>
+
+        <property name="tbduImdgTypes" column="imdg_types" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Comma delimitted list of IMDG types within the Unit (denormalization)</meta>
+        </property>
+
+        <!-- business relationships -->
+
+        <many-to-one name="tbduLineOperator" column="line_op" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="true" cascade="none">
+            <meta attribute="field-description">Line Operator of the Unit</meta>
+        </many-to-one>
+
+        <many-to-one name="tbduEqOperator" column="eq_operator_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Current operator of the Equipment</meta>
+        </many-to-one>
+
+        <many-to-one name="tbduConsigneeBzu" column="consignee_bzu" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Consignee ScopedBizUnit</meta>
+        </many-to-one>
+
+        <!-- routing -->
+
+        <many-to-one name="tbduIbCv" column="ib_cv" class="com.navis.argo.business.model.CarrierVisit" not-null="true">
+            <meta attribute="field-description">The inbound carrier</meta>
+        </many-to-one>
+
+        <many-to-one name="tbduObCv" column="ob_cv" class="com.navis.argo.business.model.CarrierVisit" not-null="true">
+            <meta attribute="field-description">The outbound carrier</meta>
+        </many-to-one>
+
+        <many-to-one name="tbduPOD1" column="pod1_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="true">
+            <meta attribute="field-description">First Port of Discharge</meta>
+        </many-to-one>
+
+        <many-to-one name="tbduPOD2" column="pod2_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="false">
+            <meta attribute="field-description">Second Port of Discharge</meta>
+        </many-to-one>
+
+        <many-to-one name="tbduRoutingGroup" column="group_gkey" class="com.navis.argo.business.reference.Group" not-null="false">
+            <meta attribute="field-description">Routing Group</meta>
+        </many-to-one>
+
+        <many-to-one name="tbduTruckingCompany" column="trucking_company" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Designated Trucking Company</meta>
+        </many-to-one>
+
+        <property name="tbduDrayStatus" column="dray_status" type="com.navis.argo.persistence.atoms.UserTypeDrayStatusEnum" not-null="false">
+            <meta attribute="field-description">Dray Status of Unit: FORWARD,RETURN,DRAYIN</meta>
+        </property>
+
+        <many-to-one name="tbduDepartureOrderItem" column="depart_order_item_gkey" class="com.navis.inventory.business.units.EqBaseOrderItem"
+                     not-null="false">
+            <meta attribute="field-description">The order via which the subject Equipment will depart the Complex</meta>
+        </many-to-one>
+
+        <property name="tbduRemark" column="remark" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Remarks</meta>
+        </property>
+
+        <!-- flex fields -->
+
+        <property name="tbduFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="tbduFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="tbduFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+
+        <property name="tbduFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <property name="tbduFlexDate01" column="flex_date01" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+
+        <property name="tbduFlexDate02" column="flex_date02" type="timestamp">
+            <meta attribute="field-description">Date flex-field #02</meta>
+        </property>
+
+        <property name="tbduFlexDate03" column="flex_date03" type="timestamp">
+            <meta attribute="field-description">Date flex-field #03</meta>
+        </property>
+
+        <property name="tbduFlexDate04" column="flex_date04" type="timestamp">
+            <meta attribute="field-description">Date flex-field #04</meta>
+        </property>
+        <!--2010-07-19 RKHAWAJA v2.1.V ARGO-27230  new field for XPS to stuff stowFactor. -->
+        <property name="tbduStowFactor" column="stow_factor" type="string" length="60" not-null="false">
+            <meta attribute="field-description">Stow Factor for the Unit. The field is computed and managed by XPS.</meta>
+        </property>
+
+        <!--2011-02-18 RKHAWAJA v2.2.N ARGO-27230  new field to mark if the TBDUnit is no longer needed. -->
+        <property name="tbduIsPendingDelete" column="is_pending_delete" type="java.lang.Boolean">
+            <meta attribute="field-description">TbdUnit that is marked for deletion.</meta>
+        </property>
+
+        <!--2011-11-19 RKHAWAJA v2.3.E ARGO-33432  new field for XPS to stuff yard position (added for Nick). -->
+        <property name="tbduYardPosition" column="yard_position" type="string" length="12" not-null="false">
+            <meta attribute="field-description">TBDUnit position (block or block plus row. The field is assigned and managed by XPS.</meta>
+        </property>
+
+        <!--azharad ARGO-53604: New field to manage carrier incompatibility reason to prevent Load-->
+        <property name="tbduCarrierIncompatibleReason" column="carrier_incompatible_reason"
+                  type="com.navis.inventory.persistence.atoms.UserTypeCarrierIncompatibilityReasonEnum" not-null="false">
+            <meta attribute="field-description">Field to manage any carrier incompatibility reason to prevent Load</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.inventory.business.units.ImportDeliveryOrder" table="inv_import_delivery_orders" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.inventory.business.units.ImportDeliveryOrderHbr</meta>
+        <meta attribute="n4alias">ido</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Import Delivery Order</meta>
+        <meta attribute="n4-entity-name-plural">Import Delivery Orders</meta>
+
+        <id name="idoGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <!-- 2009-02-25, dkannadasan, ARGO-17068 , Removing "idoId" unique-key constraint-->
+        <property name="idoId" column="id" type="string" length="30" not-null="true">
+            <meta attribute="field-description">User defined transport delivery order Id</meta>
+        </property>
+
+        <property name="idoIssueDate" column="issue_date" type="timestamp">
+            <meta attribute="field-description">Date the transport delivery order was issued.</meta>
+        </property>
+
+        <property name="idoExpiryDate" column="expiry_date" type="timestamp" not-null="false">
+            <meta attribute="field-description">The Day the transport delivery order expires.</meta>
+        </property>
+
+        <property name="idoIsDocProvided" column="doc_provided" type="java.lang.Boolean">
+            <meta attribute="field-description">Documents provided (Y/N).</meta>
+        </property>
+
+        <property name="idoDocProvidedDate" column="doc_provided_date" type="timestamp">
+            <meta attribute="field-description">Date the documents were provided</meta>
+        </property>
+
+        <property name="idoDocProvidedBy" column="doc_provided_by" type="string" length="40">
+            <meta attribute="field-description">Individual who provided documents</meta>
+        </property>
+
+        <!-- 2012-03-26 ARGO-36167 Balaji Palani, added the "ignore_damages" column to inv_import_delivery_orders table-->
+        <property name="idoIgnoreDamages" type="java.lang.Boolean">
+            <meta attribute="field-description">If true then the order does not care if container is damaged.</meta>
+            <column name="ignore_damages" default="0"/>
+        </property>
+
+        <many-to-one name="idoLine" column="line_gkey" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Line operator</meta>
+        </many-to-one>
+
+        <many-to-one name="idoIbCv" column="ib_cv_gkey" class="com.navis.argo.business.model.CarrierVisit">
+            <meta attribute="field-description">Optional original inbound carrier (e.g. Vessel Visit)</meta>
+        </many-to-one>
+
+        <many-to-one name="idoObCarrierOperator" column="trucking_company_gkey" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Designated Trucking Company, Railroad or Barge Operator</meta>
+        </many-to-one>
+
+        <many-to-one name="idoComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">Complex for this Import Delivery Order</meta>
+        </many-to-one>
+
+        <property name="idoReturnToLocation" column="return_to_location" type="string" length="15">
+            <meta attribute="field-description">Return location</meta>
+        </property>
+
+        <!-- Flex fields-->
+        <property name="idoFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="idoFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="idoFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+
+        <property name="idoFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <property name="idoFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+
+        <property name="idoFlexString06" column="flex_string06" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+
+        <property name="idoFlexString07" column="flex_string07" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+
+        <property name="idoFlexString08" column="flex_string08" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+
+        <property name="idoFlexString09" column="flex_string09" type="string" length="255">
+            <meta attribute="field-description">String flex-field #09</meta>
+        </property>
+
+        <property name="idoFlexString10" column="flex_string10" type="string" length="255">
+            <meta attribute="field-description">String flex-field #10</meta>
+        </property>
+
+        <property name="idoFlexDate01" column="flex_date01" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+
+        <property name="idoFlexDate02" column="flex_date02" type="timestamp">
+            <meta attribute="field-description">Date flex-field #02</meta>
+        </property>
+
+        <!-- child Units -->
+        <set name="idoUnits" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="ido_gkey"/>
+            <one-to-many class="com.navis.inventory.business.units.Unit"/>
+        </set>
+
+        <property name="idoCreated" column="created" type="timestamp"/>
+        <property name="idoCreator" column="creator" type="string" length="30"/>
+        <property name="idoChanged" column="changed" type="timestamp"/>
+        <property name="idoChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.inventory.business.units.GoodsDeclaration" table="inv_goods_declaration" dynamic-update="true">
+        <meta attribute="n4alias">gdsdecl</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.GoodsDeclarationHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity represents the goods declaration of an Unit Goods</meta>
+        <meta attribute="n4-entity-name">GoodsDeclaration</meta>
+        <meta attribute="n4-entity-name-plural">GoodsDeclaration</meta>
+
+        <id name="gdsdeclGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="gdsdeclSeq" type="java.lang.Long" column="goods_seq" length="3" not-null="true">
+            <meta attribute="field-description">Sequence Number</meta>
+        </property>
+
+        <many-to-one name="gdsdeclGoods" column="goods_gkey" class="com.navis.inventory.business.units.GoodsBase">
+            <meta attribute="field-description">The Parent Goods</meta>
+        </many-to-one>
+
+        <property name="gdsdeclDescription" column="description" type="string" length="35">
+            <meta attribute="field-description">Goods Description</meta>
+        </property>
+
+        <property name="gdsdeclQuantity" column="quantity" type="java.lang.Long" length="2">
+            <meta attribute="field-description">Quantity</meta>
+        </property>
+
+        <property name="gdsdeclQuantityType" column="quantity_type" type="string" length="255">
+            <meta attribute="field-description">Quantity Type</meta>
+        </property>
+
+        <set name="gdsdeclDocuments" inverse="true" lazy="true" table="inv_goods_documents" cascade="all-delete-orphan">
+            <key column="gdsDeclaration_gkey"/>
+            <one-to-many class="com.navis.inventory.business.units.GoodsDocuments"/>
+        </set>
+
+    </class>
+
+    <class name="com.navis.inventory.business.units.GoodsDocuments" table="inv_goods_documents" dynamic-update="true">
+        <meta attribute="n4alias">gdsdoc</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.GoodsDocumentsHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing the customs documents being associated with an Unit Goods</meta>
+        <meta attribute="n4-entity-name">GoodsDocuments</meta>
+        <meta attribute="n4-entity-name-plural">GoodsDocuments</meta>
+
+        <id name="gdsdocGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="gdsdocGoodsDeclaration" column="gdsDeclaration_gkey" class="com.navis.inventory.business.units.GoodsDeclaration">
+            <meta attribute="field-description">The Goods owning these Documents.</meta>
+        </many-to-one>
+
+        <property name="gdsdocId" column="docid" type="string" length="35" not-null="true">
+            <meta attribute="field-description">MRN Number</meta>
+        </property>
+
+        <property name="gdsdocType" column="doctype" type="string" length="10" not-null="true">
+            <meta attribute="field-description">Document Type</meta>
+        </property>
+        <!-- 2008-12-11 dkannadasan, ARGO-15825  A field was omitted from the spec for unit declared documents-->
+        <property name="gdsdocNumberOfDocuments" column="number_of_documents" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Number of Documents</meta>
+        </property>
+
+        <property name="gdsdocDesc1" column="docdesc1" type="string" length="10">
+            <meta attribute="field-description">Goods Description1</meta>
+        </property>
+        <property name="gdsdocDesc2" column="docdesc2" type="string" length="10">
+            <meta attribute="field-description">Goods Description2</meta>
+        </property>
+        <property name="gdsdocCategory" column="doccategory" type="string" length="10">
+            <meta attribute="field-description">Document Category</meta>
+        </property>
+        <property name="gdsdocStampcode" column="docstampcode" type="string" length="10">
+            <meta attribute="field-description">Stamp Code</meta>
+        </property>
+        <property name="gdsdocValidationDate" column="docvalidationdate" type="timestamp">
+            <meta attribute="field-description">Validation Date</meta>
+        </property>
+        <property name="gdsdocValidationOffice" column="docvalidationoffice" type="string" length="35">
+            <meta attribute="field-description">Validation Office</meta>
+        </property>
+        <property name="gdsdocRemarks" column="docremarks" type="string" length="40">
+            <meta attribute="field-description">Document Remarks</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.inventory.business.imdg.HazardousGoods" table="ref_imdg_goods" dynamic-update="true">
+        <meta attribute="n4alias">hzgoods</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.imdg.HazardousGoodsHbr</meta>
+        <meta attribute="class-description">reference entity representing hazardous goods lookup data</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4-entity-name">Hazardous Goods</meta>
+        <meta attribute="n4-entity-name-plural">Hazardous Goods</meta>
+        <meta attribute="n4-business-key">hzgoodsUnNbr</meta>
+
+        <id name="hzgoodsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="hzgoodsScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true"/>
+        </many-to-one>
+
+        <property name="hzgoodsUnNbr" column="un_nbr" unique="true" type="string" length="20" not-null="true">
+            <meta attribute="field-description">Hazardous goods UN number</meta>
+        </property>
+        <!--2009-09-02 pmelappalyam ver2.0.H ARGO-6020 added in ref_imdg_goods table-->
+        <property name="hzgoodsNbrType" column="hz_goods_nbr_type" type="com.navis.inventory.persistence.atoms.UserTypeHazardsNumberTypeEnum">
+            <meta attribute="field-description">The Hazard Number classification (United Nations / North America)</meta>
+        </property>
+
+        <property name="hzgoodsImdgClass" column="imdg_class" type="com.navis.inventory.business.imdg.UserTypeImdgClass" length="20">
+            <meta attribute="field-description">Primary class of the hazardous goods</meta>
+        </property>
+
+        <many-to-one name="hzgoodsPlacard" class="com.navis.inventory.business.imdg.Placard">
+            <meta attribute="field-description">Placard that needs to be used for this Hazardous goods</meta>
+            <column name="placard_gkey" not-null="false"/>
+        </many-to-one>
+
+        <property name="hzgoodsIsPlacardOptional" column="is_placard_optional" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Indicates whether the Placard is optional</meta>
+        </property>
+
+        <property name="hzgoodsProperShippingName" column="proper_shipping_name" type="string" length="300" not-null="false">
+            <meta attribute="field-description">Hazardous goods shipping name</meta>
+        </property>
+
+        <!--2010-09-02 spabbala v2.2.C ARGO-23950 UI for Dangerous Goods-->
+        <set name="hzgoodsSubsidiaryRisks" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="hzgoods_gkey"/>
+            <one-to-many class="com.navis.inventory.business.imdg.SubsidiaryRisk"/>
+        </set>
+
+        <property name="hzgoodsCreated" column="created" type="timestamp"/>
+        <property name="hzgoodsCreator" column="creator" type="string" length="30"/>
+        <property name="hzgoodsChanged" column="changed" type="timestamp"/>
+        <property name="hzgoodsChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.inventory.business.imdg.SubsidiaryRisk" table="ref_imdg_risks" dynamic-update="true">
+        <meta attribute="n4alias">subrisk</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.imdg.SubsidiaryRiskHbr</meta>
+        <meta attribute="class-description">Entity representing subsidiary risk lookup data</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Subsidiary Risk</meta>
+        <meta attribute="n4-entity-name-plural">Subsidiary Risks</meta>
+
+        <id name="subriskGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="subriskHazardousGoods" class="com.navis.inventory.business.imdg.HazardousGoods">
+            <meta attribute="field-description">Susbsidiary risk associated with hazardous goods</meta>
+            <column name="hzgoods_gkey" not-null="false"/>
+        </many-to-one>
+
+        <many-to-one name="subriskPlacard" class="com.navis.inventory.business.imdg.Placard">
+            <meta attribute="field-description">Placard that needs to be used for the Subsidiary Risk</meta>
+            <column name="placard_gkey" not-null="false"/>
+        </many-to-one>
+
+        <property name="subriskIsPlacardOptional" column="is_placard_optional" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Indicates whether the Placard is optional</meta>
+        </property>
+
+        <property name="subriskImdgClass" column="imdg_class" type="com.navis.inventory.business.imdg.UserTypeImdgClass" length="20">
+            <meta attribute="field-description">Subsidiary risk of the hazardous goods</meta>
+        </property>
+
+        <property name="subriskCreated" column="created" type="timestamp"/>
+        <property name="subriskCreator" column="creator" type="string" length="30"/>
+        <property name="subriskChanged" column="changed" type="timestamp"/>
+        <property name="subriskChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!--2009-11-16 bbakthavachalam v2.1.B ARGO-21125 create a UnitFlag entity for the below subselect(view) -->
+    <class name="com.navis.inventory.business.units.UnitFlag" table="inv_unit_flag" mutable="false"
+           subselect="SELECT sf.gkey gkey, sf.operator_gkey operator_gkey,sf.complex_gkey complex_gkey, sft.id id, sft.purpose flag,
+                             sft.is_covert_hold_required covert,
+                             sf.placed_time applied_date, sf.placed_by applied_by, sf.applied_to_natural_key applied_to, sf.created created,
+                             sf.creator creator, sf.changed changed, sf.changer changer, sf.reference_id ref_id, sf.note note, hpv.id hp_view,
+                             iu.gkey unit, ibzu.id ib_operator, ibzu.gkey ib_operator_gkey, ibzu.name ib_operator_name,
+                             obzu.id ob_operator, obzu.gkey ob_operator_gkey, obzu.name ob_operator_name, ibcv.carrier_mode ib_carrier_mode,
+                             obcv.carrier_mode ob_carrier_mode, opr.id eqp_operator, opr.gkey eqp_opr_gkey, opr.name eqp_operator_name,
+                             owr.id eqp_owner, owr.gkey eqp_own_gkey, owr.name eqp_owner_name
+                      FROM srv_flags sf LEFT OUTER JOIN srv_flag_types sft on sf.flag_type_gkey = sft.gkey LEFT OUTER JOIN srv_hold_perm_view hpv on
+                           sft.hold_perm_view_gkey = hpv.gkey, inv_unit iu LEFT OUTER JOIN inv_unit_fcy_visit iufv on iu.active_ufv = iufv.gkey
+                           LEFT OUTER JOIN argo_carrier_visit ibcv on iufv.actual_ib_cv = ibcv.gkey LEFT OUTER JOIN ref_bizunit_scoped ibzu on
+                           ibcv.operator_gkey = ibzu.gkey LEFT OUTER JOIN argo_carrier_visit obcv on iufv.actual_ob_cv = obcv.gkey LEFT OUTER JOIN
+                           ref_bizunit_scoped obzu on obcv.operator_gkey = obzu.gkey LEFT OUTER JOIN inv_unit_equip uequip on
+                           iu.primary_ue = uequip.gkey LEFT OUTER JOIN inv_eq_state eqs on uequip.eqs_gkey = eqs.gkey LEFT OUTER JOIN
+                           ref_bizunit_scoped opr on eqs.eq_operator_gkey = opr.gkey LEFT OUTER JOIN ref_bizunit_scoped owr on
+                           eqs.eq_owner_gkey = owr.gkey where sf.applied_to_gkey = iu.gkey">
+        <meta attribute="class-description">Domain entity for unit Holds and Permissions</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.UnitFlagHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">unitflg</meta>
+        <meta attribute="n4-entity-name">Unit Flag</meta>
+        <meta attribute="n4-entity-name-plural">Unit Flags</meta>
+        <meta attribute="carina-fk-index-disable">
+            (unit)
+        </meta>
+
+        <id name="unitflgGkey" type="java.lang.Long">
+            <meta attribute="field-description">The gkey of Flag entity assigned to this entity</meta>
+            <column name="gkey"/>
+            <generator class="assigned"/>
+        </id>
+
+        <property name="unitflgId" column="id" type="java.lang.String">
+            <meta attribute="field-description">The short id assigned from flag type</meta>
+        </property>
+
+        <property name="unitflgAppliedDate" column="applied_date" type="java.util.Date">
+            <meta attribute="field-description">Time the Hold/Permission was placed</meta>
+        </property>
+
+        <property name="unitflgAppliedBy" column="applied_by" type="java.lang.String">
+            <meta attribute="field-description">Name of the user who placed this Hold/Permission</meta>
+        </property>
+
+        <property name="unitflgAppliedTo" column="applied_to" type="java.lang.String" not-null="true">
+            <meta attribute="field-description">The natural key of the Unit Entity to which this Hold/Permission is applied</meta>
+        </property>
+
+        <property name="unitflgtypCovert" column="covert" type="java.lang.Boolean">
+            <meta attribute="field-description">Covert Flag Type</meta>
+        </property>
+
+        <property name="unitflgCreatedOn" column="created" type="java.util.Date"/>
+
+        <property name="unitflgCreatedBy" column="creator" type="java.lang.String"/>
+
+        <property name="unitflgUpdatedOn" column="changed" type="java.util.Date"/>
+
+        <property name="unitflgUpdatedBy" column="changer" type="java.lang.String"/>
+
+        <property name="unitflgFlag" column="flag" type="java.lang.String">
+            <meta attribute="field-description">Purpose: HOLD or PERMISSION</meta>
+        </property>
+
+        <property name="unitflgRefId" column="ref_id" type="java.lang.String">
+            <meta attribute="field-description">Reference information recorded with this Unit's Hold/Permission</meta>
+        </property>
+
+        <property name="unitflgNote" column="note" type="java.lang.String">
+            <meta attribute="field-description">Note recorded with this unit's Hold/Permission</meta>
+        </property>
+
+        <property name="unitflgHpvId" column="hp_view" type="java.lang.String">
+            <meta attribute="field-description">A unique identifier for the hold or permission view</meta>
+        </property>
+
+        <many-to-one name="unitflgUnit" class="com.navis.inventory.business.units.Unit">
+            <meta attribute="field-description">The unit to which this Hold/Permission was applied</meta>
+            <column name="unit"/>
+        </many-to-one>
+
+        <property name="unitflgIBOprGkey" column="ib_operator_gkey" type="java.lang.Long">
+            <meta attribute="field-description">The gkey of inbound carrier visit operator</meta>
+        </property>
+
+        <property name="unitflgIBOpr" column="ib_operator" type="java.lang.String">
+            <meta attribute="field-description">The Inbound carrier visit operator Id</meta>
+        </property>
+
+        <property name="unitflgIBOprName" column="ib_operator_name" type="java.lang.String">
+            <meta attribute="field-description">The Inbound carrier visit operator Name</meta>
+        </property>
+
+        <property name="unitflgOBOprGkey" column="ob_operator_gkey" type="java.lang.Long">
+            <meta attribute="field-description">The gkey of outbound carrier visit operator</meta>
+        </property>
+
+        <property name="unitflgOBOpr" column="ob_operator" type="java.lang.String">
+            <meta attribute="field-description">The outbound carrier visit operator Id</meta>
+        </property>
+
+        <property name="unitflgOBOprName" column="ob_operator_name" type="java.lang.String">
+            <meta attribute="field-description">The outbound carrier visit operator name</meta>
+        </property>
+
+        <property name="unitflgIBCarrierMode" column="ib_carrier_mode" type="java.lang.String">
+            <meta attribute="field-description">The inbound carrier type: 'Vessel', 'Railcar', 'Truck'or 'Train'</meta>
+        </property>
+
+        <property name="unitflgOBCarrierMode" column="ob_carrier_mode" type="java.lang.String">
+            <meta attribute="field-description">The outbound carrier type: 'Vessel', 'Railcar', 'Truck'or 'Train'</meta>
+        </property>
+
+        <property name="unitflgEqpOprGkey" column="eqp_opr_gkey" type="java.lang.Long">
+            <meta attribute="field-description">The gkey of the line operator (shipping line) currently registered as the equipment operator</meta>
+        </property>
+
+        <property name="unitflgEqpOpr" column="eqp_operator" type="java.lang.String">
+            <meta attribute="field-description">The id of the line operator (shipping line) currently registered as the equipment operator</meta>
+        </property>
+
+        <property name="unitflgEqpOwnGkey" column="eqp_own_gkey" type="java.lang.Long">
+            <meta attribute="field-description">The gkey of the line operator (shipping line) currently registered as the equipment Owner</meta>
+        </property>
+
+        <property name="unitflgEqpOprName" column="eqp_operator_name" type="java.lang.String">
+            <meta attribute="field-description">The name of the line operator (shipping line) currently registered as the equipment operator</meta>
+        </property>
+
+        <property name="unitflgEqpOwner" column="eqp_owner" type="java.lang.String">
+            <meta attribute="field-description">The line operator id(shipping line) that owns the primary equipment</meta>
+        </property>
+
+        <property name="unitflgEqpOwnerName" column="eqp_owner_name" type="java.lang.String">
+            <meta attribute="field-description">The line operator name(shipping line) that owns the primary equipment</meta>
+        </property>
+
+        <property name="unitflgOperator" column="operator_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The Operator gkey to which this Flag belongs</meta>
+        </property>
+
+        <property name="unitflgComplex" column="complex_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The Complex gkey to which this Flag belongs</meta>
+        </property>
+
+    </class>
+
+    <!--2011-12-09 bbakthavachalam v2.3.G ARGO-35350 create a view joining ufv and cue to generate report -->
+    <class name="com.navis.inventory.business.units.UnitChargeableUnitEvent" table="inv_unit_cue" mutable="false"
+           subselect="select ufv.gkey ufv_gkey, cue.gkey gkey, cue.gkey cue_gkey from inv_unit_fcy_visit ufv,
+           argo_chargeable_unit_events cue where ufv.gkey = cue.ufv_gkey">
+        <meta attribute="class-description">Domain entity to join unit and chargeable unit event</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.units.UnitChargeableUnitEventHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">unitCue</meta>
+        <meta attribute="n4-entity-name">Unit ChargeableUnitEvent</meta>
+        <meta attribute="n4-entity-name-plural">Unit ChargeableUnitEvents</meta>
+        <meta attribute="carina-fk-index-disable">
+            (ufv_gkey);(cue_gkey)
+        </meta>
+
+        <id name="unitCueGkey" type="java.lang.Long">
+            <meta attribute="field-description">The gkey of chargeable unit event</meta>
+            <column name="gkey"/>
+            <generator class="assigned"/>
+        </id>
+        <many-to-one name="unitCueUfv" class="com.navis.inventory.business.units.UnitFacilityVisit">
+            <meta attribute="field-description">Unit facility visit entity</meta>
+            <column name="ufv_gkey" not-null="true"/>
+        </many-to-one>
+
+        <many-to-one name="unitCueCue" class="com.navis.argo.business.extract.ChargeableUnitEvent">
+            <meta attribute="field-description">Chargeable Unit Event entity</meta>
+            <column name="cue_gkey" not-null="true"/>
+        </many-to-one>
+    </class>
+
+</hibernate-mapping>

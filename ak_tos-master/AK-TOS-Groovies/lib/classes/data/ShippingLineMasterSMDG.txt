@@ -1,0 +1,195 @@
+Austral Asia Line	AAL		
+ABC Containerline 	ABC		
+Atlantic Container Line	ACL	International	
+ATLANTICARGO SERVICE 	ACS	International	
+Advance Container Lines	ADV		
+ANL East-West Services	AEW		
+Australasian Interocean Line  	AIL		
+"Alianca Navegacao Ltd., Brasil"	ALI	International	
+Amir Lines	AMI		
+American Transport Line	AMT		
+Australian National Line	ANL	International	
+Apollo Line	AOL		
+American President Line	APL	International	
+Australia-Straits Container Line (ASCL)	ASC	International
+ANDREW WEIR SHIPPING	AWS	International
+Bacoliner	BAC	
+Baltic Sea Line	BAS	
+Barber Wilhelmsen	BBL	
+Baltic Container Line	BCL	
+Ben Line Containers	BEN	International
+Bg Freight Line	BGF	
+Bintang Mas Shipping 	BMS	
+Bolt Orient Line Ltd.	BOL	
+Bonyad Marine Services	BON	
+Borchard	BOR	
+Baltic Orient Shipping	BOS	International
+BSA Transportation 	BSA	
+Bangladesh Shipping Corporation	BSC	
+Bayswater Shipping and Forwarding	BSF	
+B.S.K. Stevedoring 	BSK	
+Blue Star Line	BSL	International
+Batamindo Shipping & Warehousing	BSW	
+Bulcon	BUL	
+Cameroun Shipping Lines	CAM	
+Captrans Shipping	CAP	
+Compania Sud Americana De Vapores	CAV	
+Costa Container line 	CCL	
+Co Chilena De Naveg. Interoceania S. A.	CCN	
+Crosseast Shipping 	CES	
+CP Generale Maritime	CGM 	
+China Shipping Container Lines	CHI	
+"Cheng Lie Navigation Co., Ltd."	CLN	
+Company Maritim d'Affret	CMA	
+Company Maritim Belgique	CMB	International
+Consorcio Naviero Peruano	CNP	
+Cool Carriers  	COO	International
+Coreck Maritime	COR	
+China Ocean Shipping  	COS	International
+Cpships	CPS	
+Croatia Line	CRL	
+Ceylon Shipping Corporation	CSC	International
+Cathay Shipping & Freight Services	CSF	
+Contship Container Line	CSL	International
+Cast	CST	
+PT Cumawis Jakarta  	CWJ	
+Dafra Lines	DAF	
+Deutsche Afrika Line	DAL	International
+DB Deniz Nakiyata A.S.	DBD	
+Delmas	DEL	
+Deppe-Line	DEP	
+PT Jakarta Lloyd	DJL	
+Dongnama Shipping 	DSL			
+DSR/Senator	DSR			
+Egyptian Navigation Co.	EGY			
+Eimskip	EIM			
+Ellerman	ELL			
+Empressa Lineas Maritimas Argentinas	ELM			
+Eng Lee Shipping	ELS			
+EP Carriers 	EPC			
+Eucon	EUC			
+Evergreen	EVG			
+Franco-Belgian Services 	FBS			
+Fednav	FED			
+Finnlines	FIN			
+Foong Sun Shipping 	FSS			
+Gulf Express Freight Line 	GEFL			
+Golden Eagle Maritime	GEM			
+Gemartrans 	GMS	
+Grimaldi Lines	GNC	
+Gold Star Line	GSL	
+Heung-A Shipping 	HEA	
+Hanjing Shipping	HJS	
+Hapag Lloyd 	HLC	International
+Hapag Lloyd ANZEC service	HLL	International
+Hai Leck Marine Containers	HLM	
+Hub Marine 	HML	
+Hapag Lloyd N.V.	HPL	
+"HRC Shipping Limited, Dhaka"	HRC	
+Hamburg Sud Americana	HSA	
+Hamburg-Sud	HSL	
+Hatsu Marine 	HTM	
+Hyundai	HYU	
+Interasia Lines	IAL	
+PT. Interbenua Medanperkasa	IBM		
+Indrati Lines 	IDL		
+Intermarine 	IML		
+Islamic Republic of Iran Shipping Lines	ISL		
+Jaya Baru Shipping 	JBS		
+Josindo Container 	JOC		
+P.T. Jasatama Kemasindo	JTK		
+KEA Marine 	KEA		
+Kien Hung Shipping 	KHS		
+Kawasaki Kisen Kaisha	KKK	International	
+K-Line	KLI		
+Kawasaki Kinkai Kisen Kaisha	KLK	International	
+Keppel Logistics	KLS		
+Korea Marine Transport 	KMT		
+Koala Lines	KOA		
+Korea Shipping Corp. 	KSC	International	
+Lloyd Brasileiro 	LLB	International
+Lloyd Triestino 	LTL	
+Lykes Line	LYK	International
+Maersk Sealand	MAE	International
+Marfret	MAR	
+Maruba Line 	MAR	
+MCC Transport 	MCC	
+Marfret Compagnie Maritime	MCM	
+Macvan	MCV	
+Metz Container Line.	MET	
+Med Feeder Italia	MFI	International
+Myanma Five Star Line	MFS	
+Megastar Shipping 	MGS	
+Malaysian International Shipping Company	MIS	International
+Manii Maritime Inc	MMI	
+Mitsui OSK Lines	MOL	International
+Montemar	MON	
+Maruba Sca Clan S.A	MRS	
+Mediterranean Shipping Company	MSC	International
+Maldives Shipping Singapore 	MSS	
+Malaysia Shipping Corporation	MYS	
+New Guinea Pacific Line	NGP	International
+Neptune Orient Lines	NOL	International
+Norasia Container Lines 	NOR	
+NSCSA	NSS	
+Nippon Yusen Kabushiki Kaisha (NYK)	NYK	International
+Ocean Bridge Shipping	OBS	
+Orient Express Lines	OEL	
+Orix Maritime Corp  	OMC	
+Orient Overseas Container Line	OOL	International
+OPDR Canarische Eilanden	OPD	
+Orient Shipping Services	OSS	
+Otal Atlantique	OTA	
+PACC Container Line 	PCC	
+Perkapalan Dai Zun 	PDZ	
+PHL Containers Line 	PHL	
+Pacific International Lines	PIL	
+Perkins Shipping	PKS	
+PIL SOC Services	PLL	
+PNS Logistics	PLS	
+PT Pelayaran Nusantara Delimadju	PND	
+Pakistan National Shipping Co.	PNS	International
+P&O Nedlloyd	PON	International
+Portlink	POR	
+Pekanbaru Shipping	PSL	
+Petrolog Naigai 	PTL	
+Queensland Asia Line  	QAL	
+QC Container Line 	QCL	
+Quadrant Container Line	QCL	
+Regional Container Line  	RCL	International
+Rickmers-Linie	RIL	
+Safmarine	SAF	International
+Saigon Shipping Company	SAI	International
+Samskip	SAM	
+Shipping Corporation of India	SCI	
+Safmarine Container Lines	SCL	
+Sea Consortium 	SCS	
+Sindo Damai 	SDS	
+Senator Line	SEN	
+Setramar	SET	
+Steamers Feederships 	SFS	
+Soon Kiat Shipping 	SKS	
+Sembawang Kimtrans 	SKT	
+Sinokor Merchant Marine	SMM	
+SSC Shipping Agencies Pte Ltd	SSC	
+Samudera	SSL	
+Sea-Shore Transportation 	SST	
+Star Shipping	STA	
+Steinacher	STE	
+Team Lines	TEA	
+Transport Maritima Grancolombiana	TMG	
+TMM Lines	TMM	
+Tasman Orient Line	TOL	
+Tokyo Senpaku Kaisha  	TSK	International
+T. S. Lines 	TSL	
+United Arab Shipping	UAS	International
+United States Line	USL	International
+Wallenius Lines	WAL	International
+Westford 	WDS	
+Wec	WEC	
+Worldgate Express Lines 	WEL	
+Welgrow Line 	WGL	
+Wan Hai Lines	WHL	
+Yemen Gulf Line	YGL	
+Yang Ming Line	YML	International
+Zim Israel Navigation Company	ZIM	International

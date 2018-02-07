@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+~ Copyright (c) 2012 Navis LLC. All Rights Reserved.
+~
+-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p" xmlns:hz="http://www.hazelcast.com/schema/spring" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd                 http://www.hazelcast.com/schema/spring http://www.hazelcast.com/schema/spring/hazelcast-spring-2.5.xsd">
+  <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" p:systemPropertiesModeName="SYSTEM_PROPERTIES_MODE_OVERRIDE">
+    <property name="nullValue" value="null" />
+    <property name="locations">
+      <list>
+        <value>classpath:navis-app-defaults.properties</value>
+        <value>file:/${navis.external.config.shared}/cache-config-override.properties</value>
+      </list>
+    </property>
+  </bean>
+  <hz:config id="navis-cache-config">
+    <hz:instance-name>navis-instance</hz:instance-name>
+    <hz:group name="navis_prod" password="navis-pass" />
+    <!--  The port has to be a servlet container port that will not conflict with the ones used for the application. -->
+    <hz:management-center enabled="${cache.hazelcast.mc.enabled}" url="${cache.hazelcast.mc.url}" />
+    <hz:properties>
+      <hz:property name="hazelcast.logging.type">log4j</hz:property>
+      <!--  The hazelcast.shutdownhook.enabled has been disabled. Framework provides its own hook, so that services lifecycles are called
+                  in the proper order.  -->
+      <hz:property name="hazelcast.shutdownhook.enabled">false</hz:property>
+      <hz:property name="hazelcast.jmx">true</hz:property>
+      <!-- Property hazelcast.jmx.detailed will enable detailed cache information like its data. It affects performance so not recommended.
+                 From jconsole or Hazelcast MC, a cache value can be retrieved by its key. -->
+      <hz:property name="hazelcast.jmx.detailed">${cache.property.hazelcast.jmx.detailed}</hz:property>
+      <!-- To enable ping also to detect if a node is down.  -->
+      <hz:property name="hazelcast.icmp.enabled">${cache.property.hazelcast.icmp.enabled}</hz:property>
+      <hz:property name="hazelcast.icmp.timeout">${cache.property.hazelcast.icmp.timeout}</hz:property>
+      <hz:property name="hazelcast.icmp.ttl">${cache.property.hazelcast.icmp.ttl}</hz:property>
+      <hz:property name="hazelcast.version.check.enabled">false</hz:property>
+      <hz:property name="hazelcast.heartbeat.interval.seconds">${cache.property.hazelcast.heartbeat.interval.seconds}</hz:property>
+      <hz:property name="hazelcast.max.no.heartbeat.seconds">${cache.property.hazelcast.max.no.heartbeat.seconds}</hz:property>
+      <hz:property name="hazelcast.partition.migration.interval">${cache.property.hazelcast.partition.migration.interval}</hz:property>
+      <hz:property name="hazelcast.partition.migration.timeout">${cache.property.hazelcast.partition.migration.timeout}</hz:property>
+      <hz:property name="hazelcast.redo.log.threshold">${cache.property.hazelcast.redo.log.threshold}</hz:property>
+      <hz:property name="hazelcast.redo.giveup.threshold">${cache.property.hazelcast.redo.giveup.threshold}</hz:property>
+      <hz:property name="hazelcast.max.operation.timeout">${cache.property.hazelcast.max.operation.timeout}</hz:property>
+      <hz:property name="hazelcast.map.partition.count">${cache.property.hazelcast.map.partition.count}</hz:property>
+      <!-- CAR-5256: This setting avoids OutOfMemoryError due to too many log messages by disabling central logging in management center.  -->
+      <hz:property name="hazelcast.system.log.enabled">false</hz:property>
+    </hz:properties>
+    <hz:network port="${cache.hazelcast.cluster.port}" port-auto-increment="${cache.hazelcast.cluster.port.autoincrement}">
+      <hz:join>
+        <hz:multicast enabled="${cache.hazelcast.multicast.enabled}" multicast-group="${cache.hazelcast.multicast.group}" multicast-port="${cache.hazelcast.multicast.port}" multicast-time-to-live="${cache.hazelcast.multicast.ttl}" multicast-timeout-seconds="${cache.hazelcast.multicast.timeout.seconds}" />
+        <hz:tcp-ip enabled="${cache.hazelcast.tcpip.enabled}">
+          <hz:required-member>${cache.hazelcast.tcpip.required.member}</hz:required-member>
+          <hz:members>${cache.hazelcast.tcpip.members}</hz:members>
+        </hz:tcp-ip>
+        <hz:aws enabled="false" />
+      </hz:join>
+      <hz:interfaces enabled="${cache.hazelcast.interfaces.enabled}">
+        <hz:interface>${cache.hazelcast.interface}</hz:interface>
+      </hz:interfaces>
+    </hz:network>
+    <!-- Our default is highly consistent, but not overly performant: uses synchronous backup and does not allow local backup reads! -->
+    <hz:map name="default" backup-count="1" read-backup-data="false" time-to-live-seconds="0" max-idle-seconds="0" eviction-policy="LRU" eviction-percentage="25" max-size="10000" max-size-policy="cluster_wide_map_size" merge-policy="hz.LATEST_UPDATE" />
+    <!-- This configuration is used for Hibernate L2 cache. (Map name matches all entity names.) -->
+    <!-- NOTE: The special implementation we use (com.hazelcast.hibernate.local.LocalRegionCache),
+        does not offer more configuration than used below. Any additional information will be ignored! -->
+    <hz:map name="com.navis.*" max-size="10000" time-to-live-seconds="0" />
+    <!-- We use com.hazelcast.extensions.map.ReplicatedMap for the config setting cache. That class is currently not configurable at all! -->
+    <!-- N4 internal message cache. Messages expire after 5 min.-->
+    <hz:map name="dynamicViewsCache-*">
+      <hz:near-cache time-to-live-seconds="0" max-idle-seconds="0" eviction-policy="NONE" max-size="0" invalidate-on-change="true" />
+    </hz:map>
+    <hz:map name="clusteredEventMessage-Cache" backup-count="1" time-to-live-seconds="300" max-idle-seconds="0" eviction-policy="NONE" max-size="0" max-size-policy="cluster_wide_map_size" merge-policy="hz.LATEST_UPDATE" />
+    <hz:listeners>
+      <hz:listener class-name="com.navis.cache.hazelcast.portal.context.server.NodeLifecycleListener" implementation="hzNodeLifecycleListener" />
+    </hz:listeners>
+  </hz:config>
+  <!--  Node lifecycle state listener -->
+  <bean id="hzNodeLifecycleListener" class="com.navis.cache.hazelcast.portal.context.server.NodeLifecycleListener" />
+</beans>
+

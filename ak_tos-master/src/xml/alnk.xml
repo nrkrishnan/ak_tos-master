@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="¦" newRecord="\n"></Format>
+	<Field sequence="0" name="txnCode" dataType="String"></Field>
+	<Field sequence="1" name="date" dataType="String"></Field>
+	<Field sequence="2" name="time" dataType="String"></Field>
+	<Field sequence="3" name="filler1" dataType="String"></Field>
+	<Field sequence="4" name="nextId" dataType="String"></Field>
+	<Field sequence="5" name="lnkEquipmentNumber" dataType="String"></Field>
+	<Field sequence="6" name="lnkShipmentNumber" dataType="String"></Field>
+	<Field sequence="7" name="lnkUserId" dataType="String"></Field>
+	<Field sequence="8" name="lnkShipperName" dataType="String"></Field>
+	<Field sequence="9" name="lnkOrderNegotiableInd" dataType="String"></Field>
+	<Field sequence="10" name="lnkLoadService" dataType="String"></Field>
+	<Field sequence="11" name="lnkLoadDischargeService" dataType="String"></Field>
+	<Field sequence="12" name="lnkInboundFlag" dataType="String"></Field>
+	<Field sequence="13" name="lnkConsigneeContact" dataType="String"></Field>
+	<Field sequence="14" name="lnkConsigneeAreaCode" dataType="String"></Field>
+	<Field sequence="15" name="lnkConsigneePhoneCntryCode" dataType="String"></Field>
+	<Field sequence="16" name="lnkConsigneePhoneExchange" dataType="String"></Field>
+	<Field sequence="17" name="lnkConsigneePhoneExtension" dataType="String"></Field>
+	<Field sequence="18" name="lnkConsigneePhoneStation" dataType="String"></Field>
+	<Field sequence="19" name="lnkFreightDestCityCode" dataType="String"></Field>
+	<Field sequence="20" name="lnkPrimCarrier" dataType="String"></Field>
+	<Field sequence="21" name="lnkTrade" dataType="String"></Field>
+	<Field sequence="22" name="lnkCreditProfileStatus" dataType="String"></Field>
+	<Field sequence="23" name="lnkShipFromAddrRoleId" dataType="String"></Field>
+	<Field sequence="24" name="lnkShipFromAddrRoleQaul" dataType="String"></Field>
+	<Field sequence="25" name="lnkShipFromUserOrgName" dataType="String"></Field>
+	<Field sequence="26" name="lnkShipToAddrRoleId" dataType="String"></Field>
+	<Field sequence="27" name="lnkShipToAddrRoleQaul" dataType="String"></Field>
+	<Field sequence="28" name="lnkReferenceNumber" dataType="String"></Field>
+	<Field sequence="29" name="lnkShipToUserOrgName" dataType="String"></Field>
+	<Field sequence="30" name="lnkShipToOwnOrgName" dataType="String"></Field>
+	<Field sequence="31" name="lnkShipToCoOrgNameQual" dataType="String"></Field>
+	<Field sequence="32" name="lnkAddrLine1" dataType="String"></Field>
+	<Field sequence="33" name="lnkSuite" dataType="String"></Field>
+	<Field sequence="34" name="lnkCity" dataType="String"></Field>
+	<Field sequence="35" name="lnkState" dataType="String"></Field>
+	<Field sequence="36" name="lnkCountry" dataType="String"></Field>
+	<Field sequence="37" name="lnkZipCode" dataType="String"></Field>
+	<Field sequence="38" name="lnkShipmentRefNumber" dataType="String"></Field>
+	<Field sequence="39" name="lnkEquipmentCheckDigit" dataType="String"></Field>
+	<Field sequence="40" name="lnkVessel" dataType="String"></Field>
+	<Field sequence="41" name="lnkVoyage" dataType="String"></Field>
+	<Field sequence="42" name="lnkDirection" dataType="String"></Field>
+	<Field sequence="43" name="lnkDischargePort" dataType="String"></Field>
+	<Field sequence="44" name="lnkDestPort" dataType="String"></Field>
+	<Field sequence="45" name="lnkLoadPort" dataType="String"></Field>
+	<Field sequence="46" name="lnkShipperArol" dataType="String"></Field>
+	<Field sequence="47" name="lnkConsigneeArol" dataType="String"></Field>
+	<Field sequence="48" name="lnkShipperOrgn50" dataType="String"></Field>
+	<Field sequence="49" name="lnkShipQual40" dataType="String"></Field>
+	<Field sequence="50" name="lnkConsignOrgn50" dataType="String"></Field>
+	<Field sequence="51" name="lnkConsignQual40" dataType="String"></Field>
+</FileDesc>

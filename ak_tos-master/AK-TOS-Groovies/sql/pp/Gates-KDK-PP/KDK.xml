@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<gate id="KDK" description="Kodiak Gate" facility-id="KDK" gate-config-id="KDK" life-cycle-state="ACT">
+  <gate-yards>
+    <gate-yard id="ANK" facility-id="ANK">
+      <gate-yard-blocks />
+    </gate-yard>
+    <gate-yard id="KDK" facility-id="KDK">
+      <gate-yard-blocks />
+    </gate-yard>
+  </gate-yards>
+  <gate-exchange-areas />
+</gate>
+</argo:snx>
+

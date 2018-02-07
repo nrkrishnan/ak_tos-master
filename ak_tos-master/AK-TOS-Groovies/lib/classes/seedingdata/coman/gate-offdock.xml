@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gateConfiguration name="OFFDOCK" description="CFS YARD">
+    <gateStages>
+        <inStage leg="in" menuId="INGATE" order="1" id="INGATE"/>
+        <outStage leg="out" menuId="OUTGATE" order="2" id="OUTGATE"/>
+    </gateStages>
+    <gateStageSubTypes>
+        <gateStagesDE>
+            <outStage id="OUTGATE" leg="out">
+                <bizTasks>
+                    <!--System Task ReadTruckingCompany-->
+                    <!--System Task ReadDriver-->
+                    <!--System Task ReadTruck-->
+                    <!--System Task ReadReleaseNbr-->
+                    <bizTask name="CopyContainerAssignedToNbr"/>
+                    <!--System Task ReadContainer-->
+                    <!--System Task ReadChassis-->
+                    <!--System Task ReadAccessory-->
+                    <!--System Task ReadUnitActive-->
+                    <!--System Task ReadContainerOperator-->
+                    <!--System Task ReadLine-->
+                    <!--System Task ReadContainerPosition-->
+                    <!--System Task ReadAccessory-->
+                    <bizTask name="RejectContainerRequired"/>
+                    <bizTask name="RejectContainerNotExport"/>
+                    <bizTask name="PositionTruckVisit">
+                        <parameter id="truckPosition" value="Went Out"/>
+                    </bizTask>
+                    <bizTask name="ApplyContainerSeals"/>
+                    <bizTask name="CreateUnitDeparting"/>
+                    <bizTask name="PlaceUnitOnTruck"/>
+                </bizTasks>
+                <uiForm>
+                    <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCtrNbrAssigned" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                </uiForm>
+            </outStage>
+        </gateStagesDE>
+        <gateStagesRI>
+            <inStage id="INGATE" leg="in" nextStageId="Outgate">
+                <bizTasks>
+                    <!--System Task ReadTruckingCompany-->
+                    <!--System Task ReadDriver-->
+                    <!--System Task ReadTruck-->
+                    <!--System Task ReadContainer-->
+                    <!--System Task ReadChassis-->
+                    <!--System Task ReadAccessory-->
+                    <!--System Task ReadContainerOperator-->
+                    <!--System Task ReadContainerPosition-->
+                    <!--System Task ReadAccessory-->
+                    <!--System Task ReadCommodity-->
+                    <!--System Task ReadUnitPreadvised-->
+                    <!--System Task ReadLine-->
+                    <bizTask name="RejectUnitServiceRules"/>
+                    <bizTask name="PlaceContainerOnTruck"/>
+                    <bizTask name="PositionTruckVisit">
+                        <parameter id="truckPosition" value="TIP"/>
+                    </bizTask>
+                    <bizTask name="PlanUnitIntoYard">
+                        <parameter id="truckPosition" value="TIP"/>
+                        <parameter id="workQueue" value="Road Queue"/>
+                    </bizTask>
+                </bizTasks>
+                <uiForm>
+                    <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true"/>
+                    <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                </uiForm>
+            </inStage>
+        </gateStagesRI>
+        <gateStagesRE>
+            <inStage id="INGATE" leg="in" nextStageId="Outgate">
+                <bizTasks>
+                    <!--System Task ReadTruckingCompany-->
+                    <!--System Task ReadDriver-->
+                    <!--System Task ReadTruck-->
+                    <!--System Task ReadContainer-->
+                    <!--System Task ReadChassis-->
+                    <!--System Task ReadAccessory-->
+                    <!--System Task ReadContainerOperator-->
+                    <!--System Task ReadContainerPosition-->
+                    <!--System Task ReadAccessory-->
+                    <!--System Task ReadLine-->
+                    <!--System Task ReadOrder-->
+                    <!--System Task ReadOrderItem-->
+                    <bizTask name="SelectOrderItemForRcvCtr"/>
+                    <!--System Task ReadUnitPreadvised-->
+                    <!--System Task ReadCarrierVisit-->
+                    <!--System Task ReadDischargePoint1-->
+                    <bizTask name="ResolveExportRoute"/>
+                    <!--System Task ReadCommodity-->
+                    <bizTask name="AdjustTally"/>
+                    <bizTask name="RejectContainerInYard"/>
+                    <bizTask name="CreateContainerVisit"/>
+                    <bizTask name="RejectUnitServiceRules"/>
+                    <bizTask name="PlaceContainerOnTruck"/>
+                    <bizTask name="PositionTruckVisit">
+                        <parameter id="truckPosition" value="TIP"/>
+                    </bizTask>
+                    <bizTask name="PlanUnitIntoYard">
+                        <parameter id="truckPosition" value="TIP"/>
+                        <parameter id="workQueue" value="Road Queue"/>
+                    </bizTask>
+                    <bizTask name="LogBundleMission"/>
+                    <bizTask name="LogHazardMission"/>
+                    <bizTask name="LogOverDimensionMission"/>
+                </bizTasks>
+                <uiForm>
+                    <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true"/>
+                    <uiField fieldId="tranEqoNbr" fieldDisplayMode="EDITABLE" fieldRequired="true"/>
+                </uiForm>
+            </inStage>
+        </gateStagesRE>
+        <gateStagesDM>
+            <outStage id="OUTGATE" leg="out">
+                <bizTasks>
+                    <!--System Task ReadTruckingCompany-->
+                    <!--System Task ReadDriver-->
+                    <!--System Task ReadTruck-->
+                    <!--System Task ReadContainer-->
+                    <!--System Task ReadChassis-->
+                    <!--System Task ReadAccessory-->
+                    <!--System Task ReadUnitActive-->
+                    <!--System Task ReadContainerOperator-->
+                    <!--System Task ReadOrder-->
+                    <!--System Task ReadOrderItem-->
+                    <!--System Task ReadLine-->
+                    <!--System Task ReadCarrierVisit-->
+                    <bizTask name="CopyContainerAssignedToNbr"/>
+                    <!--System Task ReadContainer-->
+                    <!--System Task ReadChassis-->
+                    <!--System Task ReadAccessory-->
+                    <!--System Task ReadUnitActive-->
+                    <!--System Task ReadContainerOperator-->
+                    <!--System Task ReadContainerPosition-->
+                    <!--System Task ReadCarrierVisit-->
+                    <bizTask name="RejectContainerNotEmpty"/>
+                    <bizTask name="RejectUnitServiceRules"/>
+                    <bizTask name="PositionTruckVisit">
+                        <parameter id="truckPosition" value="Went Out"/>
+                    </bizTask>
+                    <bizTask name="CreateUnitDeparting"/>
+                    <bizTask name="PlaceUnitOnTruck"/>
+                </bizTasks>
+                <uiForm>
+                    <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                </uiForm>
+            </outStage>
+        </gateStagesDM>
+    </gateStageSubTypes>
+    <gateStageTruckVisit>
+        <inStage id="INGATE" leg="in" autoStage="false" checkIfAllDone="false" allowStageId="">
+            <bizTasks>
+                <bizTask name="QueueAllWorkInstruction"/>
+                <bizTask name="ActivateAllWorkInstruction">
+                    <parameter id="truckPosition" value="TIP"/>
+                </bizTask>
+                <bizTask name="PositionTruckVisit">
+                    <parameter id="truckPosition" value="TIP"/>
+                </bizTask>
+            </bizTasks>
+            <uiForm>
+                <uiField fieldId="tvdtlsTrkCompany" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+            </uiForm>
+        </inStage>
+        <outStage id="OUTGATE" leg="out" autoStage="false" checkIfAllDone="false" allowStageId="">
+            <bizTasks>
+                <bizTask name="DepartUnit"/>
+                <bizTask name="DepartTruckVisit"/>
+                <bizTask name="PositionTruckVisit">
+                    <parameter id="truckPosition" value="Went Out"/>
+                </bizTask>
+            </bizTasks>
+            <uiForm>
+                <uiField fieldId="tvdtlsTrkCompany" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                <uiField fieldId="tvdtlsTruckLicenseNbr" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+            </uiForm>
+        </outStage>
+    </gateStageTruckVisit>
+</gateConfiguration>

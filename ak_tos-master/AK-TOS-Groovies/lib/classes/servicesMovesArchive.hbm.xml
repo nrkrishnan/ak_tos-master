@@ -1,0 +1,266 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">ServicesMovesArchive</meta>
+    <meta attribute="scope-set">public</meta>
+
+    <!--
+        Why is ArchiveMoveEvent here in this file?  Somehow hbm2java process throws -1 error message without
+        giving any detailed description, when I define it in inventoryArchive.bhm.xml.  Putting this archive
+        class in this file makes hbm2Java happy, however.
+    -->
+    <joined-subclass name="com.navis.inventory.business.moves.ArchiveMoveEvent" table="inv_ar_move_event"
+                     extends="com.navis.services.business.event.ArchiveEvent" dynamic-update="false">
+
+        <meta attribute="generated-class">com.navis.inventory.business.moves.ArchiveMoveEventHbr</meta>
+        <meta attribute="n4alias">armve</meta>
+        <meta attribute="class-description">Entity to track movements of UnitFacilityVisits</meta>
+        <meta attribute="n4-entity-name">Archive Move Event</meta>
+        <meta attribute="n4-entity-name-plural">Archive Move Events</meta>
+        <meta attribute="scope-set">public</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">amveCustomFlexFields</meta>
+        <meta attribute="carina-oracle-index">
+            CREATE INDEX mvear_fm_pos_anchor_idx ON inv_ar_move_event(fm_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            CREATE INDEX mvear_to_pos_anchor_idx ON inv_ar_move_event(to_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE SPATIAL INDEX mvear_fm_pos_anchor_idx ON inv_ar_move_event(fm_pos_anchor) WITH ( BOUNDING_BOX = ( 0, 0, 1000000, 1000000 ) );
+            CREATE SPATIAL INDEX mvear_to_pos_anchor_idx ON inv_ar_move_event(to_pos_anchor) WITH ( BOUNDING_BOX = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <key column="arMve_gkey"/>
+
+        <many-to-one name="arMveUnit" column="unit_gkey" class="com.navis.inventory.business.units.ArchiveUnit" not-null="true">
+            <meta attribute="field-description">The Unit to which this ArchiveMoveEvent belongs</meta>
+        </many-to-one>
+
+        <property name="arMveMoveKind" column="move_kind" type="com.navis.argo.persistence.atoms.UserTypeWiMoveKindEnum" not-null="false"
+                  index="ar_mve_move_kind_idx">
+            <meta attribute="field-description">Move Kind (load/disch/receive, etc.). This seems redundant with EventType, but easier to query on and differentiates yard moves vs. yard shifts</meta>
+        </property>
+
+        <many-to-one name="arMveUfv" column="ufv_gkey" class="com.navis.inventory.business.units.ArchiveUnitFacilityVisit">
+            <meta attribute="field-description">UnitFacilityVisit of the Unit that was moved.</meta>
+        </many-to-one>
+
+        <property name="arMveLineSnapshot" column="line_op" type="string" not-null="false" length="100">
+            <meta attribute="field-description">Line Operator of the Unit at the time of the move</meta>
+        </property>
+
+        <property name="arMveCarrierGkey" column="carrier_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The CarrierVisit, if the move was to or from a CarrierVisit, else null</meta>
+        </property>
+        <property name="arMveCarrierId" column="carrier_id" type="string" length="30" not-null="false">
+            <meta attribute="field-description">The CarrierVisit, if the move was to or from a CarrierVisit, else null</meta>
+        </property>
+
+        <property name="arMveExclude" column="exclude" type="java.lang.Boolean">
+            <meta attribute="field-description">If TRUE, this event should be excluded from reporting.</meta>
+        </property>
+
+        <component name="arMveFromPositionComp" class="com.navis.argo.business.model.ArchiveLocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The 'from' position</meta>
+
+            <property name="arPosLocType" column="fm_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="true" index="ar_inv_mve_fm_pos_loctype_idx">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="arPosLocId" column="fm_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="arPosLocGkey" column="fm_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="arPosSlot" column="fm_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="arPosOrientation" column="fm_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="arPosName" column="fm_pos_name" type="string" length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="arPosBin" column="fm_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="arPosTier" column="fm_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="arPosAnchor" column="fm_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="arPosOrientationDegrees" column="fm_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <component name="arMveToPositionComp" class="com.navis.argo.business.model.ArchiveLocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The 'to' position</meta>
+
+            <property name="arPosLocType" column="to_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="true" index="ar_mve_to_pos_loctype_idx">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="arPosLocId" column="to_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="arPosLocGkey" column="to_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="arPosSlot" column="to_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="arPosOrientation" column="to_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="arPosName" column="to_pos_name" type="string" length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="arPosBin" column="to_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="arPosTier" column="to_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="arPosAnchor" column="to_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="arPosOrientationDegrees" column="to_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <!-- todo -->
+        <!--<many-to-one name="arMveCheFetch" column="che_fetch" class="com.navis.argo.business.xps.model.Che" not-null="false">-->
+        <!--<meta attribute="field-description">Che that executed the 'fetch' phase of the move</meta>-->
+        <!--</many-to-one>-->
+
+        <!-- todo -->
+        <!--<many-to-one name="arMveCheCarry" column="che_carry" class="com.navis.argo.business.xps.model.Che" not-null="false">-->
+        <!--<meta attribute="field-description">Che that executed the 'carry' phase of the move</meta>-->
+        <!--</many-to-one>-->
+
+        <!-- todo -->
+        <!--<many-to-one name="arMveChePut" column="che_put" class="com.navis.argo.business.xps.model.Che" not-null="false">-->
+        <!--<meta attribute="field-description">Che that executed the 'put' phase of the move</meta>-->
+        <!--</many-to-one>-->
+
+        <!-- todo -->
+        <!--<many-to-one name="arMveCheQuayCrane" column="che_qc" class="com.navis.argo.business.xps.model.Che" not-null="false">-->
+        <!--<meta attribute="field-description">The quay crane that did the move (will be also be the fetch or put che, denormalized for query convenience)</meta>-->
+        <!--</many-to-one>-->
+
+        <property name="arMveDistToStart" column="dist_start" type="java.lang.Long">
+            <meta attribute="field-description">Distance prime mover travelled in fetch phase, meters. SPARCS getHistoryDistToStart()</meta>
+        </property>
+
+        <property name="arMveDistOfCarry" column="dist_carry" type="java.lang.Long">
+            <meta attribute="field-description">Distance prime mover travelled in carry phase, meters. SPARCS getHistoryDistOfCarry()</meta>
+        </property>
+
+        <property name="arMveTimeCarryComplete" column="t_carry_complete" type="timestamp">
+            <meta attribute="field-description">Time at which carry phase was completed. SPARCS getHistoryCarryCompl()</meta>
+        </property>
+
+        <property name="arMveTimeDispatch" column="t_dispatch" type="timestamp" index="ar_mve_t_dispatch_idx">
+            <meta attribute="field-description">Time at which move was dispatched. SPARCS getHistoryDispatchTime()</meta>
+        </property>
+
+        <property name="arMveTimeFetch" column="t_fetch" type="timestamp">
+            <meta attribute="field-description">Time at which fetch phase was completed. SPARCS getHistoryFetchTime()</meta>
+        </property>
+
+        <property name="arMveTimeDischarge" column="t_discharge" type="timestamp" index="ar_mve_t_discharge_idx">
+            <meta attribute="field-description">Time at which discharge phase was completed</meta>
+        </property>
+
+        <property name="arMveTimePut" column="t_put" type="timestamp" index="ar_mve_t_put_idx">
+            <meta attribute="field-description">Time at which put phase was completed. SPARCS getHistoryPutTime()</meta>
+        </property>
+
+        <property name="arMveTimeCarryCheFetchReady" column="t_carry_fetch_ready" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was ready to fetch. SPARCS 3.4: kWITagHistoryCarryCheFetchReadyTime</meta>
+        </property>
+
+        <property name="arMveTimeCarryChePutReady" column="t_carry_put_ready" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was ready to put. SPARCS 3.4: kWITagHistoryCarryChePutReadyTime</meta>
+        </property>
+
+        <property name="arMveTimeCarryCheDispatch" column="t_carry_dispatch" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was dispatched. SPARCS 3.4: kWITagHistoryCarryCheDispatchTime</meta>
+        </property>
+
+        <!-- 2013-11-07 ahmedsa ARGO-52765 -->
+        <property name="arMveTZArrivalTime" column="t_tz_arrival" type="timestamp">
+            <meta attribute="field-description">Time at which CHE arrived at the transfer zone</meta>
+        </property>
+
+        <property name="arMveRehandleCount" column="rehandle_count" type="java.lang.Long">
+            <meta attribute="field-description">Number of rehandles required to perform the move. SPARCS getHistoryRhndlCount()</meta>
+        </property>
+
+        <property name="arMveTwinFetch" column="twin_fetch" type="java.lang.Boolean">
+            <meta attribute="field-description">True if we the Fetch phase was a twin move</meta>
+        </property>
+
+        <property name="arMveTwinCarry" column="twin_carry" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the Carry phase was a twin move</meta>
+        </property>
+
+        <property name="arMveTwinPut" column="twin_put" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the Put phase was a twin move</meta>
+        </property>
+
+        <property name="arMveRestowAccount" column="restow_account" type="string" length="20">
+            <meta attribute="field-description">Account to charge restow cost against. SPARCS getRestowAccount()</meta>
+        </property>
+
+        <property name="arMveServiceOrder" column="service_order" type="string" length="20">
+            <meta attribute="field-description">The service order against which this move is to be charged</meta>
+        </property>
+
+        <property name="arMveRestowReason" column="restow_reason" type="string" length="20">
+            <meta attribute="field-description">Reason for restow. SPARCS getRestowReason()</meta>
+        </property>
+
+        <!-- 08-12-2010, ARGO-27660 RMK, v2.1.X, Additional columns to capture the carry, put, fetch che logins-->
+        <property name="arMveCheCarryLoginName" column="che_carry_login_name" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Carry CHE Operator Login Name</meta>
+        </property>
+
+        <property name="arMveChePutLoginName" column="che_put_login_name" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Put CHE Operator Login Name</meta>
+        </property>
+        <property name="arMveCheFetchLoginName" column="che_fetch_login_name" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Fetch CHE Operator Login Name</meta>
+        </property>
+
+        <property name="arMvePOW" column="pow" type="string" length="20" not-null="false">
+            <meta attribute="field-description">The Work Instruction Queue's Work Shift Point Of Work</meta>
+        </property>
+
+        <property name="arMveBerth" column="berth" type="string" length="20" not-null="false">
+            <meta attribute="field-description">The Work Instruction Queue's Work Shift Berthing</meta>
+        </property>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="amveCustomFlexFields"/>
+
+    </joined-subclass>
+
+</hibernate-mapping>

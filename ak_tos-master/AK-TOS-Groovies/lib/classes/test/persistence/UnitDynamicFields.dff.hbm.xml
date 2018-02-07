@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!--
+ For testing N4 Data Model Extension Integration
+-->
+
+<hibernate-mapping>
+    <!-- example dynamic fields which will be stored in some form in the database, only
+    dynamic-components are applied-->
+
+    <class name="com.navis.inventory.business.units.Unit">
+        <id/>
+        <dynamic-component name="customFlexFields">
+            <property name="unitCustomDFFString1" column="custdff_unit_string1" type="string" length="255"/>
+            <property name="unitCustomDFFString2" column="custdff_unit_string2" type="string" length="255"/>
+
+            <property name="unitCustomDFFDateTime1" column="custdff_unit_datetime1" type="timestamp"/>
+            <property name="unitCustomDFFDateTime2" column="custdff_unit_datetime2" type="timestamp"/>
+
+            <property name="unitCustomDFFLong1" column="custdff_unit_long1" type="java.lang.Long"/>
+            <property name="unitCustomDFFLong2" column="custdff_unit_long2" type="java.lang.Long"/>
+
+            <property name="unitCustomDFFDouble1" column="custdff_unit_double1" type="java.lang.Double"/>
+            <property name="unitCustomDFFDouble2" column="custdff_unit_double2" type="java.lang.Double"/>
+
+            <property name="unitCustomDFFSecondaryPosLocType" column="custdff_unit_2nd_pos_loctype"
+                      type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16">
+            </property>
+
+            <many-to-one name="unitCustomDFFUfv" class="com.navis.inventory.business.units.Unit" column="custdff_unit_unit"/>
+            <many-to-one name="unitCustomDFFCarrierVisit" class="com.navis.argo.business.model.CarrierVisit" column="custdff_unit_visit"/>
+            <many-to-one name="unitCustomDFFAnotherShipper" class="com.navis.argo.business.reference.Shipper"
+                         column="custdff_unit_another_shipper">
+            </many-to-one>
+
+            <many-to-one name="unitCustomDFFCustomFoo" class="com.navis.extension.sandbox.CustomFoo"
+                         column="custdff_unit_custom_foo"/>
+
+        </dynamic-component>
+    </class>
+
+
+</hibernate-mapping>

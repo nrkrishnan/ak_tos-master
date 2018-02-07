@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<extension-injection type="ENTITY_LIFECYCLE_INTERCEPTION" entity-name="UnitFacilityVisit" scope="MATSON" is-enabled="Y">
+  <extension name="MATUnitFacilityVisitLifeCyleInterceptor" scope="MATSON" />
+</extension-injection>
+<extension-injection type="ENTITY_LIFECYCLE_INTERCEPTION" entity-name="UnitEquipment" scope="MATSON/ALASKA" is-enabled="Y">
+  <extension name="MatsonAncUnitEquipmentInterceptor" scope="MATSON/ALASKA" />
+</extension-injection>
+<extension-injection type="ENTITY_LIFECYCLE_INTERCEPTION" entity-name="MoveEvent" scope="MATSON/ALASKA" is-enabled="Y">
+  <extension name="DischargeCompleteGroovy" scope="MATSON" />
+</extension-injection>
+<extension-injection type="ENTITY_LIFECYCLE_INTERCEPTION" entity-name="CarrierVisit" scope="MATSON/ALASKA" is-enabled="Y">
+  <extension name="MATVesselVisitValidationsELI" scope="MATSON/ALASKA" />
+</extension-injection>
+<extension-injection type="ENTITY_LIFECYCLE_INTERCEPTION" entity-name="GoodsBase" scope="MATSON" is-enabled="Y">
+  <extension name="MATReeferRqmntsLifeCyleInterceptor" scope="MATSON" />
+</extension-injection>
+<extension-injection type="ENTITY_LIFECYCLE_INTERCEPTION" entity-name="HazardItem" scope="MATSON/ALASKA" is-enabled="Y">
+  <extension name="MATHazardItemLifeCyleInterceptor" scope="MATSON" />
+</extension-injection>
+</argo:snx>
+

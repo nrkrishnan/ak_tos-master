@@ -1,0 +1,1236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2012 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd"
+       default-lazy-init="true">
+
+    <!-- Note this is never used directly, only as a parent bean for application definition with "parent" attribute -->
+    <bean id="baseHibernateSessionFactory" class="com.navis.framework.persistence.DefaultSessionFactory">
+        <property name="autoSpringMappingLocation">
+            <ref bean="beanFactoryLocation"/>
+        </property>
+        <property name="dataSource">
+            <ref bean="primaryDataSource"/>
+        </property>
+        <property name="entityInterceptor">
+            <ref bean="auditInterceptor"/>
+        </property>
+        <property name="upgradeManager">
+            <ref bean="upgradeManager"/>
+        </property>
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <!-- ========================= PERSISTENCE DEFINITIONS ========================= -->
+    <!--
+  - Alternative DataSource for non-J2EE environments.
+  - Can be used as a drop-in replacement for JNDI DataSource definitions, as all
+  - objects that depend on it will still get their expected DataSource reference,
+  - just a different one from a different source.
+  -
+  - DriverManagerDataSource simply creates a new Connection on each getConnection
+  - call, it doesn't pool. Consider Tomcat's connection pool for a real pool,
+  - defining a org.apache.tomcat.jdbc.pool.DataSource here, with same parameters.
+  -->
+
+    <!--
+        Bean Configuration: ConfigurationProperties
+     -->
+    <bean id="ConfigurationProperties" class="com.navis.framework.util.BaseConfigurationProperties">
+        <property name="containerType">
+            <value>none</value>
+        </property>
+    </bean>
+
+    <!--
+      - Defines a transaction manager for usage in business or data access objects.
+      - No special treatment by the context, just a bean instance available as reference
+      - for business objects that want to handle transactions, e.g. via TransactionTemplate.
+      -
+      - Needs a SessionFactory reference that it should handle transactions for.
+      - Can optionally take a DataSource reference that it should use export Hibernate
+      - transactions for, to be able to share transactions with plain JDBC access code
+      - on the same database (using the same DataSource as the Hibernate SessionFactory).
+      -->
+    <bean id="hibernateTransactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory">
+            <ref bean="hibernateSessionFactory"/>
+        </property>
+        <!--
+        <property name="dataSource"><ref bean="primaryDataSource"/></property>
+        -->
+    </bean>
+    <!--
+        - Alternative transaction manager that accesses the container's transaction manager.
+        - Can be used as drop-in replacement for HibernateTransactionManager, e.g. when
+        - needing distributed transactions (i.e. across multiple databases).
+        -->
+    <!--
+    <bean id="hibernateTransactionManager" class="org.springframework.transaction.jta.JtaTransactionManager"/>
+    -->
+
+    <bean id="queryProcessor" class="com.navis.framework.query.common.impl.processors.DispatchingQueryProcessor"
+          scope="singleton"/>
+
+    <!-- ========================= BUSINESS DEFINITIONS ========================= -->
+
+    <!--
+      - Example data access object, to be used higher-level objects in this context
+      - as <ref bean="exampleDataAccessObject"/> bean reference.
+      -
+      - Can also be used by web controllers or any other clients of this context,
+      - either via context.getBean("exampleDataAccessObject") or as
+      - <ref external="exampleDataAccessObject"/> bean reference -
+      - but shouldn't for the sake of clear application layering.
+      -
+      - Is assumed to use the SessionFactory reference, passed to it via a
+      - "setSessionFactory" bean property setter, probably with HibernateTemplate.
+    -->
+
+    <!-- Spring Hibernate Interceptor -->
+    <bean id="hibernateInterceptor" class="org.springframework.orm.hibernate3.HibernateInterceptor">
+        <property name="sessionFactory">
+            <ref bean="hibernateSessionFactory"/>
+        </property>
+    </bean>
+
+    <bean id="frameworkHibernateMappings" class="com.navis.framework.persistence.HbmFileSource">
+        <property name="mappings">
+            <list>
+                <value>dual.hbm.xml</value>
+                <value>configSetting.hbm.xml</value>
+                <value>localization.hbm.xml</value>
+                <value>reference.hbm.xml</value>
+                <value>security.hbm.xml</value>
+                <value>simpleSavedQuery.hbm.xml</value>
+                <value>filterSettings.hbm.xml</value>
+                <value>appCalendar.hbm.xml</value>
+                <value>upgradeLog.hbm.xml</value>
+                <value>applicationLog.hbm.xml</value>
+                <value>componentEvent.hbm.xml</value>
+                <value>system.hbm.xml</value>
+                <value>dashboard.hbm.xml</value>
+                <value>extension.hbm.xml</value>
+                <value>extensionDataModel.hbm.xml</value>
+                <value>customNode.hbm.xml</value>
+                <value>announcement.hbm.xml</value>
+                <value>integrationService.hbm.xml</value>
+                <value>quartz.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="interceptionListener" class="com.navis.framework.persistence.InterceptionDepthLimiter" scope="prototype"/>
+
+    <!-- A baselibe Auditor (implements 'Auditor') -->
+    <bean id="baseAuditor" class="com.navis.framework.persistence.BaseAuditor"/>
+
+    <!-- The standard carina Audit Interceptor (implements 'Interceptor') -->
+    <bean id="auditInterceptor" class="com.navis.framework.persistence.AuditInterceptor" scope="prototype">
+        <property name="interceptionListener">
+            <ref bean="interceptionListener"/>
+        </property>
+        <property name="auditor">
+            <ref bean="baseAuditor"/>
+        </property>
+    </bean>
+
+    <!-- EntityScoper
+            This is the default entity scoper (non-scope; GLOBAL).
+            Any application using scoping should override this bean, "entityScoper".
+        -->
+    <bean id="entityScoper" class="com.navis.reference.business.global.GlobalEntityScoper" scope="singleton"/>
+
+    <!-- Data Access Objects -->
+    <bean id="hibernateApi" class="com.navis.framework.persistence.HibernateApi">
+        <property name="sessionFactory">
+            <ref bean="hibernateSessionFactory"/>
+        </property>
+        <property name="entityScoper">
+            <ref bean="entityScoper"/>
+        </property>
+    </bean>
+
+    <bean id="upgradeManager" class="com.navis.framework.upgrade.UpgradeManager" scope="singleton=">
+        <property name="currentVersionNumber">
+            <!-- 2007-06-21 (2) mrobinson CAR-1431 Initial database population  -->
+            <!-- 2007-06-21 (3) mrobinson CAR-1432 Initial database ref data population via data seeders -->
+            <!-- 2006-02-07 (5) eyu added a column to security -->
+            <!-- 2006-02-08 (6) lbarman add Update Action for index (event.created column) to N4-Services module -->
+            <!-- 2006-02-08 (7) JJS new columns in inventory.hbm.xml for XPS notification -->
+            <!-- 2006-02-10 (8) lbarman new index for services event entity, column 'created' (readded since commented for last release) ARGO-2937 -->
+            <!-- 2006-02-13 (9) shan new entity 'TruckCompanyDrivers' is added ARGO-2955 -->
+            <!-- 2006-02-14 (10) shantu ARGO-2718 added new property equip type id under serial range and made it a nullable property -->
+            <!-- 2006-02-15 (11) JJS v1.0.6 ARGO-3203 Peter added unitOpl to Unit -->
+            <!-- 2006-02-16 (12) hkim CAR-778 Role scoped saved queries -->
+            <!-- 2006-02-16 (14) hkim CAR-778 Persist order by clause to saved queries -->
+            <!-- 2006-02-21 (15) mcnerney CAR-710 Drop the correct unique constraint. -->
+            <!-- 2006-02-21 (16) PAC ARGO-3045 Added cvdTimeFirstAvailable and cvdFirstFreeDay to VisitDetails. -->
+            <!-- 2006-02-21 (17) lbarman ARGO-2942/CAR-589 Add parameter fields to savedPredicate -->
+            <!-- 2006-02-22 (18) charron ARGO-3045 Add FirstFreeDay, TimeDischargeComplete, TimeFirstAvailable to VisitDetail -->
+            <!-- 2006-02-23 (19) JJS v1.0.7 ARGO-2981 new tables for Last Free Day -->
+            <!-- 2006-02-24 (20) estuder CAR-794 new tables for calendar events and calendar event types -->
+            <!-- 2006-02-27 (21) JJS v1.0.7 ARGO-2981 extend calendar for apex -->
+            <!-- 2006-03-01 (22) isaacson ARGO-3053 replace weightgroup ServiceReference with ServicePkey and ServiceGkey in xps.hbm.xml -->
+            <!-- 2006-03-06 (23) jkathir ARGO-3159 changing edisessFileExt column from not-nullable to nullable -->
+            <!-- 2006-03-05 (24) PAC ARGO-NONE add vessel.hbm craneStatistics, craneStatisticsDelay and lineStatistics to replace cheStatistics -->
+            <!-- 2006-03-06 (25) PAC ARGO-NONE add exchangeLane to truckVisitDetails for sites with only one exchange area -->
+            <!-- 2006-03-07 (26) ramsatis ARGO-3405 add srvcPkey (a nullable column, for supporting SPARCS import) to CarrierService -->
+            <!-- 2006-03-08 (27) JJS v1.0.9 ARGO-3492 expand work instruction to make it useful to N4 -->
+            <!-- 2006-03-08 (28) estuder CAR-000 make user options table name consistent -->
+            <!-- 2006-03-10 (29) JJS v1.0.9.1 ARGO-3328 expand capability of Notices -->
+            <!-- 2006-03-10 (30) PAC v1.0.9.2 ARGO-NONE denormalize carrier operator into VisitDetails -->
+            <!-- 2006-03-16 (31) lbarman v1.0.9.2 ARGO-3602: added field isEventRecorded to EventType entity-->
+            <!-- 2006-03-16 (32) lbarman v1.0.9.2 ARGO-2937: redo the schema change since it did not get picked up in (8) -->
+            <!-- 2006-03-17 (33) JJS v1.0.10 ARGO-NONE: add create time to Unit & UFV -->
+            <!-- 2006-03-18 (34) JJS v1.0.11 ARGO-NONE: rail restructure -->
+            <!-- 2006-03-21 (35) PAC v1.0.11 ARGO-NONE: denormalize carrier operator into Carrier Visit -->
+            <!-- 2006-03-21 (36) smahesh v1.0.11 ARGO-3159: Adding the upgrade action which was missing-->
+            <!-- NOTE GAP HERE: CHAITANYA DID NOT UPDATE FRAMEWORK FOR BUILD 37 -->
+            <!-- 2006-03-24 (38) JJS v1.0.10.6 ARGO-ARGO-3744: denormalize impediments -->
+            <!-- NO UPDATE FOR 39 and 40, but related to ARGO-2989 -->
+            <!-- 2006-04-13 (41) shan v1.1-Queue ARGO-2989 road.hbm removed stageFacility, tranTypeFacility and fieldFacility -->
+            <!-- 2006-04-13 (42) cpallapo v1.1-Queue  ARGO-2989 road.hbm removed stage -->
+            <!-- 2006-04-15 (43) cpallapo v1.1-Queue  ARGO-2989 road.hbm Changed data types to be enums -->
+            <!-- 2006-04-15 (44) cpallapo v1.1-Queue  ARGO-2989 Added order-by clause to the tranFields -->
+            <!-- 2006-04-16 (45) PAC  ARGO-3941 add indices on ediInterchange, ediBatch and road documents to improve purge -->
+            <!-- 2006-04-17 (46) PAC  ARGO-3941 add EdiUpgradeAction46 and RoadEdiUpgradeAction to create indices -->
+            <!-- 2006-04-27 (47) cpallapo  ARGO-4065 Added DynaForm and DynaFormField to the argoForms -->
+            <!-- 2006-05-12 (48) JJS v1.1.2 ARGO-4171 Add MoveEvent table -->
+            <!-- 2006-05-15 (49) JJS v1.1.2 ARGO-4171 Changes to MoveEvent Schema, and denormalize damages into UE, hazards into Goods -->
+            <!-- 2006-05-15 (50) PAC v1.1.2 ARGO-4048 Add more keywords to EdiTransaction, make ediError pointer to EdiTransaction optional -->
+            <!-- 2006-0 (51) lbarman ARGO-1671 add flag to make sure a reference id is entered when adding/vetoing a flag -->
+            <!-- 2006-05-29 (52) svaitheas ARGO-3844 Moved the Auditing fields to inventory.hbm.xml-EqBaseOrder entity from orders.hbm.xml-EquipmentOrder entity.  -->
+            <!-- 2006-05-29 (53) lbarman v1.1.2 ARGO- 4337: Added 'isReserved' flag to UnitEquipment in order to differentiate between reserved and
+                 delivered versus preadvised and received units -->
+            <!-- 2006-06-02 (54) JJS v1.1.2 ARGO-4365 Need one more timestamp on UFV to describe all states -->
+            <!-- 2006-06-05 (55) shivajic v1.1.2 ARGO-1671 Initialized 'isFlagReferenceIdRequired' flag in FlagType-->
+            <!-- 2006-06-05 (56) cpallapo v1.1.2 ARGO-4121 Scoping consoles and printers(Hard ware devices) at the complex level.-->
+            <!-- 2006-06-02 (57) JJS v1.1.2 ARGO-4398 Add ufvTransitStateEnum -->
+            <!-- 2006-06-07 (58) lbarman v1.1.2 ARGO-4337: populate isReserved field for existing unitEquipments -->
+            <!-- 2006-06-15 (59) cpallapo v1.1.3 ARGO-4394: Added stageMenuId to the GateStage entity. -->
+            <!-- 2006-06-19 (60) PAC v1.1.3 ARGO-4354: add truckVisitStats ant truckVisitStage entity -->
+            <!-- 2006-06-20 (61) PAC v1.1.3 ARGO-4354: change column name from 'end' to 'stage_end' -->
+            <!-- 2006-06-20 (62) cpallapo v1.1.3 ARGO-4394: Wrote an upgrade action(RoadUpgradeAction62) to upgrade the existing gates. -->
+            <!-- 2006-06-28 (63) HJK CAR-998: Expanding length of saved_query.query_display_fields, query_orderings, query_where to 1000 chars -->
+            <!-- 2006-07-07 (64) lbarman ARGO-4337: improve upgrade action for build 58 to include storage units to be defined as reserved -->
+            <!-- 2006-07-06 (65) aneyer ARGO-4098: Added indices for unit.create_time and unit_facility_visit.transit_state -->
+            <!-- 2006-07-07 (66) lbarman v1.1.F ARGO-4485: upgrade action to fix changed field names for goodsIsHazardous and  unitEquipmentIsDamaged -->
+            <!-- 2006-07-07 (67) cpallapo ARGO-4568: Scoping Document Types @ complex level. Written RoadUpgradeAction67 to make the docTypeScope nullable.-->
+            <!-- 2006-07-10 (68) JJS v1.1.F ARGO-4531 Add Operator to EntitySet -->
+            <!-- 2006-07-12 (69) smahesh v1.1.F ARGO-4569: upgrade action to add a new field for ediSessDelimeter -->
+            <!-- 2006-07-12 (70) TPM CAR-739 - Added new table (frm_upgrade_log) to log database upgrades -->
+            <!-- 2006-07-14 (71) svaitheas ARGO-4492 - Update the empty string values to be null values for origin and destination -->
+            <!-- 2006-07-14 (72) PAC ARGO-4635 - Add EDI service event hbm file -->
+            <!-- 2006-07-18 (73) JJS ARGO-4614 - Munge scope enum: must sort properly -->
+            <!-- 2006-07-20 (74) lbarman v1.1.0.0 ARGO-4607: roll functionality implemented requires different roll setting of line operator-->
+            <!-- 2006-07-21 (75) shan v1.1.0.0 ARGO-4596: increased the length of the column dfieldDescription to hold 500 chars -->
+            <!-- 2006-07-21 (76) EYU v1.1.0 ARGO-1840: Add role to Report Definition. -->
+            <!-- 2006-07-25 (77) cpallapo v1.1.1 ARGO-4722: Increased the length of DynaForm description column. -->
+            <!-- 2006-07-25 (78) EYU v1.1.0 ARGO-1840: Add role to Report Definition. Replace many-to-many table -->
+            <!-- 2006-07-27 (79) smahesh v1.1.1 ARGO-4658: Added a new column to maintain EDI transaction control number -->
+            <!-- 2006-07-31 (80) JJS ARGO-4717 - Add configuration parm re: match Unit when posting releases -->
+            <!-- 2006-08-01 (81) Shan ARGO-4758 - increased the length for tranCtrAccTypeId -->
+            <!-- 2006-08-07 (82) PAC ARGO-4758 - add CARGO module -->
+            <!-- 2006-08-09 (1000) HJK CAR-1048 - Limit Logins and other Authentication Enhancements-->
+            <!-- 2006-08-21 (1001) jkathir ARGO-4764 - Added four new colums (edimlbxSenderQualifier,edimlbxSenderId,
+                edimlbxReceiverQualifier, edimlbxReceiverId) to EDI Mailbox -->
+            <!-- 2006-08-21 (1002) Murali ARGO-4564,ARGO-4814 - Created a new entity Storage Rule to persist the combination of different start and end time -->
+            <!-- 2006-08-29 (1003) Shan ARGO-4850 - To alter the length of various denormalized fields in truck transaction entity-->
+            <!-- 2006-08-29 (1004) Shan ARGO-4850 - To alter the length for eqtypid,bizuid in argo -->
+            <!-- 2006-08-29 (1005) HJK CAR-819 - Metafield Customization-->
+            <!-- 2006-08-31 (1006) shivajic ARGO-4823 - New entity that maps BL with GoodsBl-->
+            <!-- 2006-09-06 (1007) shivajic ARGO-4823 - Primary key for existing table -->
+            <!-- 2006-09-06 (2000) TPM - We've branched, so we need to bump up the value as per
+                http://devdocs.navis.com/carina/components/persistence/SchemaUpgrade.html#branches -->
+            <!-- 2006-09-11 (2001) jkathir ARGO-4824 - The extract does not contain all the encodings and then the map
+                                   explicitely picks one? updating all the EDI maps with respect to the new schema changes -->
+            <!-- 2006-09-11 (2002) eyu ARGO-5133 - fix NULL values in CREATED field in EquipmentOrder and EquipmentOrderItems -->
+            <!-- 2006-09-11 (2003) cpallapo ARGO-4727 - Converting GateStageTranType to a class from subclass and refering to
+                the DynaForm. Because, the GateStageTranType HAS a DynaForm, but GateStageTranType IS not a DynaForm by it self.
+                RodUpgradeAction2003 will take care of the data migration-->
+            <!-- 2006-09-14 (2004) lbarman ARGO-4681: re-introduce eqoiTally field as denormalized field -->
+            <!-- 2006-09-15 (2005) shivajic ARGO-4823 - added BL Item Nbr column -->
+            <!-- 2006-09-18 (2006) sghandhi ARGO-5154 - changed EdiSegment segment column datatype to text  -->
+            <!-- 2006-09-19 (2007) shivajic ARGO-5225 - added BL Release entity-->
+            <!-- 2006-09-20 (2008) PAC ARGO-5271 add truckingCompany insurance expiration-->
+            <!-- 2006-09-22 (2009) shivajic ARGO-5285 Add denormalized BL string to GoodsBase  -->
+            <!-- 2006-09-22 (2010) PAC ARGO-5284 - add Trucking Company default EDO -->
+            <!-- 2006-09-25 (2011) eyu ARGO-5301 Fix to hazards pointed both goods and bookings  -->
+            <!-- 2006-09-27 (2012) HJK CAR-819 - Measurement Override Metafield Customization-->
+            <!-- 2006-09-27 (2013) Shan ARGO-4797 - altered the length for certain fields in argo and road hbm-->
+            <!-- 2006-10-05 (2014) eyu ARGO-4370 Create table to store failed purged entities -->
+            <!-- 2006-10-16 (2015) MMitchell CAR-747 Upgrade action to handle quartz creation of tables -->
+            <!-- 2006-10-16 (2016) eyu ARGO-5358 Make existing super users to be argo users. -->
+            <!-- 2006-10-16 (2017) PAC ARGO-5457 Create table to store facility relays -->
+            <!-- 2006-10-17 (2018) svaitheas ARGO-4696 Refactoring the vent fields in orders module equipmentorderitem table -->
+            <!-- 2006-10-17 (2019) svaitheas ARGO-4696 ARGO-5402 :Correct 'record reefer reading' form vent settings to conform to functional requirements -->
+            <!-- 2006-10-17 (2020) svaitheas ARGO-4696 ARGO-4699 :Correct update reefer requirements form vent settings to conform to functional requirements  -->
+            <!-- 2006-10-17 (2021) lbarman ARGO-4698: changes done to road.hbm for new vent implementation-->
+            <!-- 2006-10-18 (2022) lbarman v1.2.E ARGO-4698: upgrade action to change length of existing column vent_unit -->
+            <!-- 2006-10-18 (2023) lbarman v1.2.E 2ARGO-4696 ARGO-4699: Correct update reefer records form vent settings to conform to functional requirements -->
+            <!-- 2006-10-18 (2024) lbarman v1.2.E 2ARGO-4696 ARGO-4699: Correct update goods form vent settings to conform to functional requirements -->
+            <!-- 2006-10-19 (2025) lbarman v1.2.E ARGO-4697: Correct update vent requirement and unit of equipmentOrderItem to conform to functional requirements -->
+            <!-- 2006-10-19 (2026) lbarman v1.2.E ARGO-4698: Correct update vent requirement/setting of truck transaction and unit to conform to functional requirements -->
+            <!-- 2006-10-23 (2027) hkim CAR-1125 - Custom Options Metafield Customization-->
+            <!-- 2006-10-25 (2028) eyu ARGO-5445 - new flex fields for UnitFacilityVisit -->
+            <!-- 2006-10-27 (2029) shivajic ARGO-5425 v1.2.F BL Nbr unique by Line and Vessel Visit-->
+            <!-- 2006-10-27 (2030) svaitheas v1.2.F ARGO-5352 Moved the Auditing fields to inventory.hbm.xml-EqBaseOrder entity from orders.hbm.xml-EquipmentOrder entity.  -->
+            <!-- 2006-10-27 (2031) murali ARGO-5531 New table inv_chargeable_ctr_events to store the extracted billable events.  -->
+            <!-- 2006-10-27 (2032) hkim CAR-1134 - Add xml support to config setting-->
+            <!-- 2006-10-31 (2033) svaitheas ARGO-5454 - Remove config setting for rolling containers-->
+            <!-- 2006-11-01 (2034) lbarman v1.2.F ARGO-5352: audit fields added to superclass of EquipmentOrderItem -->
+            <!-- 2006-11-08 (2035) JJS v1.2.F ARGO-5583: add isCurrentUse flag to UnitEquipment-->
+            <!-- 2006-11-09 (2036) murali ARGO-5531: added evntBillingExtractBatchId to Event -->
+            <!-- 2006-11-07 (2037) lbarman v1.2.F ARGO-5539: added definition for generic Job scheduling mechanism entities -->
+            <!-- 2006-11-13 (2038) lbarman v1.2.G ARGO-5539: added definition for reporint Job scheduling  -->
+            <!-- 2006-11-14 (2039) lbarman v1.2.G ARGO-5539: added email subject to the jobDefinition -->
+            <!-- 2006-11-14 (2040) lbarman v1.2.G ARGO-5628: reportingJobDefinition - add scoping fields -->
+            <!-- 2006-11-14 (2041) cpallapo v1.2.F ARGO-5497: Gate Configuration related schema changes -->
+            <!-- 2006-11-14 (2042) lbarman v1.2.G ARGO-5628: fixing wrong hbm def for reportingJobDefinition -->
+            <!-- 2006-11-20 (2043) shivajic v1.2.H ARGO-5670 removed unique constraint for internalname field in Job Definition entity as the key generation fails in mysql db -->
+            <!-- 2006-11-29 (2044) eyu v1.2.I ARGO-5667 data truncation exception when saving filters -->
+            <!-- 2006-12-04 (2045) jkathir ARGO-5569 - changed the edi_segment.segment column datatype to varchar(3000) from ntext -->
+            <!-- 2006-12-06 (2046) HJK CAR-736 - add proxy to foo components -->
+            <!-- 2006-12-07 (2047) lbarman v1.2.java ARGO-5695: define scheduling group; add group name to log -->
+            <!-- 2006-12-07 (2048) JJS v1.2.L ARGO-5738: dashboard prototype -->
+            <!-- 2006-12-12 (2049) lbarman v1.2.K ARGO-5739: add quantity and quantityUnit to event -->
+            <!-- 2006-12-18 (2050) Shan v1.2.L ARGO-5742: data type for tranEqoAccTypeId is changed from string to Enum so length is altered -->
+            <!-- 2006-12-20 (2051) lbarman v1.2.L ARGO-5815: add flags for ignoreDamages and ignoreHolds used when picking a container -->
+            <!-- 2006-12-20 (2052) eyu v1.2.L ARGO-5831: Add index on created date columns to speed up purge -->
+            <!-- 2006-12-29 (2053) murali v1.2 ARGO-5823: Add Quantity and Quantity Unit columns to Chargeable_ctr_events table -->
+            <!-- 2007-01-05 (2054) eyu v1.2.N ARGO-5310: Change all WEIGHT fields from Long to Double -->
+            <!-- 2007-01-10 (2055) svaitheas ARGO-5920 v1.2.0 v1.1.21 Long email address (over 35 chars) causes failure .Increase the email address column size to 255 chars -->
+            <!-- 2007-01-10 (2056) PAC ARGO-5925 v1.2.0 Define billing service event extract in argoExtract.hbm -->
+            <!-- 2007-01-10 (2057) PAC ARGO-5930 v1.2.0 add InvoiceTypeService to Billing.hbm -->
+            <!-- 2007-01-11 (2058) svaitheas ARGO-5889 v1.2.0 System exception is thrown while adding Routing Point since this field is removed from UI but has not-null attribute. Make it nullable-->
+            <!-- 2007-01-12 (2059) eyu CAR-1233 v1.2  Remove all records in the authentication history table -->
+            <!-- 2007-01-15 (2060) eyu CAR-1171 added columns to the quartz log tables -->
+            <!-- 2007-01-16 (2061) PAC v1.2.G ARGO-5938: add FACILITY to Billing Extract for MARINE events so we scope gueries -->
+            <!-- 2007-01-10 (2062) svaitheas ARGO-5920 v1.2.0 v1.1.21 In INVENTORY Long email address (over 35 chars) causes failure .Increase the email address column size to 255 chars -->
+            <!-- 2007-01-10 (2063) svaitheas ARGO-5920 v1.2.0 v1.1.21 In EDI Long email address (over 35 chars) causes failure .Increase the email address column size to 255 chars -->
+            <!-- 2007-01-10 (2064) svaitheas ARGO-5920 v1.2.0 v1.1.21 In ARGO Long email address (over 35 chars) causes failure .Increase the email address column size to 255 chars -->
+            <!-- 2007-01-10 (2065) svaitheas ARGO-5920 v1.2.0 v1.1.21 In ROAD Long email address (over 35 chars) causes failure .Increase the email address column size to 255 chars -->
+            <!-- 2007-01-10 (2066) svaitheas ARGO-5920 v1.2.0 v1.1.21 In ARGO Long email address (over 35 chars) causes failure .Increase the email address column size to 255 chars -->
+            <!-- 2007-01-18 (2067) eyu ARGO-5954 v1.2.0 Table vsl_vessel_classes indexing inconsistent with scope -->
+            <!-- 2007-01-18 (2068) JJS ARGO-5848 v1.2.0 add unique constraint for [scope+id] for all reference entities -->
+            <!-- 2007-01-18 (2069) PAC ARGO-5938 v1.2.0 make discount rate fields nullable -->
+            <!-- 2007-01-18 (2070) PSR ARGO-5936 Added multi-column index to srv_flags -->
+            <!-- 2007-01-19 (2071) PAC ARGO-5938 v1.2.0 make final invoice nbr nullable -->
+            <!-- 2007-01-22 (2072) cpallapo ARGO-5990  Upgrade action to upgrade LPC with the new adaptors(BENTO) and new parameters-->
+            <!-- 2007-01-25 (2073) murali ARGO-6016 Added index on source_event_gkey column column of table ChargeableCtrEvent-->
+            <!-- 2007-01-26 (2074) eyu ARGO-5985 v1.2.0 Create unique keys for all reference entities -->
+            <!-- 2007-01-29 (3001) lbarman ARGO-5927 v1.3.A: added appointments data model -->
+            <!-- 2007-01-29 (3002) lbarman ARGO-5927 v1.3.A: added RoadUpgradeAction3002 to set the gateConfigState db discriminator -->
+            <!-- 2007-01-29 (3003) murali ARGO-6067 v1.2.0: rename ChargeableCtrEvent as ChargeableUnitEvent and moved to Argo -->
+            <!-- 2007-01-29 (3004) murali ARGO-6079 v1.2.0: new indices for ChargeableUnitEvent -->
+            <!-- 2007-02-01 (3005) lbarman v1.3.A ARGO-6097: add foreign key constraint btw reportJobDefinition and reportDefinition; drop old mapping table-->
+            <!-- 2007-02-14 (3006) rkhawaja v1.3.B ARGO-6221: make is_common_carrier flag null-able in vsl_vessels -->
+            <!-- 2007-02-15 (3007) JJS v1.3.B ARGO-6265: Add EdiPostingRules entity -->
+            <!-- 2007-02-20 (3008) lbarman v1.3.B ARGO-6261: Add quota rule cutoff time -->
+            <!-- 2007-02-26 (3009) lbarman v1.3.B ARGO-6348: move reference to appointmentRuleSet from AppointmentStage to gate -->
+            <!-- 2007-02-27 (3010) JJS v1.3.B ARGO-6305,6265 : Add argo PropertySource entity, add cvCustomsId -->
+            <!-- 2007-02-28 (3011) jkathir v1.3B ARGO-6017 Long shipper and consignee name (over 30 characters) causes failure. Increased the length of shipper_name and consignee_name column of BillOfLading table from 30 to 80 -->
+            <!-- 2007-02-28 (3012) eyu v1.3B CAR-1036 Delegated Security -->
+            <!-- 2007-02-26 (3013) kaustin v1.3.B ARGO-4830: Add support for digitalAssets -->
+            <!-- 2007-03-05 (3014) lbarman v1.3C ARGO-6379: add appointment window open field to appointment quota rule-->
+            <!-- 2007-03-08 (3015) murali v1.3C ARGO-6459: indices for ChargeableUnitEvent-->
+            <!-- 2007-03-8  (3016) rkhawaja v1.3.C ARGO-6292: add column for bonded_destination in crg_bills_of_lading table  -->
+            <!-- 2007-03-13 (3017) JJS v1.3.C ARGO-6477: add scoped biz unit properties for shipper, consignee +other minor changes -->
+            <!-- 2007-03-13 (3018) Jeffw v1.3C ARGO-5634: add index for srv_event.applied_to_gkey -->
+            <!-- 2007-03-21 (3019) PSR ARGO-6541 id field for truck drivers -->
+            <!-- 2007-03-21 (3020) lbarman v1.3C ARGO-6560: Shipper and Consignee converted from Strings to ScopedBizUnits in orders module -->
+            <!-- 2007-03-21 (3021) jkathir v1.3D ARGO-6089: Making scoping column as nullable for Entities - EdiFilterEntry,
+                                   EdiSessionFilter, EdiReleaseMap and Adding a new column edimsgIdVerRel for EdiMessageType table-->
+            <!-- 2007-03-21 (3022) lbarman v1.3C ARGO-6560: Upgrade action for Shipper and Consignee converted from Strings to ScopedBizUnits in orders module -->
+            <!-- 2007-03-22 (3023) lbarman v1.3C ARGO-6561: Upgrade action for Shipper and Consignee converted from Strings to ScopedBizUnits in cargo module -->
+            <!-- 2007-03-23 (3024) JJS v1.3D ARGO-6597: relate wq's to wi's through pkey, not gkey -->
+            <!-- 2007-04-02 (3025) PAC v1.3D ARGO-6639: add stageOrder to gate stages -->
+            <!-- 2007-04-03 (3026) PAC v1.3D ARGO-6639: add upgrade action to populate stageOrder to gate stages -->
+            <!-- 2007-04-09 (3027) lbarman v1.3.0 ARGO-6781: appointment has field for the state it is currently in -->
+            <!-- 2007-04-19 (3028) JJS v1.3I ARGO-6632: use new framework method to remove foreign keys, remove self-reference from WI to shift target WI -->
+            <!-- 2007-04-24 (4001) smahesh ARGO-6909 v1.4.A: update edi filter entries value from containerOperator to operator, xsd no more has an attribute containerOperator -->
+            <!-- 2007-04-30 (4002) jkathir v1.4.A ARGO-6877 Since shipper name in ANSI EDI comes upto 60 characters increasing the length of
+                                   ScopedBizUnit id column from "16" to "255"  -->
+            <!-- 2007-05-01 (4003) psr v1.4.A ARGO-6877 Bring dependent road columns into line with 4002  -->
+            <!-- 2007-05-01 (4005) lbarman v1.4.A ARGO-7010: Divide privileges for Unit and Equipment Status view - make sure behavior of existing roles doesn't change -->
+            <!-- 2007-05-10 (4006) pac v1.4.A ARGO-6699: add tier calculation field to billing service type -->
+            <!-- 2007-05-10 (4007) pac v1.4.A ARGO-6699: add performed time to chargeableMarineEvent extract -->
+            <!-- 2007-05-11 (4008) pac v1.4.A ARGO-6699: add currency precision -->
+            <!-- 2007-05-21 (4009) jkathir v1.4.A ARGO-6366: added two new columns (edimapDic and edimapIsBuiltIn) to EdiMessageMap to support user defined EDI Dictionaries -->
+            <!-- 2007-05-22 (4010) pac v1.4.A ARGO-6255: add predicate widget to EDI Session -->
+            <!-- 2007-05-29 (4011) eyu v1.4.A ARGO-7190: Flex fields integration in the road module. -->
+            <!-- 2007-05-31 (4012) JJS v1.4.A ARGO-7244 (matson) Add strength code to Equipment -->
+            <!-- 2007-06-07 (4013) eyu v1.4.B ARGO-xxx (matson) Add JMS support to external JMS provider -->
+            <!-- 2007-06-01 (4014) Shan v1.4.A ARGO-7081: moved equiptype equivalent node to the correct privilege. -->
+            <!-- 2007-06-07 (4015) PAC v1.4.B ARGO-7263 (matson) Ability to bypass the Xenos Mapper when posting or extracting EDI  -->
+            <!-- 2007-06-12 (4016) Shan v1.4.B ARGO-7104 - new entity EdiJobDefinition is introduced -->
+            <!-- 2007-06-12 (4017) smahesh v1.4.B ARGO-6262 Added new columns to support edi acknowledgement in edi transaction table -->
+            <!-- 2007-06-14 (4018) BD v1.4.B ARGO-7374 billing attributes for payments, etc  -->
+            <!-- 2007-06-18 (4019) smahesh v1.4.C ARGO-6262 remove the ack status column as we found it has no value  -->
+            <!-- 2007-06-22 (4020) PSR Rename indexes with duplicate names  -->
+            <!-- 2007-06-25 (4021) PAC v1.4.C ARGO-7263 (matson) Ability to bypass the Xenos Mapper when posting or extracting EDI  -->
+            <!-- 2007-06-28 (4022) PAC v1.4.D ARGO-7502 (lpc) add bizunit credit status and ufv guarantee date and party  -->
+            <!-- 2007-06-29 (4023) JBW - ARGO-7148 added binary yard model column to yard  -->
+            <!-- 2007-07-10 (4024) Shan - 1.4.E ARGO-7366 increased column length for the field stageId  -->
+            <!-- 2007-07-11 (4025) lbarman v1.4.E ARGO-7551: add hazard item emergency response guide number and notes fields-->
+            <!-- 2007-07-12 (4026) JBW - ARGO-7148 the type of the column had to change due to an error in Carina  -->
+            <!-- 2007-07-13 (4027) lbarman v1.4.F ARGO-7618: bugfix for weekday calculation in generic scheduling cron expression -->
+            <!-- 2007-07-16 (4028) Shan - 1.4.F ARGO-7362 upgrade action to switch from old edi scheduling to new scheduling scheme -->
+            <!-- 2007-07-17 (4029) eyu - 1.4.F CAR-1424 handle low priority jms queues -->
+            <!-- 2007-07-22 (4031) JJS - 1.4.F ARGO-7752 add horizon days to ArgoUser for User Time Horizon feature. -->
+            <!-- 2007-07-23 (4032) Shan - 1.4.F ARGO-7714 renamed the column name state to stage_gkey . -->
+            <!-- 2007-07-30 (4033) jkathir v1.4.G ARGO-7842: add predicate widget to EDI Session. Added a new upgrade action since the earlier upgrade action ApexUpgradeAction4010 doesn't work -->
+            <!-- 2007-07-30 (4034) Shan - 1.4.G ARGO-7626 added more flex fields -->
+            <!-- 2007-08-02 (4035) Shan - 1.4.G ARGO-7625, added new column lineopDOTHazCarrierCertNbr to the line operator entity -->
+            <!-- 2007-08-03 (4036) smahesh - 1.4.G ARGO-7263 (matson), fixed the upgrade 4015 problem -->
+            <!-- 2007-08-03 (4037) lbarman - 1.4.G ARGO-7677: sparcs damage codes are saved as part of the unitEquipment -->
+            <!-- 2007-08-03 (4038) murali - 1.4.F ARGO-7944 added two new columns bexuLastDraftInvNbr and bexmLastDraftInvNbr  -->
+            <!-- 2007-08-09 (4039) kramu - 1.4.G ARGO-7358 added a new column edi_partner_gkey to edi_job_definition. -->
+            <!-- 2007-08-14 (4040) ramsatish - 1.4.H ARGO-7333 revise equip serial range: range to be defined by startingSerialNbr and endingSerialNbr. -->
+            <!-- 2007-08-14 (4041) bdrasin - 1.4.H 8081 made DiscountType obsoletable. -->
+            <!-- 2007-08-15 (4042) JJS - 1.4.H ARGO-8017 add new EquipmentState Entity. -->
+            <!-- 2007-08-13 (4043) lbarman - 1.4.H ARGO-7916: change uniqueness constraint for EquipDamageType/EqComponent -->
+            <!-- 2007-08-21 (4044) JJS - 1.4.H ARGO-7963 expand EquipmentState Entity. -->
+            <!-- 2007-08-23 (4045) mrobinson - CAR-1404 Addition of the Application Log page. -->
+            <!-- 2007-08-26 (4046) lbarman v1.4.I ARGO-5771: define user and language used for scheduled reports -->
+            <!-- 2007-08-27 (4047) Murali v1.4.J ARGO-6576: New column ufvPowerPaidThruDay added to UnitFacilityVisit -->
+            <!-- 2007-08-27 (4048) Murali - BIL-71 Added invoiceInterfaceId, payInterfaceId and creditInterfaceId columns -->
+            <!-- 2007-09-04 (4049) Murali - BIL-77 Added paidThruDay and prevPaidThruDay columns to invoice_items  -->
+            <!-- 2007-09-04 (4050) Murali - BIL-79 Added evntQuantityUnit column to invoice_items  -->
+            <!-- 2007-09-11 (4051) eyu - 1.4.I CAR-1491 : BizRole Constrained Privileges -->
+            <!-- 2007-09-18 (4052) Shan - 1.4.K ARGO-7520 added TRUCK ID -->
+            <!-- 2007-09-19 (4053) bdrasin - BILL-87 Added table for InvoiceTypeSavedField -->
+            <!-- 2007-09-20 (4054) lbarman - 1.4.K ARGO-8318: upgrade action for inventory services refactoring  -->
+            <!-- 2007-09-25 (4055) murali - BIL-92: Added creditInvoiceTax class, invoiceFinalized date etc., -->
+            <!-- 2007-10-31 (4056) PSR - added tvdtlsGosInTvKey, tvdtlsGosOutTvKey, laneScanSetKey -->
+            <!-- 2007-10-02 (4057) murali - BIL-100: Renamed PaymentInvoice as PaymentItem -->
+            <!-- 2007-10-04 (4058) murali - BIL-104: Renamed CreditInvoice as CreditItem and CreditInvoiceTax as CreditItemTax-->
+            <!-- 2007-10-05 (4059) estuder - ARGO-8517: Import SPARCS Settings File (added yrdSparcsSettings field to Yard entity) -->
+            <!-- 2007-10-05 (4060) bdrasin - BIL-106: Added EventEntityId to InvoiceItem-->
+            <!-- 2007-10-05 (4061) murali - BILL-107 : Added denormalized columns to invoice items. Created new entity BillingSetting-->
+            <!-- 2007-10-05 (4062) PAC - ARGO-6339: Add allowStageId to gateStage -->
+            <!-- 2007-10-08 (4063) murali - BILL-107 : renamed misleading column names -->
+            <!-- 2007-10-06 (4064) lbarman - ARGO-8540: changes reveiled shortcoming in event field update value length - making fields bigger -->
+            <!-- 2007-10-10 (4065) PSR added TruckVisitDetails gos_tv_key & index -->
+            <!-- 2007-10-14 (4066) murali - ARGO-8635 : Added missing columns to ChargeableMarineEvent and ChargeableUnitEvent -->
+            <!-- 2007-10-15 (4067) PAC - ARGO-8677: Add custom groovy code feature to gate task -->
+            <!-- 2007-10-18 (4068) aparlante - CAR-1573: Wrong enum type on layout_type column in the frm_dashboard table. -->
+            <!-- 2007-10-22 (4069) lbarman ARGO-8620: add field for requested power off time of reefer requirements -->
+            <!-- 2007-10-23 (4070) rsatish ARGO-8547 make regex nullable in ref_equip_serial_range -->
+            <!-- 2007-10-25 (4071) murali - BIL-92: Added BillingAddress new table. Added denormalized columns to invoice. RepGkey in invoiceType -->
+            <!-- 2007-10-29 (4072) rsatish ARGO-8482 Eliminate DrayStatusEnum.UNKNOWN, update 'UNKNOWN' to null -->
+            <!-- 2007-10-25 (4073) mep ARGO-7257 Add missing Advanced Berth Scheduler columns -->
+            <!-- 2007-10-30 (4074) KA added report_output table ARGO-5773 -->
+            <!-- 2007-10-30 (4075) PSR - ARGO-8605 RejectUnitServiceRules
+                                                replaces RejectContainerEquipmentHolds, RejectAccessoryEquipmentHold and RejectContainerGoodsHolds -->
+            <!-- 2007-10-31 (4076) lbarman ARGO-8346: add order field to event effect -->
+            <!-- 2007-11-05 (4077) JJS ARGO-8845: Receive Breakbulk gate transaction (add tranUnitId) -->
+            <!-- 2007-11-05 (4078) murali BIL-140: Added required columns to Customer entity  -->
+            <!--2007-11-12 (5001) Shan ARGO-6343 Added scale weight in tvdtls and a flag to check poll scan is allowed in the Gateconfigstage -->
+            <!-- 2007-11-20 (5002) Shan ARGO-6343 Added pollscale to GateStageTranType -->
+            <!-- 2007-11-27 (5003) PAC ARGO-9060 Add AddAllowed to GateStageTranType  -->
+            <!-- 2007-11-28 (5004) PAC ARGO-9060 Add AddAllowed to GateStageTranType, kick this again  -->
+            <!-- 2007-11-29 (5005) tramakrishnan ARGO-8711 Changed eventQuantity field from Long to Double -->
+            <!-- 2007-11-29 (5006) murali BIL-191 Altered Invoice.EffectiveDate column property as not-null="false"  -->
+            <!-- 2007-12-04 (5007) lbarman v1.5.A ARGO-9131: refactoring rail reference data -->
+            <!-- 2007-12-05 (5008) kaustin v1.5.A ARGO-9131: added the name column to report output table -->
+            <!-- 2007-12-05 (5009) Murali ARGO-9182 Database change - Increased field length of commodity Id in ChargeableUnitEvent -->
+            <!-- 2007-12-06 (5010) JJS ARGO-9190 Add TbdUnit to domain model -->
+            <!-- 2007-12-07 (5011) lbarman v1.5.A ARGO-9131: renamed column -->
+            <!-- 2007-12-11 (5012) PAC ARGO-9248 Add autoUpdateFlags entity -->
+            <!-- 2007-12-12 (5013) bdrasin BIL-238 increase length of event id field -->
+            <!-- 2007-12-13 (5014) bdrasin BIL-241 increase length of invoice type id field -->
+            <!-- 2007-12-15 (5015) JJS ARGO-9190 v1.5.B Add more fields to EDO for Antwerp -->
+            <!-- 2007-12-20 (5016) PAC ARGO-9357  v1.5.B Add BL Manifested QTY -->
+            <!-- 2007-12-20 (5017) lbarman v1.5.B ARGO-9133: datamodel change for operational rail data -->
+            <!-- 2008-01-08 (5018) PSR ARGO-8666 Additional gate stage fields -->
+            <!-- 2008-01-09 (5019) rsatish v1.5.C v1.4.6 ARGO-9375 Added field pointIsPlaceholderPoint to RoutingPoint -->
+            <!-- 2008-01-09 (5020) RMK ARGO-9443 allow upto 5 char port code (for DPWA) -->
+            <!-- 2008-01-09 (5021) smahesh v1.5.B ARGO-9360: New columns added to support for rejecting stale edi  -->
+            <!-- 2008-01-16 (5022) PSR ARGO-6335 Added the stage id at which raod documents were created -->
+            <!-- 2008-01-20 (5023) Murali BILL-255 Added CustomerInvoiceType entity -->
+            <!-- 2008-01-21 (5024) rkhawaja v1.5.D ARGO-8715: New columns added to support PIN number  -->
+            <!-- 2008-01-24 (5025) Shan v1.5.D ARGO-9340 New column for notice description is added to noticerequest entity  -->
+            <!-- 2008-01-24 (5026) PAC v1.5.D ARGO-7930 restrict container ranges for a port  -->
+            <!-- 2008-02-01 (5027) Shan V1.5.E, ARGO-9770, added a column in truck transaction to ensure hazards are checked -->
+            <!-- 2008-02-04 (5028) Shan V1.5.E, ARGO-9568, Hazard capable driver -->
+            <!-- 2008-02-05 (5029) PSR V1.5.E, ARGO-9846, added gate task failure action -->
+            <!-- 2008-02-12 (5030) Murali ARGO-9879 Added new columns for ChargeableUnitEvent and ChargeableMarineEvent for PNC  -->
+            <!-- 2008-02-15 (5031) PAC ARGO-8457, no DB change, change gate config fields to use new combo for order gkey/nbr  -->
+            <!-- 2008-02-15 (5032) PAC ARGO-9752, rework Equipment pool model  -->
+            <!-- 2008-02-15 (5033) PAC ARGO-7930, Owned or leased only equipment for order  -->
+            <!-- 2008-02-27 (5034) PSR added tvdtlsWaitStatus -->
+            <!-- 2008-02-27 (5035) EYU ARGO-10242, Mobile Gate Inspection program, add new columns in RoadInspection table -->
+            <!-- 2008-02-27 (5036) JJS ARGO-7988, Expand BaseUser, add table to store a set of keys for a user (UserKeySet) -->
+            <!-- 2008-02-27 (5037) PAC ARGO-10235, Add House Trucker to TruckingCompanyLine  -->
+            <!-- 2008-02-29 (5038) PSR ARGO-10288, Add throughContainerQuota to AppointmentQuotaRule  -->
+            <!-- 2008-02-29 (5039) JJS ARGO-9179, Expand Group have a set of truckers, not just one  -->
+            <!-- 2008-03-03 (5040) PSR ARGO-10322, Add the truck license nbr to the lane table  -->
+            <!-- 2008-03-04 (5041) PAC ARGO-10254, Shorten table name of road_trucking_company_line_restrictions  -->
+            <!-- 2008-03-04 (5042) Imran ARGO-9557, Added railroad (rr_gkey) and train_Visit_gkey in the inv_eq_base_order  -->
+            <!-- 2008-03-07 (5043) Murali BILL-297, Added currencyExchangeRules EntityMappingPredicate for customer entity  -->
+            <!-- 2008-03-10 (5044) KA get rid of unique attribute in RailcarType id column  -->
+            <!-- 2008-03-11 (5045) JJS ARGO-9190 WorkInstruction can belong to TbdUnit or to UnitYardVisit -->
+            <!-- 2008-03-11 (5046) PAC ARGO-10455 Add Import Delivery Order -->
+            <!-- 2008-03-13 (5047) PSR Added truck visit level messages -->
+            <!-- 2008-03-17 (5048) Murali Added Notes column to invoice entity -->
+            <!-- 2008-03-18 (5049) JJS ARGO-9190 add pkey to TbdUnit -->
+            <!-- 2008-03-19 (5050) kramu ARGO-9190 Change the interchange_nbr length to 100 -->
+            <!-- 2008-03-19 (5051) EYU ARGO-10242, Mobile Gate Inspection program, add a new column in RoadInspection table -->
+            <!-- 2008-03-20 (5052) KA ARGO-9710, Change the eqLicenseState length to 3 -->
+            <!-- 2008-03-20 (5053) ssampath ARGO-8885, POTA + PNC + MAT 5 more Unit Flex strings, 6 UFV flex strings, 3 additional weights on unit -->
+            <!-- 2008-03-19 (5054) PAC ARGO-10584, FlagType add applyEventType and vetoApplyEventType -->
+            <!-- 2008-03-21 (5055) ssampath ARGO-10605, POTA Renamed columns to conform to 30 char limitation -->
+            <!-- 2008-03-21 (5056) PAC ARGO-10612, Local hazard fire codes -->
+            <!-- 2008-03-23 (5057) PAC ARGO-10612, add Local hazard fire codes to billing extract -->
+            <!-- 2008-03-23 (5058) PAC ARGO-10630, add timestamp to crane delay -->
+            <!-- 2008-03-24 (5059) KK CAR-1735, Added password expiry override days to base user; will override system, if exists -->
+            <!-- 2008-03-24 (5060) ssampath ARGO-8885, new flex fields added to road.hbm.xml -->
+            <!-- 2008-03-24 (5061) KA ARGO-000, default railcarType -->
+            <!-- 2008-03-25 (5062) PAC ARGO-10688, add flex fields to import delivery order -->
+            <!-- 2008-03-26 (5063) jku ARGO-10080, Added Import Release Number field to Gate Appointment -->
+            <!-- 2008-03-26 (5064) murali ARGO-10654, PNC needs more billing fields- position name, position slot -->
+            <!-- 2008-03-27 (5065) murali ARGO-10654, PNC added to position name and to position slot -->
+            <!-- 2008-03-27 (5066) PSR ARGO-10594, added GOS status to the gate lane -->
+            <!-- 2008-03-28 (5067) PAC ARGO-10750, PNC added allowAnyStage to gate configuration -->
+            <!-- 2008-03-29 (5068) PSR ARGO-10755, added bat nbr to the gate lane -->
+            <!-- 2008-04-02 (5069) PAC ARGO-10846, added damage depth to damage item -->
+            <!-- 2008-04-03 (5070) PAC ARGO-10872, added import delivery order expiration for each container -->
+            <!-- 2008-04-03 (5071) jku ARGO-10245, Added Truck Driver to Gate Appointment -->
+            <!-- 2008-04-04 (5073) eyu CAR-1540, support UI configurability in mobile apps -->
+            <!-- 2008-04-08 (5074) Murali ARGO-000 BILL-333, Added due date rule and value -->
+            <!-- 2008-04-08 (5075) kramu ARGO-10841, to increase the id column length of scoped biz unit entity for Oracle DB-->
+            <!-- 2008-04-09 (5076) Murali ARGO-000 BILL-333, Added IsInvDueDateRequired column in billingSetting entity -->
+            <!-- 2008-04-09 (5078) RMK ARGO-9613, 5 Character port code using framework's column extension method -->
+            <!-- 2008-04-11 (5079) Murali ARGO-11038 Power rule for line operator -->
+            <!-- 2008-04-15 (5080) JJS add more unit/ufv db indexes -->
+            <!-- 2008-04-16 (5081) Notes for appointments -->
+            <!-- 2008-04-17 (5082) RMK, CSC Expiration Code for Antwerp ARGO-10904 -->
+            <!-- 2008-04-04 (5083) EYU, ARGO-10242, Mobile Gate Inspection program, add bundles in RoadInspection table -->
+            <!-- 2008-04-17 (5084) PAC, make hasReefers a real EQO field ARGO-111107 -->
+            <!-- 2008-04-17 (5085) HJK, ARGO-10865 Integration Error Handling -->
+            <!-- 2008.04.23 (5086) Make the columns nullable in new EDO fields-->
+            <!-- 2008-04-23 (5087) SAB, add index on t_discharge, che_qc in mns_move_record ARGO-11101 -->
+            <!-- 2008.04.23 (5088) Add new condition field and condition entity -->
+            <!-- 2008-04-24 (5089) ARGO-11135 Modified ChargeableMarineEvents weight columns from Long to Double -->
+            <!-- 2008-04-17 (5090) KA, added RouteRestrictions -->
+            <!-- 2008-04-28 (5091) Murali ARGO-10813 Add index for bexuIbVisitId  -->
+            <!-- 2008-04-29 (5092) PAC ARGO-11336 Add new location fields to booking  -->
+            <!-- 2008-04-29 (5093) Murali ARGO-11078 Increased extract event type id length to 50characters to match SN4 event type length -->
+            <!-- 2008-04-30 (5094) JJS ARGO-11179 track time at which UserkeySet was last preened -->
+            <!-- 2008-04-30 (5095) RMK ARGO-11056 Additional Selection Criteria for Unit (requested by Antwerp) -->
+            <!-- 2008-04-30 (5096) jku ARGO-11276, Added Flex Fields to GateAppointment. -->
+            <!-- 2008-04-30 (5097) EYU ARGO-11359, Added Required Temperature to the road inspection table. -->
+            <!-- 2008-04-30 (5098) KA ARGO-11412, Added DoubleStackCarOK to route restrictions. -->
+            <!-- 2008-05-02 (5099) PAC/JWang ARGO-9886, vessel visit classification attribute. -->
+            <!-- 2008-05-05 (6001) Murali BILL-376, Added customerReference new column to invoice entity-->
+            <!-- 2008-05-05 (6002) jwang ARGO-11406: add MnR Status field -->
+            <!-- 2008-05-05 (6003) jwang ARGO-11113: add Placarded field -->
+            <!-- 2008-05-05 (6004) PAC ARGO-10775: add xray required truck transaction field -->
+            <!-- 2008-05-07 (6005) kramu ARGO-10775: add xray required Gate appointment field -->
+            <!-- 2008-05-07 (6006) EYU ARGO-11456: Add M&R Status field to gate inspection RDT -->
+            <!-- 2008-05-08 (6007) dvenkatesan ARGO - 11342: Added param4 to param9 for Document message-->
+            <!-- 2008-05-09 (6008) kramu ARGO-11567 added new table road_line_gate_restriction -->
+            <!-- 2008-05-10 (6009) PAC ARGO-10750 allow truck with no transactions to go to next stage -->
+            <!-- 2008-05-12 (6010) EYU ARGO-11440, Added Truck License Plate to road inspection table -->
+            <!-- 2008-05-13 (6011) PSR ARGO-11431 add fields to lane table for when no truck visit was created  -->
+            <!-- 2008-05-13 (6012) mrobinson CAR-1730: Mismatch between length of audit columns in config_settings table and base_user table -->
+            <!-- 2008-05-14 (6013) kramu ARGO-11630 added new column tcruck_id in road_gate_appointment table  -->
+            <!-- 2008-05-15 (6014) PSR Persist the lane status -->
+            <!-- 2008-05-15 (6015) Murali BILL-352, Added use_tiered_field_as_quantity to ServiceType and is_one_invoice_item to TariffRateTier-->
+            <!-- 2008-05-15 (6016) johns EC-335, Convert wi enum column to boolean and change WiEcStateEnum definitions -->
+            <!-- 2008-05-15 (6017) SAB, added new column is_egear_move to mns_move_record entity -->
+            <!-- 2008.05.20 (6018) RMK, ARGO-11474 Additional fields for gate inspection need to reach actual entities.-->
+            <!-- 2008-05-20 (6019) SAB, added new column is_valid to mns_vessel_crane_statistics entity -->
+            <!-- 2008-05-20 (6020) aparlante, CAR-911 - Added Max Table Rows to base user.  -->
+            <!-- 2008-05-29 (6021) jku ARGO-10157, Added sequence number to GateBizTask. -->
+            <!-- 2008-05-30 (6022) rkasindula ARGO-11368, changes revealed shortcoming in event field update value length - making fields bigger -->
+            <!-- 2008-05-28 (6023) ssampath ARGO-11151 added new column rcarvVisibleInSparcs to Railcar Visit table  -->
+            <!-- 2008-06-03 (6024) smarchenko ARGO-12193 added new column tranCtrBuildDate to Truck Transaction table  -->
+            <!-- 2008-06-05 (6025) ssampath ARGO-11151 Added upgrade action to set the railcar visit visibility  -->
+            <!-- 2008-06-06 (6200) pac ARGO-11893 added vessel late arrival table  -->
+            <!-- 2008-06-06 (6201) pac ARGO-11295 support booking receive limit and dispatch only edi message  -->
+            <!-- 2008-06-17 (5085) HJK, ARGO-10865 Add node to Integration Error Handling -->
+            <!-- 2008-06-10 (7001) Murali BILL-416 , Added new entity BatchInvoice-->
+            <!-- 2008-06-15 (7002) Murali BILL-420, Added general ledger code column to InvoiceItem-->
+            <!-- 2008-06-17 (7003) Murali ARGO-12656 , Added IbCarrierATD and ObCarrierATA columns -->
+            <!-- 2008-06-18 (7004) PAC ARGO-12664 , Add bkg_no_gate_validation to line operator -->
+            <!-- 2008-06-24 (7005) PSR ARGO-12653 Extend tranNotes and rtgDescription fields -->
+            <!-- 2008-06-30 (7006) PSR ARGO-12863 Added trantypeAutoSubmit -->
+            <!-- 2008-07-01 (7007) KA ARGO-11751 Itinerary dialog changes -->
+            <!-- 2008-07-10 (7008) bbakthavachalam ARGO-13220 Added upgrade action to set index to inv_unit. -->
+            <!-- 2008-07-10 (7009) PSR ARGO-13227 Extend routing point id to 6 chars -->
+            <!-- 2008-07-11 (7010) vkotha v1.5.10 v1.7.A ARGO-11805 Increase inv_unit_equip.bad_nbr length from 12->30 -->
+            <!-- 2008-07-14 (7011) sahmed ARGO-13170 Added YardBlock, YardBlockStatistics, YardTierStatistics entities.  -->
+            <!-- 2008-07-14 (7012) sahmed ARGO-13253 Added tripId, tripDistLaden and tripDistUnladen to MoveRecord.  -->
+            <!-- 2008-07-21 (7013) Shan ARGO-13044 Increase the ID field length of INV_IMPORT_DELIVERY_ORDERS from 20 to 30.  -->
+            <!--2008-07-25 (7014)spabbala ARGO-13194  On the Truck Visit Out, do not default BAT # used at the Ingate. Added new field
+            "tvdtlsOutBatNbr" in DB-->
+            <!--2008-07-31 (7015) dvenkatesan ARGO-13044 Increase the column length of import_release_nbr in road_gate_appointments
+            and road_truck_transactions -->
+            <!-- 2008-08-01 (7016) mitchell EC-784 Upgrade action 6016 did not get executed, this is an updated version, see action 6016 -->
+            <!-- 2008-08-18 (7017) PSR ARGO-13623 Add driver hazardous license indicator -->
+            <!-- 2008-08-21 (7018) aignatenko CAR-1956 add existsByDomainQuery() in Hibernate API -->
+            <!-- 2008-08-21 (7019) parlante CAR-1961 Make the properties value for gadgets nullable. -->
+            <!-- 2008-08-25 (7020) bdrasin ChargeableUnitEvent uses UnitFacilityVisit in all cases -->
+            <!-- 2008-09-02 (7021) dkannadasan (ARGO-14145 & ARGO-14147) Added OOG and Hazards details to the Equipment Order Item entity-->
+            <!-- 2008-09-02 (7022) rkasindula v1.7.B ARGO-14110 SNX Event History Importer for Non-Move Events -->
+            <!-- 2008-09-04 (7023) Shan v1.7.C ARGO-14146, introduce seq nbr, flag to indicate eqois are not-unique -->
+            <!-- 2008-09-08 (7024) dkannadasan ARGO-14050 Added "GoodsDeclaration" and "GoodsDocuments" (new)entities to the Inventory.hbm-->
+            <!-- 2008-07-22 (7025) SAB, made some columns nullable in VesselVisitStatistics table -->
+            <!-- 2008-07-23 (7026) SAB ARGO-13488, added update time to moverecord and craneactivity entity -->
+            <!-- 2008-08-20 (7027) SAB ARGO-13447, made freight kind nullable in move record table -->
+            <!-- 2008-09-09 (7028) aignatenko CAR-1957 Optimize select gkey query. -->
+            <!-- 2008-09-16 (8001) johns ARGO-14444 update moves.hbm.xml -->
+            <!-- 2008-09-18 (8002) PSR ARGO-14472 added confirmed flag to truck transaction -->
+            <!-- 2008-09-18 (8003) lbarman 1.8.A ARGO-14333: allow non-operational facilities-->
+            <!-- 2008-09-30 (8004) PSR ARGO-14473 Added filter reference to gate business task -->
+            <!-- 2008-10-20 (8005) Murali BILL-416 Added batchLogMessage, batchNotes and batchIsTracingRequired columns -->
+            <!-- 2008-10-21 (8006) Murali BILL-486 Added flex fields for Invoice columns -->
+            <!-- 2008-10-24 (8007) PSR ARGO-8815 transaction sequence and excahnge area -->
+            <!-- 2008-10-28 (8008) 1.6.13.B/1.6.14 lbarman ARGO-15158: return to storage is now a 'facility service' that can be controlled through
+            holds; upgradeaction -->
+            <!-- 2008-11-03 (8010) 1.8.B dkannadasan ARGO-13983  Enhance oder item to include OOG details; upgrade action-->
+            <!-- 2008-11-04 (8014) aignatenko CAR-2013 eliminate leading % in quick search and speed it up (add indices)-->
+            <!-- 2008-12-09 (8015) Argo-13987 added two new tables for reference hazard data -->
+            <!-- 2008-11-10 (8020) jwang 2008-11-10 ARGO-15205 Need new entity "Order Purpose" to support Inter Facility Transfers for ANTGWY. -->
+            <!-- 2008-11-20 (8024) jwang 2008-11-20 ARGO-15206 Add new fields in the EDO to support inter Facility Transfers -->
+            <!-- 2008-11-20 (8025) sahmed ARGO-15548 Added composite index for t_fetch and t_put for improving performance -->
+            <!-- 2008-12-02 (8026) tramakrishnan BILL-500, Added new column contactName to BillingAddress and Invoice entities -->
+            <!-- 2008-12-03 (8027) sahmed ARGO-15549, Added new index on column t_carry_complete in move records table-->
+            <!-- 2008-12-03 (8028) kkawai 2008-12-03 CAR-1903 phase II licensing api -->
+            <!-- ********************************************************************************** -->
+            <!-- DO NOT USE THIS VALUE FOR UPGRADES ANY LONGER. USE MODULE SPECIFIC FILES           -->
+            <!-- ********************************************************************************** -->
+            <value>8028</value>
+        </property>
+        <property name="enabled">
+            <value>false</value>
+        </property>
+    </bean>
+
+    <bean id="frmUpgradeAction1" class="com.navis.framework.upgrade.actions.FrameworkUpgradeAction1"/>
+
+    <bean id="frmUpgradeAction2" class="com.navis.framework.upgrade.actions.FrameworkInitialUpgradeAction2">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+        <property name="initialAction">
+            <value>true</value>
+        </property>
+        <property name="sqlFiles">
+            <!--These files should be in runtime/data directory-->
+            <list>
+                <value>reference-data.sql</value>
+            </list>
+        </property>
+        <property name="moduleName">
+            <value>framework</value>
+        </property>
+    </bean>
+
+    <bean id="frmUpgradeAction15" class="com.navis.framework.upgrade.actions.FrameworkUpgradeAction15">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+    <bean id="frmUpgradeAction63" class="com.navis.framework.upgrade.actions.FrameworkUpgradeAction63">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+    <bean id="frmUpgradeAction2044" class="com.navis.framework.upgrade.actions.FrameworkUpgradeAction2044">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+    <bean id="frmUpgradeAction2059" class="com.navis.framework.upgrade.actions.FrameworkUpgradeAction2059">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+    <bean id="frmUpgradeAction6012" class="com.navis.framework.upgrade.actions.FrameworkUpgradeAction6012">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+    <bean id="frmUpgradeAction7018" class="com.navis.framework.upgrade.actions.FrameworkUpgradeAction7018">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+    <bean id="frmUpgradeAction7019" class="com.navis.framework.upgrade.actions.FrameworkUpgradeAction7019">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <bean id="indexManager" class="com.navis.framework.persistence.IndexManager" scope="singleton">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <bean id="dbHelper" class="com.navis.framework.persistence.DatabaseHelper">
+        <constructor-arg>
+            <ref bean="primaryDataSource"/>
+        </constructor-arg>
+    </bean>
+
+    <bean id="dbPerformanceBizFacade"
+          class="com.navis.carina.performance.persistence.DbPerformanceBizFacadeFactory" scope="singleton">
+        <property name="databaseRefBeans">
+            <map>
+                <entry key="ORACLE10" value-ref="oraclePerformanceBizFacade"/>
+                <entry key="ORACLE11" value-ref="oraclePerformanceBizFacade"/>
+                <entry key="ORACLE12" value-ref="oraclePerformanceBizFacade"/>
+                <entry key="SQLSERVER_2005" value-ref="sqlserverPerformanceBizFacade"/>
+                <entry key="SQLSERVER_2008" value-ref="sqlserverPerformanceBizFacade"/>
+                <entry key="SQLSERVER_2012" value-ref="sqlserverPerformanceBizFacade"/>
+                <entry key="SQLSERVER_2014" value-ref="sqlserverPerformanceBizFacade"/>
+                <entry key="ORACLE10_RAC" value-ref="oracleRacPerformanceBizFacade"/>
+                <entry key="ORACLE11_RAC" value-ref="oracleRacPerformanceBizFacade"/>
+                <entry key="ORACLE12_RAC" value-ref="oracleRacPerformanceBizFacade"/>
+                <entry key="MYSQL" value-ref="mysqlPerformanceBizFacade"/>
+            </map>
+        </property>
+    </bean>
+
+        <bean id="datasourceDiagnosticFacadeFactory"
+          class="com.navis.carina.diagnostic.persistence.performance.DataSourceDiagnosticFacadeFactory" scope="singleton">
+        <property name="databaseTypeDataSourceDiagnosticFacadeMap">
+            <map>
+                <entry value-ref="oracleDatasourceDiagnosticFacade"><key><util:constant static-field="com.navis.framework.persistence.DatabaseType.ORACLE"/></key></entry>
+                <entry value-ref="tomcatDatasourceDiagnosticFacade"><key><util:constant static-field="com.navis.framework.persistence.DatabaseType.SQLSERVER"/></key></entry>
+                <entry value-ref="tomcatDatasourceDiagnosticFacade"><key><util:constant static-field="com.navis.framework.persistence.DatabaseType.MYSQL"/></key></entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="oracleDatasourceDiagnosticFacade"
+          class="com.navis.carina.diagnostic.persistence.performance.OracleDataSourceDiagnosticFacade" scope="singleton">
+    </bean>
+
+    <bean id="tomcatDatasourceDiagnosticFacade"
+          class="com.navis.carina.diagnostic.persistence.performance.TomcatDataSourceDiagnosticFacade" scope="singleton">
+    </bean>
+
+
+    <bean id="dbHibernateDialectFactory"
+          class="com.navis.framework.hibernate.dialect.DbHibernateDialectFactory" scope="singleton">
+        <property name="dbHibernateDialects">
+            <map>
+                <entry key="ORACLE" value="com.navis.framework.hibernate.dialect.OracleDialect"/>
+                <entry key="INFORMIX" value="org.hibernate.dialect.InformixDialect"/>
+                <entry key="SQLSERVER" value="com.navis.framework.hibernate.dialect.SQLServerUnicodeDialect"/>
+                <entry key="HSQL" value="org.hibernate.dialect.HSQLDialect"/>
+                <entry key="POSTGRES" value="org.hibernate.dialect.PostgreSQLDialect"/>
+                <entry key="MYSQL" value="org.hibernate.dialect.MySQL5InnoDBDialect"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="dbHibernateSpatialDialectFactory"
+          class="com.navis.framework.hibernate.dialect.DbHibernateSpatialDialectFactory" scope="singleton">
+        <property name="dbHibernateDialects">
+            <map>
+                <entry key="ORACLE" value="org.hibernatespatial.oracle.OracleSpatial10gDialect"/>
+                <!-- The SqlServer spatial dialect not supported for SqlServer 2005 -->
+                <entry key="SQLSERVER" value="org.hibernatespatial.sqlserver.SQLServerSpatialDialect"/>
+                <entry key="MYSQL" value="org.hibernatespatial.mysql.MySQLSpatialDialect"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="oraclePerformanceBizFacade"
+          class="com.navis.carina.performance.persistence.OraclePerformanceBizFacade" scope="singleton">
+    </bean>
+
+    <bean id="sqlserverPerformanceBizFacade"
+          class="com.navis.carina.performance.persistence.SqlserverPerformanceBizFacade" scope="singleton">
+    </bean>
+
+    <bean id="oracleRacPerformanceBizFacade"
+          class="com.navis.carina.performance.persistence.OracleRacPerformanceBizFacade" scope="singleton">
+    </bean>
+
+    <bean id="mysqlPerformanceBizFacade"
+          class="com.navis.carina.performance.persistence.MysqlPerformanceBizFacade" scope="singleton">
+    </bean>
+
+    <bean id="dbPerformanceHelper" class="com.navis.carina.performance.persistence.DatabasePerformanceHelper">
+    </bean>
+
+    <bean id="persister" class="com.navis.framework.persistence.Persister">
+        <property name="hibernate">
+            <ref bean="hibernateApi"/>
+        </property>
+    </bean>
+
+    <!-- HJK 2003.10.20 instrumented for transaction control -->
+    <bean id="bizPortalFacade" class="com.navis.framework.portal.BizPortalPea">
+    </bean>
+
+    <bean id="systemPerformanceFacade" class="com.navis.framework.hibernate.util.SystemPerformanceFacadeImpl">
+    </bean>
+
+    <bean id="systemPerformanceManager" class="com.navis.framework.hibernate.util.SystemPerformanceManagerImpl">
+    </bean>
+
+    <bean id="bizPortalPrefs" class="com.navis.framework.portal.BizPortalPrefs"/>
+
+    <!--
+        Pea Configuration: CrudFacade  should cast to com.navis.framework.persistence.CrudFacade
+     -->
+    <bean id="crudFacade" class="com.navis.framework.persistence.CrudFacadePea">
+        <property name="hibernate">
+            <ref bean="hibernateApi"/>
+        </property>
+    </bean>
+
+    <bean id="entityMetafieldLoader" class="com.navis.framework.metafields.provider.EntityLoader"/>
+    <bean id="GlobalMetafieldDictionaryProvider"
+          class="com.navis.framework.metafields.provider.AutoSpringMetafieldDictionaryProvider" scope="singleton">
+        <constructor-arg index="0">
+            <ref bean="entityMetafieldLoader"></ref>
+        </constructor-arg>
+    </bean>
+
+    <bean id="MetafieldDictionaryProvider"
+          class="com.navis.framework.configuration.metafield.providers.ScopedMetafieldDictionaryProvider"
+          scope="singleton">
+    </bean>
+
+    <bean id="scopedDbFieldLoader"
+          class="com.navis.framework.configuration.metafield.loaders.DbMetafieldLoader"
+          scope="singleton">
+    </bean>
+
+    <bean id="dbIndexLoaderFromMapping" class="com.navis.carina.performance.utils.IndexLoader">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <bean id="FrameworkMetafieldDictionaryLoader"
+          class="com.navis.framework.metafields.provider.MetafieldDictionaryXmlLoader" scope="singleton">
+        <property name="xmlFilePaths">
+            <list>
+                <value>/metafields/FrameworkBizMetafields.xml</value>
+                <value>/metafields/FrameworkFlexBizMetafields.xml</value>
+                <value>/metafields/LocalizationBizMetafields.xml</value>
+                <value>/metafields/DiagnosticBizMetafields.xml</value>
+                <value>/metafields/ExtensionBizMetafields.xml</value>
+                <value>/metafields/ExtensionModelBizMetafields.xml</value>
+                <value>performance/metafields/DbPerformanceBizMetafields.xml</value>
+                <value>/metafields/PlatformBizMetafields.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- =================== Locale ================================= -->
+    <bean id="locationFinderTarget" class="com.navis.reference.business.locale.LocationFinderImpl">
+    </bean>
+
+    <bean id="locationFinder" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>com.navis.reference.business.api.LocationFinder</value>
+        </property>
+        <property name="target">
+            <ref local="locationFinderTarget"/>
+        </property>
+    </bean>
+
+    <bean id="locationMgrTarget" class="com.navis.reference.business.locale.LocationFacadePea">
+    </bean>
+    <bean id="locationMgr" class="org.springframework.aop.framework.ProxyFactoryBean">
+        <property name="proxyInterfaces">
+            <value>com.navis.reference.business.api.LocationMgr</value>
+        </property>
+
+        <property name="target">
+            <ref local="locationMgrTarget"/>
+        </property>
+    </bean>
+
+    <bean id="locationFacade" class="com.navis.reference.business.locale.LocationFacadePea">
+    </bean>
+
+    <!-- Default is uncached  -->
+    <bean id="configProvider" class="com.navis.framework.configuration.provider.UncachedConfigProvider" scope="singleton">
+        <property name="hibernateApi">
+            <ref bean="hibernateApi"/>
+        </property>
+        <!-- use the built-in cache provider, which means caches will not be Coherence Caches, but PrivateCache instances -->
+        <property name="cacheProvider">
+            <value>CARINA</value>
+        </property>
+    </bean>
+
+    <!-- =================== API MAPPINGS ================================= -->
+    <!-- Overload this definition without mappingsXmlFilePath if you don't have api-mappings.xml which is defined
+         for backwards compatibility when there was only one api-mappings.xml for an entire build,
+         see SandboxBizApplicationContext.xml -->
+    <bean id="apiMappings" class="com.navis.framework.portal.ApiMappings">
+        <property name="mappingsXmlFilePath">
+            <value>META-INF/api-mappings.xml</value>
+        </property>
+    </bean>
+
+    <bean id="frameworkApiMappingLoader" class="com.navis.framework.portal.ApiMappingLoaderImpl">
+        <property name="xmlFilePaths">
+            <list>
+                <value>/business/framework-api-mappings.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="beanFactoryPostInitializer"
+          class="com.navis.framework.util.context.factory.AutoSpringBeanFactoryPostInitializer"/>
+    <bean id="carinaBeanFactoryPostInitializer"
+          class="com.navis.framework.business.context.CarinaBeanFactoryPostInitializer"/>
+
+    <bean id="carinaSessionFactoryPostInitializer"
+          class="com.navis.framework.business.context.CarinaSessionFactoryPostInitializer">
+    </bean>
+
+    <bean id="upgradeSessionFactoryPostInitializer"
+          class="com.navis.framework.upgrade.UpgradeSessionFactoryPostInitializer">
+        <property name="upgradeManager">
+            <ref bean="upgradeManager"/>
+        </property>
+    </bean>
+
+    <bean id="databasePostInitializer" class="com.navis.framework.persistence.DatabasePostInitializer">
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+        <property name="upgradeManager">
+            <ref bean="upgradeManager"/>
+        </property>
+    </bean>
+
+    <bean id="beanFactoryLocation" class="com.navis.framework.util.context.BeanFactoryLocation"/>
+
+    <!-- ESB Client and Server Definitions -->
+    <bean id="esbManager"
+          class="com.navis.framework.esb.server.mule.ESBMuleServerManager"
+          init-method="startMuleServerInThread" destroy-method="stopMuleServer" scope="singleton"
+          depends-on="hibernateSessionFactory"/>
+
+    <bean id="esbClient" class="com.navis.framework.esb.client.mule.ESBMuleClient" scope="singleton" depends-on="esbManager"/>
+
+    <!-- configured using the MailServerConfig.xml -->
+    <bean id="mailSender" class="com.navis.framework.email.DefaultMailSender" scope="prototype" lazy-init="false"/>
+
+    <bean id="emailManager" class="com.navis.framework.email.EmailManager">
+        <property name="mailSender">
+            <ref local="mailSender"/>
+        </property>
+    </bean>
+
+    <!-- provides information about background jobs -->
+    <bean id="jobsBizFacade" class="com.navis.carina.jobs.portal.JobsBizFacade"/>
+
+    <!-- provides information about the database against which the application runs -->
+    <bean id="dbMetaDataProvider" class="com.navis.carina.database.portal.DbMetaDataBizFacade"/>
+
+    <!-- 2006-03-21 JJS These declarations cause these classes to get loaded so they show in the Settings Table View -->
+    <bean id="frameworkConfig" class="com.navis.framework.FrameworkConfig" lazy-init="false"/>
+    <bean id="extensionConfig" class="com.navis.framework.ExtensionConfig" lazy-init="false"/>
+    <bean id="mailServerConfig" class="com.navis.framework.MailServerConfig" lazy-init="false"/>
+    <bean id="esbConfig" class="com.navis.framework.ESBConfig" lazy-init="false"/>
+
+    <!-- default log strategy for the webservice logHandler -->
+    <bean id="logStrategy" class="com.navis.framework.webservice.handlers.logstrategies.ConsoleLogger"/>
+    <!-- supported Print drivers -->
+    <bean id="passThroughDriver" class="com.navis.framework.printing.drivers.passthrough.PassThroughDriverConverter">
+        <!-- defines a type safe constant as an enum -->
+        <constructor-arg index="0" type="com.navis.framework.business.atoms.PrinterDriverEnum">
+            <bean id="com.navis.framework.business.atoms.PrinterDriverEnum.PASS_THROUGH"
+                  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+        </constructor-arg>
+    </bean>
+    <bean id="seikoDriver" class="com.navis.framework.printing.drivers.seiko.SeikoConverter">
+        <!-- defines a type safe constant as an enum -->
+        <constructor-arg index="0" type="com.navis.framework.business.atoms.PrinterDriverEnum">
+            <bean id="com.navis.framework.business.atoms.PrinterDriverEnum.SEIKO"
+                  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+        </constructor-arg>
+    </bean>
+    <bean id="postscriptDriver" class="com.navis.framework.printing.drivers.postscript.PostscriptDriverConverter">
+        <!-- defines a type safe constant as an enum -->
+        <constructor-arg index="0" type="com.navis.framework.business.atoms.PrinterDriverEnum">
+            <bean id="com.navis.framework.business.atoms.PrinterDriverEnum.POSTSCRIPT"
+                  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+        </constructor-arg>
+        <property name="layoutXPathExpression">
+            <value>//docName</value>
+        </property>
+    </bean>
+
+    <!-- PDF driver uses the postscript driver with a PDF output type -->
+    <bean id="pdfDriver" class="com.navis.framework.printing.drivers.postscript.PostscriptDriverConverter">
+        <constructor-arg index="0" type="com.navis.framework.business.atoms.PrinterDriverEnum">
+            <bean id="com.navis.framework.business.atoms.PrinterDriverEnum.PDF"
+                  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+        </constructor-arg>
+        <property name="layoutXPathExpression">
+            <value>//docName</value>
+        </property>
+        <!-- Driver.RENDER_PDF=1 -->
+        <property name="renderer">
+            <value>1</value>
+        </property>
+    </bean>
+
+    <bean id="zplDriver" class="com.navis.framework.printing.drivers.zpl.ZplDriverConverter">
+        <!-- defines a type safe constant as an enum -->
+        <constructor-arg index="0" type="com.navis.framework.business.atoms.PrinterDriverEnum">
+            <bean id="com.navis.framework.business.atoms.PrinterDriverEnum.ZPL"
+                  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+        </constructor-arg>
+        <property name="layoutXPathExpression">
+            <value>//docName</value>
+        </property>
+    </bean>
+    <bean id="customDriver" class="com.navis.framework.printing.drivers.custom.CustomDriverConverter">
+        <!-- defines a type safe constant as an enum -->
+        <constructor-arg index="0" type="com.navis.framework.business.atoms.PrinterDriverEnum">
+            <bean id="com.navis.framework.business.atoms.PrinterDriverEnum.CUSTOM"
+                  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"/>
+        </constructor-arg>
+        <property name="layoutXPathExpression">
+            <value>//docName</value>
+        </property>
+    </bean>
+    <!-- default print registry -->
+    <bean id="defaultDriverRegistry" class="com.navis.framework.printing.drivers.registry.DefaultDriverRegistry">
+        <constructor-arg index="0" type="java.util.List">
+            <bean class="java.util.ArrayList">
+                <constructor-arg>
+                    <list>
+                        <ref local="seikoDriver"/>
+                        <ref local="postscriptDriver"/>
+                        <ref local="passThroughDriver"/>
+                        <ref local="zplDriver"/>
+                        <ref local="customDriver"/>
+                        <ref local="pdfDriver"/>
+                    </list>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+    </bean>
+    <!-- ulc client side print transform -->
+    <bean id="printFormatTransformer" class="com.navis.framework.printing.transforms.ByteArrayToPrinterFormat">
+        <property name="driverRegistry">
+            <ref local="defaultDriverRegistry"/>
+        </property>
+    </bean>
+
+    <bean id="calendarSynthesizer" class="com.navis.framework.util.synthesizer.CalendarSynthesizer" scope="singleton">
+    </bean>
+
+    <bean id="carinaSynthesizer" class="com.navis.framework.util.synthesizer.CarinaSynthesizer" scope="singleton">
+    </bean>
+
+    <bean id="appLogSynthesizer"
+          class="com.navis.framework.util.log.AppLogSynthesizer" scope="prototype"/>
+
+    <bean id="frameworkPurgeManager" class="com.navis.framework.business.model.FrameworkPurgeManager" scope="singleton"/>
+
+    <!-- Finder queries execute from biztier-->
+    <bean id="diagnosticsEventFacade" class="com.navis.framework.util.diagnostic.event.DefaultDiagnosticsEventFacade" scope="singleton"/>
+    <bean id="jvmDiagnosticsFacade" class="com.navis.carina.diagnostic.system.DefaultJvmDiagnostics" scope="singleton"/>
+
+    <!-- user context statistics bean -->
+    <bean id="businessContextStatsBean" class="com.navis.framework.persistence.BusinessContextStatsFacade" scope="singleton">
+    </bean>
+
+    <!-- model extension beans -->
+    <bean id="entityDeleteHandler" class="com.navis.framework.persistence.lifecycle.DefaultEntityDeleteHandler"/>
+
+    <bean id="schemaExtensionLoader" class="com.navis.extension.model.schema.DefaultSchemaExtensionLoader"></bean>
+
+    <bean id="modelExtensionSnapshotFinder" class="com.navis.extension.model.business.DefaultModelExtensionSnapshotFinder"></bean>
+
+    <bean id="modelExtensionSynthesizer" class="com.navis.extension.model.persistence.synthesizer.ModelExtensionFieldSynthesizer"></bean>
+
+    <bean id="schemaExtensionHbmGenerator" class="com.navis.extension.model.business.hbm.DefaultHbmGenerator">
+        <constructor-arg index="0" value="persistence/CustomEntityTemplate.hbm.xml"/>
+        <constructor-arg index="1" value="persistence/SystemEntityExtensionTemplate.hbm.xml"/>
+    </bean>
+
+    <bean id="hbmToEntityConverter" class="com.navis.extension.model.business.hbm.DefaultHbmToEntityConverter"></bean>
+
+    <bean id="exchangeBeanFinder" class="com.navis.framework.data.exchange.business.DefaultExchangeBeanFinder"
+          init-method="init"></bean>
+
+    <bean id="genericEntityImporter" class="com.navis.framework.data.exchange.business.DefaultGenericEntityImporter"></bean>
+    <bean id="genericEntityExporter" class="com.navis.framework.data.exchange.business.DefaultGenericEntityExporter"></bean>
+
+    <bean id="schemaModificationExporter"
+          class="com.navis.extension.model.business.data.SchemaModificationEntityExporter"></bean>
+
+    <bean id="schemaModificationCustomEntityImporter"
+          class="com.navis.extension.model.business.data.SchemaModificationEntityImporter">
+        <property name="supportedEntityClass"
+                  value="com.navis.extension.model.business.modificationregistry.CustomModificationEntity"/>
+    </bean>
+
+    <bean id="schemaModificationSystemEntityImporter"
+          class="com.navis.extension.model.business.data.SchemaModificationEntityImporter">
+        <property name="supportedEntityClass"
+                  value="com.navis.extension.model.business.modificationregistry.SystemModificationEntity"/>
+    </bean>
+
+    <bean id="schemaModificationFieldExporter"
+          class="com.navis.extension.model.business.data.SchemaModificationFieldExporter"></bean>
+
+    <bean id="schemaModificationFieldImporter"
+          class="com.navis.extension.model.business.data.SchemaModificationFieldImporter"></bean>
+
+    <bean id="codeExtensionXmlExporter"
+          class="com.navis.extension.business.data.ExtensionXmlExporter"></bean>
+
+    <bean id="codeExtensionTriggerXmlExporter" class="com.navis.extension.business.data.ExtensionTriggerXmlExporter"></bean>
+    <bean id="codeExtensionXmlImporter" class="com.navis.extension.business.data.ExtensionXmlImporter"></bean>
+
+    <bean id="dbMetafieldXmlExporter" class="com.navis.framework.configuration.metafield.business.data.DbMetafieldExporter"></bean>
+    <bean id="dbMetafieldXmlImporter" class="com.navis.framework.configuration.metafield.business.data.DbMetafieldImporter"></bean>
+
+    <bean id="dbMetafieldChoiceXmlImporter"
+          class="com.navis.framework.configuration.metafield.business.data.DbMetafieldChoiceImporter"></bean>
+
+    <bean id="simpleSavedQueryExporter" class="com.navis.framework.data.exchange.business.SimpleSavedQueryExporter"></bean>
+    <bean id="savedPredicateExporter" class="com.navis.framework.data.exchange.business.SavedPredicateExporter"></bean>
+    <bean id="savedPredicateImporter" class="com.navis.framework.data.exchange.business.SavedPredicateImporter"></bean>
+    <bean id="simpleSavedQueryImporter" class="com.navis.framework.data.exchange.business.SimpleSavedQueryImporter"></bean>
+
+    <!--platform component managers, register type with roastery
+        supportedContentType by default is CONFIGURATION.
+
+        Order matters for export currently
+    -->
+    <bean id="configSettingPlatformComponentManager"
+          class=" com.navis.framework.configuration.setting.business.ConfigSettingPlatformComponentManager">
+    </bean>
+
+    <bean id="codeExtensionPlatformComponentManager" class="com.navis.extension.business.CodeExtensionPlatformManager">
+        <constructor-arg index="0" value="CODE_EXTENSION"/>
+        <constructor-arg index="1" value="Extension"/>
+        <property name="supportedContentType" value="GROOVY"/>
+        <property name="supportedExportType" value="GNX"/>
+    </bean>
+
+    <bean id="codeExtensionTriggerPlatformComponentManager" class="com.navis.platform.business.QueryBasedPlatformComponentManager">
+        <constructor-arg index="0" value="EXTENSION_TRIGGER"/>
+        <constructor-arg index="1" value="ExtensionInjection"/>
+        <property name="supportedExportType" value="GNX"/>
+    </bean>
+
+    <bean id="customVariformPlatformComponentManager" class="com.navis.platform.business.QueryBasedPlatformComponentManager">
+        <constructor-arg index="0" value="VARIFORM"/>
+        <constructor-arg index="1" value="DbVariformFileDefinition"/>
+        <property name="supportedContentType" value="XML"/>
+        <property name="supportedExportType" value="GNX"/>
+    </bean>
+
+    <bean id="customMetafieldPlatformComponentManager" class="com.navis.platform.business.QueryBasedPlatformComponentManager">
+        <constructor-arg index="0" value="METAFIELD"/>
+        <constructor-arg index="1" value="DbMetafield"/>
+        <property name="supportedExportType" value="GNX"/>
+    </bean>
+
+    <bean id="customMenuPlatformComponentManager" class="com.navis.platform.business.QueryBasedPlatformComponentManager">
+        <constructor-arg index="0" value="CUSTOM_MENU"/>
+        <constructor-arg index="1" value="CustomNode"/>
+        <property name="supportedExportType" value="GNX"/>
+    </bean>
+
+    <bean id="schemaExtensionPlatformComponentManager" class="com.navis.platform.business.QueryBasedPlatformComponentManager">
+        <constructor-arg index="0" value="SCHEMA_EXTENSION"/>
+        <constructor-arg index="1" value="ModificationEntity"/>
+        <property name="supportedExportType" value="GNX"/>
+    </bean>
+
+    <!-- need to be available in every tier-->
+    <bean id="customCodeExtensionBackedBeanProxyInterceptor" scope="prototype"
+          class="com.navis.extension.invocation.dynamiccode.beans.bean.proxy.DefaultFrameworkCustomCodeExtensionBackedBeanProxyInterceptor"></bean>
+
+    <bean id="esbSystemConfigContext" class="com.navis.framework.esb.server.configuration.DefaultESBConfigContext">
+        <property name="configurationTypeEnum">
+            <value>SYSTEM</value>  <!-- EsbConfigurationTypeEnum.SYSTEM -->
+        </property>
+        <property name="filesInClassPath">
+            <list>
+                <value>/esb/common-mule-config.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="esbCustomConfigContext" class="com.navis.framework.esb.server.configuration.DefaultESBConfigContext">
+        <property name="configurationTypeEnum">
+            <value>CUSTOM</value>  <!-- EsbConfigurationTypeEnum.CUSTOM -->
+        </property>
+        <property name="reloadable" value="true"/>
+    </bean>
+
+    <bean id="amqConfigParser" class="com.navis.framework.esb.server.configuration.ESBActiveMQConfigGenerator"/>
+    <bean id="amqAdvisoryMessageListener" class="com.navis.framework.esb.listeners.ActiveMQBrokerConnectionListener"/>
+
+    <bean id="amqBrokerService" class="com.navis.framework.esb.server.configuration.ESBBrokerFactoryBean" init-method="init">
+        <property name="config" value="classpath:esb/amq/activemq.xml"/>
+        <property name="start" value="true"/>
+        <property name="parser" ref="amqConfigParser"/>
+        <property name="messageListener" ref="amqAdvisoryMessageListener"/>
+    </bean>
+
+    <bean id="queryLoggingConfiguration" class="com.navis.carina.diagnostic.persistence.performance.DefaultQueryLoggingConfiguration" scope="singleton"/>
+
+    <bean id="slowQueryCountSnapshotContainer" class="com.navis.carina.diagnostic.persistence.performance.CounterSnapshotContainer" scope="singleton">
+        <constructor-arg index="0" type="long" value="3600000"/> <!-- timeframe: 1 hour -->
+        <constructor-arg index="1" type="long" value="300000"/> <!-- interval: 5 minutes -->
+    </bean>
+
+    <bean id="diagnosticEventFileLogger" class="com.navis.carina.diagnostic.persistence.performance.DiagnosticEventFileLogger" scope="singleton"/>
+    <bean id="diagnosticEventCounterLogger" class="com.navis.carina.diagnostic.persistence.performance.DiagnosticEventCounterLogger"
+          scope="singleton">
+        <constructor-arg index="0" type="com.navis.carina.diagnostic.persistence.performance.CounterSnapshotContainer"
+                         ref="slowQueryCountSnapshotContainer"/>
+    </bean>
+
+    <!-- Never use this logger in production! It is defined here only to make it accessable by N4 developers for test purposes!-->
+    <bean id="inMemoryLogger" class="com.navis.framework.test.performance.InMemoryLogger" scope="singleton"/>
+
+    <bean id="diagnosticEventLogger" class="com.navis.carina.diagnostic.persistence.performance.CompositeLogger" scope="singleton">
+        <constructor-arg index="0" type="java.util.List">
+            <bean class="java.util.ArrayList">
+                <constructor-arg>
+                    <list>
+                        <ref local="diagnosticEventFileLogger"/>
+                        <ref local="diagnosticEventCounterLogger"/>
+                    </list>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <bean id="maxStaleHeartBeanDuration" class="java.lang.Long">
+        <constructor-arg index="0" value="60000"/>
+    </bean>
+
+    <util:map id="jobGroupLoadBalancerSchemes" map-class="java.util.HashMap" scope="singleton"/>
+
+</beans>

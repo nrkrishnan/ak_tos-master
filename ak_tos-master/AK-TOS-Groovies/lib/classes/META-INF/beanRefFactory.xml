@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       >
+
+    <bean id="com.navis.app.portal.beanfactorymappings" class="com.navis.framework.util.context.filepath.FilePathMappings">
+        <property name="mappings">
+            <list>
+                <value>portal/SpatialPortalContext.xml</value>
+                <!-- 2011-10-06: jlw: added workflow module portal context -->
+                <value>portal/WorkflowPortalContext.xml</value>
+                <!-- 2011-10-06: jlw: ARGO-34200 added optimization module portal context -->
+                <value>portal/OptimizationPortalContext.xml</value>
+                <value>portal/ArgoAppContext.xml</value>
+                <value>portal/RoadAppContext.xml</value>
+                <value>portal/EdiAppContext.xml</value>
+                <value>security/ArgoSecurityAppContext.xml</value>
+                <value>portal/InventoryPortalContext.xml</value>
+                <value>portal/OrdersAppContext.xml</value>
+                <!--the following will be needed when Cargo gets it's own menu (full cargo) -->
+                <value>portal/CargoAppContext.xml</value>
+                <value>portal/MensaPortalContext.xml</value>
+                <value>portal/ServicesPortalContext.xml</value>
+                <!-- 2007-12-18 lbarman v1.5.B ARGO-9134, ARGO-9133: refactor operational data for railcars and corresponding UIs; add bizFacade -->
+                <value>portal/RailAppContext.xml</value>
+                <value>portal/YardPortalContext.xml</value>
+                <!-- 2009-12-08 pireland ARGO-21942 ship bin model; add bizFacade -->
+                <value>portal/VesselPortalContext.xml</value>
+                <!-- 2011-10-06 JLW: Added to support 'control' module' -->
+                <value>portal/ControlPortalContext.xml</value>
+                <value>portal/ApexAppContext.xml</value>
+
+                <value>portal/CapPortalContext.xml</value>
+                <value>portal/CranePortalContext.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="app" class="org.springframework.context.support.ClassPathXmlApplicationContext">
+        <constructor-arg>
+            <list>
+                <value>META-INF/SecurityBizApplicationContext.xml</value>
+                <value>META-INF/FrameworkBizApplicationContext.xml</value>
+                <value>business/FrameworkSchemaBizApplicationContext.xml</value>
+                <value>business/SpatialBizApplicationContext.xml</value>
+                <value>business/SpatialSchemaBizApplicationContext.xml</value>
+                <value>business/WorkflowBizApplicationContext.xml</value>
+                <value>business/WorkflowSchemaBizApplicationContext.xml</value>
+                <value>business/OptimizationBizApplicationContext.xml</value>
+                <value>business/OptimizationSchemaBizApplicationContext.xml</value>
+                <value>business/ArgoBizApplicationContext.xml</value>
+                <value>business/ArgoSchemaBizApplicationContext.xml</value>
+                <value>business/InventoryBizApplicationContext.xml</value>
+                <value>business/InventorySchemaBizApplicationContext.xml</value>
+                <value>business/VesselBizApplicationContext.xml</value>
+                <value>business/VesselSchemaBizApplicationContext.xml</value>
+                <value>business/RailBizApplicationContext.xml</value>
+                <value>business/RailSchemaBizApplicationContext.xml</value>
+                <value>business/EdiBizApplicationContext.xml</value>
+                <value>business/EdiSchemaBizApplicationContext.xml</value>
+                <value>business/ServicesBizApplicationContext.xml</value>
+                <value>business/ServicesSchemaBizApplicationContext.xml</value>
+                <value>business/OrdersBizApplicationContext.xml</value>
+                <value>business/OrdersSchemaBizApplicationContext.xml</value>
+                <value>business/CargoBizApplicationContext.xml</value>
+                <value>business/CargoSchemaBizApplicationContext.xml</value>
+                <value>business/RoadBizApplicationContext.xml</value>
+                <value>business/RoadSchemaBizApplicationContext.xml</value>
+                <value>business/CapBizApplicationContext.xml</value>
+                <value>business/CapSchemaBizApplicationContext.xml</value>
+                <value>business/CraneBizApplicationContext.xml</value>
+                <value>business/CraneSchemaBizApplicationContext.xml</value>
+                <value>mobile/RoadMobileBizAppContext.xml</value>
+                <value>mobile/VesselMobileBizAppContext.xml</value>
+                <value>mobile/RailMobileBizAppContext.xml</value>
+                <!-- smandadi 01-Dec-2010 ARGO-28183: Yard Inspection mobile program error messages correction -->
+                <value>mobile/InventoryMobileBizAppContext.xml</value>
+                <value>business/MensaBizApplicationContext.xml</value>
+                <value>business/MensaEntityBizApplicationContext.xml</value>
+                <value>business/MensaSchemaBizApplicationContext.xml</value>
+                <value>business/ApexBizApplicationContext.xml</value>
+                <value>business/ApexSchemaBizApplicationContext.xml</value>
+                <!-- ARGO-4779 AFN 24-Aug-2006 implement 2nd level cache -->
+                <value>business/ApexCacheBizApplicationContext.xml</value>
+                <value>META-INF/BizApplicationContext.xml</value>
+                <value>META-INF/webservice/WebserviceApplicationContext.xml</value>
+                <value>payment/business/PaymentServiceBizApplicationContext.xml</value>
+                <value>business/XpscacheBizApplicationContext.xml</value>
+                <value>business/XpscacheSchemaBizApplicationContext.xml</value>
+                <value>business/YardBizApplicationContext.xml</value>
+                <value>business/YardSchemaBizApplicationContext.xml</value>
+                <!-- 2011-10-06: jlw: ARGO-34200 added optimization module HBM definitions -->
+                <value>business/ControlBizApplicationContext.xml</value>
+                <value>business/ControlSchemaBizApplicationContext.xml</value>
+            </list>
+        </constructor-arg>
+    </bean>
+</beans>

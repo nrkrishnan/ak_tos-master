@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+    name="ArgoService"
+    targetNamespace="http://www.navis.com/services/argoservice"
+    xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:tns="http://www.navis.com/services/argoservice"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Argo Services</wsdl:documentation>
+
+    <wsdl:types>
+        <xsd:schema
+            elementFormDefault="qualified"
+            targetNamespace="http://www.navis.com/services/argoservice"
+            xmlns:types="http://types.webservice.argo.navis.com/v1.0"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import
+                namespace="http://types.webservice.argo.navis.com/v1.0"
+                schemaLocation="../schema/argo-types.xsd">
+            </xsd:import>
+            <!-- wrapped style add the method name and arguments -->
+            <xsd:element name="genericInvoke">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinateIdsWsType" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="xmlDoc" type="xsd:string" minOccurs="1" maxOccurs="1"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="genericInvokeResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="genericInvokeResponse" type="types:GenericInvokeResponseWsType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="genericInvokeRequest">
+        <wsdl:part element="tns:genericInvoke" name="genericInvoke"/>
+    </wsdl:message>
+
+    <wsdl:message name="genericInvokeResponse">
+        <wsdl:part element="tns:genericInvokeResponse" name="genericInvokeResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="ArgoServicePort">
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="genericInvoke">
+            <wsdl:input message="tns:genericInvokeRequest"/>
+            <wsdl:output message="tns:genericInvokeResponse"/>
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <wsdl:binding name="ArgoServiceSoapBinding" type="tns:ArgoServicePort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="genericInvoke">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+<wsdl:service name="ArgoService">
+        <wsdl:port binding="tns:ArgoServiceSoapBinding" name="ArgoServicePort">
+            <soap:address location="http://localhost:8080/apex/services/argoservice"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

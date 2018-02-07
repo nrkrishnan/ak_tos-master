@@ -1,0 +1,19 @@
+<edi:loadlistTransactions xmlns:edi="http://www.navis.com/argo">
+    <edi:loadlistTransaction edi:msgClass="LOADLIST" edi:msgFunction="9" edi:msgReferenceNbr="1" edi:msgTypeId="COPRAR" edi:transactionSetNbr="1">
+        <edi:Interchange edi:AgreementId="MAE" edi:Date="2008-06-17" edi:InterchangeNumber="20080617152347COLDLT" edi:InterchangeReceipient="MLO_TP"
+                         edi:InterchangeSender="MAT" edi:Time="15:23:47"/>
+        <edi:ediOutboundVesselVisit edi:inVoyageNbr="IBVYG" edi:outVoyageNbr="OBVYG" edi:vesselId="VESSEL_ID" edi:vesselIdConvention="VESID">
+            <edi:shippingLine edi:shippingLineCode="MAT"/>
+        </edi:ediOutboundVesselVisit>
+        <edi:category>EXPRT</edi:category>
+        <edi:freightKind>FREIGHTKIND</edi:freightKind>
+        <edi:containerId>CONTAINER_ID</edi:containerId>
+        <edi:containerType>2200</edi:containerType>
+        <edi:containerOperator edi:operator="MAT"/>
+        <edi:exportRouting>
+            <edi:loadPort edi:portId="USOAK" edi:portIdConvention="UN"/>
+            <edi:dischargePort1 edi:portId="ADL" edi:portIdConvention="UN"/>
+        </edi:exportRouting>
+        <edi:grossWeight edi:wtUnit="KG" edi:wtValue="GROSSWT"/>
+    </edi:loadlistTransaction>
+</edi:loadlistTransactions>

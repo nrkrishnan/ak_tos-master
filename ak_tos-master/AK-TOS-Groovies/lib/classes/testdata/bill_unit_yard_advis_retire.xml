@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+    <routing-point id="ADL" unloc-code="CNHKG" is-place-holder="N" actual-pod-id="ADL" life-cycle-state="ACT">
+        <unloc-code-def id="CNHKG" place-code="HKG" place-name="cnhkg" status="AA" country="CN" remarks="created on the fly - fix me!"
+                        life-cycle-state="ACT">
+            <category is-airport="N" is-port="Y" is-rail-terminal="N" is-road-terminal="N"/>
+            <miscellaneous is-multimodal="N" is-border-crossing="N" is-fixed-transport="N" is-function-unknown="N"/>
+            <compass latitude-nor-s="NORTH" longitude-eor-w="EAST"/>
+        </unloc-code-def>
+    </routing-point>
+
+    <container eqid="BLUYAR1122" type="2200" class="CTR" life-cycle-state="ACT">
+        <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                  material="UNKNOWN" strength-code="FB" tare-weight-kg="1900.0" width-mm="2438"/>
+        <ownership owner="POPEYE" operator="POPEYE"/>
+        <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                      stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+        <transponder/>
+    </container>
+
+    <unit id="BLUYAR1122" category="IMPORT" transit-state="YARD" freight-kind="FCL" line="POPEYE" unique-key="BLUYAR1122">
+        <equipment eqid="BLUYAR1122" type="2200" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="FB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="POPEYE" operator="POPEYE"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="YARD" location="YRD1111"/>
+        <routing>
+            <carrier direction="IB" qualifier="DECLARED" mode="VESSEL" id="VV66"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="VESSEL" id="VV66"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="VESSEL" id="VV66"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="UNKNOWN"/>
+        </routing>
+        <contents weight-kg="1900.0" bl-nbr="BL562"/>
+        <unit-etc category="IMPORT" line="POPEYE"/>
+        <timestamps time-in="2009-02-11T04:01:35" time-last-move="2009-02-11T04:01:35"/>
+    </unit>
+
+    <container eqid="BLUYAR3344" type="2200" class="CTR" life-cycle-state="ACT">
+        <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                  material="UNKNOWN" strength-code="FB" tare-weight-kg="1900.0" width-mm="2438"/>
+        <ownership owner="POPEYE" operator="POPEYE"/>
+        <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                      stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+        <transponder/>
+    </container>
+
+    <unit id="BLUYAR3344" category="IMPORT" transit-state="YARD" freight-kind="FCL" line="POPEYE" unique-key="BLUYAR3344">
+        <equipment eqid="BLUYAR3344" type="2200" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="FB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="POPEYE" operator="POPEYE"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="YARD" location="YRD1111"/>
+        <routing>
+            <carrier direction="IB" qualifier="DECLARED" mode="VESSEL" id="VV66"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="VESSEL" id="VV66"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="VESSEL" id="VV66"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="UNKNOWN"/>
+        </routing>
+        <contents weight-kg="1900.0" bl-nbr="BL562"/>
+        <unit-etc category="IMPORT" line="POPEYE"/>
+        <timestamps time-in="2009-02-11T04:01:35" time-last-move="2009-02-11T04:01:35"/>
+    </unit>
+
+    <container eqid="BLUYAR5566" type="2200" class="CTR" life-cycle-state="ACT">
+        <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                  material="UNKNOWN" strength-code="FB" tare-weight-kg="1900.0" width-mm="2438"/>
+        <ownership owner="POPEYE" operator="POPEYE"/>
+        <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                      stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+        <transponder/>
+    </container>
+
+    <unit id="BLUYAR5566" category="IMPORT" transit-state="YARD" freight-kind="FCL" line="POPEYE" unique-key="BLUYAR5566">
+        <equipment eqid="BLUYAR5566" type="2200" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="FB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="POPEYE" operator="POPEYE"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="YARD" location="YRD1111"/>
+        <routing>
+            <carrier direction="IB" qualifier="DECLARED" mode="VESSEL" id="VV66"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="VESSEL" id="VV66"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="VESSEL" id="VV66"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="UNKNOWN"/>
+        </routing>
+        <contents weight-kg="1900.0" bl-nbr="BL562"/>
+        <unit-etc category="IMPORT" line="POPEYE"/>
+        <timestamps time-in="2009-02-11T04:01:35" time-last-move="2009-02-11T04:01:35"/>
+    </unit>
+
+    <bill-of-lading nbr="BL562" line="POPEYE" consignee-id="CONSIGNEE" shipper-id="SHIPPER" carrier-visit="VV66" pol="ADL" pod-1="OAK" pod-2="LAX"
+                    bonded-destination="OAK" origin="LAX" destination="OAK" notes="BL NOTES" manifestedQty="50" category="IMPORT">
+        <goods-bl unit-id="BLUYAR1122"/>
+        <goods-bl unit-id="BLUYAR3344"/>
+        <goods-bl unit-id="BLUYAR5566"/>
+    </bill-of-lading>
+</argo:snx>
+
+
+

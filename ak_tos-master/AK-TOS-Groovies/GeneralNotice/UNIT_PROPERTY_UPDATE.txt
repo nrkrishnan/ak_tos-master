@@ -1,0 +1,61 @@
+println("//Start Event ---:"+event.event.eventTypeId+ " on Unit :"+event.entity.unitId+" ----//")
+/*
+ * 1] Detention date
+ * 2] cargo Status
+ * 3] Ingate & Acets Filter
+ * 4] Cmis Feed (Detn & Fld chng) 
+ * 5] Thread Sleep for Detail Editor Ordering
+*/
+def unit = event.getEntity();
+if (unit.getUnitFreightKind().equals(com.navis.argo.business.atoms.FreightKindEnum.MTY)) {
+  unit.setUnitWeightToTareWeight();
+  println("MTY unit, set gross wt to tare wt is set");
+
+}
+
+if(unit.getFieldValue("unitRemark") != null) {
+unit.setFieldValue("unitRemark", unit.getFieldValue("unitRemark").replace("\n","").replace("\t",""));
+}
+
+def gvyEventUtil = api.getGroovyClassInstance("GvyEventUtil") 
+def gvyPropUpdtObj = api.getGroovyClassInstance("GvyCmisEventUnitPropertyUpdate") 
+gvyPropUpdtObj.setDetentionDTDFields(event, unit, gvyEventUtil, api);
+boolean rerouteUpdt = gvyEventUtil.holdEventProcessing(event, 'UNIT_REROUTE', 3)
+if(rerouteUpdt){ Thread.sleep(3000) }
+
+//Suppressing Event Feed for triggers from Inbuilt,Newves
+boolean blockForNonBuiltInEvnts = gvyPropUpdtObj.isCustomEvent(event, gvyEventUtil)
+boolean suppressforNv = gvyPropUpdtObj.suppressForNewves(event, gvyEventUtil)
+boolean nisDetn = gvyEventUtil.holdEventProcessing(event, 'NIS_DETENTION', 30)
+boolean isUnitPropertyUpdateProcessed = false;
+
+ 
+boolean isActiveUnit = event.entity.unitForeignHostKey != null ? true : false
+if(!suppressforNv && !nisDetn && isActiveUnit && !blockForNonBuiltInEvnts && !event.event.evntAppliedBy.contains('notice')
+   && !event.event.evntAppliedBy.startsWith('user:user:') ){
+    boolean OgtUpdt = gvyEventUtil.holdEventProcessing(event, 'UNIT_DELIVER', 3)
+    if(OgtUpdt){  return; }
+   gvyPropUpdtObj.processUnitPropertyUpdate(event,api) 
+   isUnitPropertyUpdateProcessed = true; 
+ }
+
+//Create Report - UI, ACETS and SUPPLEMENT 
+boolean isTIHoldReleased = gvyEventUtil.holdEventProcessing(event, 'TI_RELEASE', 3)
+gvyPropUpdtObj = gvyPropUpdtObj != null ? gvyPropUpdtObj : api.getGroovyClassInstance("GvyCmisEventUnitPropertyUpdate")  
+ def isCargoNoticeSent = gvyPropUpdtObj.isCargoNoticeSent();
+ boolean reportProcessing = gvyEventUtil.verfiyReportSnxProcessing(event)
+ if(!isTIHoldReleased && !suppressforNv && !nisDetn && reportProcessing && !isCargoNoticeSent && !blockForNonBuiltInEvnts && !event.event.evntAppliedBy.contains('notice') 
+   && !event.event.evntAppliedBy.startsWith('user:user:'))
+{
+  def cargoStatusGvy = api.getGroovyClassInstance( "GvyUnitCargoStatus");
+  def ret = cargoStatusGvy.sendXml( "CARGO_STATUS", event);
+  def setFacilityAndSendXML = api.getGroovyClassInstance("AssignFaciltyToContextHelper")
+   setFacilityAndSendXML.setFacility(event,ret);
+ }
+
+// 12/22/2014 dkannadasan EP000218967 Update of Detention Due Date After Outgate
+if (!isUnitPropertyUpdateProcessed && !isActiveUnit){
+     //gvyPropUpdtObj.processMnsForDepartedUnitDetentionDateUpdate(event,api,gvyEventUtil);  
+}
+
+println("//End Event ---:"+event.event.eventTypeId+ " on Unit :"+event.entity.unitId+" ----//")

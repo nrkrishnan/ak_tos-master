@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <meta attribute="JavaClassPrefix">UpgradeLog</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.framework.upgrade.UpgradeLogEvent" table="frm_upgrade_log">
+        <meta attribute="generated-class">com.navis.framework.upgrade.UpgradeLogEventHbr</meta>
+        <meta attribute="n4alias">upgr</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-entity-name">Upgrade Log Event</meta>
+        <meta attribute="n4-entity-name-plural">Upgrade Log Events</meta>
+        <meta attribute="n4-uniqueness-description">none</meta>
+
+        <id name="upgrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="upgrClassname" column="classname" type="string" length="500">
+            <meta attribute="field-description">Classname of the IUpgradeTask</meta>
+        </property>
+
+        <property name="upgrDbNum" column="db_num" type="string" length="5">
+            <meta attribute="field-description">Database build number</meta>
+        </property>
+
+        <property name="upgrAppNum" column="app_num" type="string" length="5">
+            <meta attribute="field-description">Application build number</meta>
+        </property>
+
+        <property name="upgrAppVersion" column="app_version" type="string" length="50">
+            <meta attribute="field-description">Human readable version number</meta>
+        </property>
+
+        <property name="upgrEventDate" column="event_date" type="timestamp" not-null="false">
+            <meta attribute="field-description">Timestamp of the event</meta>
+        </property>
+
+        <property name="upgrStatus" column="status"
+                  type="com.navis.framework.persistence.atoms.UserTypeUpgradeStatusEnum">
+            <meta attribute="field-description">Status of the event</meta>
+        </property>
+
+        <property name="upgrType" column="type" type="com.navis.framework.persistence.atoms.UserTypeUpgradeLogTypeEnum">
+            <meta attribute="field-description">Type of event</meta>
+        </property>
+
+        <property name="upgrMessage" column="message" type="text">
+            <meta attribute="field-description">Any message string related to the event</meta>
+        </property>
+
+        <property name="upgrDescription" column="description" type="string" length="1024">
+            <meta attribute="field-description">A description of the upgrade action</meta>
+        </property>
+    </class>
+
+</hibernate-mapping>

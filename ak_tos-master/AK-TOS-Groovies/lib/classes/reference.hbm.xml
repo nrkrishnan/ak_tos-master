@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">Reference</meta>
+
+    <class name="com.navis.reference.business.locale.RefCountry" table="ref_country">
+        <meta attribute="generated-class">com.navis.reference.business.locale.RefCountryHbr</meta>
+        <meta attribute="n4alias">cntry</meta>
+        <meta attribute="n4-entity-name">Country</meta>
+        <meta attribute="n4-entity-name-plural">Countries</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-business-key">cntryCode</meta>
+        <meta attribute="ui-default-lov">com.navis.reference.lovs.COUNTRIES</meta>
+
+        <id name="cntryCode" column="cntry_code" type="string" length="2">
+            <meta attribute="scope-set">protected</meta>
+            <generator class="assigned"/>
+        </id>
+
+        <property name="cntryAlpha3Code" column="cntry_alpha3_code" type="string" length="3" >
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <property name="cntryNum3Code" column="cntry_num3_code" type="string" length="3" >
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <property name="cntryName" column="cntry_name" type="string" length="50">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <property name="cntryOfficialName" column="cntry_off_name" type="string" length="100">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <!-- 2005-04-12 JJS added order-by -->
+        <set name="stateList" lazy="true" order-by="state_code">
+            <meta attribute="scope-set">protected</meta>
+            <key column="state_cntry_code"/>
+            <one-to-many class="com.navis.reference.business.locale.RefState"/>
+        </set>
+        <property name="cntryLifeCycleState" column="cntry_life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = cntry_life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.reference.business.locale.RefState" table="ref_state">
+        <meta attribute="generated-class">com.navis.reference.business.locale.RefStateHbr</meta>
+        <meta attribute="n4alias">state</meta>
+        <meta attribute="n4-entity-name">State</meta>
+        <meta attribute="n4-entity-name-plural">States</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-business-key">stateCode</meta>
+        <meta attribute="ui-default-lov">com.navis.reference.lovs.STATES</meta>
+        
+        <id name="stateGkey" column="state_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <meta attribute="scope-set">protected</meta>
+            <generator class="native"/>
+        </id>
+        <property name="stateCode" column="state_code" type="string" length="10" not-null="true">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <property name="stateName" column="state_name" type="string" length="50">
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <many-to-one name="stateCntry" class="com.navis.reference.business.locale.RefCountry" not-null="true">
+            <meta attribute="scope-set">protected</meta>
+            <column name="state_cntry_code" length="2" index="ref_state_cntry_code_fki"/>
+        </many-to-one>
+    </class>
+</hibernate-mapping>

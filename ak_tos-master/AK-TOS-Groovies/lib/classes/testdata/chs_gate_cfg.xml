@@ -1,0 +1,912 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gateConfiguration name="CHS_GATE" description="Richmond Marine Terminals Gate">
+  <gateStages>
+    <inStage id="receive" leg="in" menuId="Receive" order="1" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" autoStage="false" isTruckVisitRequired="false" pollNextTruck="false" pollTruckInterval="" extraTime="" timeAllowed="" allowAnyStage="false" exchangeLaneAssignmentBooth="false" allowTransactionEdit="false" includeAppointmentTab="" appointmentsTabFilterId="" includeGroupsTab="" cargoLotsFilterId="" supportsCallup="false" isExcluded="false">
+      <stagesAllowed />
+    </inStage>
+    <outStage id="deliver" leg="out" menuId="Deliver" order="2" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" autoStage="false" isTruckVisitRequired="false" pollNextTruck="false" pollTruckInterval="" extraTime="" timeAllowed="" allowAnyStage="true" exchangeLaneAssignmentBooth="false" allowTransactionEdit="false" includeAppointmentTab="" appointmentsTabFilterId="" includeGroupsTab="" cargoLotsFilterId="" supportsCallup="false" isExcluded="false">
+      <stagesAllowed>
+        <stageAllowed id="receive" />
+      </stagesAllowed>
+    </outStage>
+  </gateStages>
+  <gateStageSubTypes>
+    <gateStagesRI>
+      <inStage id="receive" leg="in" addAllowed="false" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadCommodity-->
+          <!--System Task ReadUnitPreadvised-->
+          <bizTask name="RejectUnitNotPreadvised" include="true" />
+          <!--System Task ReadLine-->
+          <!--System Task ReadCarrierVisit-->
+          <bizTask name="ReadReeferDetails" include="true" />
+          <bizTask name="ReadAdvisedHazards" include="true" />
+          <bizTask name="CreateNewChassis" include="true" />
+          <bizTask name="CreateNewAccessory" include="true" />
+          <bizTask name="AttachChsAcc" include="true" />
+          <bizTask name="ApplyOogDetails" include="true" />
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectTruckingCompanyBanned" include="true" />
+          <bizTask name="RejectTruckingCompanyNoLineAgreement" include="true" />
+          <bizTask name="RejectTrkcLineBanned" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectContainerInYard" include="true" />
+          <bizTask name="RejectContainerNotImport" include="true" />
+          <bizTask name="RejectContainerSeal1Required" include="true" />
+          <bizTask name="RejectGrossWeightRequired" include="true" />
+          <bizTask name="RejectContainerUnderWeight" include="true">
+            <parameter id="toleranceKg" value="" />
+          </bizTask>
+          <bizTask name="RejectContainerOverWeightEmpty" include="true">
+            <parameter id="toleranceKg" value="" />
+          </bizTask>
+          <bizTask name="RejectChassisUnknown" include="true" />
+          <bizTask name="RejectContainerNotDrayIn" include="true" />
+          <bizTask name="RejectTruckLicenseRequired" include="true" />
+          <bizTask name="RejectConditionTrue" include="true">
+            <parameter id="andComparisonOperator" value="" />
+            <parameter id="andFieldId" value="" />
+            <parameter id="andValue" value="" />
+            <parameter id="comparisonOperator" value="!=" />
+            <parameter id="fieldId" value="tranCtrFreightKind" />
+            <parameter id="messageLevel" value="error" />
+            <parameter id="userMessageNbr" value="1" />
+            <parameter id="value" value="FreightKindEnum[FCL]" />
+          </bizTask>
+          <bizTask name="RejectConditionTrue" include="true">
+            <parameter id="andComparisonOperator" value="" />
+            <parameter id="andFieldId" value="" />
+            <parameter id="andValue" value="" />
+            <parameter id="comparisonOperator" value="!=" />
+            <parameter id="fieldId" value="tranCtrFreightKind" />
+            <parameter id="messageLevel" value="error" />
+            <parameter id="userMessageNbr" value="1" />
+            <parameter id="value" value="FreightKindEnum[FCL]" />
+          </bizTask>
+          <bizTask name="RejectConditionTrue" include="true">
+            <parameter id="andComparisonOperator" value="" />
+            <parameter id="andFieldId" value="" />
+            <parameter id="andValue" value="" />
+            <parameter id="comparisonOperator" value="!=" />
+            <parameter id="fieldId" value="tranCtrFreightKind" />
+            <parameter id="messageLevel" value="error" />
+            <parameter id="userMessageNbr" value="1" />
+            <parameter id="value" value="FreightKindEnum[FCL]" />
+          </bizTask>
+          <bizTask name="ClearDrayStatus" include="true" />
+          <bizTask name="ApplyPhysicalDetails" include="true" />
+          <bizTask name="ApplyObservedPlacardsToUnit" include="true" />
+          <bizTask name="ApplyContainerDamages" include="true" />
+          <bizTask name="ApplyContainerNotes" include="true" />
+          <bizTask name="ApplyContainerSeals" include="true" />
+          <bizTask name="ApplyContainerExportGoods" include="true" />
+          <bizTask name="ApplyContainerHazards" include="true" />
+          <bizTask name="ApplyChassisDamages" include="false" />
+          <bizTask name="ApplyReeferDetails" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="RejectCtrHazardsNotChecked" include="true" />
+          <bizTask name="PlaceContainerOnTruck" include="true" />
+          <bizTask name="RejectReeferDetailsNotRequired" include="true" />
+          <bizTask name="PlaceUnitIntoYard" include="true" />
+          <bizTask name="LogHazardMission" include="true" />
+          <bizTask name="LogOverDimensionMission" include="true" />
+          <bizTask name="LogReeferMission" include="true" />
+          <bizTask name="RecordUnitDrayIn" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CancelWorkInstructionIfError" include="true" />
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranSealNbr2" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranScaleWeight" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsTareWeight" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrTareWeight" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranTruckTareWeight" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrNetWeight" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrGrossWeight" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tTranCtrDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranIsHazard" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranHazVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranReeferVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </inStage>
+    </gateStagesRI>
+    <gateStagesDM>
+      <outStage id="deliver" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="SelectOrderItem" include="true" />
+          <bizTask name="RejectShippingLineDeprecated" include="true" />
+          <bizTask name="RejectOrderNotFound" include="true" />
+          <bizTask name="RejectOrderItemTallyExceeded" include="true" />
+          <bizTask name="ApplyPhysicalDetails" include="true" />
+          <bizTask name="RejectOrderItemRequiredForDispatch" include="true" />
+          <bizTask name="RejectTruckingCompanyExpiredLineAgreement" include="true" />
+          <bizTask name="RejectTruckingCompanyNoLineAgreement" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerDamaged" include="true">
+            <parameter id="checkEquipmentDamages" value="YES" />
+            <parameter id="checkTransactionDamages" value="YES" />
+            <parameter id="includeMinorDamage" value="NO" />
+          </bizTask>
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectOrderHold" include="true" />
+          <bizTask name="RejectEqGradeNotMatchingBooking" include="true" />
+          <bizTask name="RejectContainerNotAtFacility" include="true" />
+          <bizTask name="RejectContainerNotInYard" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectTranNotMatchingBookingTrkc" include="true" />
+          <bizTask name="RejectTranNotMatchingOrderLineOperator" include="true" />
+          <bizTask name="RejectContainerNotEmpty" include="true" />
+          <bizTask name="RejectOrderReservedFirstOrOnly" include="true" />
+          <bizTask name="RejectOrderItemDispatchUnitMismatch" include="true" />
+          <bizTask name="RejectContainerCannotBeUsedByLine" include="true" />
+          <bizTask name="RejectContainerNotAllowedForPort" include="true" />
+          <bizTask name="RejectEmptyContainerDepartingByRail" include="true" />
+          <bizTask name="RejectEmptyContainerDepartingByVessel" include="true" />
+          <bizTask name="RejectDateNotMatchingEarlyOrLatestDate" include="true" />
+          <bizTask name="RejectChassisRequired" include="true" />
+          <bizTask name="RejectChassisNotAtFacility" include="true" />
+          <bizTask name="RejectChassisDamaged" include="true">
+            <parameter id="checkEquipmentDamages" value="" />
+            <parameter id="checkTransactionDamages" value="" />
+            <parameter id="includeMinorDamage" value="NO" />
+          </bizTask>
+          <bizTask name="IncrementOrderItemTally" include="true" />
+          <bizTask name="RejectContainerReserved" include="true" />
+          <bizTask name="AttachOrderToTheUnitEquipment" include="true" />
+          <bizTask name="CreateUnitDeparting" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="RejectEqConditionNotMatchingBooking" include="true" />
+          <bizTask name="ApplyContainerNotes" include="true" />
+          <bizTask name="ApplyContainerSeals" include="true" />
+          <bizTask name="ApplyChassisDamages" include="false" />
+          <bizTask name="PlaceUnitOnTruck" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CancelWorkInstructionIfError" include="true" />
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranEqoNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranLineId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tTranCtrDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDM>
+    <gateStagesRE>
+      <inStage id="receive" leg="in" addAllowed="false" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadUnitPreadvised-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <bizTask name="SelectOrderItem" include="true" />
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadDischargePoint1-->
+          <!--System Task ReadCommodity-->
+          <bizTask name="CreateNewContainer" include="true" />
+          <bizTask name="CreateNewChassis" include="true" />
+          <bizTask name="AdjustTally" include="true" />
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectShippingLineDeprecated" include="true" />
+          <bizTask name="RejectTruckingCompanyExpiredLineAgreement" include="true" />
+          <bizTask name="RejectTruckingCompanyNoLineAgreement" include="true" />
+          <bizTask name="RejectTrkcLineBanned" include="true" />
+          <bizTask name="RejectOrderNotFound" include="true" />
+          <bizTask name="RejectOrderItemQtyExceeded" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerCannotBeUsedByLine" include="true" />
+          <bizTask name="RejectContainerNotAllowedForPort" include="true" />
+          <bizTask name="RejectContainerInYard" include="true" />
+          <bizTask name="RejectContainerSeal1Required" include="true" />
+          <bizTask name="RejectGrossWeightRequired" include="true" />
+          <bizTask name="RejectContainerUnderWeight" include="true">
+            <parameter id="toleranceKg" value="" />
+          </bizTask>
+          <bizTask name="RejectContainerOverWeightEmpty" include="true">
+            <parameter id="toleranceKg" value="" />
+          </bizTask>
+          <bizTask name="RejectUnexpectedPlacardsPresent" include="true" />
+          <bizTask name="RejectCommodityHazRequired" include="true" />
+          <bizTask name="RejectTranNotMatchingNonHazardBooking" include="true" />
+          <bizTask name="RejectTranNotMatchingHazardBooking" include="true" />
+          <bizTask name="RejectCtrHazardsNotChecked" include="true" />
+          <bizTask name="RejectOrderItemRequiredForRcv" include="true" />
+          <bizTask name="RejectCtrHazardsNotMatchingBookingHazard" include="true" />
+          <bizTask name="RejectTranNotMatchingBookingTrkc" include="true" />
+          <bizTask name="RejectTranNotMatchingOrderLineOperator" include="true" />
+          <bizTask name="RejectIfBookingRequired" include="true" />
+          <bizTask name="RejectCarrierVisitPhaseDeparted" include="true" />
+          <bizTask name="RejectConditionTrue" include="true">
+            <parameter id="andComparisonOperator" value="" />
+            <parameter id="andFieldId" value="" />
+            <parameter id="andValue" value="" />
+            <parameter id="comparisonOperator" value="!=" />
+            <parameter id="fieldId" value="tranCtrFreightKind" />
+            <parameter id="messageLevel" value="error" />
+            <parameter id="userMessageNbr" value="1" />
+            <parameter id="value" value="FreightKindEnum[FCL]" />
+          </bizTask>
+          <bizTask name="RejectConditionTrue" include="true">
+            <parameter id="andComparisonOperator" value="" />
+            <parameter id="andFieldId" value="" />
+            <parameter id="andValue" value="" />
+            <parameter id="comparisonOperator" value="!=" />
+            <parameter id="fieldId" value="tranCtrFreightKind" />
+            <parameter id="messageLevel" value="error" />
+            <parameter id="userMessageNbr" value="1" />
+            <parameter id="value" value="FreightKindEnum[FCL]" />
+          </bizTask>
+          <bizTask name="RejectConditionTrue" include="true">
+            <parameter id="andComparisonOperator" value="" />
+            <parameter id="andFieldId" value="" />
+            <parameter id="andValue" value="" />
+            <parameter id="comparisonOperator" value="!=" />
+            <parameter id="fieldId" value="tranCtrFreightKind" />
+            <parameter id="messageLevel" value="error" />
+            <parameter id="userMessageNbr" value="1" />
+            <parameter id="value" value="FreightKindEnum[FCL]" />
+          </bizTask>
+          <bizTask name="CreateContainerVisit" include="true" />
+          <bizTask name="ApplyPhysicalDetails" include="true" />
+          <bizTask name="ApplyObservedPlacardsToUnit" include="true" />
+          <bizTask name="ApplyContainerSeals" include="true" />
+          <bizTask name="ApplyContainerExportGoods" include="true" />
+          <bizTask name="ApplyContainerHazards" include="true" />
+          <bizTask name="ApplyReeferDetails" include="true" />
+          <bizTask name="ApplyContainerNotes" include="true" />
+          <bizTask name="ApplyChassisDamages" include="false" />
+          <bizTask name="RejectOrderHold" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="RejectReeferDetailsNotRequired" include="true" />
+          <bizTask name="PlaceUnitIntoYard" include="true" />
+          <bizTask name="LogHazardMission" include="true" />
+          <bizTask name="LogOverDimensionMission" include="true" />
+          <bizTask name="LogReeferMission" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CancelWorkInstructionIfError" include="true" />
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranEqoNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCarrierVisit" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranSealNbr2" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranSealNbr3" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranCtrDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranScaleWeight" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsTareWeight" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrTareWeight" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranTruckTareWeight" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrNetWeight" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrGrossWeight" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tTranHazVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranReeferVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranIsHazardChecked" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </inStage>
+    </gateStagesRE>
+    <gateStagesRC>
+      <inStage id="receive" leg="in" addAllowed="false" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadLine-->
+          <bizTask name="CreateNewChassis" include="true" />
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectChassisInYard" include="true" />
+          <bizTask name="RejectBundledEqInYard" include="true" />
+          <bizTask name="CreateBareChassisVisit" include="true" />
+          <bizTask name="ApplyContainerNotes" customCode="" include="true" />
+          <bizTask name="ApplyChassisDamages" include="false" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="PlaceBareChassisOnTruck" include="true" />
+          <bizTask name="PlaceUnitIntoYard" include="true" />
+          <bizTask name="RejectBundleNbrDuplicated" include="true" />
+          <bizTask name="AttachBundle" include="true">
+            <parameter id="detachRemovedBundles" value="" />
+          </bizTask>
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsOperator" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsTareWeight" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranBndleVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </inStage>
+    </gateStagesRC>
+    <gateStagesDE>
+      <outStage id="deliver" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <bizTask name="RejectTruckingCompanyUnknown" include="true" />
+          <bizTask name="RejectTruckingCompanyBanned" include="true" />
+          <bizTask name="RejectTruckingCompanyDeprecated" include="true" />
+          <bizTask name="RejectTruckBanned" include="true" />
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadReleaseNbr-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadDischargePoint1-->
+          <bizTask name="RejectTrkcLineBanned" include="true" />
+          <bizTask name="RejectTruckingCompanyExpiredLineAgreement" include="true" />
+          <bizTask name="RejectTruckingCompanyNoLineAgreement" include="true" />
+          <bizTask name="RejectTruckingCompanyLineExpiredInsurance" include="true" />
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerDamaged" include="true">
+            <parameter id="checkEquipmentDamages" value="YES" />
+            <parameter id="checkTransactionDamages" value="YES" />
+            <parameter id="includeMinorDamage" value="NO" />
+          </bizTask>
+          <bizTask name="RejectContainerNotAtFacility" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectContainerNotExport" include="true" />
+          <bizTask name="RejectTruckingCompanyExpiredInsurance" include="true" />
+          <bizTask name="RejectChassisRequired" include="true" />
+          <bizTask name="RejectChassisNotAtFacility" include="true" />
+          <bizTask name="RejectChassisEquipmentHold" include="true" />
+          <bizTask name="RejectChassisDamaged" include="true">
+            <parameter id="checkEquipmentDamages" value="YES" />
+            <parameter id="checkTransactionDamages" value="YES" />
+            <parameter id="includeMinorDamage" value="NO" />
+          </bizTask>
+          <bizTask name="RejectContainerNotDrayOff" include="true" />
+          <bizTask name="RejectContainerSubstitution" include="true" />
+          <bizTask name="ApplyContainerNotes" include="true" />
+          <bizTask name="ApplyContainerSeals" include="true" />
+          <bizTask name="ApplyChassisDamages" include="false" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="" include="true" />
+          <bizTask name="CreateUnitDeparting" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="PlaceUnitOnTruck" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CancelWorkInstructionIfError" include="true" />
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranSealNbr2" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranCtrDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDE>
+    <gateStagesDC>
+      <outStage id="deliver" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadLine-->
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectTruckingCompanyUnknown" include="true" />
+          <bizTask name="RejectTruckingCompanyBanned" include="true" />
+          <bizTask name="RejectTruckingCompanyDeprecated" include="true" />
+          <bizTask name="RejectTrkcLineBanned" include="true" />
+          <bizTask name="RejectTruckBanned" include="true" />
+          <!--System Task ReadChassis-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="CreateUnitDeparting" include="true" />
+          <bizTask name="RejectChassisRequired" include="true" />
+          <bizTask name="RejectChassisNotAtFacility" include="true" />
+          <bizTask name="RejectChassisEquipmentHold" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="RejectChassisDamaged" include="true">
+            <parameter id="checkEquipmentDamages" value="" />
+            <parameter id="checkTransactionDamages" value="" />
+            <parameter id="includeMinorDamage" value="NO" />
+          </bizTask>
+          <bizTask name="ApplyContainerNotes" customCode="" include="true" />
+          <bizTask name="ApplyChassisDamages" include="false" />
+          <bizTask name="PlaceUnitOnTruck" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CancelWorkInstructionIfError" include="true" />
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsOperator" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranBndleVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDC>
+    <gateStagesRM>
+      <inStage id="receive" leg="in" addAllowed="false" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadUnitPreadvised-->
+          <bizTask name="PromoteAdvisedUnitForCategory" include="true" />
+          <bizTask name="CreateNewContainer" include="true" />
+          <bizTask name="CreateNewChassis" include="true" />
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectTruckingCompanyNoLineAgreement" include="true" />
+          <bizTask name="RejectTruckingCompanyBanned" include="true" />
+          <bizTask name="RejectTrkcLineBanned" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerInYard" include="true" />
+          <bizTask name="RejectTruckLicenseRequired" include="true" />
+          <bizTask name="CreateContainerVisit" include="true" />
+          <bizTask name="ApplyPhysicalDetails" include="true" />
+          <bizTask name="AssignTruckingCompanyToUnit" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="" include="true" />
+          <bizTask name="ApplyContainerDamages" include="true" />
+          <bizTask name="ApplyContainerNotes" include="true" />
+          <bizTask name="ApplyChassisDamages" include="false" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="PlaceUnitIntoYard" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CancelWorkInstructionIfError" include="true" />
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tTranCtrDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </inStage>
+    </gateStagesRM>
+    <gateStagesDI>
+      <outStage id="deliver" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <bizTask name="RejectTruckingCompanyUnknown" include="true" />
+          <bizTask name="RejectTruckingCompanyBanned" include="true" />
+          <bizTask name="RejectTruckingCompanyDeprecated" include="true" />
+          <bizTask name="RejectTruckBanned" include="true" />
+          <!--System Task ReadReleaseNbr-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="ApplyContainerShippingDetails" include="true" />
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectTrkcLineBanned" include="true" />
+          <bizTask name="RejectTruckingCompanyExpiredLineAgreement" include="true" />
+          <bizTask name="RejectTruckingCompanyNoLineAgreement" include="true" />
+          <bizTask name="RejectTruckingCompanyNotExamSiteCarrier" include="true" />
+          <bizTask name="RejectTruckingCompanyNotSeizedCargoCarrier" include="true" />
+          <bizTask name="RejectTruckingCoNotMatchingDesignatedBondedCarrier" include="true" />
+          <bizTask name="RejectShippingLineDeprecated" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerDamaged" include="true">
+            <parameter id="checkEquipmentDamages" value="YES" />
+            <parameter id="checkTransactionDamages" value="YES" />
+            <parameter id="includeMinorDamage" value="NO" />
+          </bizTask>
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectContainerNotAtFacility" include="true" />
+          <bizTask name="RejectContainerNotInYard" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectContainerNotImport" include="true" />
+          <bizTask name="RejectTruckingCompanyNotAssignedForPickup" include="true">
+            <parameter id="precedence" value="unit" />
+          </bizTask>
+          <bizTask name="RejectTruckingCompanyExpiredInsurance" include="true" />
+          <bizTask name="RejectTruckLicenseRequired" include="true" />
+          <bizTask name="RejectChassisRequired" include="true" />
+          <bizTask name="RejectChassisNotAtFacility" include="true" />
+          <bizTask name="RejectChassisEquipmentHold" include="true" />
+          <bizTask name="RejectChassisDamaged" include="true">
+            <parameter id="checkEquipmentDamages" value="YES" />
+            <parameter id="checkTransactionDamages" value="YES" />
+            <parameter id="includeMinorDamage" value="NO" />
+          </bizTask>
+          <bizTask name="RejectConditionTrue" include="true">
+            <parameter id="andComparisonOperator" value="" />
+            <parameter id="andFieldId" value="" />
+            <parameter id="andValue" value="" />
+            <parameter id="comparisonOperator" value="!=" />
+            <parameter id="fieldId" value="tranCtrFreightKind" />
+            <parameter id="messageLevel" value="error" />
+            <parameter id="userMessageNbr" value="1" />
+            <parameter id="value" value="FreightKindEnum[FCL]" />
+          </bizTask>
+          <bizTask name="RejectConditionTrue" include="true">
+            <parameter id="andComparisonOperator" value="" />
+            <parameter id="andFieldId" value="" />
+            <parameter id="andValue" value="" />
+            <parameter id="comparisonOperator" value="!=" />
+            <parameter id="fieldId" value="tranCtrFreightKind" />
+            <parameter id="messageLevel" value="error" />
+            <parameter id="userMessageNbr" value="1" />
+            <parameter id="value" value="FreightKindEnum[FCL]" />
+          </bizTask>
+          <bizTask name="RejectConditionTrue" include="true">
+            <parameter id="andComparisonOperator" value="" />
+            <parameter id="andFieldId" value="" />
+            <parameter id="andValue" value="" />
+            <parameter id="comparisonOperator" value="!=" />
+            <parameter id="fieldId" value="tranCtrFreightKind" />
+            <parameter id="messageLevel" value="error" />
+            <parameter id="userMessageNbr" value="1" />
+            <parameter id="value" value="FreightKindEnum[FCL]" />
+          </bizTask>
+          <bizTask name="CreateUnitDeparting" include="true" />
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectContainerSubstitution" include="true" />
+          <bizTask name="RejectContainerSubstitutionNotMatchingGroupOrBL" include="true" />
+          <bizTask name="ApplyContainerNotes" include="true" />
+          <bizTask name="ApplyContainerSeals" include="true" />
+          <bizTask name="ApplyContainerHazards" include="true" />
+          <bizTask name="ApplyChassisDamages" include="false" />
+          <bizTask name="ApplyReeferDetails" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="PlaceUnitOnTruck" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CancelWorkInstructionIfError" include="true" />
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranSealNbr2" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranCtrDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDI>
+  </gateStageSubTypes>
+  <gateStageTruckVisit>
+    <inStage id="receive" leg="in" autoStage="false" isTruckVisitRequired="false" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" pollNextTruck="false" pollTruckInterval="" allowAnyStage="false" supportsCallup="false" isExcluded="false">
+      <bizTasks>
+        <!--System Task ReadTruckVisitAppointment-->
+        <!--System Task ReadTruck-->
+        <!--System Task ReadDriver-->
+        <!--System Task ReadTruckVisitAppointment-->
+        <!--System Task ReadTruck-->
+        <!--System Task ReadDriver-->
+        <!--System Task SelectChassisProfile-->
+        <bizTask name="PositionTruckVisit" include="true">
+          <parameter id="truckPosition" value="OUT" />
+        </bizTask>
+        <bizTask name="ArriveTruckVisitAtYard" include="true" />
+      </bizTasks>
+      <uiForm>
+        <uiField fieldId="tvdtlsTruckLicenseNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tvdtlsTrkCompany" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+      </uiForm>
+    </inStage>
+    <outStage id="deliver" leg="out" autoStage="false" isTruckVisitRequired="false" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" pollNextTruck="false" pollTruckInterval="" allowAnyStage="true" supportsCallup="false" isExcluded="false">
+      <bizTasks>
+        <!--System Task ReadTruck-->
+        <!--System Task ReadTruck-->
+        <bizTask name="DepartUnit" include="true" />
+        <bizTask name="DepartTruckVisit" include="true" />
+        <bizTask name="PositionTruckVisit" include="true">
+          <parameter id="truckPosition" value="OUT" />
+        </bizTask>
+      </bizTasks>
+      <uiForm>
+        <uiField fieldId="tvdtlsTruckLicenseNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tvdtlsTrkCompany" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+      </uiForm>
+    </outStage>
+  </gateStageTruckVisit>
+</gateConfiguration>
+

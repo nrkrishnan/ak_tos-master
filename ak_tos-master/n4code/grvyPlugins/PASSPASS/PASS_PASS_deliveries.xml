@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gateConfiguration name="PASS-PASS " description="Pass-pass Gate">
+  <gateStages>
+    <inStage leg="in" menuId="Pass Ingate" order="1" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" autoStage="true" allowAnyStage="false" id="Ingate" />
+    <outStage leg="out" menuId="Pass Outgate" order="2" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" autoStage="true" allowAnyStage="false" id="Outgate" />
+  </gateStages>
+  <gateStageSubTypes>
+    <gateStagesRI>
+      <inStage id="Ingate" leg="in" addAllowed="false" pollScale="false" autoSubmit="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadCommodity-->
+          <!--System Task ReadUnitPreadvised-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadCarrierVisit-->
+          <bizTask name="RejectDuplicateTransaction" />
+          <bizTask name="RejectTruckingCompanyUnknown" />
+          <bizTask name="RejectContainerRequired" />
+          <bizTask name="RejectContainerInYard" />
+          <bizTask name="RejectContainerNotDrayIn" />
+          <bizTask name="ClearDrayStatus" />
+          <bizTask name="ApplyContainerDamages" />
+          <bizTask name="ApplyChassisDamages" />
+          <bizTask name="ApplyContainerSeals" />
+          <bizTask name="ApplyContainerHazards" />
+          <bizTask name="ApplyReeferDetails" />
+          <bizTask name="RejectUnitServiceRules" />
+          <bizTask name="PlaceContainerOnTruck" />
+          <bizTask name="PositionTruckVisit">
+            <parameter id="truckPosition" value="TQ" />
+          </bizTask>
+          <bizTask name="PlanUnitIntoYard">
+            <parameter id="truckPosition" value="TQ" />
+            <parameter id="workQueue" value="PASS_PASS" />
+          </bizTask>
+          <bizTask name="RejectUnitFailedToDeck">
+            <parameter id="failedToDeckSlot" value="FLD" />
+          </bizTask>
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranDischargePoint1" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranDestination" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </inStage>
+    </gateStagesRI>
+    <gateStagesDE>
+      <outStage id="Outgate" leg="out" addAllowed="false" pollScale="false" autoSubmit="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <bizTask name="RejectTruckingCompanyUnknown" customCode="def myGroovy = api.getGroovyClassInstance(&quot;RejectInternalTruckUnknown&quot;);&#xA;&#xA; myGroovy.execute(inDao, api);&#xA;&#xA;myGroovy = null&#xA;" />
+          <!--System Task ReadReleaseNbr-->
+          <bizTask name="CopyContainerAssignedToNbr" />
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadCarrierVisit-->
+          <bizTask name="RejectDuplicateTransaction" />
+          <bizTask name="RejectContainerRequired" customCode="def myGroovy = api.getGroovyClassInstance(&quot;RejectContainerNotInGroup&quot;);&#xA;&#xA; myGroovy.execute(inDao, api);&#xA;&#xA;myGroovy = null&#xA;" />
+          <bizTask name="RejectContainerNotAtFacility" />
+          <bizTask name="PositionTruckVisit">
+            <parameter id="truckPosition" value="TIP" />
+          </bizTask>
+          <bizTask name="RejectContainerNotDrayOff" />
+          <bizTask name="RejectUnitServiceRules" customCode="def myGroovy = api.getGroovyClassInstance(&quot;PlaceUnitIntoSkipYard&quot;);&#xA;&#xA; myGroovy.execute(inDao, api);&#xA;&#xA;myGroovy = null" />
+          <bizTask name="PlaceUnitOnTruck" />
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbrAssigned" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDE>
+    <gateStagesRC>
+      <inStage id="Ingate" leg="in" addAllowed="false" pollScale="false" autoSubmit="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadLine-->
+        </bizTasks>
+        <uiForm />
+      </inStage>
+    </gateStagesRC>
+    <gateStagesDI>
+      <outStage id="Outgate" leg="out" addAllowed="false" pollScale="false" autoSubmit="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <bizTask name="RejectDuplicateTransaction" />
+          <bizTask name="RejectTruckingCompanyUnknown" customCode="def myGroovy = api.getGroovyClassInstance(&quot;RejectInternalTruckUnknown&quot;);&#xA;&#xA; myGroovy.execute(inDao, api);&#xA;&#xA;myGroovy = null&#xA;" />
+          <!--System Task ReadReleaseNbr-->
+          <bizTask name="CopyContainerAssignedToNbr" />
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadCarrierVisit-->
+          <bizTask name="RejectContainerRequired" customCode="def myGroovy = api.getGroovyClassInstance(&quot;RejectContainerNotInGroup&quot;);&#xA;&#xA; myGroovy.execute(inDao, api);&#xA;&#xA;myGroovy = null&#xA;" />
+          <bizTask name="RejectContainerNotAtFacility" />
+          <bizTask name="RejectContainerNotImport" />
+          <bizTask name="PositionTruckVisit">
+            <parameter id="truckPosition" value="TIP" />
+          </bizTask>
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectUnitServiceRules" customCode="def myGroovy = api.getGroovyClassInstance(&quot;PlaceUnitIntoSkipYard&quot;);&#xA;&#xA; myGroovy.execute(inDao, api);&#xA;&#xA;myGroovy = null&#xA;" />
+          <bizTask name="PlaceUnitOnTruck" />
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbrAssigned" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDI>
+    <gateStagesRE>
+      <inStage id="Ingate" leg="in" addAllowed="false" pollScale="false" autoSubmit="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadUnitPreadvised-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadDischargePoint1-->
+          <!--System Task ReadCommodity-->
+          <bizTask name="RejectDuplicateTransaction" />
+          <bizTask name="RejectContainerNotFound" />
+          <bizTask name="RejectContainerRequired" />
+          <bizTask name="RejectContainerInYard" />
+          <bizTask name="CreateContainerVisit" />
+          <bizTask name="RejectUnitServiceRules" />
+          <bizTask name="PlaceContainerOnTruck" />
+          <bizTask name="PositionTruckVisit">
+            <parameter id="truckPosition" value="TQ" />
+          </bizTask>
+          <bizTask name="PlanUnitIntoYard">
+            <parameter id="truckPosition" value="TQ" />
+            <parameter id="workQueue" value="PASS_PASS" />
+          </bizTask>
+          <bizTask name="RejectUnitFailedToDeck">
+            <parameter id="failedToDeckSlot" value="FLD" />
+          </bizTask>
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranEqoNbrAndGkey" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranCarrierVisit" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranDischargePoint1" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranCtrFreightKind" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </inStage>
+    </gateStagesRE>
+    <gateStagesDC>
+      <outStage id="Outgate" leg="out" addAllowed="false" pollScale="false" autoSubmit="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadLine-->
+          <bizTask name="RejectDuplicateTransaction" />
+          <bizTask name="RejectTruckingCompanyUnknown" customCode="def myGroovy = api.getGroovyClassInstance(&quot;RejectInternalTruckUnknown&quot;);&#xA;&#xA; myGroovy.execute(inDao, api);&#xA;&#xA;myGroovy = null&#xA;" />
+          <bizTask name="CopyChassisAssignedToNbr" />
+          <!--System Task ReadChassis-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadCarrierVisit-->
+          <bizTask name="RejectChassisRequired" />
+          <bizTask name="RejectChassisUnknown" />
+          <bizTask name="RejectChassisNotAtFacility" />
+          <bizTask name="RejectChassisNotInYard" />
+          <bizTask name="RejectChassisEquipmentHold" />
+          <bizTask name="RejectUnitServiceRules" />
+          <bizTask name="PositionTruckVisit">
+            <parameter id="truckPosition" value="TIP" />
+          </bizTask>
+          <bizTask name="PlaceUnitOnTruck" />
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranChsNbrAssigned" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDC>
+  </gateStageSubTypes>
+  <gateStageTruckVisit>
+    <inStage id="Ingate" leg="in" autoStage="true" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" pollNextTruck="false" allowAnyStage="false">
+      <bizTasks>
+        <bizTask name="QueueAllWorkInstruction" />
+        <bizTask name="ActivateAllWorkInstruction">
+          <parameter id="truckPosition" value="TIP" />
+        </bizTask>
+        <bizTask name="PositionTruckVisit">
+          <parameter id="truckPosition" value="TIP" />
+        </bizTask>
+      </bizTasks>
+      <uiForm>
+        <uiField fieldId="tvdtlsTruckId" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tvdtlsTrkCompany" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tTranCtrNumber" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+      </uiForm>
+    </inStage>
+    <outStage id="Outgate" leg="out" autoStage="true" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" pollNextTruck="false" allowAnyStage="false">
+      <bizTasks>
+        <bizTask name="DepartUnit" />
+        <bizTask name="DepartTruckVisit" />
+      </bizTasks>
+      <uiForm>
+        <uiField fieldId="tvdtlsTruckId" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tvdtlsTrkCompany" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tTranCtrNumber" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+      </uiForm>
+    </outStage>
+  </gateStageTruckVisit>
+</gateConfiguration>
+

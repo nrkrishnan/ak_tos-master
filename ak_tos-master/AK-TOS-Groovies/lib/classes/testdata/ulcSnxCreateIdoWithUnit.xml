@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+    <import-delivery-order number="TEST_IDO1" line-id="POPEYE" is-doc-provided="N">
+        <units>
+            <unit id="TUDU1234567" equip-type-id="2200"/>
+        </units>
+    </import-delivery-order>
+</argo:snx>

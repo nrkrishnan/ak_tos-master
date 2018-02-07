@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2012 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+    <train-visit id="LOAD01" visit-phase="WORKING" service-id="TST_RAIL1" service-name="Test Rail Service" in-call-number="1" out-call-number="1"
+                 visit-phase-comment="NONE" rr-id="RR2" direction="THRU" direction-description="Through Train" is-dray-off="N" facility="FCY111"
+                 ETA="2012-10-06T00:00:00" ETD="2012-10-06T20:52:00" ATA="2012-10-06T20:53:00" time-start-work="2012-10-06T00:00:00"
+                 time-end-work="2012-10-06T00:00:00">
+        <inbound-railcar visit-id="RCAR1" visit-nbr="1" active="Y" in-seq="1" out-seq="1" template-type-id="GENERAL" railcar-owner-id="RR2"
+                         inspection-status="NOT_INSPECTED" trainvisit-inbound="LOAD01" trainvisit-outbound="LOAD01" discharge-point="USLAX"
+                         railcar-id="RCAR1" facility="FCY111" created-by="admin" created-date="2012-10-08T00:34:58" modified-by="admin"
+                         modified-date="2012-10-08T00:35:00"/>
+        <outbound-railcar visit-id="RCAR1" visit-nbr="1" active="Y" in-seq="1" out-seq="1" template-type-id="GENERAL" railcar-owner-id="RR2"
+                          inspection-status="NOT_INSPECTED" trainvisit-inbound="LOAD01" trainvisit-outbound="LOAD01" discharge-point="USLAX"
+                          railcar-id="RCAR1" facility="FCY111" created-by="admin" created-date="2012-10-08T00:34:58" modified-by="admin"
+                          modified-date="2012-10-08T00:35:00"/>
+    </train-visit>
+</argo:snx>
+

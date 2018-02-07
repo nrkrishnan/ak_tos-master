@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<container eqid="SRG011311" type="2200" created-by="-system-" created-date="2011-01-14T18:42:07" class="CTR" life-cycle-state="ACT">
+  <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068" material="UNKNOWN"
+            strength-code="TB" tare-weight-kg="1900.0" width-mm="2438" />
+  <ownership owner="UNK" operator="UNK" />
+  <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                stow-above-deck="N" stow-below-deck="N" uses-accessories="N" />
+  <transponder />
+</container>
+<unit id="SRG011311" category="STORAGE" restow="NONE" transit-state="YARD" freight-kind="FCL" line="NYK" unique-key="SRG011311">
+  <equipment eqid="SRG011311" type="2200" created-by="-system-" created-date="2011-01-14T18:42:07" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+    <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068" material="UNKNOWN"
+              strength-code="TB" tare-weight-kg="1900.0" width-mm="2438" />
+    <ownership owner="UNK" operator="UNK" />
+    <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                  stow-above-deck="N" stow-below-deck="N" uses-accessories="N" />
+    <transponder />
+    <damages />
+  </equipment>
+  <position loc-type="YARD" location="YRD1111" />
+  <routing>
+    <carrier direction="IB" qualifier="DECLARED" mode="TRUCK" />
+    <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK" />
+    <carrier direction="OB" qualifier="DECLARED" mode="UNKNOWN" />
+    <carrier direction="OB" qualifier="ACTUAL" mode="UNKNOWN" />
+  </routing>
+  <contents weight-kg="1900.0" />
+  <unit-etc category="STORAGE" />
+  <timestamps time-in="2011-01-17T19:09:14" time-last-move="2011-01-17T19:09:14" />
+  <non-move-history>
+    <event id="UNIT_CREATE" note="test" time-event-applied="2011-01-17T19:09:14" user-id="user:-system-" is-billable="N" />
+    <event id="UNIT_ACTIVATE" time-event-applied="2011-01-17T19:09:14" user-id="user:-system-" is-billable="N" />
+  </non-move-history>
+  <custom-dynamic-flex-fields>
+    <custom-dynamic-flex-field name="customFlexFields.unitCustomDFFString1" value="testing Unit importer" />
+  </custom-dynamic-flex-fields>
+</unit>
+</argo:snx>

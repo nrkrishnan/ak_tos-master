@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<FileDesc>
+	<File name="CmisAction" />
+	<Field n4Action="AG_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="AG_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="CAR_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="CAR_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="CC_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="CC_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="CG_INSP_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="CG_INSP_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="CUS_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="CUS_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="DOC_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="DOC_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="GX_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="GX_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="HP_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="HP_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="INB_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="INB_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="ON_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="ON_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="RD_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="RD_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="RM_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="RM_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="ST_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="ST_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="TD_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="TD_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="TI_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="TI_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="XT_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="XT_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="CG_DMG_HOLD"  cmisAction="EDT" ></Field>
+	<Field n4Action="CG_DMG_RELEASE"  cmisAction="EDT" ></Field>
+	<Field n4Action="CL_RELEASE"  cmisAction="EDT" ></Field>
+	<Field n4Action="CL_HOLD"  cmisAction="EDT" ></Field>
+	<Field n4Action="LTV_HOLD"  cmisAction="EDT" ></Field>
+	<Field n4Action="LTV_RELEASE"  cmisAction="EDT" ></Field>
+	<Field n4Action="INGATE_HOLD"  cmisAction="EDT" ></Field>
+	<Field n4Action="INGATE_RELEASE"  cmisAction="EDT" ></Field>
+	<Field n4Action="OUTGATE_HOLD"  cmisAction="EDT" ></Field>
+	<Field n4Action="OUTGATE_RELEASE"  cmisAction="EDT" ></Field>
+	<Field n4Action="CHASSIS_TYPE_REQUEST"  cmisAction="PMR" ></Field>
+	<Field n4Action="CHASSIS_TYPE_REQUEST_CANCEL"  cmisAction="PMR" ></Field>
+	<Field n4Action="COMMUNITY_SERVICE_ASSIGN"  cmisAction="PDU" ></Field>
+	<Field n4Action="COMMUNITY_SERVICE_UNASSIGN"  cmisAction="PDD" ></Field>
+	<Field n4Action="MDA_ASSIGN"  cmisAction="PDU" ></Field>
+	<Field n4Action="MDA_UNASSIGN"  cmisAction="PDD" ></Field>
+	<Field n4Action="OFF_LEASE_ASSIGN"  cmisAction="PDU" ></Field>
+	<Field n4Action="OFF_LEASE_UNASSIGN"  cmisAction="PDD" ></Field>
+	<Field n4Action="OVER_ROAD_ASSIGN"  cmisAction="PDU" ></Field>
+	<Field n4Action="OVER_ROAD_UNASSIGN"  cmisAction="PDD" ></Field>
+	<Field n4Action="PREMOUNT_REQUEST"  cmisAction="PMR" ></Field>
+	<Field n4Action="PREMOUNT_REQUEST_CANCEL"  cmisAction="PMR" ></Field>
+    <Field n4Action="RETURN_TO_CUSTOMER_ASSIGN"  cmisAction="PDU" ></Field>
+	<Field n4Action="RETURN_TO_CUSTOMER_UNASSIGN"  cmisAction="PDD" ></Field>
+    <Field n4Action="SET_EMPTY"  cmisAction="LDX" ></Field>
+	<Field n4Action="SET_FULL"  cmisAction="LDX" ></Field>  
+    <Field n4Action="SHOP_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="SHOP_RELEASE"  cmisAction="ALT" ></Field>
+    <Field n4Action="SIT_ASSIGN"  cmisAction="SIT" ></Field>
+	<Field n4Action="SIT_UNASSIGN"  cmisAction="EDT" ></Field>
+	<Field n4Action="YB_ASSIGN"  cmisAction="PDU" ></Field>
+	<Field n4Action="YB_UNASSIGN"  cmisAction="PDD" ></Field>
+	<Field n4Action="UNIT_PROPERTY_UPDATE"  cmisAction="EDT" ></Field>
+	<Field n4Action="FRUCTOSE_LOAD"  cmisAction="EDT" ></Field>
+	<Field n4Action="FRUCTOSE_MTY"  cmisAction="EDT" ></Field>
+	<Field n4Action="TAG_STRIP_ASSIGN"  cmisAction="PDU" ></Field>
+	<Field n4Action="TAG_STRIP_UNASSIGN"  cmisAction="PDD" ></Field>
+	<Field n4Action="UNIT_OVERDIMENSIONS_UPDATE"  cmisAction="OVU" ></Field>
+	<Field n4Action="TRANSFER_TO_P2"  cmisAction="PDU" ></Field>
+	<Field n4Action="TRANSFER_TO_WO"  cmisAction="PDU" ></Field>
+	<Field n4Action="TRANSFER_TO_SI"  cmisAction="PDU" ></Field>
+	<Field n4Action="TRANSFER_CANCEL"  cmisAction="PDD" ></Field>
+	<Field n4Action="REVIEW_FOR_STOW"  cmisAction="RFS" ></Field>
+	<Field n4Action="SHIPPER_REHANDLE"  cmisAction="COG" ></Field>
+	<Field n4Action="SHIPPER_REHANDLE_CANCEL"  cmisAction="EDT" ></Field>
+	<Field n4Action="UNIT_STRIP"  cmisAction="MTX" ></Field>
+	<Field n4Action="UNIT_YARD_MOVE"  cmisAction="YMV" ></Field>
+	<Field n4Action="UNIT_DAMAGED"  cmisAction="DGM" ></Field>
+	<Field n4Action="UNIT_DAMAGES_UPDATED"  cmisAction="DGM" ></Field>
+	<Field n4Action="UNIT_REPAIRED"  cmisAction="DGM" ></Field>
+	<Field n4Action="UNIT_POSITION_CORRECTION"  cmisAction="EDT" ></Field>
+	<Field n4Action="UNIT_STUFF"  cmisAction="LDC" ></Field>
+	<Field n4Action="UNIT_RECEIVE"  cmisAction="YMV" ></Field>
+	<Field n4Action="UNIT_DISCH"  cmisAction="DFV" ></Field>
+	<Field n4Action="UPDATE_VV"  cmisAction="VST" ></Field>
+	<Field n4Action="UNIT_IN_GATE"  cmisAction="IGT" ></Field>
+	<Field n4Action="UNIT_DISCH"  cmisAction="DFV" ></Field>
+	<Field n4Action="UNIT_TRUCKER_ASSIGNED"  cmisAction="EDT"></Field>
+	<Field n4Action="UNIT_HAZARDS_INSERT"  cmisAction="EDT"></Field>
+	<Field n4Action="UNIT_HAZARDS_UPDATE"  cmisAction="EDT"></Field>
+    <Field n4Action="UNIT_HAZARDS_DELETE"  cmisAction="EDT"></Field> 
+	<Field n4Action="UNIT_YARD_SHIFT"  cmisAction="YMV"></Field>
+	<Field n4Action="SHIPPER_REHANDLE"  cmisAction="COG"></Field> 
+	<Field n4Action="SHIPPER_REHANDLE_CANCEL"  cmisAction="DSC"></Field>
+	<Field n4Action="UNIT_LOAD"  cmisAction="LTV"></Field>
+	<Field n4Action="RELEASE_CONTAINER"  cmisAction="EDT"></Field>
+	<Field n4Action="UNIT_MOUNT"  cmisAction="MNT"></Field>
+	<Field n4Action="UNIT_DISMOUNT"  cmisAction="GRD"></Field>
+	<Field n4Action="UNIT_STORAGE_UPDATE"  cmisAction="EDT"></Field>
+	<Field n4Action="UNIT_SHIFT_ON_CARRIER"  cmisAction="EDT" ></Field>
+	<Field n4Action="UNIT_BRING_BACK_INTO_YARD"  cmisAction="COG" ></Field>
+	<Field n4Action="UPDATE_UNIT_NOTES"  cmisAction="EDT" ></Field>
+	<Field n4Action="ARD"  cmisAction="ARD" ></Field>
+	<Field n4Action="TRUCKER_ASSIGN"  cmisAction="EDT" ></Field>
+	<Field n4Action="PTL_RELEASE_TO"  cmisAction="EDT" ></Field>
+	<Field n4Action="PER_ASSIGN"  cmisAction="ALT" ></Field>
+	<Field n4Action="PER_UNASSIGN"  cmisAction="ALT" ></Field>
+	<Field n4Action="ULK_HOLD"  cmisAction="ALT" ></Field>
+	<Field n4Action="ULK_RELEASE"  cmisAction="ALT" ></Field>
+	<Field n4Action="UNIT_PREADVISE"  cmisAction="EDT" ></Field>
+	<Field n4Action="CANCEL PREADVISE"  cmisAction="EDT" ></Field>
+	<Field n4Action="UNIT_OPERATOR_CHANGE"  cmisAction="EDT" ></Field>
+    <Field n4Action="BDA"  cmisAction="BDA" ></Field> 
+	<Field n4Action="BDB"  cmisAction="BDB" ></Field> 
+	<Field n4Action="LNK"  cmisAction="LNK" ></Field> 
+    <Field n4Action="ULK"  cmisAction="ULK" ></Field>  
+	<Field n4Action="UPU"  cmisAction="UPU" ></Field>  
+</FileDesc>

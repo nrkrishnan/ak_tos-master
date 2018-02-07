@@ -1,0 +1,23 @@
+<edi:preadviseTransactions xmlns:edi="http://www.navis.com/argo">
+    <edi:preadviseTransaction edi:facilityId="FCY111" edi:msgClass="PREADVISE" edi:msgFunction="R" edi:msgProducedDateTime=""
+                              edi:msgReferenceNbr="231437661" edi:msgTypeId="" edi:msgUniqueId="" edi:stowageCellPosition="" edi:transactionSetNbr="">
+        <edi:Interchange edi:AgreementId="" edi:Date="" edi:InterchangeNumber="231437661" edi:InterchangeReceipient="PNTP1"
+                         edi:InterchangeReceipientId="PNTP1" edi:InterchangeReceipientQualifier="" edi:InterchangeSender="SPN"
+                         edi:InterchangeSenderId="SPN" edi:InterchangeSenderQualifier="" edi:Time=""/>
+        <edi:ediBooking edi:bookingNbr="B2"/>
+        <edi:ediContainer edi:containerCategory="EXPRT" edi:containerGrossWt="29800" edi:containerGrossWtUnit="KG" edi:containerISOcode="2200"
+                          edi:containerNbr="MSRCTR41557" edi:containerRequiresPower="false" edi:containerStatus="FCL">
+            <edi:loadPort edi:portId="USOAK" edi:portIdConvention="UNLOCCODE"/>
+
+            <edi:dischargePort1 edi:portId="SGSIN" edi:portIdConvention="UNLOCCODE"/>
+            <edi:containerOperator edi:operator="SPN"/>
+        </edi:ediContainer>
+
+        <edi:ediOutboundVisit>
+            <edi:ediVesselVisit edi:outVoyageNbr="101" edi:vesselId="SPV" edi:vesselIdConvention="LLOYDS" edi:vesselName="SPV">
+                <edi:loadPort edi:portId="OAK" edi:portIdConvention="UNLOCCODE"/>
+
+            </edi:ediVesselVisit>
+        </edi:ediOutboundVisit>
+    </edi:preadviseTransaction>
+</edi:preadviseTransactions>

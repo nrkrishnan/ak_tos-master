@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd" user-id="RS" event-time="2007-11-05T15:05:00">
+
+    <booking nbr="E01" line="MAT" pod-1="KAH" pod-2="KHH" pol="LAX" eq-status="FCL" prevent-type-subst="false" ood="false" override-cutoff="false"
+             hold-partials="false">
+        <carrier direction="OB" qualifier="ACTUAL" mode="VESSEL" id="RJP001"/>
+    </booking>
+</argo:snx>

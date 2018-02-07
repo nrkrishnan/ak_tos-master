@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2014 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<gate id="CHS_GATE" description="Chasis Unit Gate" facility-id="FCY111" gate-config-id="CHS_GATE" life-cycle-state="ACT">
+  <gate-yards>
+    <gate-yard id="YRD1111" facility-id="FCY111">
+      <gate-yard-blocks />
+    </gate-yard>
+  </gate-yards>
+</gate>
+</argo:snx>
+

@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- PICT Existing data in xml.Created by Adnan Memon  -->
+<SNXDATA>
+<vessel id="122" name="KOTA TEGUH" owner="ADL" radio-call-sign="123" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="1">
+</vessel>
+<vessel id="125" name="WADI ALRAYAN" owner="NOR" radio-call-sign="SSCC" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9208875">
+</vessel>
+<vessel id="234" name="OEL MUMBAI" owner="SEACO" radio-call-sign="NUT1" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="8908179">
+</vessel>
+<vessel id="39A" name="CSAV NINGBO" owner="MSK" radio-call-sign="ELWP5" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9160437">
+</vessel>
+<vessel id="ABM" name="MAERSK ALABAMA" owner="MSK" radio-call-sign="WDB99" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="2">
+</vessel>
+<vessel id="ACXM" name="ACX MIMOSA" owner="NYK" radio-call-sign="3EJG9" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9009188">
+</vessel>
+<vessel id="AGO" name="ARGONAUT" owner="PON" radio-call-sign="KFDV" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="3">
+</vessel>
+<vessel id="AIH" name="AL IHSA'A" owner="UAS" radio-call-sign="HZZA" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="4">
+</vessel>
+<vessel id="AKA" name="AKA BHUM" owner="RCL" radio-call-sign="AJV" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="5">
+</vessel>
+<vessel id="ALJ" name="ALJAZY" owner="MSK" radio-call-sign="JYFW" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="7820708">
+</vessel>
+<vessel id="AMK" name="AL MANAKH" owner="UAS" radio-call-sign="9KHL" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="6">
+</vessel>
+<vessel id="AMR" name="AL MARIYAH" owner="UAS" radio-call-sign="A6JQ" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="7">
+</vessel>
+<vessel id="AMS" name="AMASIS" owner="HJN" radio-call-sign="P3LA7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="8">
+</vessel>
+<vessel id="ARN" name="ARNIS" owner="LNL" radio-call-sign="P3JE4" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="8908727">
+</vessel>
+<vessel id="ASK" name="MAERSK ALASKA" owner="PON" radio-call-sign="KAKF" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9">
+</vessel>
+<vessel id="AST" name="ASIAN TRADER" owner="NYK" radio-call-sign="9HRWY" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9003196">
+</vessel>
+<vessel id="ATS" name="ACX TSUBAKI" owner="NYK" radio-call-sign="3FSI3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="10">
+</vessel>
+<vessel id="AUG" name="AUGUSTA" owner="OSS" radio-call-sign="4QZU" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="11">
+</vessel>
+<vessel id="AWJ" name="AL WAJBA" owner="UAS" radio-call-sign="A7EP" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="12">
+</vessel>
+<vessel id="BDR" name="BUNGA BIDARA" owner="PIL" radio-call-sign="9MBE2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="13">
+</vessel>
+<vessel id="BKN" name="BUNGA KENARI" owner="MIS" radio-call-sign="9MBE4" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="14">
+</vessel>
+<vessel id="BM1" name="BUNGA MAS 12" owner="MIS" radio-call-sign="9MCX5" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="328308">
+</vessel>
+<vessel id="BTK" name="BUNGA TERASEK" owner="MIS" radio-call-sign="MBG3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="15">
+</vessel>
+<vessel id="CAR" name="CMA CGM CARIBBEAN" owner="CMA" radio-call-sign="A8JT7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="16">
+</vessel>
+<vessel id="CBV" name="CAPE BONA VISTA" owner="MAC" radio-call-sign="P3LE4" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="17">
+</vessel>
+<vessel id="CCB" name="CMA-CGM BAGDAAD" owner="CMA" radio-call-sign="C6UB9" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="8516275">
+</vessel>
+<vessel id="CDO" name="Cap Colorado" owner="XCL" radio-call-sign="9WCY2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="18">
+</vessel>
+<vessel id="CFR" name="CAPE FERRO" owner="RCL" radio-call-sign="V7FH5" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="1941">
+</vessel>
+<vessel id="CGK" name="CMA CGM KARIBU" owner="CMA" radio-call-sign="DARF" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="8900854">
+</vessel>
+<vessel id="CHK" name="CORINTHIAKOS" owner="SEACO" radio-call-sign="P3YD2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="8021505">
+</vessel>
+<vessel id="CHM" name="Conti Harmony" owner="LNL" radio-call-sign="P3JM9" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="19">
+</vessel>
+<vessel id="CMP" name="COMORIN PRIDE" owner="HNH" radio-call-sign="4RAB" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="20">
+</vessel>
+<vessel id="CMS" name="MACANDREWS SWALA" owner="MAC" radio-call-sign="3EDZ8" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9072094">
+</vessel>
+<vessel id="CMTL" name="CMA CGM TULIP" owner="CMA" radio-call-sign="A8IT7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9309409">
+</vessel>
+<vessel id="CNF" name="CANMAR FORTUNE" owner="LYK" radio-call-sign="ELVB3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9046253">
+</vessel>
+<vessel id="CNS" name="CHINA STAR" owner="LNL" radio-call-sign="ELYN8" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9124366">
+</vessel>
+<vessel id="CNT" name="CONTI GERMANY" owner="NYK" radio-call-sign="HKKL" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="21">
+</vessel>
+<vessel id="CPR" name="CMA CGM PARANA" owner="CMA" radio-call-sign="VRCL2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9335812">
+</vessel>
+<vessel id="CSS" name="CANMAR SUCCESS" owner="LYK" radio-call-sign="V7CS8" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9219252">
+</vessel>
+<vessel id="DAJ" name="DA JI" owner="HJN" radio-call-sign="9VAZ2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="22">
+</vessel>
+<vessel id="DEL" name="BUNGA DELIMA" owner="MIS" radio-call-sign="9MBE3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="23">
+</vessel>
+<vessel id="DIM" name="DIMITRIS Y II" owner="EMC" radio-call-sign="3EVJ2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="24">
+</vessel>
+<vessel id="DLA" name="DANIELA" owner="UAF" radio-call-sign="SSSS" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="2120">
+</vessel>
+<vessel id="DNY" name="NORASIA POLARIS" owner="NOR" radio-call-sign="A8EV5" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9237498">
+</vessel>
+<vessel id="EAM" name="EMIRATES ADAM" owner="ESL" radio-call-sign="C4PZ2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9330848">
+</vessel>
+<vessel id="EAX" name="EAGLE EXPRESS" owner="HLL" radio-call-sign="C6PC9" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="7711555">
+</vessel>
+<vessel id="EBY" name="CMA CGM EBONY" owner="CMA" radio-call-sign="ABCD" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="25">
+</vessel>
+<vessel id="EKR" name="EMIRATES KARAN" owner="ESL" radio-call-sign="ELXB6" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9106493">
+</vessel>
+<vessel id="EMG" name="EMIRATES GONDWANA" owner="ESL" radio-call-sign="V2CL4" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9374117">
+</vessel>
+<vessel id="EMJ" name="EMIRATES JUMEIRAH" owner="ESL" radio-call-sign="V2LX" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="26">
+</vessel>
+<vessel id="EMM" name="EMIRATES MERU" owner="ESL" radio-call-sign="C4RL2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="27">
+</vessel>
+<vessel id="EMS" name="EMERALD SEA" owner="GCL" radio-call-sign="XXZZ" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="28">
+</vessel>
+<vessel id="EOD" name="ELBE OLDENDORFF" owner="SSL" radio-call-sign="ELXF2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="29">
+</vessel>
+<vessel id="ESP" name="CONTI ESPERANCE" owner="PIL" radio-call-sign="DLCT" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="30">
+</vessel>
+<vessel id="ETM" name="EL TEMERARIO" owner="NYK" radio-call-sign="V2BN2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="31">
+</vessel>
+<vessel id="GBG" name="GULF BRIDGE" owner="KKK" radio-call-sign="A8JM5" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="32">
+</vessel>
+<vessel id="GNW" name="KOTA GUNAWAN" owner="PIL" radio-call-sign="S6HC3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9259408">
+</vessel>
+<vessel id="GPR" name="GLOBAL PRINCE" owner="GCL" radio-call-sign="C6FE7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="7812713">
+</vessel>
+<vessel id="GPROG" name="GLOBAL PROGRESS" owner="GCL" radio-call-sign="XXXXX" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="33">
+</vessel>
+<vessel id="GPROS" name="GLOBAL PROSPERITY" owner="GCL" radio-call-sign="111" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="111">
+</vessel>
+<vessel id="GWE" name="GALLANT WAVE" owner="NYK" radio-call-sign="9VJJ" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="387033">
+</vessel>
+<vessel id="HCR" name="HANSA CENTURY" owner="NOR" radio-call-sign="DHHI" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9124512">
+</vessel>
+<vessel id="HHR" name="HOHERIFF" owner="SEACO" radio-call-sign="V2CT4" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="34">
+</vessel>
+<vessel id="HKM" name="KOTA HAKIM" owner="PIL" radio-call-sign="VRX12" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9238600">
+</vessel>
+<vessel id="HLN" name="HALEY NADHI" owner="SEACO" radio-call-sign="4QZU1" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="35">
+</vessel>
+<vessel id="HLR" name="HELENE RICKMERS" owner="DIM" radio-call-sign="V7DT5" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9144158">
+</vessel>
+<vessel id="HLU" name="KOTA HALUS" owner="PIL" radio-call-sign="VRXK9" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9238612">
+</vessel>
+<vessel id="HMT" name="KOTA HORMAT" owner="PIL" radio-call-sign="9VAL3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9245225">
+</vessel>
+<vessel id="HMY" name="HARMONY" owner="OSS" radio-call-sign="A8FTT" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="36">
+</vessel>
+<vessel id="HNAD" name="HANJIN PORTADELAIDE" owner="HJN" radio-call-sign="3ENB7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="37">
+</vessel>
+<vessel id="HNB" name="HANJIN NINGBO" owner="HJN" radio-call-sign="3EKV3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9363417">
+</vessel>
+<vessel id="HNCI" name="HANJIN CHITTAGONG" owner="HJN" radio-call-sign="3EKB7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="38">
+</vessel>
+<vessel id="HND" name="HANSEDUO" owner="MDR" radio-call-sign="V2BX" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="39">
+</vessel>
+<vessel id="HNQT" name="HANJIN QINGDAO" owner="HJN" radio-call-sign="3ELN8" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="40">
+</vessel>
+<vessel id="HPS" name="KOTA HAPAS" owner="PIL" radio-call-sign="VRXP3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9238624">
+</vessel>
+<vessel id="HSPR" name="HYUNDAI SPRINTER" owner="RCL" radio-call-sign="3FZH7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="2536498">
+</vessel>
+<vessel id="HVR" name="HANSA STAVENGER" owner="H&amp;H" radio-call-sign="DMRA" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="41">
+</vessel>
+<vessel id="IDH" name="KOTA INDAH" owner="PIL" radio-call-sign="9VCS" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="42">
+</vessel>
+<vessel id="IHB" name="ITHA BHUM" owner="RCL" radio-call-sign="HSBY2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9117131">
+</vessel>
+<vessel id="INB" name="INABA" owner="NYK" radio-call-sign="A8AG5" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="43">
+</vessel>
+<vessel id="IRS" name="IRAN SHAHRYAR" owner="IRS" radio-call-sign="ZZXX" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="44">
+</vessel>
+<vessel id="JBM" name="JARU BHUM" owner="RCL" radio-call-sign="2930" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="8214528">
+</vessel>
+<vessel id="JDT" name="JADE TRADER" owner="LNL" radio-call-sign="V2AL6" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="45">
+</vessel>
+<vessel id="JET" name="JITRA BHUM" owner="RCL" radio-call-sign="S6NJ" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="46">
+</vessel>
+<vessel id="KBA" name="KAPITAN BY ANKIN" owner="OSS" radio-call-sign="P3GD6" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="47">
+</vessel>
+<vessel id="KBM" name="KAMA BHUM" owner="RCL" radio-call-sign="HSCV2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="48">
+</vessel>
+<vessel id="KCH" name="KUO CHANG" owner="SSF" radio-call-sign="3FZL9" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="49">
+</vessel>
+<vessel id="KGG" name="Kota Ganteng" owner="PIL" radio-call-sign="VRXZ7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="50">
+</vessel>
+<vessel id="KHG" name="KUO HUNG" owner="NYK" radio-call-sign="3FRS7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9138159">
+</vessel>
+<vessel id="KJS" name="KOTA JASA" owner="PIL" radio-call-sign="VRWX3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9226827">
+</vessel>
+<vessel id="KPR" name="KOTA PERMAI" owner="PIL" radio-call-sign="A8GP6" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9315848">
+</vessel>
+<vessel id="KTB" name="KOTA TABAH" owner="ADL" radio-call-sign="9VIB7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="51">
+</vessel>
+<vessel id="LWF" name="ILSE WULFF" owner="KKK" radio-call-sign="A8AG6" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="52">
+</vessel>
+<vessel id="LYO" name="LYDIA OLDENDORFF" owner="LNL" radio-call-sign="V2OL9" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9161170">
+</vessel>
+<vessel id="LYR" name="LYKES RACER" owner="LYK" radio-call-sign="V20P" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9060297">
+</vessel>
+<vessel id="LYT" name="LYKES TRADER" owner="LYK" radio-call-sign="DMRQ" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9128465">
+</vessel>
+<vessel id="MAK" name="MAERSK ARKANSAS" owner="MSK" radio-call-sign="B9984" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="53">
+</vessel>
+<vessel id="MAS" name="MOL ASANTE" owner="MOL" radio-call-sign="A8IH7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="54">
+</vessel>
+<vessel id="MAZ" name="MAERSK ARIZONA" owner="MSK" radio-call-sign="KAKG" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="55">
+</vessel>
+<vessel id="MCB" name="MARCALABRIA" owner="HLL" radio-call-sign="V2OZ5" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9070010">
+</vessel>
+<vessel id="MEGA" name="MEGA1" owner="MEG" radio-call-sign="AQPZ" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="7709904">
+</vessel>
+<vessel id="MER" name="KOTA MARDESA" owner="PIL" radio-call-sign="9VY04" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="56">
+</vessel>
+<vessel id="MGR" name="MIKIRI GREEN" owner="CMA" radio-call-sign="PCHI" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9187045">
+</vessel>
+<vessel id="MNB" name="MANILA BAY" owner="SSL" radio-call-sign="C6MA7" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="8119704">
+</vessel>
+<vessel id="MOL" name="MOL SILVER FERN" owner="MOL" radio-call-sign="3FIB6" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="57">
+</vessel>
+<vessel id="MSR" name="MARINA STAR" owner="H&amp;H" radio-call-sign="YEMY" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="58">
+</vessel>
+<vessel id="MTW" name="MACANDREWS TWIGA" owner="MAC" radio-call-sign="C4RE2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9324978">
+</vessel>
+<vessel id="MUS" name="MOUSAVI" owner="IRS" radio-call-sign="9BDW" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9033701">
+</vessel>
+<vessel id="MVS" name="MAERSK VILNIUS" owner="MSK" radio-call-sign="A8ET3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="59">
+</vessel>
+<vessel id="MXL" name="MONOXY LION" owner="IRS" radio-call-sign="UBHI" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="60">
+</vessel>
+<vessel id="MYH" name="MI YUN HE" owner="SIMA" radio-call-sign="H3YW" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9228772">
+</vessel>
+<vessel id="NFL" name="NEFELI 1" owner="KKK" radio-call-sign="3FHI8" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="7930668">
+</vessel>
+<vessel id="NFT" name="Northern Fortune" owner="HJN" radio-call-sign="V2AW5" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="61">
+</vessel>
+<vessel id="NIN" name="NINOS" owner="H&amp;H" radio-call-sign="H3ZV" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="8909082">
+</vessel>
+<vessel id="NLPS" name="NORASIA ALPS" owner="NOR" radio-call-sign="ELUP6" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="62">
+</vessel>
+<vessel id="NTG" name="NORASIA TEGESOS" owner="NOR" radio-call-sign="P3JA9" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9122215">
+</vessel>
+<vessel id="ORJ" name="ORANJE" owner="MSK" radio-call-sign="ZSDN" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="63">
+</vessel>
+<vessel id="PAR" name="PAC ARIES" owner="LNL" radio-call-sign="9VYY4" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="64">
+</vessel>
+<vessel id="PBA" name="PONL BUENOS AIRES" owner="MSK" radio-call-sign="WDC29" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="1165091">
+</vessel>
+<vessel id="PCA" name="PAC ANTLIA" owner="LNL" radio-call-sign="H9MM" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9238870">
+</vessel>
+<vessel id="PCH" name="PACHECO" owner="CMA" radio-call-sign="GZOE" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="65">
+</vessel>
+<vessel id="PNV" name="PONL VERA CRUZ" owner="PON" radio-call-sign="2886" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="66">
+</vessel>
+<vessel id="PTMC" name="CMA CGM POTOMAC" owner="CMA" radio-call-sign="HP11" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="67">
+</vessel>
+<vessel id="QIF" name="QATARI IBN AL FUJA'A" owner="UAS" radio-call-sign="A7EQ" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="8117299">
+</vessel>
+<vessel id="RUH" name="RUHUNUPURA" owner="SEACO" radio-call-sign="4QZH" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="68">
+</vessel>
+<vessel id="SFF" name="SOON FU" owner="XCL" radio-call-sign="9VAD6" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="69">
+</vessel>
+<vessel id="SHB" name="SIMA SAHBA" owner="SSF" radio-call-sign="S6HK5" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="70">
+</vessel>
+<vessel id="SMB" name="CMA CGM SIMBA" owner="CMA" radio-call-sign="E3DU9" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="71">
+</vessel>
+<vessel id="STB" name="SATHA BHUM" owner="RCL" radio-call-sign="DGNT" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="72">
+</vessel>
+<vessel id="STI" name="SCOTIA" owner="LYK" radio-call-sign="A8FA2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="73">
+</vessel>
+<vessel id="TAN" name="TOR ANGLIA" owner="TOR" radio-call-sign="3VKLP" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="74">
+</vessel>
+<vessel id="TBU" name="TROYBURG" owner="PIL" radio-call-sign="ELXO3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="8708531">
+</vessel>
+<vessel id="TMM" name="TMM HIDALGO" owner="LYK" radio-call-sign="ELXB8" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9123221">
+</vessel>
+<vessel id="TSN" name="TS NAGOYA" owner="TSL" radio-call-sign="V2BE2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="111005">
+</vessel>
+<vessel id="TWB" name="TOWER BRIDGE" owner="KKK" radio-call-sign="9VMI6" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="390521">
+</vessel>
+<vessel id="VIC" name="VICTORY1" owner="NOR" radio-call-sign="3EMP6" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="75">
+</vessel>
+<vessel id="VTA" name="CMA CGM VICTORIA" owner="CMA" radio-call-sign="V2BC6" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="76">
+</vessel>
+<vessel id="WGI" name="KOTA WANGI" owner="PIL" radio-call-sign="S6IV" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="387264">
+</vessel>
+<vessel id="WJA" name="KOTA WIJAYA" owner="PIL" radio-call-sign="9VHR" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="384562">
+</vessel>
+<vessel id="WJR" name="KOTA WAJAR" owner="PIL" radio-call-sign="S6BT" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="387883">
+</vessel>
+<vessel id="WMR" name="WESTER MOOR" owner="LNL" radio-call-sign="ELZ03" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="77">
+</vessel>
+<vessel id="WRA" name="KOTA WARUNA" owner="PIL" radio-call-sign="S6LV" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="387456">
+</vessel>
+<vessel id="WRS" name="KOTA WARIS" owner="PIL" radio-call-sign="S6RJ" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="387925">
+</vessel>
+<vessel id="WSA" name="KOTA WANGSA" owner="PIL" radio-call-sign="9VFC" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="386184">
+</vessel>
+<vessel id="WST" name="WESTERMUHLEN" owner="HLL" radio-call-sign="ELRJ3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9064190">
+</vessel>
+<vessel id="XRV" name="XPRESS RESOLVE" owner="SEACO" radio-call-sign="S6AU" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="38289">
+</vessel>
+<vessel id="YFAH" name="Y M FAHA" owner="YML" radio-call-sign="P3LY9" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="9179464">
+</vessel>
+<vessel id="YMR" name="KOTA MESRA" owner="PIL" radio-call-sign="9VYY2" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="78">
+</vessel>
+<vessel id="YPK" name="KOTA PERKASA" owner="PIL" radio-call-sign="VRZV3" stowage-scheme="ISO" temperature-units="C" unit-system="SI" vessel-class="UNK" lloyds-id="79">
+</vessel>
+</SNXDATA>

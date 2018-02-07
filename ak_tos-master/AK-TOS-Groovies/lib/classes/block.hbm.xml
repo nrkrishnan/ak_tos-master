@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Block</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="scope-set">protected</meta>
+
+
+    <!-- 2009.10.22 pji ARGO-21942 Added concept of caching column codes.-->
+    <!-- PJI091002: Created to support persistent bin model. -->
+    <!-- PJI091022: Extracted this class from _YardStack. -->
+    <subclass name="com.navis.spatial.business.model.block.AbstractStack" extends="com.navis.spatial.business.model.AbstractBin"
+	      discriminator-value="AST" dynamic-update="true">
+        <meta attribute="n4alias">ast</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.block.AbstractStackHbr</meta>
+        <meta attribute="class-description">Abstract Stack</meta>
+        <meta attribute="n4-entity-name">Abstract Stack Entity</meta>
+        <meta attribute="n4-entity-name-plural">Abstract Stack Entities</meta>
+
+        <property name="astColIndex" column="column_index" type="java.lang.Long">
+            <meta attribute="field-description">Column index using logical coordinate system.</meta>
+        </property>
+
+    </subclass>
+
+    <!-- 2009.10.22 pji ARGO-21942 Persistent Bin Model-->
+    <subclass name="com.navis.spatial.business.model.block.AbstractSection" extends="com.navis.spatial.business.model.AbstractBin"
+              discriminator-value="ASN" dynamic-update="true">
+        <meta attribute="n4alias">asn</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.block.AbstractSectionHbr</meta>
+        <meta attribute="class-description">Abstract Section</meta>
+        <meta attribute="n4-entity-name">Abstract Section Entity</meta>
+        <meta attribute="n4-entity-name-plural">Abstract Section Entities</meta>
+
+        <property name="asnRowIndex" column="row_index" type="java.lang.Long">
+            <meta attribute="field-description">Row index using logical coordinate system.</meta>
+        </property>
+
+        <property name="asnRowPairedInto" column="row_paired_into" type="java.lang.Long">
+            <meta attribute="field-description">Index of row that this section overhangs.</meta>
+        </property>
+
+        <property name="asnRowPairedFrom" column="row_paired_from" type="java.lang.Long">
+            <meta attribute="field-description">Index of row that overhangs this section.</meta>
+        </property>
+
+        <many-to-one name="asnConvIdCol" column="coord_col_conv_id" class="com.navis.spatial.business.model.BinNameTable">
+            <meta attribute="field-description">The table ID for names of columns.</meta>
+        </many-to-one>
+
+    	<property name="asnColTableOffset" column="table_offset" type="java.lang.Long">
+	        <meta attribute="field-description">An offset to be added to the column coordinate when entering the coordinate conversion table (normally zero).</meta>
+        </property>
+
+    </subclass>
+
+    <!-- 2009.10.23 pji ARGO-21942 Persistent Bin Model -->
+    <subclass name="com.navis.spatial.business.model.block.AbstractBlock" extends="com.navis.spatial.business.model.AbstractBin"
+              discriminator-value="ABL" dynamic-update="true">
+        <meta attribute="n4alias">abl</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.block.AbstractBlockHbr</meta>
+        <meta attribute="class-description">Abstract Block</meta>
+        <meta attribute="n4-entity-name">Abstract Block Entity</meta>
+        <meta attribute="n4-entity-name-plural">Abstract Block Entities</meta>
+
+        <!-- 2009.10.22 pji ARGO-21942 Persistent Bin Model -->
+    	<!-- PJI091102: Row and tier name pointers are shared by ship and yard and maybe rail cars. This
+	                placement is slightly off since heap block descendents do not need these names. -->
+        <many-to-one name="ablConvIdRowStd" column="conv_gkey_row_std" class="com.navis.spatial.business.model.BinNameTable">
+            <meta attribute="field-description">Specifies the naming table number that defines the row labels for 20' container rows.</meta>
+        </many-to-one>
+
+        <many-to-one name="ablConvIdRowAlt" column="conv_gkey_row_alt" class="com.navis.spatial.business.model.BinNameTable">
+            <meta attribute="field-description">Specifies the naming table number that defines the row labels for 40' container rows.</meta>
+        </many-to-one>
+
+        <many-to-one name="ablConvIdTier" column="conv_gkey_tier" class="com.navis.spatial.business.model.BinNameTable">
+            <meta attribute="field-description">Specifies the naming table that defines the tier labels.</meta>
+        </many-to-one>
+
+    </subclass>
+
+</hibernate-mapping>

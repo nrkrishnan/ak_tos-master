@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">RoadPreadv</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <subclass name="com.navis.road.business.preadvise.GateConfigPreadviseStage" extends="com.navis.road.business.model.GateConfigStage"
+              discriminator-value="PDV" dynamic-update="true">
+        <meta attribute="n4alias">padvstage</meta>
+        <meta attribute="generated-class">com.navis.road.business.preadvise.GateConfigPreadviseStageHbr</meta>
+        <meta attribute="class-description">The gate configuration for a preadvise stage</meta>
+        <meta attribute="n4-entity-name">Gate Config Preadvise Stage</meta>
+        <meta attribute="n4-entity-name-plural">Gate Config Preadvise Stages</meta>
+    </subclass>
+
+    <subclass name="com.navis.road.business.preadvise.GateConfigPreadviseVesselStage"
+              extends="com.navis.road.business.preadvise.GateConfigPreadviseStage"
+              discriminator-value="PRV" dynamic-update="true">
+        <meta attribute="n4alias">padvvstage</meta>
+        <meta attribute="generated-class">com.navis.road.business.preadvise.GateConfigPreadviseVesselStageHbr</meta>
+        <meta attribute="class-description">The gate configuration for a preadvise stage</meta>
+        <meta attribute="n4-entity-name">Gate Config Preadvise Stage For Vessel</meta>
+        <meta attribute="n4-entity-name-plural">Gate Config Preadvise Vessel Stages</meta>
+    </subclass>
+
+    <subclass name="com.navis.road.business.preadvise.GateConfigPreadviseRailStage"
+              extends="com.navis.road.business.preadvise.GateConfigPreadviseStage"
+              discriminator-value="PRR" dynamic-update="true">
+        <meta attribute="n4alias">padvrstage</meta>
+        <meta attribute="generated-class">com.navis.road.business.preadvise.GateConfigPreadviseRailStageHbr</meta>
+        <meta attribute="class-description">The gate configuration for a preadvise stage</meta>
+        <meta attribute="n4-entity-name">Gate Config Preadvise Stage for Rail</meta>
+        <meta attribute="n4-entity-name-plural">Gate Config Preadvise Rail Stages</meta>
+    </subclass>
+
+</hibernate-mapping>

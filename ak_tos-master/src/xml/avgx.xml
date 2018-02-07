@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+    <Format type ="csv" deliminator="¦" newRecord="\n"></Format>
+
+    <Field sequence="0" name="txnCode" dataType="String" />
+    <Field sequence="1" name="date" dataType="String" />
+    <Field sequence="2" name="time" dataType="String" />
+    <Field sequence="3" name="filler1" dataType="String" />
+    <Field sequence="4" name="nextId" dataType="String"  />
+    <Field sequence="5" name="equipmentNumber" dataType="String"  />
+    <Field sequence="6" name="bookingNumber" dataType="String" />
+    <Field sequence="7" name="status" dataType="String" />
+    <Field sequence="8" name="method" dataType="String" />
+    <Field sequence="9" name="grossWeight" dataType="String" />
+    <Field sequence="10" name="cargoWeight" dataType="String" />
+    <Field sequence="11" name="tareWeight" dataType="String" />
+    <Field sequence="12" name="dunnageWeight" dataType="String" />
+    <Field sequence="13" name="weightUOM" dataType="String" />
+    <Field sequence="14" name="verifierId" dataType="String" />
+
+</FileDesc>

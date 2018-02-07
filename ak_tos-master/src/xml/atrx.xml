@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="¦" newRecord="\n"></Format>
+	<Field sequence="0" name="txnCode" dataType="String"></Field>
+	<Field sequence="1" name="date" dataType="String"></Field>
+	<Field sequence="2" name="time" dataType="String"></Field>
+	<Field sequence="3" name="filler1" dataType="String"></Field>
+	<Field sequence="4" name="nextId" dataType="String"></Field>
+	<Field sequence="5" name="truckCompCode" dataType="String"></Field>
+	<Field sequence="6" name="truckCompName" dataType="String"></Field>
+	<Field sequence="7" name="serviceCode" dataType="String"></Field>
+	<Field sequence="8" name="insured" dataType="String"></Field>
+	<Field sequence="9" name="contact" dataType="String"></Field>
+	<Field sequence="10" name="phone" dataType="String"></Field>
+</FileDesc>

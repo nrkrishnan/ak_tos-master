@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2015 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+ For testing N4 Data Model Extension Integration
+-->
+
+<hibernate-mapping>
+    <!-- example dynamic fields which will be stored in some form in the database, only
+    dynamic-components are applied-->
+    <class name="com.navis.inventory.business.units.ArchiveUnitFacilityVisit">
+        <id/>
+        <dynamic-component name="customFlexFields">
+            <property name="arufvCustomDFFString1" column="custdff_arufv_arstring1" type="string" length="255"/>
+        </dynamic-component>
+    </class>
+</hibernate-mapping>

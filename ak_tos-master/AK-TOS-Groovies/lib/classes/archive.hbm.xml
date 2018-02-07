@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (c) 2016 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+       <meta attribute="JavaClassPrefix">Archive</meta>
+       <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+       <class name="com.navis.argo.business.model.ArchivePurgeStateTable" table="archive_purge_state">
+            <meta attribute="generated-class">com.navis.argo.business.model.ArchivePurgeStateTableHbr</meta>
+            <meta attribute="n4alias">arch</meta>
+            <meta attribute="n4-entity-name">arch</meta>
+            <meta attribute="n4-entity-name-plural">archives</meta>
+            <meta attribute="n4-scope-description">archive purge state</meta>
+
+            <id name="archGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+                 <generator class="native"/>
+            </id>
+           <property name="archEntityName" column="name" type="string" length="70" not-null="true">
+               <meta attribute="field-description">Name of the entity</meta>
+           </property>
+
+           <property name="archDomainQueryText" column="domain_query_text" type="string" not-null="true" length="4000">
+               <meta attribute="field-description">Domain query text for purging as Business key</meta>
+           </property>
+
+           <property name="archLastRun" column="last_run" type="timestamp">
+               <meta attribute="field-description">Last time of starting the entity purging</meta>
+           </property>
+
+           <property name="archLastDuration" column="last_duration" type="java.lang.Long">
+               <meta attribute="field-description">Last duration time of the entity purging (sec)</meta>
+           </property>
+
+           <property name="archLastCount" column="last_count" type="java.lang.Long">
+               <meta attribute="field-description">Count of purged entities during last purging</meta>
+           </property>
+
+           <property name="archTotalPurged" column="total_purged" type="java.lang.Long">
+               <meta attribute="field-description">Total count of purged entities per query</meta>
+           </property>
+
+            <property name="archFailuresCountingEnabled" type="java.lang.Boolean">
+                <meta attribute="field-description">Should we check previous failures or not. Setting to false improves performance</meta>
+                <column name="failures_count_enabled" default="1"/>
+            </property>
+
+           <property name="archStatus" column="status" type="com.navis.argo.persistence.atoms.UserTypeArchivePurgeStatusEnum">
+               <meta attribute="field-description">Archive purge status: enabled, disabled, suspended or in progress</meta>
+           </property>
+
+           <property name="archComplex" column="complex_name" type="string" length="30">
+               <meta attribute="field-description">The Complex scope name of the user who launched the purge job.</meta>
+           </property>
+
+           <set name="archFailedPurges" lazy="true" table="argo_purged_failed_entities" cascade="all-delete-orphan">
+               <key column="state_gkey"/>
+               <one-to-many class="com.navis.argo.business.model.PurgedFailedEntity"/>
+           </set>
+
+       </class>
+
+</hibernate-mapping>

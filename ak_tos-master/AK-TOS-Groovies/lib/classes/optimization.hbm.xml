@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Optimization</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.optimization.business.model.JobConfiguration" table="opt_job_configurations" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.optimization.business.model.JobConfigurationHbr</meta>
+        <meta attribute="n4alias">jobconfig</meta>
+        <meta attribute="n4-entity-name">JobConfiguration</meta>
+
+        <id name="jobconfigGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="jobconfigId" column="id" type="string" length="40" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">The id of the job configuration</meta>
+        </property>
+
+        <property name="jobconfigMinCores" column="min_cores" type="java.lang.Long">
+            <meta attribute="field-description">The minimum number of cores required to run the job</meta>
+        </property>
+
+        <property name="jobconfigMinMemory" column="min_memory" type="java.lang.Long">
+            <meta attribute="field-description">The minimum number of memory required to run the job</meta>
+        </property>
+
+        <property name="jobconfigRepeatCount" column="repeat_count" type="java.lang.Long">
+            <meta attribute="field-description">Repeat count. -1 = SimpleTrigger.REPEAT_INDEFINITELY</meta>
+        </property>
+
+        <property name="jobconfigRepeatInterval" column="repeat_interval" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Repeat interval (in seconds)</meta>
+        </property>
+
+        <property name="jobconfigTimeout" column="timeout" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Timeout for running the job (in seconds)</meta>
+        </property>
+
+        <property name="jobconfigDescription" column="description" type="string" length="512">
+            <meta attribute="field-description">The description of the job configuration.</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.optimization.business.model.ProblemType" table="opt_problem_type" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.optimization.business.model.ProblemTypeHbr</meta>
+        <meta attribute="n4alias">probtype</meta>
+        <meta attribute="n4-entity-name">ProblemType</meta>
+
+        <id name="probtypeGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="probtypeId" column="id" type="string" length="40" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">The id of the optimization problem type</meta>
+        </property>
+
+        <property name="probtypeSolution" column="solution" type="string" length="255" not-null="true">
+            <meta attribute="field-description">The complete classpath to the implementation of the ISolveCompletionEvent.</meta>
+        </property>
+
+        <property name="probtypeContext" column="context" type="string" length="255">
+            <meta attribute="field-description">The complete classpath to the implementation of the ISolveContext.</meta>
+        </property>
+
+        <property name="probtypeDescription" column="description" type="string" length="512">
+            <meta attribute="field-description">The description of the optimization problem type.</meta>
+        </property>
+
+        <property name="probtypeSystemProvided" column="system_provided" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">The problem type is provided by the system.</meta>
+        </property>
+
+        <property name="probtypeCreator" column="creator" type="string" length="30">
+            <meta attribute="field-description">Problem type creator.</meta>
+        </property>
+        <property name="probtypeCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Problem type create time.</meta>
+        </property>
+        <property name="probtypeChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Problem type change time.</meta>
+        </property>
+        <property name="probtypeChanger" column="changer" type="string" length="30">
+            <meta attribute="field-description">Problem type changer.</meta>
+        </property>
+    </class>
+
+
+    <class name="com.navis.optimization.business.model.ProblemSolution" table="opt_problem_solution" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.optimization.business.model.ProblemSolutionHbr</meta>
+        <meta attribute="n4alias">solution</meta>
+        <meta attribute="n4-entity-name">ProblemSolution</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+        <meta attribute="n4-code-extension-support">true</meta>
+
+        <id name="solutionGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!--need to make composite unique for ScopeLevel and Problem Type -->
+        <!--<properties name="problemSolutionCompoundKey" unique="true">-->
+        <property name="solutionScopeLevel" column="scope_level" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Problem Solution Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+        </property>
+
+        <many-to-one name="solutionProblemType" column="problem_type_gkey"
+                     class="com.navis.optimization.business.model.ProblemType"
+                     not-null="true"/>
+
+        <many-to-one name="solutionJobConfiguration" column="problem_job_configuration"
+                     class="com.navis.optimization.business.model.JobConfiguration"/>
+
+        <!--</properties>-->
+
+        <property name="solutionScopeGkey" column="scope_gkey" type="string" length="50"
+                  not-null="false"> <!-- todo delete not-null="true"-->
+            <meta attribute="field-description">Problem Solution Scope Gkey</meta>
+        </property>
+
+        <property name="solutionIsActive" column="is_active" type="java.lang.Boolean">
+            <meta attribute="field-description">Check whether the problem solution is Active or Not</meta>
+        </property>
+
+        <property name="solutionSystemProvided" column="system_provided" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">The problem solution is provided by the system</meta>
+        </property>
+
+        <many-to-one name="solutionDataProvider" column="data_provider_gkey" class="com.navis.extension.business.Extension"
+                     not-null="true"/>
+
+        <many-to-one name="solutionSolveStrategy" column="strategy_gkey" class="com.navis.extension.business.Extension"
+                     not-null="true"/>
+
+        <many-to-one name="solutionConfiguration" column="configuration_gkey" class="com.navis.extension.business.Extension"
+                     not-null="false"/>
+
+        <many-to-one name="solutionStatusHandler" column="status_handler_gkey" class="com.navis.extension.business.Extension"
+                     not-null="false"/>
+
+		<property name="solutionDescription" column="description" type="string" length="255" not-null="true">            <meta attribute="field-description">The description of the optimization problem solution.</meta>
+        </property>
+
+        <property name="solutionEntity" column="entity" type="string" length='30'>
+            <meta attribute="field-description">The Entity Name the predicate will be executed against</meta>
+        </property>
+
+        <many-to-one name="solutionJobGroup" column="job_group_gkey" class="com.navis.framework.quartz.business.JobGroup" cascade="none">
+            <meta attribute="field-description">Job Group</meta>
+        </many-to-one>
+
+        <many-to-one name="solutionPredicate" column="saved_predicate_gkey" class="com.navis.framework.query.business.SavedPredicate" cascade="all">
+            <meta attribute="field-description">Filter criteria to be satisfied</meta>
+        </many-to-one>
+
+        <property name="solutionCreator" column="creator" type="string" length="30">
+            <meta attribute="field-description">Problem solution creator.</meta>
+        </property>
+        <property name="solutionCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Problem solution create time.</meta>
+        </property>
+        <property name="solutionChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Problem solution change time.</meta>
+        </property>
+        <property name="solutionChanger" column="changer" type="string" length="30">
+            <meta attribute="field-description">Problem solution changer.</meta>
+        </property>
+
+    </class>
+</hibernate-mapping>

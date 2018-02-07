@@ -1,0 +1,276 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="true">
+
+    <!-- Anything added to this file will not be registered to mensa module as part of Apex-->
+    <meta attribute="JavaClassPrefix">Mensalytics</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- VesselVisitStatistics -->
+    <class name="com.navis.mensa.business.mensalytics.VesselVisitStatistics" table="mns_vessel_visit_statistics" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensalytics.VesselVisitStatisticsHbr</meta>
+        <meta attribute="n4alias">vvs</meta>
+        <meta attribute="class-description">Records vessel visit statistics for data from SPARCS</meta>
+        <meta attribute="n4-entity-name">Vessel Visit Statistic</meta>
+        <meta attribute="n4-entity-name-plural">Vessel Visit Statistics</meta>
+
+        <meta attribute="carina-fk-index-disable">
+         (operator_gkey);(complex_gkey);(facility_gkey);(line_operator)
+        </meta>
+
+        <id name="vvsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="vvsVesselName" type="string">
+            <meta attribute="field-description">A String that represents the name of the vessel, e.g. "President Madison".</meta>
+            <column name="vessel_name" not-null="false"/>
+        </property>
+
+        <property name="vvsVisitRef" type="string">
+            <meta attribute="field-description">Unique reference id for this visit</meta>
+            <column name="visit_ref" not-null="false"/>
+        </property>
+
+        <many-to-one name="vvsCarrier" column="carrier_gkey" class="com.navis.argo.business.model.CarrierVisit" index="vvs_carrier_idx"
+                     not-null="true">
+            <meta attribute="field-description">The CarrierVisit corresponding to this VesselVisit</meta>
+        </many-to-one>
+
+        <many-to-one name="vvsOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator" not-null="true">
+            <meta attribute="field-description">The Operator</meta>
+        </many-to-one>
+
+        <many-to-one name="vvsComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex</meta>
+        </many-to-one>
+
+        <many-to-one name="vvsFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility" not-null="true">
+            <meta attribute="field-description">The Facility this vessel called</meta>
+        </many-to-one>
+
+       <many-to-one name="vvsLineOperator" class="com.navis.argo.business.reference.ScopedBizUnit" >
+            <meta attribute="field-description">Vessel visit principal line operator</meta>
+             <column name="line_operator" not-null="false" index="vvs_line_operator_idx"/>
+        </many-to-one>
+
+        <property name="vvsInVoyageName" type="string">
+            <meta attribute="field-description">A String that represents inbound voyage name, e.g. "134 N".</meta>
+            <column name="in_voyage_name" not-null="false"/>
+        </property>
+
+        <property name="vvsOutVoyageName" type="string">
+            <meta attribute="field-description">A String that represents outbound voyage name, e.g. "134 N".</meta>
+            <column name="out_voyage_name" not-null="false"/>
+        </property>
+
+        <property name="vvsVesselCode" type="string">
+            <meta attribute="field-description">A String that represents vessel voyage, e.g. "134 N".</meta>
+            <column name="vessel_code" not-null="false"/>
+        </property>
+
+        <property name="vvsServiceCode" type="string">
+            <meta attribute="field-description">Service code for the vessel, e.g. "PSX".</meta>
+            <column name="service_code" not-null="false"/>
+        </property>
+
+        <property name="vvsETA" column="t_eta" type="timestamp">
+            <meta attribute="field-description">Estimated Time of Arrival for this vessel.</meta>
+        </property>
+
+        <property name="vvsETD" column="t_etd" type="timestamp">
+            <meta attribute="field-description">Estimated time of departure for this vessel.</meta>
+        </property>
+
+        <property name="vvsShiftsCompleted" column="shifts_completed" type="java.lang.Long">
+            <meta attribute="field-description">Count of shifts completed for this vessel.</meta>
+        </property>
+
+        <property name="vvsShiftsRemaining" column="shift_remaining" type="java.lang.Long">
+            <meta attribute="field-description">Count of shifts remaining for this vessel.</meta>
+        </property>
+
+        <property name="vvsUpdateTime" column="t_update_time" type="timestamp">
+            <meta attribute="field-description">UTC timestamp at which this record was updated.</meta>
+        </property>
+        <!-- 2010-07-16 oviyak BIST-426
+        Expose new SPARCS fields in Vessel Visit Statistics table, reportable entity, gadget, and data mart-->
+        <property name="vvsClass" column="vsl_cls" type="java.lang.String">
+            <meta attribute="field-description">Vessel class</meta>
+        </property>
+
+        <property name="vvsCatType" column="vsl_cat_type" type="com.navis.vessel.persistence.atoms.UserTypeVesselClassificationEnum">
+            <meta attribute="field-description">Vessel class type</meta>
+        </property>
+
+        <property name="vvsArrOffPort" column="arr_off_port" type="timestamp">
+            <meta attribute="field-description">Arrive Off port</meta>
+        </property>
+
+        <property name="vvsStartWork" column="start_work" type="timestamp">
+            <meta attribute="field-description">Start work</meta>
+        </property>
+
+        <property name="vvsStopWork" column="stop_work" type="timestamp">
+            <meta attribute="field-description">Stop work</meta>
+        </property>
+
+        <property name="vvsCutOff" column="cut_off" type="timestamp">
+            <meta attribute="field-description">Cut off</meta>
+        </property>
+
+        <property name="vvsVesselBerth" column="vsl_berth" type="java.lang.String">
+            <meta attribute="field-description">Berth</meta>
+        </property>
+
+        <property name="vvsSideToCode" column="berth_side" type="java.lang.String">
+            <meta attribute="field-description">Berth Portside To</meta>
+        </property>
+
+        <property name="vvsBollardFore" column="bollard_fore" type="java.lang.String">
+            <meta attribute="field-description">Fore Bollard</meta>
+        </property>
+
+        <property name="vvsBollardAft" column="bollard_aft" type="java.lang.String">
+            <meta attribute="field-description">Aft Bollard</meta>
+        </property>
+
+        <property name="vvsVesselLenInM" column="vsl_length" type="java.lang.String">
+            <meta attribute="field-description">Vessel length (m)</meta>
+        </property>
+
+    </class>
+
+
+
+    <!-- CraneActivitySet -->
+    <class name="com.navis.mensa.business.mensalytics.CraneActivitySet" table="mns_crane_activity_set" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensalytics.CraneActivitySetHbr</meta>
+        <meta attribute="n4alias">cas</meta>
+        <meta attribute="class-description">Master Record for the set of crane Activites recorded in a specific time interval</meta>
+        <meta attribute="n4-entity-name">Crane Activity Set</meta>
+        <meta attribute="n4-entity-name-plural">Crane Activity Sets</meta>
+
+        <meta attribute="carina-fk-index-disable">
+         (operator_gkey);(complex_gkey);(facility_gkey);(yard_gkey)
+        </meta>
+
+        <id name="casGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="casRecordSetStatus" type="com.navis.mensa.persistence.atoms.UserTypeRecordSetStatusEnum">
+            <meta attribute="field-description">Status (VIRGIN/PARTIAL/COMPLETE).</meta>
+            <column name="status" not-null="true" index="cas_record_set_status_idx"/>
+        </property>
+
+        <property name="casTimeIntervalStart" type="timestamp">
+            <meta attribute="field-description">Time at which the interval starts</meta>
+            <column name="time_start" not-null="true" index="cas_time_interval_start_idx"/>
+        </property>
+
+        <property name="casTimeIntervalEnd" type="timestamp">
+            <meta attribute="field-description">Time at which the next interval starts</meta>
+            <column name="time_end" not-null="true" index="cas_time_interval_end_idx"/>
+        </property>
+
+        <property name="casTimeExtracted" column="t_extracted" type="timestamp">
+            <meta attribute="field-description">Time at which this activity set was extracted</meta>
+        </property>
+
+        <many-to-one name="casOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator" not-null="true">
+            <meta attribute="field-description">The Operator to which this CraneActivitySet belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="casComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which this CraneActivitySet belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="casFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility" not-null="true">
+            <meta attribute="field-description">The Facility to which this CraneActivitySet belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="casYard" column="yard_gkey" class="com.navis.argo.business.model.Yard" not-null="true">
+            <meta attribute="field-description">The Yard to which this CraneActivitySet belongs</meta>
+        </many-to-one>
+
+        <bag name="casCraneActivities" lazy="true" inverse="true" table="cas_crane_activity" cascade="all-delete-orphan">
+            <key column="set_gkey"/>
+            <one-to-many class="com.navis.mensa.business.mensalytics.CraneActivity"/>
+        </bag>
+
+    </class>
+
+    <!-- CraneActivity -->
+    <class name="com.navis.mensa.business.mensalytics.CraneActivity" table="mns_crane_activity" dynamic-update="false">
+        <meta attribute="generated-class">com.navis.mensa.business.mensalytics.CraneActivityHbr</meta>
+        <meta attribute="n4alias">cact</meta>
+        <meta attribute="class-description">Single crane activity</meta>
+        <meta attribute="n4-entity-name">Crane Activity</meta>
+        <meta attribute="n4-entity-name-plural">Crane Activities</meta>
+
+        <meta attribute="carina-fk-index-disable">
+         (activity_code);(set_gkey);(carrier_gkey);(crane)
+        </meta>
+
+        <id name="cactGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="cactCraneActivitySet" column="set_gkey" class="com.navis.mensa.business.mensalytics.CraneActivitySet" not-null="true">
+            <meta attribute="field-description">CraneActivitySet to which this crane activity belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="cactCarrier" column="carrier_gkey" class="com.navis.argo.business.model.CarrierVisit" not-null="true">
+            <meta attribute="field-description">The CarrieVisit on which this crane is working.</meta>
+        </many-to-one>
+
+        <many-to-one name="cactCrane" column="crane" class="com.navis.argo.business.xps.model.Che" not-null="true">
+            <meta attribute="field-description">Reference to the crane</meta>
+        </many-to-one>
+
+        <property name="cactActivityStatus" type="com.navis.mensa.persistence.atoms.UserTypeCraneActivityStatusEnum">
+            <meta attribute="field-description">Status (NONE/STARTED/STOPPED).</meta>
+            <column name="status" not-null="true" index="cact_activity_status_idx"/>
+        </property>
+
+        <property name="cactActivityId" column="activity_id" type="string" length="10">
+            <meta attribute="field-description">Id for an activity</meta>
+        </property>
+
+        <many-to-one name="cactActivityCode" column="activity_code" class="com.navis.mensa.business.reference.ActivityCode" not-null="true">
+            <meta attribute="field-description">Code for an activity.</meta>
+        </many-to-one>
+
+        <many-to-one name="cactCraneDelayType" column="delay_type" class="com.navis.argo.business.reference.CraneDelayType">
+            <meta attribute="field-description">Delay Type for an activity.</meta>
+        </many-to-one>
+
+        <property name="cactActivityRef" column="activity_ref" type="string" not-null="true" index="cact_activity_ref_idx">
+            <meta attribute="field-description">Unique Id that identifies this activity.</meta>
+        </property>
+
+        <property name="cactActivityStartTime" column="t_activity_start_time" type="timestamp">
+            <meta attribute="field-description">Time at which this activity starts</meta>
+        </property>
+
+        <property name="cactActivityEndTime" column="t_activity_end_time" type="timestamp">
+            <meta attribute="field-description">Time at which this activity ends</meta>
+        </property>
+
+        <property name="cactActivityCount" column="activity_count" type="java.lang.Long">
+            <meta attribute="field-description">Some activities have counts i.e. egear moves, value is 1 if not specified.</meta>
+        </property>
+
+        <property name="cactUpdateTime" column="t_update_time" type="timestamp">
+            <meta attribute="field-description">UTC timestamp at which this record was updated.</meta>
+        </property>
+
+    </class>
+
+    
+
+</hibernate-mapping>

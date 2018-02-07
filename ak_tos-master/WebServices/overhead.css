@@ -1,0 +1,120 @@
+<!-- Style Sheet created with the CoffeeCup StyleSheet Maker -->
+<!-- http://www.coffeecup.com -->
+<style type="text/css">
+<!--
+BODY {
+	  font-family: Verdana, Tahoma, Sans-serif;
+	  font-weight: 700;
+	 }
+	 
+A:link {text-decoration: none;}
+A:visited {text-decoration: none;}
+
+.TableFoot  { 
+		   	  font-family: Verdana, Tahoma, Sans-serif; 
+			  font-size: x-small; 
+			  font-weight: 600;  
+			  color: #FFFFFF; 
+			  background: #990000; 
+			  text-align: center;
+		    }
+			
+.TableHead  { 
+			  font-family: Verdana, Tahoma, Sans-serif; 
+			  font-size: large; 
+			  font-weight: 600;  
+			  color: #FFFFFF; 
+			  background: #990000; 
+			  text-align: center;
+			}
+			
+.TableHeadR { 
+			  font-family: Verdana, Tahoma, Sans-serif; 
+			  font-size: medium; 
+			  font-weight: 600;  
+			  color: #FFFFFF; 
+			  background: #990000; 
+			  text-align: right;
+			}
+			
+.dgHeader {
+		   font-family: Verdana, Tahoma, Sans-serif; 
+		   font-size: small; 
+		   font-weight: 600; 
+		   color: #000000; 
+		   background: #FFFFFF; 
+		   text-align: center; 
+		   border-top: 2px solid #990000; 
+		   border-bottom: 3px solid #990000;
+		   text-transform: uppercase;
+		  }
+
+.dgFooter {
+		   font-family: Verdana, Tahoma, Sans-serif; 
+		   font-size: small; 
+		   font-weight: 600;
+		   color: #FFFFFF; 
+		   background: #990000; 
+		   text-align: center; 
+		   text-transform: capitalize;
+		  }
+
+.dgItem   {
+		   font-family: Verdana, Tahoma, Sans-serif; 
+		   font-size: small; 
+		   font-weight: 700; 
+		   color: #000000; 
+		   background: #FFFFFF;
+		   text-align: center;
+		   border-bottom: 1px solid #000000;
+		  }
+
+.itemNoAlign   {
+		   font-family: Verdana, Tahoma, Sans-serif; 
+		   font-size: small; 
+		   font-weight: 700; 
+		   color: #000000; 
+		   background: #FFFFFF;
+		  }
+
+
+.dgSelectedItem {
+				 font-family: Verdana, Tahoma, Sans-serif; 
+				 font-size: small; 
+				 font-weight: 700; 
+				 color: #000000; 
+				 background: #FFCC66; 
+				 text-align: center;
+				}
+
+.dgPager {
+		  font-family: Verdana, Tahoma, Sans-serif; 
+		  font-size: x-small;
+		  color: #000000; 
+		  background: #FFCC66; 
+		  text-align: center;
+		 }
+
+.dgBody  {
+		   border-left: 1px #CC9966; 
+		   border-right: 1px #CC9966; 
+		   border-top: 1px #CC9966; 
+		   border-bottom: 1px #CC9966; 
+		   padding-left: 4px; 
+		   padding-right: 4px; 
+		   padding-top: 4px; 
+		   padding-bottom: 4px; 
+		   color: #000000; 
+		   background: #FFFFFF;
+		 }
+
+.SpacerRow {
+		   	color: #000000; 
+			background: #000000;
+		   }
+
+.hidden {
+		 display:none;
+		}
+-->
+</style>

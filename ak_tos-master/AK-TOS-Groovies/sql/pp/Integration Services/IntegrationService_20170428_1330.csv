@@ -1,0 +1,7 @@
+Name,Type,Direction,Active,Group,URL,Level,Scope
+akjmsdistqueuetdpN4QueueIn,JMS,Inbound,true,,tcp://10.102.10.242:61616,Facility,MATSON/ALASKA/ANK
+akjmsdistqueuetdpN4QueueInDUT,JMS,Inbound,true,,tcp://10.102.10.242:61616,Facility,MATSON/ALASKA/DUT
+akjmsdistqueuetdpN4QueueInKDK,JMS,Inbound,true,,tcp://10.102.10.242:61616,Facility,MATSON/ALASKA/KDK
+akjmsdistqueuetdpN4QueueOut,JMS,Outbound,true,,tcp://10.102.10.242:61616,Facility,MATSON/ALASKA/ANK
+akjmsdistqueuetdpN4QueueOutDUT,JMS,Outbound,true,,tcp://10.102.10.242:61616,Facility,MATSON/ALASKA/DUT
+akjmsdistqueuetdpN4QueueOutKDK,JMS,Outbound,true,,tcp://10.102.10.242:61616,Facility,MATSON/ALASKA/KDK

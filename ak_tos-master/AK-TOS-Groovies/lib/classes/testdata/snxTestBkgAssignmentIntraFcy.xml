@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2012 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+
+<unit id="BAIU9670715" category="EXPORT" restow="NONE" transit-state="YARD" freight-kind="FCL" line="MAT" unique-key="BAIU9670715">
+  <equipment eqid="BAIU9670715" type="4500" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+    <physical has-wheels="N" height-mm="2895" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" material="UNKNOWN" tare-weight-kg="4100.453600" length-mm="13716" strength-code="FB" width-mm="2438" />
+    <ownership owner="MAT" operator="MAT" />
+    <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" stow-above-deck="N" stow-below-deck="N" uses-accessories="N" />
+    <transponder />
+    <damages />
+  </equipment>
+  <ownership eqid="MAT" operator="MAT" />
+  <position loc-type="YARD" location="YRD1111" slot="AW" />
+  <routing pol="LYT" pod-1="OAK" next-facility="FCY112">
+    <carrier direction="IB" qualifier="DECLARED" mode="TRUCK" id="ABC" />
+    <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK" id="ABC" />
+    <carrier direction="OB" qualifier="DECLARED" mode="VESSEL" id="TBAIC" facility="FCY112" />
+    <carrier direction="OB" qualifier="ACTUAL" mode="VESSEL" id="GEN_VESSEL"/>
+  </routing>
+  <contents weight-kg="21744.197420" />
+  <booking id="TBAICBKG" />
+  <unit-etc line="MAT" />
+  <timestamps time-in="2012-05-25T07:34:00" time-last-move="2012-05-25T07:34:00" />
+</unit>
+</argo:snx>

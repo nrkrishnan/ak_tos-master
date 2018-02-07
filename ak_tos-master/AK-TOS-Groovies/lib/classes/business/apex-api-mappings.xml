@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2011 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+        >
+
+    <!--  Xps manager API's -->
+
+    <bean id="apxListXpsCache" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>xpsCacheManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>spewCache</value>
+        </property>
+        <property name="readOnly">
+            <value>true</value>
+        </property>
+        <property name="requiresDatabase">
+            <value>false</value>
+        </property>
+    </bean>
+
+    <bean id="apxSaveXpsCache" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>xpsCacheManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>saveCache</value>
+        </property>
+        <property name="readOnly">
+            <value>true</value>
+        </property>
+        <property name="requiresDatabase">
+            <value>false</value>
+        </property>
+    </bean>
+
+    <bean id="apxGetClusterStatus" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>xpsCacheManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>getClusterStatus</value>
+        </property>
+        <property name="readOnly">
+            <value>true</value>
+        </property>
+        <property name="requiresDatabase">
+            <value>false</value>
+        </property>
+    </bean>
+
+    <bean id="apxRestartXpsCache" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>xpsCacheManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>restartCache</value>
+        </property>
+        <property name="readOnly">
+            <value>true</value>
+        </property>
+        <property name="requiresDatabase">
+            <value>false</value>
+        </property>
+    </bean>
+
+    <bean id="apxStartUnitBackgroundJobs" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>inventoryFacade</value>
+        </property>
+        <property name="handlerMethod">
+            <value>startUnitBackgroundJobs</value>
+        </property>
+    </bean>
+
+    <bean id="apxGenerateIsoEquipTypeCodes" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>argoFacade</value>
+        </property>
+        <property name="handlerMethod">
+            <value>generateIsoEquipTypeCodes</value>
+        </property>
+    </bean>
+    <!--  12/07/06 ARGO-5577 Added new method for EDI-Datebase Setup (MEssageType and MessageMap)-->
+    <bean id="apxConfigureMsgTypeAndMaps" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>ediFacade</value>
+        </property>
+        <property name="handlerMethod">
+            <value>configureMsgTypeAndMaps</value>
+        </property>
+    </bean>
+
+    <!--  03/19/2008 ARGO-10427 Added new function to create STORAGE and REEFER ChargeableUnitEvent records)-->
+    <bean id="apxCreateStorageReeferExtractEvents" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>inventoryFacade</value>
+        </property>
+        <property name="handlerMethod">
+            <value>createStorageReeferExtractEvents</value>
+        </property>
+    </bean>
+
+    <bean id="apxImportUnlocCodes" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>argoFacade</value>
+        </property>
+        <property name="handlerMethod">
+            <value>importUnlocCodes</value>
+        </property>
+    </bean>
+
+    <bean id="apxImportLineMaster" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>argoFacade</value>
+        </property>
+        <property name="handlerMethod">
+            <value>importLineMaster</value>
+        </property>
+    </bean>
+
+    <bean id="apxImportBuiltInReports" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>apexManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>createReportDesignInitData</value>
+        </property>
+    </bean>
+
+    <bean id="apxImportBuiltInServicesData" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>apexManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>createServicesInitData</value>
+        </property>
+    </bean>
+
+    <bean id="apxToBeImplemented" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>apexManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>toBeImplemented</value>
+        </property>
+    </bean>
+
+    <bean id="apxImportSparcsWorkingData" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>apexManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>importSparcsWorkingData</value>
+        </property>
+    </bean>
+
+    <bean id="apxImportSparcsScheduleData" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>apexManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>importSparcsScheduleData</value>
+        </property>
+    </bean>
+
+    <bean id="apxImportSparcsReferenceData" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>apexManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>importSparcsReferenceData</value>
+        </property>
+    </bean>
+
+    <!-- 2012-07-18 azharad ARGO-40044: This is no longer in user replacing cache with JMS/Mule
+    ~ <bean id="apxImportFromXpsCache" class="com.navis.framework.portal.ApiMapping">
+    ~     <property name="handlerClass">
+    ~         <value>xpsCacheImporter</value>
+    ~     </property>
+    ~     <property name="handlerMethod">
+    ~         <value>importFromXpsCache</value>
+    ~     </property>
+    ~ </bean>
+    -->
+
+    <bean id="apxPurgeWorkingData" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>xpsPurgeWorkingData</value>
+        </property>
+        <property name="handlerMethod">
+            <value>purgeWorkingData</value>
+        </property>
+    </bean>
+
+    <bean id="apxCreateDefaultGates" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>apexManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>createDefaultGates</value>
+        </property>
+    </bean>
+
+    <bean id="apxCreateTestData" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>apexManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>createTestData</value>
+        </property>
+    </bean>
+
+    <bean id="apxLaunchSocketListenerJob" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>apexManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>launchSocketListenerJob</value>
+        </property>
+    </bean>
+
+    <bean id="apxSetupMatsonTopology" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>apexManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>setupMatsonTopology</value>
+        </property>
+    </bean>
+
+    <bean id="apxUpdateAllBillableEventsAsExtracted" class="com.navis.framework.portal.ApiMapping">
+        <property name="handlerClass">
+            <value>apexManager</value>
+        </property>
+        <property name="handlerMethod">
+            <value>updateAllBillableEventsAsExtracted</value>
+        </property>
+    </bean>
+
+</beans>

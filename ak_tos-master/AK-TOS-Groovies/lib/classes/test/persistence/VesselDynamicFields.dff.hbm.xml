@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+  For testing N4 Data Model Extension Integration
+-->
+
+<hibernate-mapping>
+    <!-- example dynamic fields which will be stored in some form in the database, only
+    dynamic-components are applied-->
+    <class name="com.navis.vessel.business.schedule.VesselVisitDetails">
+        <id/>
+        <!--Note customFlexFields cannot be used because this is a subclass. customFlexFields belongs to parent class only-->
+        <dynamic-component name="vvdCustomFlexFields">
+            <property name="vvdCustomDFFString1" column="custdff_vvd__string1" type="string" length="255"/>
+            <property name="vvdCustomDFFString2" column="custdff_vvd__string2" type="string" length="255"/>
+
+            <property name="vvdCustomDFFDateTime1" column="custdff_vvd__datetime1" type="timestamp"/>
+            <property name="vvdCustomDFFDateTime2" column="custdff_vvd__datetime2" type="timestamp"/>
+
+            <property name="vvdCustomDFFDate1" column="custdff_vvd__date1" type="date"/>
+
+            <property name="vvdCustomDFFLong1" column="custdff_vvd__long1" type="java.lang.Long"/>
+            <property name="vvdCustomDFFLong2" column="custdff_vvd__long2" type="java.lang.Long"/>
+
+            <property name="vvdCustomDFFDouble1" column="custdff_vvd__double1" type="java.lang.Double"/>
+            <property name="vvdCustomDFFDouble2" column="custdff_vvd__double2" type="java.lang.Double"/>
+
+            <many-to-one name="vvdCustomDFFCustomFoo" class="com.navis.extension.sandbox.CustomFoo"
+                         column="custdff_vvd_custom_foo"/>
+        </dynamic-component>
+    </class>
+
+</hibernate-mapping>

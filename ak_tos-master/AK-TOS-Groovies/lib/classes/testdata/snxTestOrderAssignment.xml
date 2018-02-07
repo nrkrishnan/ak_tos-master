@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+    <unit id="SEEU5588001" category="STORAGE" transit-state="ADVISED" freight-kind="MTY" unique-key="SEEU5588001" line="POPEYE">
+        <equipment eqid="SEEU5588001" type="2200" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="POPEYE" operator="POPEYE"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <routing>
+            <carrier direction="IB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="TRUCK"/>
+        </routing>
+        <ero id="EROSEE"/>
+        <contents weight-kg="1900.0"/>
+        <unit-etc category="STORAGE" line="POPEYE"/>
+    </unit>
+    <unit id="SEEU6588001" category="STORAGE" transit-state="YARD" freight-kind="MTY" unique-key="SEEU6588001" line="POPEYE">
+        <equipment eqid="SEEU6588001" type="2200" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="POPEYE" operator="POPEYE"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="YARD" location="YRD1111" slot="B123"/>
+        <routing>
+            <carrier direction="IB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="TRUCK"/>
+        </routing>
+        <ero id="EROSEE"/>
+        <contents weight-kg="1900.0"/>
+        <unit-etc category="STORAGE" line="POPEYE"/>
+    </unit>
+    <unit id="SEEU7588001" category="STORAGE" transit-state="YARD" freight-kind="MTY" unique-key="SEEU7588001" line="POPEYE">
+        <equipment eqid="SEEU7588001" type="2200" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="POPEYE" operator="POPEYE"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="YARD" location="YRD1111" slot="B124"/>
+        <routing>
+            <carrier direction="IB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="TRUCK"/>
+        </routing>
+        <edo id="EDOSEE"/>
+        <contents weight-kg="1900.0"/>
+        <unit-etc category="STORAGE" line="POPEYE"/>
+    </unit>
+    <unit id="SEEU8588001" category="STORAGE" transit-state="DEPARTED" freight-kind="MTY" unique-key="SEEU8588001" line="POPEYE">
+        <equipment eqid="SEEU8588001" type="2200" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="POPEYE" operator="POPEYE"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <routing>
+            <carrier direction="IB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="TRUCK"/>
+        </routing>
+        <edo id="EDOSEE"/>
+        <ero id="EROSEE"/>
+        <contents weight-kg="1900.0"/>
+        <unit-etc category="STORAGE" line="POPEYE"/>
+    </unit>
+     <!--2009-03-19 pmelappalayam v1.9.D ARGO-15676 Verify ADHOC BOOKING in SNX -->
+    <unit id="SEEU9588002" category="EXPORT" transit-state="YARD" freight-kind="FCL" unique-key="SEEU9588002" line="POPEYE">
+        <equipment eqid="SEEU9588002" type="2200" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="POPEYE" operator="POPEYE"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="TRUCK" location="GEN_TRUCK"/>
+        <routing pol="OAK" pod-1="LYT" origin="OAK">
+            <carrier direction="IB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="VESSEL" id="VES002"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="VESSEL" id="VES002"/>
+        </routing>
+        <booking id="BKGSEE"/>
+        <carrier mode="VESSEL" id="VES002"/>
+        <contents weight-kg="1900.0"/>
+        <unit-etc category="EXPORT" line="POPEYE"/>
+    </unit>
+    <unit id="SEEU10588002" category="EXPORT" transit-state="ECIN" freight-kind="FCL" unique-key="SEEU10588002" line="POPEYE">
+        <equipment eqid="SEEU10588002" type="2200" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="POPEYE" operator="POPEYE"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="TRUCK" location="GEN_TRUCK"/>
+        <routing pol="OAK" pod-1="LYT" origin="OAK">
+            <carrier direction="IB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="VESSEL" id="VES002"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="VESSEL" id="VES002"/>
+        </routing>
+        <booking id="BKGSEE"/>
+        <carrier mode="VESSEL" id="VES002"/>
+        <contents weight-kg="1900.0"/>
+        <unit-etc category="EXPORT" line="POPEYE"/>
+    </unit>
+    <unit id="SEEU11588002" category="EXPORT" transit-state="INBOUND" freight-kind="FCL" unique-key="SEEU11588002" line="POPEYE">
+        <equipment eqid="SEEU11588002" type="2200" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="POPEYE" operator="POPEYE"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="TRUCK" location="GEN_TRUCK"/>
+        <routing pol="OAK" pod-1="LYT" origin="OAK">
+            <carrier direction="IB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="VESSEL" id="VES002"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="VESSEL" id="VES002"/>
+        </routing>
+        <booking id="BKGSEE"/>
+        <carrier mode="VESSEL" id="VES002"/>
+        <contents weight-kg="1900.0"/>
+        <unit-etc category="EXPORT" line="POPEYE"/>
+    </unit>
+    <unit id="MATU212222" category="STORAGE" freight-kind="MTY" line="POPEYE" unique-key="MATU212222" transit-state="DEPARTED">
+        <equipment eqid="MATU212222" class="CTR" type="2200" operator="POPEYE" role="PRIMARY"/>
+        <seals seal-1="S01"/>
+        <routing>
+            <carrier mode="VESSEL" direction="IB" id="VES002" qualifier="DECLARED"/>
+            <carrier mode="VESSEL" direction="IB" id="VES002" qualifier="ACTUAL"/>
+            <carrier mode="TRUCK" direction="OB" id="T01" qualifier="DECLARED"/>
+            <carrier mode="TRUCK" direction="OB" id="T01" qualifier="ACTUAL"/>
+        </routing>
+        <booking id="BKGSEE"/>
+    </unit>
+
+</argo:snx>
+

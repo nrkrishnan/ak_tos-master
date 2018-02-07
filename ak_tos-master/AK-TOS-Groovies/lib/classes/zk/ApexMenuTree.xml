@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE menuTree PUBLIC "" "MenuTree.dtd">
+
+        
+<menuTree>
+    <menu menuNodeRefId="MENU_NODE_FILE" position="PREPEND">
+        <menuItem menuNodeRefId="MENU_NODE_USER_PREFERENCES"/>
+        <menuItem menuNodeRefId="MENU_NODE_USER_PASSWORD"/>
+        <!-- example for application override definition -->
+        <menuItem menuNodeRefId="MENU_NODE_SHOW_USER_DEBUG_INFO"/>
+        <separator/>
+        <menuItem menuNodeRefId="MENU_NODE_EXIT"/>
+    </menu>
+    <menu menuNodeRefId="MENU_NODE_WINDOWS">
+        <menuItem menuNodeRefId="MENU_NODE_OPEN_TAB"/>
+        <separator/>
+        <menuItem menuNodeRefId="MENU_NODE_CLOSE_TAB"/>
+        <menuItem menuNodeRefId="MENU_NODE_CLOSE_ALL_TABS_BUT_THIS"/>
+        <menuItem menuNodeRefId="MENU_NODE_CLOSE_ALL_TABS"/>
+        <separator/>
+        <menuItem menuNodeRefId="MENU_NODE_SELECT_NEXT_TAB"/>
+        <menuItem menuNodeRefId="MENU_NODE_SELECT_PREVIOUS_TAB"/>
+        <separator/>
+        <menuItem menuNodeRefId="MENU_NODE_UNDOCK_TAB"/>
+        <menuItem menuNodeRefId="MENU_NODE_DUPLICATE_TAB"/>
+        <separator/>
+        <menuItem menuNodeRefId="MENU_NODE_ADD_TAB_TO_FAVORITES"/>
+    </menu>
+    <menu menuNodeRefId="MENU_NODE_HELP">
+        <menuItem menuNodeRefId="MENU_NODE_HELP_TOPICS"/>
+        <menuItem menuNodeRefId="MENU_NODE_ABOUT"/>
+    </menu>
+</menuTree>

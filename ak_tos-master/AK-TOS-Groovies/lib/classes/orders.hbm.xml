@@ -1,0 +1,1195 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Orders</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- EQUIPMENT ORDERS -->
+
+    <subclass name="com.navis.orders.business.eqorders.EquipmentOrder" extends="com.navis.inventory.business.units.EqBaseOrder"
+              discriminator-value="EQO" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.EquipmentOrderHbr</meta>
+        <meta attribute="n4alias">eqo</meta>
+        <meta attribute="class-description">Domain entity representing a generic Equipment Order</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Equipment Order</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Orders</meta>
+
+        <!-- removed when EquipmentOrder became SUBCLASS of EqBaseOrder
+        <id name="eqoGkey" column="gkey" type="java.lang.Long" length="12" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <discriminator column="sub_type" not-null="false" type="string" length="10"/>
+
+        <property name="eqoNbr" column="nbr" type="string" length="17" not-null="true">
+            <meta attribute="field-description">Equipment order number</meta>
+            <meta attribute="use-in-tostring">true</meta>
+        </property>
+        -->
+        <!-- ATTRIBUTES COMMON TO ALL EQOs -->
+        <many-to-one name="eqoComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The complex to which this eqo belongs</meta>
+        </many-to-one>
+
+        <!-- FKs to ScopedBizUnit -->
+        <many-to-one name="eqoLine" class="com.navis.argo.business.reference.ScopedBizUnit" column="line_gkey" not-null="true">
+            <meta attribute="field-description">Line Operator that originated this equipment order</meta>
+        </many-to-one>
+
+        <!-- 2008-11-19 jwang 1.8 ARGO-15206 Add new fields in the EDO to support inter Facility Transfers -->
+        <many-to-one name="eqoOrderPurpose" column="order_purpose_gkey" class="com.navis.argo.business.reference.OrderPurpose" not-null="false">
+            <meta attribute="field-description">The Order Purpose</meta>
+        </many-to-one>
+
+        <!-- 2008-11-19 jwang 1.8 ARGO-15206 Add new fields in the EDO to support inter Facility Transfers -->
+        <many-to-one name="eqoNextFacility" column="next_facility_gkey" class="com.navis.argo.business.model.Facility" not-null="false">
+            <meta attribute="field-description">The Next Facility</meta>
+        </many-to-one>
+        <!-- 2009-12-08 dkannadasan ARGO-22245 Introduce facility column in EquipmentOrder entity -->
+        <many-to-one name="eqoFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility" not-null="false">
+            <meta attribute="field-description">The facility to which this order belongs to</meta>
+        </many-to-one>
+
+        <many-to-one name="eqoAgent" class="com.navis.argo.business.reference.ScopedBizUnit" column="agent_gkey">
+            <meta attribute="field-description">Freight Forwarder Agent for the eqo Line Operator</meta>
+        </many-to-one>
+
+        <!-- 2007-03-19 lbarman 1.3.D ARGO-6560: Shipper and Consignee converted from Strings to ScopedBizUnits -->
+        <property name="eqoObsoleteConsignee" column="consignee_name" type="string" length='30'>
+            <meta attribute="field-description">Deprecated: Consignee Name - use eqoConsigneeBzu instead</meta>
+        </property>
+
+        <property name="eqoObsoleteShipper" column="shipper_name" type="string" length='30'>
+            <meta attribute="field-description">Deprecated: Shipper Name - use eqoShipperBzu instead</meta>
+        </property>
+
+        <many-to-one name="eqoConsignee" column="consignee_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Consignee ScopedBizUnit: Party that will recieve the cargo in the booking</meta>
+        </many-to-one>
+
+        <many-to-one name="eqoShipper" column="shipper_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Shipper ScopedBizUnit: Party that sent the cargo in the booking</meta>
+        </many-to-one>
+
+        <many-to-one name="eqoTruckCo" class="com.navis.argo.business.reference.ScopedBizUnit" column="truck_co_gkey">
+            <meta attribute="field-description">Trucking Co that will send the driver to pickup equipment against the eqo</meta>
+        </many-to-one>
+
+        <!-- for bookings only -->
+        <property name="eqoClientRefNo" column="client_ref_nbr" type="string" length="16" not-null="false">
+            <meta attribute="field-description">Client reference number for Booking details</meta>
+        </property>
+
+        <!-- Routing -->
+        <!-- todo make a component corresponding to unitRouting -->
+        <many-to-one name="eqoVesselVisit" class="com.navis.argo.business.model.CarrierVisit" column="vessel_visit_gkey">
+            <meta attribute="field-description">Vessel Visit for which the order was made</meta>
+        </many-to-one>
+
+        <many-to-one name="eqoPod1" column="pod1_gkey" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Port where equipment is first discharged</meta>
+        </many-to-one>
+
+        <many-to-one name="eqoPod2" column="pod2_gkey" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Second port where equipment is discharged</meta>
+        </many-to-one>
+
+        <many-to-one name="eqoPodOptional" column="pod_optional_gkey" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Optional first port of discharge</meta>
+        </many-to-one>
+
+        <many-to-one name="eqoPol" column="pol_gkey" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Port where eqo equipment should be loaded</meta>
+        </many-to-one>
+
+        <property name="eqoOrigin" column="origin" type="string" length="30">
+            <meta attribute="field-description">Origination point of equipment</meta>
+        </property>
+        <property name="eqoDestination" column="destination" type="string" length="30">
+            <meta attribute="field-description">Final destination of eqo equipment</meta>
+        </property>
+
+        <property name="eqoEqStatus" column="eq_status" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum">
+            <meta attribute="field-description">Status of containers shipped under this order</meta>
+        </property>
+
+        <property name="eqoPreventTypeSubst" column="prevent_type_subst" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">If true, equipment substitution is not allowed</meta>
+        </property>
+
+        <property name="eqoNotes" column="notes" type="string" length="180">
+            <meta attribute="field-description">Notes</meta>
+        </property>
+
+        <property name="eqoHasReefers" column="has_reefers" type="java.lang.Boolean">
+            <meta attribute="field-description">Order is for live reefers.</meta>
+        </property>
+
+        <!-- 2006-12-20 lbarman v1.2.L ARGO-5815: add flags for ignoreDamages and ignoreHolds used when picking a container -->
+        <property name="eqoIgnoreDamages" column="ignore_damages" type="java.lang.Boolean">
+            <meta attribute="field-description">If true then the order does not care if container is damaged.</meta>
+        </property>
+
+        <property name="eqoIgnoreHolds" column="ignore_holds" type="java.lang.Boolean">
+            <meta attribute="field-description">If true then the order does not care if a container is on hold - currently used for delivery of empties (EDO).</meta>
+        </property>
+
+        <!-- Misc Flags -->
+        <!-- Book,EDO -->
+        <property name="eqoDispatchReserved" column="dispatch_reserved"
+                  type="com.navis.orders.persistence.atoms.UserTypeEquipmentOrderDispatchReservedEnum">
+            <meta attribute="field-description">sets the rules for dispatching reserved equipment</meta>
+        </property>
+
+        <property name="eqoOwnedOrLeased" column="eq_owned_leased" type="com.navis.orders.persistence.atoms.UserTypeOwnedLeasedEnum">
+            <meta attribute="field-description">Only use owned or only use leased equipment</meta>
+        </property>
+
+        <!-- ERO, EDO SPECIFIC ATTRIBUTES -->
+        <!-- @todo: this is temperary -waiting for the Arch.'s decision -->
+        <property name="eqoServiceType" column="service_type" type="com.navis.argo.persistence.atoms.UserTypeEventEnum">
+            <meta attribute="field-description">Purpose of the equipment order</meta>
+        </property>
+        <property name="eqoEstimatedDate" column="estimated_date" type="timestamp">
+            <meta attribute="field-description">Estimated date for equipment pickup</meta>
+        </property>
+
+        <property name="eqoEarliestDate" column="earliest_date" type="timestamp">
+            <meta attribute="field-description">Earilest allowed date for equipment pickup</meta>
+        </property>
+        <property name="eqoLatestDate" column="latest_date" type="timestamp" index="eqo_latest_idx">
+            <meta attribute="field-description">Latest allowed date for equipment pickup</meta>
+        </property>
+
+        <!--2010-05-11 spabbala v2.1.P ARGO-25807 Changed eqoQuantity, eqoTally, and eqoTallyReceive to de-normalized fields-->
+        <property name="eqoQuantity" column="quantity" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Number of empties to dispatch against the order (defined through all order item quantities)</meta>
+        </property>
+        <!-- 2006-06272006 lbarman v1.1.C ARGO-4273: need to determine 'completion' for order by using the following form defined field-->
+        <!-- this is a field driven by a formula, there will be no db column for that field and no set method will be created to set a value for it-->
+        <!--2010-05-11 spabbala v2.1.P ARGO-25807 Changed eqoQuantity, eqoTally, and eqoTallyReceive to de-normalized fields-->
+        <property name="eqoTally" column="tally" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Tally for this order (defined through all order item tallies)</meta>
+        </property>
+
+        <!-- 2006-09-08 lbarman v1.2.C ARGO-4681: need to determine 'completion' for order by using the following form defined field-->
+        <!-- 2006-09-11 lbarman v1.2.C ARGO-5136: use re-added denormalized field eqoi tally instead of tallyDispatch -->
+        <!-- this is a field driven by a formula, there will be no db column for that field and no set method will be created to set a value for it-->
+        <!-- 2006-06272006 lbarman v1.1.C ARGO-4273: need to determine 'completion' for order by using the following form defined field-->
+        <!-- this is a field driven by a formula, there will be no db column for that field and no set method will be created to set a value for it-->
+        <!--<property name="eqoQuantityDispatch" type="java.lang.Long"
+                  formula="( SELECT Count(inv_unit.id) FROM inv_unit
+                  INNER JOIN inv_unit_equip ON inv_unit.primary_ue = inv_unit_equip.gkey
+                  INNER JOIN inv_eq_base_order_item ON inv_unit_equip.depart_order_item_gkey = inv_eq_base_order_item.gkey
+                  INNER JOIN inv_eq_base_order ON inv_eq_base_order_item.eqo_gkey = inv_eq_base_order.gkey
+                  WHERE (inv_unit.visit_state = '3DEPARTED')
+                  AND (inv_eq_base_order.gkey = gkey)
+                  AND (inv_unit_equip.is_reserved = 1))">
+            <meta attribute="field-description">Number of empties dispatched against the order</meta>
+        </property>-->
+
+        <!--2010-05-11 spabbala v2.1.P ARGO-25807 Changed eqoQuantity, eqoTally, and eqoTallyReceive to de-normalized fields-->
+        <property name="eqoTallyReceive" column="tally_receive" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Number of empties dispatched against the order</meta>
+        </property>
+        <!-- 2006-10-03 eyu ARGO-4370 v1.2.E Need Archiving/Purging extended to high growth tables -->
+        <!--2010-07-05 spabbala v2.1.U ARGO-26335  Add eqoUeCount to de-normalized fields-->
+        <property name="eqoUECount" column="ue_count" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Number of unit equipments that will/has departed the Complex via the order items in this order</meta>
+        </property>
+
+        <!-- EQO ITEMS SET -->
+        <!-- removed when subclassed to EQ_BASE_ORDER
+        <set name="equipmentOrderItems" lazy="true" inverse="true" table="equipment_order_items" cascade="all-delete-orphan">
+            <key column="eqboi_eqo_gkey"/>
+            <one-to-many class="com.navis.orders.business.eqorders.EquipmentOrderItem"/>
+        </set>
+        -->
+    </subclass>
+
+    <subclass name="com.navis.orders.business.eqorders.AbstractBooking" extends="com.navis.orders.business.eqorders.EquipmentOrder"
+              discriminator-value="BKG"
+              dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.AbstractBookingHbr</meta>
+        <meta attribute="n4-entity-name">Abstract Booking</meta>
+        <meta attribute="n4-entity-name-plural">Abstract Bookings</meta>
+
+        <property name="eqoOod" column="ood" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If set to true, overdimentional ctrs are allowed</meta>
+        </property>
+        <!-- TPM: cannot have mandatory fields in subclasses using a single table -->
+        <property name="eqoOverrideCutoff" column="override_cutoff" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If set to true, vessel schedule cutoffs are overridden</meta>
+        </property>
+        <property name="eqoHoldPartials" column="hold_partials" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If set to true, received ctrs are put on hold untill all ctr are recieved against the booking</meta>
+        </property>
+        <property name="eqoStowBlock" column="stow_block" type="string" length="4"/>
+        <property name="eqoShippingMode" column="shipping_mode" type="com.navis.orders.persistence.atoms.UserTypeShippingModeEnum">
+            <meta attribute="field-description">Standard shipping industry code used to indicate if the marine terminal operator is responsible for stripping or stuffing the cargo</meta>
+        </property>
+        <many-to-one name="eqoHazards" column="eqo_hazards" class="com.navis.inventory.business.imdg.Hazards" cascade="all">
+            <meta attribute="field-description">The Hazards asscoiated with the booking. May be null.</meta>
+        </many-to-one>
+        <many-to-one name="eqoSpecialStow" column="special_stow" class="com.navis.argo.business.reference.SpecialStow">
+            <meta attribute="field-description">Special Stowage Instructions for this booking</meta>
+        </many-to-one>
+
+        <!-- 2010-06-07 kjeyapandian 2.1.S ARGO-26477 Add two new fields in the Booking to support multiple special stow instructions -->
+        <many-to-one name="eqoSpecialStow2" column="special_stow2" class="com.navis.argo.business.reference.SpecialStow">
+            <meta attribute="field-description">Special Stowage Instructions #2 for this booking</meta>
+        </many-to-one>
+
+        <many-to-one name="eqoSpecialStow3" column="special_stow3" class="com.navis.argo.business.reference.SpecialStow">
+            <meta attribute="field-description">Special Stowage Instructions #3 for this booking</meta>
+        </many-to-one>
+
+        <property name="eqoDrayOff" column="dray_off" type="com.navis.argo.persistence.atoms.UserTypeDrayStatusEnum">
+            <meta attribute="field-description">Must be set to Forward/Return to let a full export ctr out of the complex</meta>
+        </property>
+        <property name="eqoMilitaryTcn" column="military_tcn" type="string" length="10">
+            <meta attribute="field-description">Military booking TCN reference number</meta>
+        </property>
+        <property name="eqoEmptyPickupLocation" column="empty_pickup_location" type="string" length="40">
+            <meta attribute="field-description">Empty pickup location</meta>
+        </property>
+        <property name="eqoStuffingLocation" column="stuffing_location" type="string" length="40">
+            <meta attribute="field-description">Stuffing location</meta>
+        </property>
+        <property name="eqoFullReturnLocation" column="full_return_location" type="string" length="40">
+            <meta attribute="field-description">Full return location</meta>
+        </property>
+        <!-- 2009-06-15 rsatish v2.0.c ARGO-15692 category field to store EXPORT or DOMESTIC -->
+        <property name="eqoCategory" column="category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum">
+            <meta attribute="field-description">The Category of the Booking (Export or Domestic)</meta>
+        </property>
+    </subclass>
+
+    <subclass name="com.navis.orders.business.eqorders.EquipmentReceiveOrder" extends="com.navis.orders.business.eqorders.EquipmentOrder"
+              discriminator-value="ERO" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.EquipmentReceiveOrderHbr</meta>
+        <meta attribute="n4-entity-name">Equipment Receive Order</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Receive Orders</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">eroCustomFlexFields</meta>
+        <dynamic-component name="eroCustomFlexFields"/>
+
+    </subclass>
+
+    <subclass name="com.navis.orders.business.eqorders.EquipmentDeliveryOrder" extends="com.navis.orders.business.eqorders.EquipmentOrder"
+              discriminator-value="EDO" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.EquipmentDeliveryOrderHbr</meta>
+        <meta attribute="n4alias">edo</meta>
+        <meta attribute="n4-entity-name">Equipment Delivery Order</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Delivery Orders</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">edoCustomFlexFields</meta>
+        <dynamic-component name="edoCustomFlexFields"/>
+
+    </subclass>
+
+    <subclass name="com.navis.orders.business.eqorders.EquipmentLoadoutOrder" extends="com.navis.orders.business.eqorders.EquipmentOrder"
+              discriminator-value="ELO" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.EquipmentLoadoutOrderHbr</meta>
+        <meta attribute="n4alias">elo</meta>
+        <meta attribute="n4-entity-name">Equipment Loadout Order</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Loadout Orders</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">eloCustomFlexFields</meta>
+        <dynamic-component name="eloCustomFlexFields"/>
+
+    </subclass>
+
+    <subclass name="com.navis.orders.business.eqorders.Booking" extends="com.navis.orders.business.eqorders.AbstractBooking"
+              discriminator-value="BOOK" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.BookingHbr</meta>
+        <meta attribute="n4alias">bkg</meta>
+        <meta attribute="n4-entity-name">Booking</meta>
+        <meta attribute="n4-entity-name-plural">Bookings</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">bookCustomFlexFields</meta>
+        <dynamic-component name="bookCustomFlexFields"/>
+
+    </subclass>
+
+    <subclass name="com.navis.orders.business.eqorders.RailOrder" extends="com.navis.orders.business.eqorders.AbstractBooking"
+              discriminator-value="RAIL"
+              dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.RailOrderHbr</meta>
+        <meta attribute="n4-entity-name">Rail Order</meta>
+        <meta attribute="n4-entity-name-plural">Rail Orders</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">roCustomFlexFields</meta>
+
+        <many-to-one name="eqoTrainVisit" class="com.navis.argo.business.model.CarrierVisit" column="train_visit_gkey">
+            <meta attribute="field-description">Train Visit for which the order was made</meta>
+        </many-to-one>
+
+        <many-to-one name="eqoRailRoad" class="com.navis.argo.business.reference.ScopedBizUnit" column="rr_gkey">
+            <meta attribute="field-description">Rail Operator that operates the train of the Rail Order</meta>
+        </many-to-one>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="roCustomFlexFields"/>
+
+    </subclass>
+
+    <!-- EQUIPMENT ORDER ITEM -->
+
+    <joined-subclass name="com.navis.orders.business.eqorders.EquipmentOrderItem" table="ord_equipment_order_items"
+                     extends="com.navis.inventory.business.units.EqBaseOrderItem" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.EquipmentOrderItemHbr</meta>
+        <meta attribute="n4alias">eqoi</meta>
+        <meta attribute="n4-entity-name">Equipment Order Item</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Order Items</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">eqoiCustomFlexFields</meta>
+
+        <key column="gkey"/>
+        <!-- removed when EquipmentOrder became SUBCLASS of EqBaseOrder
+        <many-to-one name="eqoiEqo" column="eqoi_eqo_gkey" class="com.navis.orders.business.eqorders.EquipmentOrder">
+            <meta attribute="field-description">Equipment order to which this item belongs</meta>
+        </many-to-one>
+       -->
+        <!-- equivalent to Express sz/tp/ht  combo -->
+        <property name="eqoiEqSize" column="eq_size" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalLengthEnum" not-null="true">
+            <meta attribute="field-description">eqoi equipment size</meta>
+        </property>
+        <property name="eqoiEqIsoGroup" column="eq_iso_group" type="com.navis.argo.persistence.atoms.UserTypeEquipIsoGroupEnum" not-null="true">
+            <meta attribute="field-description">eqoi equipment iso group code</meta>
+        </property>
+
+        <property name="eqoiEqHeight" column="eq_height" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalHeightEnum" not-null="true">
+            <meta attribute="field-description">eqoi equipment height</meta>
+        </property>
+
+        <property name="eqoiQty" column="qty" type="java.lang.Long" not-null="true" length="3">
+            <meta attribute="field-description">Quantity of equipment required for the order</meta>
+        </property>
+
+        <!-- 2006-07-05 lbarman v1.1.E ARGO-4273: tally is now calculated on the fly -->
+        <!--<property name="eqoiQuantityDispatch" type="java.lang.Long"
+                  formula="( SELECT Count(inv_unit.id) FROM inv_unit
+                  INNER JOIN inv_unit_equip ON inv_unit.primary_ue = inv_unit_equip.gkey
+                  INNER JOIN inv_eq_base_order_item ON inv_unit_equip.depart_order_item_gkey = inv_eq_base_order_item.gkey
+                  WHERE (inv_unit.visit_state = '3DEPARTED') AND (inv_eq_base_order_item.gkey = gkey) AND (inv_unit_equip.is_reserved = 1))">
+            <meta attribute="field-description">Number of empties dispatched against the order item</meta>
+        </property>-->
+
+        <!-- 2006-06272006 lbarman v1.1.C ARGO-4273: receival tally is no longer a bizmetafield but calculated on the fly -->
+        <!-- 2007-09-27 lbarman v1.4.M ARGO-000: not all departed units should count, only those that departed on a vessel; logic includes those
+        where the activeUfv is null, because these units are old data and in most cases they need to be included -->
+        <!-- 2007-11-09 lbarman v1.4.1/v1.5.A ARGO-8887: change tally receive count mechanism to use category -->
+        <!--replaced this with the biz meta field in OrdersBizMetaFields.xml since it was not extensible for other types of orders (Imran)-->
+        <!--<property name="eqoiTallyReceive" type="java.lang.Long"-->
+        <!--formula="( SELECT Count(inv_unit.id) FROM inv_unit-->
+        <!--INNER JOIN inv_unit_equip ON inv_unit.primary_ue = inv_unit_equip.gkey-->
+        <!--INNER JOIN inv_eq_base_order_item ON inv_unit_equip.depart_order_item_gkey = inv_eq_base_order_item.gkey-->
+        <!--LEFT JOIN inv_unit_fcy_visit ON inv_unit.active_ufv = inv_unit_fcy_visit.gkey-->
+        <!--WHERE(-->
+        <!--((inv_unit.visit_state = '3DEPARTED' OR inv_unit_fcy_visit.transit_state = 'S70_DEPARTED')-->
+        <!--AND ((inv_unit_fcy_visit.last_pos_loctype Is NULL OR inv_unit_fcy_visit.last_pos_loctype &#60;&#62; 'TRUCK')-->
+        <!--OR (inv_unit_fcy_visit.last_pos_loctype = 'TRUCK' AND inv_unit.dray_status &#60;&#62; 'RETURN')))-->
+        <!--OR (inv_unit_fcy_visit.transit_state IN ('S30_ECIN', 'S40_YARD', 'S50_ECOUT', 'S60_LOADED')))-->
+        <!--AND (inv_unit.visit_state != '2ADVISED')-->
+        <!--AND (inv_eq_base_order_item.gkey  = gkey)-->
+        <!--AND (inv_unit.category = 'EXPRT' OR inv_unit.category = 'TRSHP'))">-->
+        <!--<meta attribute="field-description">Number of receivals against the order item</meta>-->
+        <!--</property>-->
+
+        <!-- 2006-09-11 lbarman v1.2.C ARGO-5136: use re-added denormalized field tally instead of tallyDispatch (denormalized field takes over
+        role of tallyDispatch and is no longer calculated)-->
+        <property name="eqoiTally" column="tally" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Number of empties dispatched against the order</meta>
+        </property>
+
+        <property name="eqoiTallyLimit" column="tally_limit" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Maximum number of empties authorized for dispatch</meta>
+        </property>
+
+        <property name="eqoiReceiveLimit" column="rcv_limit" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Maximum number of exports authorized to return</meta>
+        </property>
+
+        <many-to-one name="eqoiEqGrade" column="eq_grade_gkey" class="com.navis.argo.business.reference.EquipGrade">
+            <meta attribute="field-description">Required grade for equipment</meta>
+        </many-to-one>
+        <property name="eqoiEqMaterial" column="material" type="com.navis.argo.persistence.atoms.UserTypeEquipMaterialEnum">
+            <meta attribute="field-description">Required material for equipment</meta>
+        </property>
+        <property name="eqoiAccType" type="java.lang.String" column="acc_type" length="6">
+             <meta attribute="field-description">Required accessory type for equipment</meta>
+        </property>
+        <many-to-one name="eqoiCommodity" column="commodity_gkey" class="com.navis.argo.business.reference.Commodity">
+            <meta attribute="field-description">Code of the commodity to be transported in equipment</meta>
+        </many-to-one>
+        <property name="eqoiCommodityDesc" column="commodity_desc" type="string" length="45">
+            <meta attribute="field-description">Description of the commodity to be transported in equipment</meta>
+        </property>
+
+        <property name="eqoiCo2Required" type="java.lang.Double" column="CO2_required" length="4">
+            <meta attribute="field-description">Percentage of CO2 required</meta>
+        </property>
+        <property name="eqoiO2Required" type="java.lang.Double" column="O2_required" length="4">
+            <meta attribute="field-description">Percentage of O2 required</meta>
+        </property>
+        <!-- 2006-10-10 svaitheas v1.2.E : ARGO-4697 refactoring the vent settings field to add a seperate column for units -->
+        <!--
+                <property name="eqoiVentRequired" type="string" column="vent_required" length="4">
+                    <meta attribute="field-description">Vent Setting in Cubic cm</meta>
+                </property>
+        -->
+        <property name="eqoiVentRequired" type="java.lang.Double" column="vent_required_pct">
+            <meta attribute="field-description">Vent setting required</meta>
+        </property>
+
+        <property name="eqoiVentUnit" column="vent_unit" type="com.navis.argo.persistence.atoms.UserTypeVentUnitEnum" length="40">
+            <meta attribute="field-description">Unit (%,cubic feet per minute, etc.) that goes with the vent required field.</meta>
+        </property>
+
+        <!-- 2007-01-05 ARGO-5310 eyu v1.2.O Change all WEIGHT fields from Long to Double -->
+        <property name="eqoiGrossWeight" column="gross_weight" type="java.lang.Double">
+            <meta attribute="field-description">Full Container weight</meta>
+        </property>
+        <property name="eqoiTempRequired" column="temp_required" type="java.lang.Double" length="10">
+            <meta attribute="field-description">Temperature Setting in Centigrade</meta>
+        </property>
+
+        <property name="eqoiHumidityRequired" column="humidity_required" type="java.lang.Double" length="10">
+            <meta attribute="field-description">Humidity required, in Centigrade</meta>
+        </property>
+
+        <many-to-one name="eqoiFtr" column="feature_gkey" class="com.navis.argo.business.reference.EquipFeature">
+            <meta attribute="field-description">Equipment Feature</meta>
+        </many-to-one>
+
+        <!-- new v1.5.B, Antwerp EDO enhancements -->
+        <many-to-one name="eqoiSampleEquipType" column="eqtyp_gkey" class="com.navis.argo.business.reference.EquipType" not-null="false">
+            <meta attribute="field-description">An example equipment type - for empty selection</meta>
+        </many-to-one>
+
+        <property name="eqoiSerialRanges" column="serial_ranges" type="string" length="240">
+            <meta attribute="field-description">A list of acceptable serial number ranges, packed into a string</meta>
+        </property>
+
+        <property name="eqoiTareWeightMin" column="tare_weight_min" type="java.lang.Double">
+            <meta attribute="field-description">Minimum tolerable Tare Weight</meta>
+        </property>
+
+        <property name="eqoiTareWeightMax" column="tare_weight_max" type="java.lang.Double">
+            <meta attribute="field-description">Maximum tolerable Tare Weight</meta>
+        </property>
+
+        <property name="eqoiCscExpirationMin" column="csc_expiration_min" type="timestamp">
+            <meta attribute="field-description">Earliest tolerable CSC Expiration Date</meta>
+        </property>
+
+        <!-- jwang 2008-04-21 ARGO-10960: add additional fields for EDO -->
+        <property name="eqoiCscExpiration" column="csc_expiration" type="string" length="5" not-null="false">
+            <meta attribute="field-description">Earliest tolerable CSC Expiration Date (values can be ACEP, NONE, MMYY)</meta>
+        </property>
+
+        <property name="eqoiManufactureDateMin" column="mnfr_date_min" type="timestamp">
+            <meta attribute="field-description">Earliest tolerable manufacture date</meta>
+        </property>
+
+        <property name="eqoiManufactureDateMax" column="mnfr_date_max" type="timestamp">
+            <meta attribute="field-description">Latest tolerable manufacture date</meta>
+        </property>
+
+        <!-- dkannadasan 2008-09-02 ARGO-14145  Equipment Order Item's OOG related fields -->
+        <property name="eqoiIsOog" column="is_oog" type="java.lang.Boolean">
+            <meta attribute="field-description">Equipment Order Item is OOG</meta>
+        </property>
+
+        <property name="eqoiOogBackCm" column="oog_back_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Back, in Centimeters</meta>
+        </property>
+
+        <property name="eqoiOogFrontCm" column="oog_front_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Front, in Centimeters</meta>
+        </property>
+
+        <property name="eqoiOogLeftCm" column="oog_left_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Left, in Centimeters</meta>
+        </property>
+
+        <property name="eqoiOogRightCm" column="oog_right_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Right, in Centimeters</meta>
+        </property>
+
+        <property name="eqoiOogTopCm" column="oog_top_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Top, in Centimeters</meta>
+        </property>
+
+        <!-- 2008-09-04 Shan 1.7.C ARGO-14146, Seq Nbr, could be used by EDI to identity order item  -->
+        <property name="eqoiSeqNbr" column="seq_nbr" type="java.lang.Long" length="5">
+            <meta attribute="field-description">Seq Nbr, to identify item</meta>
+        </property>
+
+        <!-- dkannadasan 2008-09-02 ARGO-14147  Equipment Order Item's Hazards field -->
+        <many-to-one name="eqoiHazards" column="eqoi_hazards" class="com.navis.inventory.business.imdg.Hazards" cascade="all">
+            <meta attribute="field-description">The Hazards asscoiated with an Order Item,. May be null.</meta>
+        </many-to-one>
+
+        <!--    Audit Data -->
+        <!-- 2006-11-01 lbarman v1.2.F ARGO-5352: audit fields moved to superclass -->
+        <!--<property name="eqoiCreated" column="created" type="timestamp"/>
+        <property name="eqoiCreator" column="creator" type="string" length="30"/>
+        <property name="eqoiChanged" column="changed" type="timestamp"/>
+        <property name="eqoiChanger" column="changer" type="string" length="30"/>-->
+        <!-- jwang 2008-04-21 ARGO-10960: add additional fields for EDO -->
+        <!-- jwang 2008-04-21 ARGO-10960: make additional fields nullable -->
+        <property name="eqoiSafeWeightMin" column="safe_weight_min" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Minimum Safe Weight</meta>
+        </property>
+        <!-- 2009-03-11 dkannadasan, ARGO-17049 - increasing order item's remarks field size to 255-->
+        <property name="eqoiRemarks" column="remarks" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Remarks</meta>
+        </property>
+
+        <property name="eqoiDisambiguator" column="disambiguator" type="java.lang.String" length="20" not-null="false">
+            <meta attribute="field-description">Disambiguator</meta>
+        </property>
+
+        <property name="eqoiIsPowered" column="is_powered" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">True if powered reefer is required</meta>
+        </property>
+
+        <!-- jwang 2008-04-21 ARGO-10960: add additional fields for EDO -->
+        <many-to-one name="eqoiEqCondition" column="eq_condition_gkey" class="com.navis.argo.business.reference.EquipCondition" not-null="false">
+            <meta attribute="field-description">Required condition for equipment</meta>
+        </many-to-one>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="eqoiCustomFlexFields"/>
+
+    </joined-subclass>
+
+    <!-- EQUIPMENT TYPE SUBSTITUTION -->
+    <class name="com.navis.orders.business.eqorders.EqTypeGroup" table="ord_eq_type_groups" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.EqTypeGroupHbr</meta>
+        <meta attribute="n4alias">eqtypegrp</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4-entity-name">Equipment Type Group</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Type Groups</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">eqtypegrpId</meta>
+
+        <id name="eqtypegrpGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="eqtypegrpId" column="id" type="string" length="10" unique-key="unique_key">
+            <meta attribute="field-description">Substitution group Id</meta>
+        </property>
+
+        <many-to-one name="eqtypegrpLine" column="line_gkey" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Line Operator of the substitution group</meta>
+        </many-to-one>
+
+        <property name="eqtypegrpKind" column="group_kind" type="com.navis.orders.persistence.atoms.UserTypeEqTypeGroupKindEnum">
+            <meta attribute="field-description">Equipment type group kind whether it is receive or dispatch</meta>
+        </property>
+
+        <many-to-one name="eqtypegrpScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <!--    Audit Data -->
+        <property name="eqtypegrpCreated" column="created" type="timestamp"/>
+        <property name="eqtypegrpCreator" column="creator" type="string" length="30"/>
+        <property name="eqtypegrpChanged" column="changed" type="timestamp"/>
+        <property name="eqtypegrpChanger" column="changer" type="string" length="30"/>
+
+        <property name="eqtypegrpLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <!-- Equipment Types -->
+        <!--2009-07-21 spabbala 2.0.E ARGO-19772  QA-Purging a record in Equipment type Equivalent form in N4 application doesn't delete child records
+        in table ord_eq_type_group_items instead it updates the field eqtypegrp_gkey to Null-->
+        <set name="eqTypes" lazy="true" table="ord_eq_type_group_items" inverse="true" cascade="all-delete-orphan">
+            <key column="eqtypegrp_gkey"/>
+            <one-to-many class="com.navis.orders.business.eqorders.EqTypeGroupItem"/>
+        </set>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.orders.business.eqorders.EqTypeGroupItem" table="ord_eq_type_group_items" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.EqTypeGroupItemHbr</meta>
+        <meta attribute="n4alias">eqtypegrpi</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Equipment Type Group Item</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Type Group Items</meta>
+
+        <id name="eqtypegrpiGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="eqtypegrpiGroup" column="eqtypegrp_gkey" class="com.navis.orders.business.eqorders.EqTypeGroup"/>
+
+        <property name="eqtypegrpiSize" column="eq_size" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalLengthEnum">
+            <meta attribute="field-description">equipment size</meta>
+        </property>
+        <property name="eqtypegrpiIsoGroup" column="eq_iso_group" type="com.navis.argo.persistence.atoms.UserTypeEquipIsoGroupEnum">
+            <meta attribute="field-description">equipment iso group code</meta>
+        </property>
+        <property name="eqtypegrpiHeight" column="eq_height" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalHeightEnum">
+            <meta attribute="field-description">equipment height</meta>
+        </property>
+
+        <!--    Audit Data -->
+        <property name="eqtypegrpiCreated" column="created" type="timestamp"/>
+        <property name="eqtypegrpiCreator" column="creator" type="string" length="30"/>
+        <property name="eqtypegrpiChanged" column="changed" type="timestamp"/>
+        <property name="eqtypegrpiChanger" column="changer" type="string" length="30"/>
+
+        <property name="eqtypegrpiLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!--2009-03-18 Shan v1.9  ARGO-17087, Service Order management NFRM-104 -->
+    <!-- 2010-04-20 dkannadasan ARGO-23582 Schema changes - Added AbstractServiceOrder to orders.hbm -->
+    <class name="com.navis.orders.business.serviceorders.AbstractServiceOrder" discriminator-value="ABSRVO" table="ord_service_order">
+        <meta attribute="n4alias">srvo</meta>
+        <meta attribute="generated-class">com.navis.orders.business.serviceorders.AbstractServiceOrderHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Service Order</meta>
+        <meta attribute="n4-entity-name">Abstract Service Order</meta>
+        <meta attribute="n4-entity-name-plural">Abstract Service Orders</meta>
+
+        <id name="srvoGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <discriminator column="sub_type" not-null="false" type="java.lang.String" length="10"/>
+
+        <property name="srvoSubType" column="sub_type" insert="false" update="false"
+                  type="com.navis.argo.persistence.atoms.UserTypeServiceOrderTypeEnum" index="srvo_sub_type_idx">
+            <meta attribute="field-description">Service Order subtype to query invisible descriminator</meta>
+        </property>
+
+        <property name="srvoNbr" column="service_order_nbr" type="string" length="30">
+            <meta attribute="field-description">Unique Service Order number to identify Service Order</meta>
+        </property>
+
+        <property name="srvoStatus" column="order_status" type="com.navis.argo.persistence.atoms.UserTypeServiceOrderStatusEnum" not-null="true">
+            <meta attribute="field-description">Status of Order: New, In Progress, Complete, Canceled</meta>
+        </property>
+
+        <property name="srvoCancelDate" column="srvo_cancel_date" type="timestamp">
+            <meta attribute="field-description">The time this individual container's delivery order expires.</meta>
+        </property>
+
+        <property name="srvoCancelNotes" column="cancel_notes" type="string" length="255">
+            <meta attribute="field-description">Some notes for cancelling service order.</meta>
+        </property>
+
+        <property name="srvoNotes" column="notes" type="string" length="255">
+            <meta attribute="field-description">Some notes for this service order.</meta>
+        </property>
+
+        <property name="srvoStartDate" column="srvo_start_date" type="timestamp">
+            <meta attribute="field-description">Date work was started for the service order.</meta>
+        </property>
+
+        <property name="srvoCompletionDate" column="srvo_completion_date" type="timestamp">
+            <meta attribute="field-description">Requested Date to complete the Service Order.</meta>
+        </property>
+
+        <many-to-one name="srvoBillingParty" column="billing_party_gkey"
+                     class="com.navis.argo.business.reference.ScopedBizUnit" not-null="true" cascade="none">
+            <meta attribute="field-description">Billing Party of the Service Order (Eg. Trucking company, Line operator etc)</meta>
+        </many-to-one>
+
+        <many-to-one name="srvoLine" column="line_op_gkey" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Line Operator of the Service Order</meta>
+        </many-to-one>
+
+        <many-to-one name="srvoFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="true">
+            <meta attribute="field-description">The Facility for this Service Order</meta>
+        </many-to-one>
+
+        <property name="srvoCreated" column="created" type="timestamp"/>
+        <property name="srvoCreator" column="creator" type="string" length="30"/>
+        <property name="srvoChanged" column="changed" type="timestamp"/>
+        <property name="srvoChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <subclass name="com.navis.orders.business.serviceorders.ServiceOrder" extends="com.navis.orders.business.serviceorders.AbstractServiceOrder"
+              discriminator-value="SRVO" dynamic-update="true">
+
+        <meta attribute="generated-class">com.navis.orders.business.serviceorders.ServiceOrderHbr</meta>
+        <meta attribute="class-description">Service Order</meta>
+        <meta attribute="n4-entity-name">Service Order</meta>
+        <meta attribute="n4-entity-name-plural">Service Orders</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">srvoCustomFlexFields</meta>
+
+        <many-to-one name="srvoBillOfLading" column="bl_gkey" class="com.navis.cargo.business.model.BillOfLading">
+            <meta attribute="field-description">Bill Of Ladding associated with Service Order</meta>
+        </many-to-one>
+
+        <many-to-one name="srvoEqBaseOrder" column="eqo_gkey" class="com.navis.inventory.business.units.EqBaseOrder">
+            <meta attribute="field-description">The Equipment Order associtated with Service Order (E.g. Booking)</meta>
+        </many-to-one>
+
+        <!-- 2009-04-23 dkannadasan ARGO-17866 - Added 'inverse="true" ' attribute to the sets in the service order related entities-->
+        <set name="srvoItems" lazy="true" inverse="true" table="ord_service_order_item" cascade="all-delete-orphan">
+            <key column="order_gkey"/>
+            <one-to-many class="com.navis.orders.business.serviceorders.ServiceOrderItem"/>
+        </set>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="srvoCustomFlexFields"/>
+
+    </subclass>
+
+    <!-- 2010-03-24 dkanndasan ARGO-23581 Schema changes for extending Service Order to support Vessel Visits and Train Visits-->
+    <subclass name="com.navis.orders.business.serviceorders.CarrierVisitServiceOrder"
+              extends="com.navis.orders.business.serviceorders.AbstractServiceOrder" discriminator-value="CVSO" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.serviceorders.CarrierVisitServiceOrderHbr</meta>
+        <meta attribute="n4-entity-name">Carrier Visit Service Order</meta>
+        <meta attribute="n4-entity-name-plural">Carrier Visit Service Orders</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">cvsoCustomFlexFields</meta>
+
+        <many-to-one name="cvsoCarrierVisit" class="com.navis.argo.business.model.CarrierVisit" column="carrier_visit_gkey">
+            <meta attribute="field-description">Vessel Visit or Train Visit for which the service order was made</meta>
+        </many-to-one>
+
+        <set name="cvsoServices" lazy="true" inverse="true" table="ord_carrier_visit_service_type" cascade="all-delete-orphan">
+            <key column="cvsrvtyp_order_gkey"/>
+            <one-to-many class="com.navis.orders.business.serviceorders.CarrierVisitServiceType"/>
+        </set>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="cvsoCustomFlexFields"/>
+    </subclass>
+
+    <class name="com.navis.orders.business.serviceorders.CarrierVisitServiceType" table="ord_carrier_visit_service_type">
+        <meta attribute="n4alias">cvsrvtyp</meta>
+        <meta attribute="generated-class">com.navis.orders.business.serviceorders.CarrierVisitServiceTypeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Services for Service Order</meta>
+        <meta attribute="n4-entity-name">Carrier Visit Service Type</meta>
+        <meta attribute="n4-entity-name-plural">Carrier Visit Service Types</meta>
+
+        <id name="cvsrvtypGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="cvsrvtypServiceOrder" column="cvsrvtyp_order_gkey"
+                     class="com.navis.orders.business.serviceorders.CarrierVisitServiceOrder" not-null="true" cascade="none">
+            <meta attribute="field-description">Reference to Service order</meta>
+        </many-to-one>
+
+        <many-to-one name="cvsrvtypEventType" column="event_type_gkey" class="com.navis.services.business.rules.EventType" not-null="true">
+            <meta attribute="field-description">Service Type associated with service order</meta>
+        </many-to-one>
+
+        <property name="cvsrvtypStatus" column="cvsrvtyp_status" type="com.navis.argo.persistence.atoms.UserTypeServiceOrderUnitStatusEnum">
+            <meta attribute="field-description">Status of Service associated with Service Order: New, Complete</meta>
+        </property>
+        <!-- 2010-06-18 dkannadasan ARGO-26675 Adding event reference to the CarrierVisitServiceType entity-->
+        <many-to-one name="cvsrvtypEvent" column="service_event_gkey" class="com.navis.services.business.event.Event">
+            <meta attribute="field-description">Reference to Service Event</meta>
+        </many-to-one>
+        <!-- 2010-06-17 dkannadasan ARGO-26693 Add audit fields to the CarrierVisitServiceType entity -->
+        <property name="cvsrvtypCreated" column="created" type="timestamp"/>
+        <property name="cvsrvtypCreator" column="creator" type="string" length="30"/>
+        <property name="cvsrvtypChanged" column="changed" type="timestamp"/>
+        <property name="cvsrvtypChanger" column="changer" type="string" length="30"/>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="cvsoCustomFlexFields"/>
+
+    </class>
+
+    <class name="com.navis.orders.business.serviceorders.ServiceOrderItem" table="ord_service_order_item">
+        <meta attribute="n4alias">srvoi</meta>
+        <meta attribute="generated-class">com.navis.orders.business.serviceorders.ServiceOrderItemHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Service Order item</meta>
+        <meta attribute="n4-entity-name">Service Order Item</meta>
+        <meta attribute="n4-entity-name-plural">Service Order Items</meta>
+
+        <id name="srvoiGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="srvoiEqSize" column="eq_size" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalLengthEnum" not-null="true">
+            <meta attribute="field-description">Service order item equipment size</meta>
+        </property>
+        <property name="srvoiEqIsoGroup" column="eq_iso_group" type="com.navis.argo.persistence.atoms.UserTypeEquipIsoGroupEnum" not-null="true">
+            <meta attribute="field-description">Service order item equipment iso group code</meta>
+        </property>
+
+        <property name="srvoiEqHeight" column="eq_height" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalHeightEnum" not-null="true">
+            <meta attribute="field-description">Service order item equipment height</meta>
+        </property>
+
+        <property name="srvoiQty" column="qty" type="java.lang.Long" not-null="true" length="3">
+            <meta attribute="field-description">Quantity of Service order item</meta>
+        </property>
+
+        <many-to-one name="srvoiEquipType" column="eqtyp_gkey" class="com.navis.argo.business.reference.EquipType">
+            <meta attribute="field-description">Equipment type assosciated with Service Order</meta>
+        </many-to-one>
+
+        <many-to-one name="srvoiServiceOrder" column="order_gkey" class="com.navis.orders.business.serviceorders.ServiceOrder">
+            <meta attribute="field-description">Reference to Service Order</meta>
+        </many-to-one>
+        <!-- 2009-04-23 dkannadasan ARGO-17866 - Added 'inverse="true" ' attribute to the sets in the service order related entities-->
+        <set name="itemServiceTypes" lazy="true" inverse="true" table="ord_item_service_type" cascade="all-delete-orphan">
+            <key column="srv_order_item_gkey"/>
+            <one-to-many class="com.navis.orders.business.serviceorders.ItemServiceType"/>
+        </set>
+
+        <property name="srvoiCreated" column="created" type="timestamp"/>
+        <property name="srvoiCreator" column="creator" type="string" length="30"/>
+        <property name="srvoiChanged" column="changed" type="timestamp"/>
+        <property name="srvoiChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <class name="com.navis.orders.business.serviceorders.ItemServiceType" table="ord_item_service_type">
+        <meta attribute="n4alias">itmsrvtyp</meta>
+        <meta attribute="generated-class">com.navis.orders.business.serviceorders.ItemServiceTypeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">item Service for Service Order</meta>
+        <meta attribute="n4-entity-name">Item Service Type</meta>
+        <meta attribute="n4-entity-name-plural">Item Service Types</meta>
+
+        <id name="itmsrvtypGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!--property name="itmsrvtypTally" column="tally" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Number of units serviced for this service type</meta>
+        </property-->
+
+        <many-to-one name="itmsrvtypServiceOrderItem" column="srv_order_item_gkey"
+                     class="com.navis.orders.business.serviceorders.ServiceOrderItem" not-null="true" cascade="none">
+            <meta attribute="field-description">Reference to Service order item</meta>
+        </many-to-one>
+
+        <many-to-one name="itmsrvtypEventType" column="event_type_gkey" class="com.navis.services.business.rules.EventType" not-null="true">
+            <meta attribute="field-description">Type of Service associated with service order item</meta>
+        </many-to-one>
+
+        <!-- 2009-04-23 dkannadasan ARGO-17866 - Added 'inverse="true" ' attribute to the sets in the service order related entities-->
+        <set name="itemServiceTypeUnits" lazy="true" inverse="true" table="ord_item_service_unit" cascade="all-delete-orphan">
+            <key column="item_service_type_gkey"/>
+            <one-to-many class="com.navis.orders.business.serviceorders.ItemServiceTypeUnit"/>
+        </set>
+
+        <property name="itmsrvtypCreated" column="created" type="timestamp"/>
+        <property name="itmsrvtypCreator" column="creator" type="string" length="30"/>
+        <property name="itmsrvtypChanged" column="changed" type="timestamp"/>
+        <property name="itmsrvtypChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.orders.business.serviceorders.ItemServiceTypeUnit" table="ord_item_service_unit" dynamic-update="true">
+        <meta attribute="n4alias">itmsrvtypunit</meta>
+        <meta attribute="generated-class">com.navis.orders.business.serviceorders.ItemServiceTypeUnitHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Units for Item Service Type</meta>
+        <meta attribute="n4-entity-name">Item Service Type Unit</meta>
+        <meta attribute="n4-entity-name-plural">Item Service Type Units</meta>
+
+        <id name="itmsrvtypunitGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="itmsrvtypunitStatus" column="unit_status" type="com.navis.argo.persistence.atoms.UserTypeServiceOrderUnitStatusEnum">
+            <meta attribute="field-description">Status of Unit associated with Service Order: New, Complete</meta>
+        </property>
+        <!-- 2011-05-04 dkannadasan ARGO-31400 Adding "related_unit" field to the ItemServiceTypeUnit schema -->
+        <property name="itmsrvtypunitRelatedUnit" column="related_unit" type="string" length="255">
+            <meta attribute="field-description">Related Unit field. eg; useful in cargo_stuff or cargo_strip event types</meta>
+        </property>
+
+        <many-to-one name="itmsrvtypunitUnit" column="unit_gkey"
+                     class="com.navis.inventory.business.units.Unit" not-null="true">
+            <meta attribute="field-description">Reference to unit for which this service is performed</meta>
+        </many-to-one>
+
+        <many-to-one name="itmsrvtypunitItemServiceType" column="item_service_type_gkey"
+                     class="com.navis.orders.business.serviceorders.ItemServiceType" not-null="true">
+            <meta attribute="field-description">Type of Service associated with service order item</meta>
+        </many-to-one>
+
+        <!-- Ideally it should be one to one -->
+        <many-to-one name="itmsrvtypunitEvent" column="service_event_gkey" class="com.navis.services.business.event.Event">
+            <meta attribute="field-description">Reference to Service Event</meta>
+        </many-to-one>
+
+        <property name="itmsrvtypunitCreated" column="created" type="timestamp"/>
+        <property name="itmsrvtypunitCreator" column="creator" type="string" length="30"/>
+        <property name="itmsrvtypunitChanged" column="changed" type="timestamp"/>
+        <property name="itmsrvtypunitChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <subclass name="com.navis.orders.business.serviceorders.CargoServiceOrder"
+              extends="com.navis.orders.business.serviceorders.AbstractServiceOrder" discriminator-value="CRGSO" dynamic-update="true">
+        <meta attribute="n4alias">crgso</meta>
+        <meta attribute="generated-class">com.navis.orders.business.serviceorders.CargoServiceOrderHbr</meta>
+        <meta attribute="n4-entity-name">Cargo Service Order</meta>
+        <meta attribute="n4-entity-name-plural">Cargo Service Orders</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">crgsoCustomFlexFields</meta>
+
+        <property name="crgsoCustRef" column="cutomer_reference" type="string" length="30">
+            <meta attribute="field-description">Customer reference for Cargo Service Order</meta>
+        </property>
+
+        <!--<property name="crgsoCvId" type="string" length="30">
+            <meta attribute="field-description">carrier visit id: carrier identifier (vessel/voyage, truck license, Rail etc.)</meta>
+        </property>-->
+
+        <property name="crgsoCarrierMode" column="carrier_mode" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum">
+            <meta attribute="field-description">Cargo Carrier Mode</meta>
+        </property>
+
+        <property name="crgsoPin" column="pin" type="string" length="20">
+            <meta attribute="field-description">PIN for Delivery Order.</meta>
+        </property>
+
+        <many-to-one name="crgsoCv" class="com.navis.argo.business.model.CarrierVisit" column="cv_gkey">
+            <meta attribute="field-description">Vessel Visit or Train Visit for which the service order was made</meta>
+        </many-to-one>
+
+        <set name="crgsoItems" lazy="true" inverse="true" table="ord_cargo_srv_order_item" cascade="all-delete-orphan">
+            <key column="cargo_service_order_gkey"/>
+            <one-to-many class="com.navis.orders.business.serviceorders.CargoServiceOrderItem"/>
+        </set>
+
+        <set name="crgsoAddresses" lazy="true" inverse="true" table="ord_cargo_srv_order_address" cascade="all-delete-orphan">
+            <key column="cargo_service_order_gkey"/>
+            <one-to-many class="com.navis.orders.business.serviceorders.CargoServiceOrderAddress"/>
+        </set>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="crgsoCustomFlexFields"/>
+
+    </subclass>
+
+    <class name="com.navis.orders.business.serviceorders.CargoServiceOrderItem" table="ord_cargo_srv_order_item">
+        <meta attribute="n4alias">crgsoi</meta>
+        <meta attribute="generated-class">com.navis.orders.business.serviceorders.CargoServiceOrderItemHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Item for Cargo Service Order</meta>
+        <meta attribute="n4-entity-name">Cargo Service Order Item</meta>
+        <meta attribute="n4-entity-name-plural">Carrier Service Order Items</meta>
+
+        <id name="crgsoiGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="crgsoiQtyOrdered" column="qty_ordered" type="java.lang.Double">
+            <meta attribute="field-description">Quantity Ordered for this cargo service order item.</meta>
+        </property>
+
+        <property name="crgsoiQtyUnit" column="quantity_unit" type="com.navis.argo.persistence.atoms.UserTypeBulkUnitEnum">
+            <meta attribute="field-description">The unit that defines the measurement of the quantity field.</meta>
+        </property>
+
+        <property name="crgsoiIsBulk" column="is_bulk" type="java.lang.Boolean">
+            <meta attribute="field-description">Boolean flag to indicate Bulk Cargo</meta>
+        </property>
+
+        <property name="crgsoiStatus" column="item_status" type="com.navis.argo.persistence.atoms.UserTypeServiceOrderStatusEnum">
+            <meta attribute="field-description">Status of Cargo Service Order Item: New, In Progess, Completed and Canceled</meta>
+        </property>
+
+        <property name="crgsoiNotes" column="notes" type="string" length="255">
+            <meta attribute="field-description">Notes for this cargo service order Item.</meta>
+        </property>
+
+        <property name="crgsoiFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="crgsoiFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="crgsoiFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+
+        <property name="crgsoiFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <property name="crgsoiFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+
+        <property name="crgsoiFlexDate01" column="flex_date01" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+
+        <property name="crgsoiFlexDate02" column="flex_date02" type="timestamp">
+            <meta attribute="field-description">Date flex-field #02</meta>
+        </property>
+
+        <property name="crgsoiFlexDate03" column="flex_date03" type="timestamp">
+            <meta attribute="field-description">Date flex-field #03</meta>
+        </property>
+
+        <property name="crgsoiFlexDate04" column="flex_date04" type="timestamp">
+            <meta attribute="field-description">Date flex-field #04</meta>
+        </property>
+
+        <property name="crgsoiFlexDate05" column="flex_date05" type="timestamp">
+            <meta attribute="field-description">Date flex-field #05</meta>
+        </property>
+
+        <many-to-one name="crgsoiCargoServiceOrder" column="cargo_service_order_gkey"
+                     class="com.navis.orders.business.serviceorders.CargoServiceOrder" not-null="true" cascade="none">
+            <meta attribute="field-description">Reference to Cargo Service order</meta>
+        </many-to-one>
+
+        <many-to-one name="crgsoiEventType" column="event_type_gkey" class="com.navis.services.business.rules.EventType">
+            <meta attribute="field-description">Service Type associated with cargo service order ite</meta>
+        </many-to-one>
+
+        <many-to-one name="crgsoiEvent" column="service_event_gkey" class="com.navis.services.business.event.Event">
+            <meta attribute="field-description">Reference to Service Event</meta>
+        </many-to-one>
+
+        <many-to-one name="crgsoiBlItem" column="bl_item_gkey" class="com.navis.cargo.business.model.BlItem">
+            <meta attribute="field-description">Bl Item associated with Cargo Service Order</meta>
+        </many-to-one>
+
+        <many-to-one name="crgsoiLot" column="cargo_lot_gkey" class="com.navis.cargo.business.model.CargoLot">
+            <meta attribute="field-description">Cargo Lot associated with Cargo Service Order</meta>
+        </many-to-one>
+
+        <property name="crgsoiCreated" column="created" type="timestamp"/>
+        <property name="crgsoiCreator" column="creator" type="string" length="30"/>
+        <property name="crgsoiChanged" column="changed" type="timestamp"/>
+        <property name="crgsoiChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.orders.business.serviceorders.CargoServiceOrderAddress" table="ord_cargo_srv_order_address">
+        <meta attribute="n4alias">crgsoaddr</meta>
+        <meta attribute="generated-class">com.navis.orders.business.serviceorders.CargoServiceOrderAddressHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Address details for Cargo Service Order</meta>
+        <meta attribute="n4-entity-name">Cargo Service Order Address</meta>
+        <meta attribute="n4-entity-name-plural">Carrier Service Order Addresses</meta>
+
+        <id name="crgsoaddrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="crgsoaddrType" column="quantity_unit" type="com.navis.argo.persistence.atoms.UserTypeCargoServiceOrderAddressTypeEnum">
+            <meta attribute="field-description">The unit that defines the measurement of the quantity field.</meta>
+        </property>
+
+        <component name="crgsoaddrCtct" class="com.navis.argo.business.reference.ContactInfo">
+            <meta attribute="generated-class">com.navis.argo.business.reference.ContactInfoHbr</meta>
+            <meta attribute="field-description">Contact Information</meta>
+            <meta attribute="scope-set">public</meta>
+            <meta attribute="extends">java.lang.Object</meta>
+
+            <property name="ctctName" type="string" length="35" column="ct_name">
+                <meta attribute="field-description">Contact Name</meta>
+            </property>
+
+            <property name="ctctAddressLine1" type="string" length="60" column="address_line1">
+                <meta attribute="field-description">Address where Biz Unit is located</meta>
+            </property>
+            <property name="ctctAddressLine2" type="string" length="60" column="address_line2">
+                <meta attribute="field-description">Address where Biz Unit is located</meta>
+            </property>
+            <property name="ctctAddressLine3" type="string" length="60" column="address_line3">
+                <meta attribute="field-description">Address where Biz Unit is located</meta>
+            </property>
+            <property name="ctctCity" type="string" length="30" column="city">
+                <meta attribute="field-description">The city where this biz unit is located</meta>
+            </property>
+
+            <many-to-one name="ctctState" class="com.navis.reference.business.locale.RefState" column="state_gkey">
+                <meta attribute="field-description">The state where this biz unit is located</meta>
+            </many-to-one>
+
+            <many-to-one name="ctctCountry" class="com.navis.reference.business.locale.RefCountry">
+                <meta attribute="field-description">The Country where Biz Unit is located</meta>
+                <column name="country_code"/>
+            </many-to-one>
+
+            <property name="ctctMailCode" type="string" length="10" column="mail_code">
+                <meta attribute="field-description">The mail code where this biz unit is located</meta>
+            </property>
+
+            <property name="ctctTel" type="string" length="30" column="telephone">
+                <meta attribute="field-description">The telephone of the biz unit</meta>
+            </property>
+
+            <property name="ctctFax" type="string" length="30" column="fax">
+                <meta attribute="field-description">The fax number of the biz unit</meta>
+            </property>
+
+            <property name="ctctEmailAddress" type="string" length="255" column="email_address">
+                <meta attribute="field-description">The contact email address of the biz unit</meta>
+            </property>
+
+            <property name="ctctSms" type="string" length="30" column="sms_number">
+                <meta attribute="field-description">The SMS number of the Business unit</meta>
+            </property>
+
+            <property name="ctctWebSiteURL" type="string" length="120" column="website_url">
+                <meta attribute="field-description">The Web Site URL address of the business unit</meta>
+            </property>
+
+            <property name="ctctFtpAddress" type="string" length="120" column="ftp_address">
+                <meta attribute="field-description">The ftp server address of the busines unit</meta>
+            </property>
+
+        </component>
+
+        <many-to-one name="crgsoaddrBzu" column="scoped_biz_unit_gkey"
+                     class="com.navis.argo.business.reference.ScopedBizUnit" cascade="none">
+            <meta attribute="field-description">Reference to Scoped Biz Unit (Eg. Trucking company, Line operator etc)</meta>
+        </many-to-one>
+
+        <many-to-one name="crgsoaddrCargoServiceOrder" column="cargo_service_order_gkey"
+                     class="com.navis.orders.business.serviceorders.CargoServiceOrder" not-null="true" cascade="none">
+            <meta attribute="field-description">Reference to Cargo Service order</meta>
+        </many-to-one>
+
+        <property name="crgsoaddrCreated" column="created" type="timestamp"/>
+        <property name="crgsoaddrCreator" column="creator" type="string" length="30"/>
+        <property name="crgsoaddrChanged" column="changed" type="timestamp"/>
+        <property name="crgsoaddrChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+</hibernate-mapping>

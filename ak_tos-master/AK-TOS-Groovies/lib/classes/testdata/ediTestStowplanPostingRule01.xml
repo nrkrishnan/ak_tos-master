@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+    <edi-posting-rule message-class="STOWPLAN" property-group="COMMODITY">
+        <rule verb="IN" metafield="ediPostingFactUnitCategory" value=":IMPRT|TRSHP|STRGE|THRGH|" ui-value="[Import,Transship,Storage,Through]"
+              negated="false">
+            <mapped-value metafield="ediPostingActionEnum" value="IGNORE" ui-value="Ignore"/>
+            <next-predicate verb="OTHERWISE" negated="false">
+                <mapped-value metafield="ediPostingActionEnum" value="APPLY" ui-value="Apply"/>
+            </next-predicate>
+        </rule>
+    </edi-posting-rule>
+</argo:snx>

@@ -1,0 +1,1937 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<event-type id="TVAPPT_CANCELED_NOT_REUSED" applies-to="TAPPT" description="Truck Visit Appointment Canceled and not reused" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARRIER_VISIT_SERVICE_ORDER_STATUS_CHANGED" applies-to="CVSO" description="Carrier Visit Service Order Status changed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARRIER_VISIT_SERVICE_ORDER_SERVICE_ADDED" applies-to="CVSO" description="Carrier Visit Service Order event created" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARRIER_VISIT_SERVICE_ORDER_SERVICE_DELETED" applies-to="CVSO" description="Carrier Visit Service Order event deleted" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_EVENT_PROPERTY_UPDATE" applies-to="UNIT" description="Unit event details updated" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_TRANSFER_ALLOWED" applies-to="UNIT" description="Unit Transfer Allowed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_TBD_UNIT_MERGE" applies-to="UNIT" description="Unit Tbd Unit Merge" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="RAILCAR_DAMAGED" applies-to="RCARV" description="Railcar damaged" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="RAILCAR_REPAIRED" applies-to="RCARV" description="Railcar repaired" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CAS_VESSEL_VISIT_UPDATE" applies-to="VV" description="Response sent to CAS on update of vessel visit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CAS_TRAIN_VISIT_UPDATE" applies-to="RV" description="Response sent to CAS on update of train visit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CAS_VV_REQUEST_CONTAINER_LIST" applies-to="VV" description="CAS request for on-board container list or crane work lists for a vessel visit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CAS_RV_REQUEST_CONTAINER_LIST" applies-to="RV" description="CAS request for on-board container list or crane work lists for a train visit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CAS_VV_REQUEST_GEOMETRY" applies-to="VV" description="CAS request for vessel geometry" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CAS_RV_REQUEST_GEOMETRY" applies-to="RV" description="CAS request for rail geometry" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CAS_UNIT_CAPTURE" applies-to="UNIT" description="CAS captures unit details" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CAS_UNIT_POSITION_UPDATE" applies-to="UNIT" description="CAS sends unit position update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CAS_UNIT_READY_TO_TRANSFER" applies-to="UNIT" description="N4 sends unit ready to transfer message to CAS" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_LIFT" applies-to="CHE" description="CHE has lifted unit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_SET" applies-to="CHE" description="CHE has lifted unit down" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_UNIT_HEAVY_FOR_CHE" applies-to="CHE" description="CHE Exception Encountered: Unit is too heavy for CHE" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_UNIT_NOT_IN_LOAD_DISCH_LIST" applies-to="CHE" description="CHE Exception Encountered: Unit is not in Load/Discharge list" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_UNIT_DAMAGED" applies-to="CHE" description="CHE Exception Encountered: Unit is damaged" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_UNIT_HAS_HOLDS" applies-to="CHE" description="CHE Exception Encountered: Unit has hold(s)" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_UNIT_NOT_NEXT_IN_SEQUENCE" applies-to="CHE" description="CHE Exception Encountered: Unit is not next in sequence" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="RAILCAR_INVENTORY" applies-to="RCARV" description="Railcar inventoried" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_UNIT_WRONG_POS_ON_PLATFORM_SPREADER" applies-to="CHE" description="CHE Exception Encountered: Unit in wrong position on platform/spreader" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_TANK_RAIL_INSPECTION_REQUIRED" applies-to="CHE" description="CHE Exception Encountered: Tank rail inspection is required for tanks" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_REPORTED_STOW_POSITION_INVALID" applies-to="CHE" description="Che Exception Encountered: Reported Stow Position Invalid" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_POS_MISMATCH_TO_PLAN_UNKNOWN_STOW_FACTOR" applies-to="CHE" description="CHE Exception Encountered: Reported position mismatches to plan and also does not have a stow factor" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_POS_MISMATCH_TO_PLAN_SAME_STOW_FACTOR" applies-to="CHE" description="CHE Exception Encountered: Reported position mismatches to plan but has the same stow factor" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_POS_MISMATCH_TO_PLAN_DIFF_STOW_FACTOR" applies-to="CHE" description="CHE Exception Encountered: Reported position mismatches to plan and has a different stow factor" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_REPORTED_STOW_POSITION_INCOMPLETE" applies-to="CHE" description="Che Exception Encountered: Reported Stow Position Is Incomplete" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_DISCHARGE_SWAP" applies-to="CHE" description="Swapped a container not planned for Che" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_DURING_UNIT_CAPTURE" applies-to="CHE" description="Che Exception Encountered: Error during unit capture" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_DOOR_DIRECTION_MISMATCH" applies-to="CHE" description="Che Exception Encountered: Reported Door Direction Mismatch" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_ID_DIFF_FROM_KNOWN" applies-to="CHE" description="Che Exception Encountered: Identified Container Different from Expected Load Container" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CHE_ERROR_CONTAINER_COULD_NOT_BE_IDENTIFIED" applies-to="CHE" description="Che Exception Encountered: Container could not be identified" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DISCHLIST_EDI_CREATED" applies-to="UNIT" description="Unit updated from DischList EDI posting" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DISCHLIST_EDI_UPDATED" applies-to="UNIT" description="Unit updated by DischList EDI posting" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_TRANSLOAD_STRIP" applies-to="UNIT" description="Unit strip in transload" is-billable="Y" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_TRANSLOAD_TO_EMPTY" applies-to="UNIT" description="New Empty unit in transload" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_TRANSLOAD_STUFF" applies-to="UNIT" description="Unit stuff in transload" is-billable="Y" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_TRANSLOAD_TO_FULL" applies-to="UNIT" description="New Full unit in transload" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CORRECT_DISCHARGE" applies-to="UNIT" description="Correct Discharge" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="OVER_ROAD_ASSIGN" applies-to="UNIT" description="Over the Road (OTR) Assign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|RETURN|DRAYIN|OFFSITE|TRANSFER|" ui-value="[Forward to Loading Point,Dray In]" order="1" negated="true" parm-type="NO_PARM" />
+      <predicate verb="NULL" metafield="unitRouting.rtgGroup" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="FORWARD" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" auto-value="^OTR" />
+  </effects>
+</event-type>
+<event-type id="OVER_ROAD_UNASSIGN" applies-to="UNIT" description="Over the Road (OTR) Unassign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitDrayStatus" value="FORWARD" ui-value="Forward to Loading Point" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" value="^OTR" ui-value="OTR (Over the Road)" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="UNKNOWN" />
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="SET_EMPTY" applies-to="UNIT" description="Set Freight Kind Empty" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|EXPRT|TRSHP|" ui-value="[Import,Export,Transship]" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="LT" metafield="unitGoodsAndCtrWtKg" value="1814.36948" ui-value="4000 lb" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NE" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitFreightKind" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="MTY" />
+  </effects>
+</event-type>
+<event-type id="PREMOUNT_REQUEST" applies-to="UNIT" description="Premount Request" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitFreightKind" value="FCL" ui-value="FCL" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="OR" order="1" negated="false" parm-type="NO_PARM">
+        <predicate verb="AND" order="0" negated="false" parm-type="NO_PARM">
+          <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S20_INBOUND" ui-value="Inbound - Incoming and certain to arrive (ACTIVE)" order="0" negated="false" parm-type="NO_PARM" />
+          <predicate verb="OR" order="1" negated="false" parm-type="NO_PARM">
+            <predicate verb="EQ" metafield="unitRouting.rtgPOD1" value="^HON" ui-value="HON (Honolulu, Oahu, HI)" order="0" negated="false" parm-type="NO_PARM" />
+            <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+              <predicate verb="NE" metafield="unitRouting.rtgPOD1" value="^HON" ui-value="HON (Honolulu, Oahu, HI)" order="0" negated="false" parm-type="NO_PARM" />
+              <predicate verb="EQ" metafield="unitDrayStatus" value="OFFSITE" ui-value="Dray Out and Back" order="1" negated="false" parm-type="NO_PARM" />
+            </predicate>
+          </predicate>
+        </predicate>
+        <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+          <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="0" negated="false" parm-type="NO_PARM" />
+          <predicate verb="OR" order="1" negated="false" parm-type="NO_PARM">
+            <predicate verb="MATCHES" metafield="unitActiveUfv.ufvLastKnownPosition.posName" value="*-S*" ui-value="*-S*" order="0" negated="false" parm-type="NO_PARM" />
+            <predicate verb="MATCHES" metafield="unitActiveUfv.ufvLastKnownPosition.posName" value="*-V*" ui-value="*-V*" order="1" negated="false" parm-type="NO_PARM" />
+            <predicate verb="MATCHES" metafield="unitActiveUfv.ufvLastKnownPosition.posName" value="*-O*" ui-value="*-O*" order="2" negated="false" parm-type="NO_PARM" />
+            <predicate verb="MATCHES" metafield="unitActiveUfv.ufvLastKnownPosition.posName" value="*-GDR*" ui-value="*-GDR*" order="3" negated="false" parm-type="NO_PARM" />
+            <predicate verb="MATCHES" metafield="unitActiveUfv.ufvLastKnownPosition.posName" value="*-U*" ui-value="*-U*" order="4" negated="false" parm-type="NO_PARM" />
+          </predicate>
+          <predicate verb="OR" order="2" negated="false" parm-type="NO_PARM">
+            <predicate verb="EQ" metafield="unitRouting.rtgPOD1" value="^HON" ui-value="HON (Honolulu, Oahu, HI)" order="0" negated="false" parm-type="NO_PARM" />
+            <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+              <predicate verb="NE" metafield="unitRouting.rtgPOD1" value="^HON" ui-value="HON (Honolulu, Oahu, HI)" order="0" negated="false" parm-type="NO_PARM" />
+              <predicate verb="EQ" metafield="unitDrayStatus" value="OFFSITE" ui-value="Dray Out and Back" order="1" negated="false" parm-type="NO_PARM" />
+            </predicate>
+          </predicate>
+        </predicate>
+      </predicate>
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitActiveUfv.ufvFlexDate01" field-order="1" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString02" field-order="2" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="SIT_UNASSIGN" applies-to="UNIT" description="SIT Unassign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^SIT" ui-value="SIT (STOP IN TRANSIT)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRouting.rtgPOD1" field-order="1" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" />
+    <effect field-name="unitRemark" field-order="3" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsCommodity" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" />
+    <effect field-name="unitGoods.gdsDestination" field-order="2" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="SHIPPER_REHANDLE_CANCEL" applies-to="UNIT" description="Shipper Rehandle Cancel" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|RETURN|DRAYIN|OFFSITE|TRANSFER|" ui-value="[Forward to Loading Point,Dray In]" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="UNKNOWN" />
+  </effects>
+</event-type>
+<event-type id="NTFY:CONTAINER_RECONSIGNED" applies-to="UNIT" description="Notification: Container Reconsigned" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NE" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString04" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgTruckingCompany" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitSealNbr1" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString03" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="NTFY:CONTAINER_DIVERTED" applies-to="UNIT" description="Notification: Container Diverted" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NE" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitSealNbr1" field-order="2" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgTruckingCompany" field-order="1" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString04" field-order="5" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" field-order="3" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString03" field-order="4" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="SIT_ASSIGN" applies-to="UNIT" description="SIT Assign" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitFreightKind" value="FCL" ui-value="FCL" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|EXPRT|" ui-value="[Import,Export]" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitGoods.gdsDestination" field-order="2" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="OFFSITE" />
+    <effect field-name="unitRouting.rtgPOD1" field-order="1" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" field-order="3" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsCommodity" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="^SIT" />
+  </effects>
+</event-type>
+<event-type id="COMMUNITY_SERVICE_ASSIGN" applies-to="UNIT" description="Community Service (COMSVC) Assign" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|RETURN|DRAYIN|OFFSITE|TRANSFER|" ui-value="[Forward to Loading Point,Dray In]" order="2" negated="true" parm-type="NO_PARM" />
+      <predicate verb="NULL" metafield="unitRouting.rtgGroup" order="3" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitFlexString02" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" auto-value="OFFSITE" />
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" auto-value="^COMSVC" />
+    <effect field-name="unitRouting.rtgTruckingCompany" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="COMMUNITY_SERVICE_UNASSIGN" applies-to="UNIT" description="Community Service (COMSVC) Unassign" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NOT_NULL" metafield="unitFlexString02" order="2" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" value="^COMSVC" ui-value="COMSVC (Community Service)" order="3" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+    <effect field-name="unitFlexString02" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+    <effect field-name="unitRouting.rtgTruckingCompany" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="TAG_STRIP_ASSIGN" applies-to="UNIT" description="Tag Strip (TS) Assign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NULL" metafield="unitRouting.rtgGroup" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="2" negated="false" parm-type="NO_PARM" />
+      <predicate verb="OR" order="3" negated="true" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^AUTO" ui-value="AUTO (AUTO)" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^AUTOCON" ui-value="AUTOCON (AUTO CONVENTIONAL)" order="1" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^AUTOCY" ui-value="AUTOCY (AUTO CONTAINER YARD)" order="2" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="OFFSITE" />
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="^TS" />
+  </effects>
+</event-type>
+<event-type id="SHIPPER_REHANDLE" applies-to="UNIT" description="Shipper Rehandle" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S20_INBOUND" ui-value="Inbound - Incoming and certain to arrive (ACTIVE)" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|EXPRT|TRSHP|" ui-value="[Import,Export,Transship]" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitDrayStatus" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" auto-value="OFFSITE" />
+  </effects>
+</event-type>
+<event-type id="REVIEW_FOR_STOW" applies-to="UNIT" description="Review For Stow Completed" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NE" metafield="unitRouting.rtgPOD1" value="^HON" ui-value="HON (Honolulu, Oahu, HI)" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitGoods.gdsDestination" field-order="4" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsCommodity" field-order="10" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitOogLeftCm" field-order="13" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoodsAndCtrWtKg" field-order="8" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgDeclaredCv" field-order="5" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString07" field-order="9" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsBlNbr" field-order="6" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitSealNbr1" field-order="7" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitOogBackCm" field-order="12" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgPOD1" field-order="3" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitOogTopCm" field-order="16" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitOogFrontCm" field-order="11" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitOogRightCm" field-order="14" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" field-order="17" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitCategory" field-order="2" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="NTFY:VESSEL_REMINDER" applies-to="UNIT" description="Notification: Vessel Reminder" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NE" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitActiveUfv.ufvFlexString04" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitSealNbr1" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString03" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgTruckingCompany" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="NTFY:HP_CANCELLED" applies-to="UNIT" description="Notification: HP Cancelled" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NE" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRouting.rtgTruckingCompany" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitSealNbr1" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString04" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString03" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="NTFY:GEN/MISC_NOTICE" applies-to="UNIT" description="Notification: General/Miscellaneous Notice" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NE" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitSealNbr1" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString03" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString04" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgTruckingCompany" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="NTFY:CG_HOLD_PLACE" applies-to="UNIT" description="Notification: CG Hold Place" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NE" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="2" negated="false" parm-type="NO_PARM" />
+      <predicate verb="MATCHES" metafield="unitImpediments" value="*CG*" ui-value="*CG*" order="3" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitActiveUfv.ufvFlexString03" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="NTFY:CG_HOLD_RELEASE" applies-to="UNIT" description="Notification: CG Hold Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NE" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="2" negated="false" parm-type="NO_PARM" />
+      <predicate verb="MATCHES" metafield="unitImpediments" value="*CG*" ui-value="*CG*" order="3" negated="true" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitActiveUfv.ufvFlexString03" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitSealNbr1" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="OFF_LEASE_ASSIGN" applies-to="UNIT" description="Off Lease (1WAY) Assign" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|RETURN|DRAYIN|OFFSITE|TRANSFER|" ui-value="[Forward to Loading Point,Dray In]" order="0" negated="true" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|STRGE|" ui-value="[Import,Storage]" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="2" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NULL" metafield="unitRouting.rtgGroup" order="3" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgTruckingCompany" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" auto-value="^1WAY" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="RETURN" />
+  </effects>
+</event-type>
+<event-type id="OFF_LEASE_UNASSIGN" applies-to="UNIT" description="Off Lease (1WAY) Unassign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitDrayStatus" value="RETURN" ui-value="Return to shipper" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" value="^1WAY" ui-value="1WAY (1WAY LEASE)" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="UNKNOWN" />
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="RELEASE_CONTAINER" applies-to="UNIT" description="Release Container" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsConsigneeBzu" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgTruckingCompany" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitFlexString02" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="PREMOUNT_REQUEST_CANCEL" applies-to="UNIT" description="Premount Request Cancel" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NOT_NULL" metafield="unitActiveUfv.ufvFlexDate01" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitActiveUfv.ufvFlexString02" field-order="2" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexDate01" field-order="1" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" />
+  </effects>
+</event-type>
+<event-type id="SET_FULL" applies-to="UNIT" description="Set freight kind to full" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|EXPRT|TRSHP|" ui-value="[Import,Export,Transship]" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="GT" metafield="unitGoodsAndCtrWtKg" value="1814.36948" ui-value="4000 lb" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NE" metafield="unitFreightKind" value="FCL" ui-value="FCL" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitFreightKind" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="FCL" />
+  </effects>
+</event-type>
+<event-type id="RETURN_TO_CUSTOMER_ASSIGN" applies-to="UNIT" description="Return to Customer (SHOW) Assign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|STRGE|" ui-value="[Import,Storage]" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|RETURN|DRAYIN|OFFSITE|TRANSFER|" ui-value="[Forward to Loading Point,Dray In]" order="1" negated="true" parm-type="NO_PARM" />
+      <predicate verb="NULL" metafield="unitRouting.rtgGroup" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="RETURN" />
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" auto-value="^TTNU" />
+  </effects>
+</event-type>
+<event-type id="RETURN_TO_CUSTOMER_UNASSIGN" applies-to="UNIT" description="Return to Customer (SHOW) Unassign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitDrayStatus" value="RETURN" ui-value="Return to shipper" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" value="^TTNU" ui-value="SHOW (Return Shipper-Owned Equipment)" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="UNKNOWN" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+  </effects>
+</event-type>
+<event-type id="TAG_STRIP_UNASSIGN" applies-to="UNIT" description="Tag Strip (TS) Unassign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitDrayStatus" value="OFFSITE" ui-value="Dray Out and Back" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" ui-value="TS (TAG Strip)" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="UNKNOWN" />
+  </effects>
+</event-type>
+<event-type id="CLI_MAT" applies-to="UNIT" description="Client Containers to move to the NIS / WC on MAT ship" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="true" parm-type="NO_PARM">
+        <predicate verb="MATCHES" metafield="unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" value="C*" ui-value="C*" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="MATCHES" metafield="unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" value="MG*" ui-value="MG*" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipmentState.eqsFlexString01" value="CLIENT" ui-value="CLIENT" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitCategory" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="EXPRT" />
+    <effect field-name="unitActiveUfv.ufvFlexString04" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="TRUCKER_ASSIGN" applies-to="UNIT" description="Trucker Assign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitRouting.rtgTruckingCompany" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="PTL_RELEASE_TO" applies-to="UNIT" description="Pacific Transportation Lines - Release To" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitFlexString02" field-order="1" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="BDB" applies-to="UNIT" description="BDB (Booking change from FACTS)" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NTFY:TRANSFER TO WO CANCELED" applies-to="UNIT" description="TRANSFER to West Oahu Canceled Notification" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="PASSPASS_UNASSIGN" applies-to="UNIT" description="Passpass Unassign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" value="^PASSPASS" ui-value="PASSPASS (PASSPASS)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" />
+  </effects>
+</event-type>
+<event-type id="PASSPASS_ASSIGN (SHOW)" applies-to="UNIT" description="Passpass Assign (SHOW) Ret to Cust" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NULL" metafield="unitRouting.rtgGroup" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|STRGE|" ui-value="[Import,Storage]" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="^PASSPASS" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="RETURN" />
+  </effects>
+</event-type>
+<event-type id="PASSPASS_ASSIGN (OTR)" applies-to="UNIT" description="Passpass Assign (OTR) Over the Road" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NULL" metafield="unitRouting.rtgGroup" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|DRAYIN|" ui-value="[Forward to Loading Point,Dray In]" order="2" negated="true" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="FORWARD" />
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="^PASSPASS" />
+  </effects>
+</event-type>
+<event-type id="PER_UNASSIGN" applies-to="UNIT" description="PER Unassign" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" ui-value="PER (Permit to Transfer)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="ULK_HOLD" applies-to="UNIT" description="ULK Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="ULK_RELEASE" applies-to="UNIT" description="ULK Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CANCEL PREADVISE" applies-to="UNIT" description="Cancel Preadvise" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NULL" metafield="unitActiveUfv.ufvTimeIn" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NE" metafield="unitActiveUfv.ufvTransitState" value="S30_ECIN" ui-value="EC/In - Received or discharged, not yet in yard position (ACTIVE)" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="OWNER TEST" applies-to="UNIT" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="PRELIM DCM" applies-to="UNIT" description="Set the VesVoy for Generating a Preliminary DCM" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitFlexString10" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="CMIS_REFRESH_SELECTED" applies-to="UNIT" description="Refresh Selected unit in Cmis with last event action on unit" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CMIS_REFRESH_ALL" applies-to="UNIT" description="Refresh all unit in Cmis with last event action on unit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="REPORT_MANIFEST_NIS" applies-to="VV" description="Manifest Report for NIS port" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TURNTIME_BY_CONSIGNEE" applies-to="UNIT" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_EDIT" applies-to="UNIT" description="To be used by PHX to update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitRemark" field-order="9" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsConsigneeBzu" field-order="3" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitSealNbr1" field-order="6" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsShipperBzu" field-order="4" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsBlNbr" field-order="5" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsCommodity" field-order="8" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitFlexString02" field-order="7" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsDestination" field-order="2" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="PAUL TX" applies-to="UNIT" description="To Disable Auto TX Assignment on Reroutes" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="PAUL MG" applies-to="UNIT" description="To Disable Auto MG Assignment on Reroutes" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="REPORT_GATE_TRUCKER_TURNTIME" applies-to="UNIT" description="Report Generated Gate Turn Time Sorted By Trucker" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="ITN_HOLD" applies-to="UNIT" description="ITN Unit Hold" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="ITN_RELEASE" applies-to="UNIT" description="ITN Unit Release" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="DVI_HOLD" applies-to="EQ" description="Chassis DVIR Hold" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="DVI_RELEASE" applies-to="EQ" description="Chassis DVIR Release" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="KAH EVENT" applies-to="UNIT" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="AG_HOLD" applies-to="UNIT" description="AG Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitSpecialStow" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" auto-value="^INSP" />
+  </effects>
+</event-type>
+<event-type id="AG_RELEASE" applies-to="UNIT" description="AG Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitSpecialStow" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+  </effects>
+</event-type>
+<event-type id="CAR_HOLD" applies-to="UNIT" description="CAR Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitFlexString15" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="CAR_RELEASE" applies-to="UNIT" description="CAR Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitFlexString15" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="CC_HOLD" applies-to="UNIT" description="CC Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CC_RELEASE" applies-to="UNIT" description="CC Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CG_INSP_HOLD" applies-to="UNIT" description="CG Inspection Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitSpecialStow" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" auto-value="^INSP" />
+  </effects>
+</event-type>
+<event-type id="CG_INSP_RELEASE" applies-to="UNIT" description="CG Inspection Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitSealNbr1" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitSpecialStow" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" />
+  </effects>
+</event-type>
+<event-type id="CUS_HOLD" applies-to="UNIT" description="CUS Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_RECTIFY" applies-to="UNIT" description="Rectify" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_RETURN_TO_STORAGE" applies-to="UNIT" description="Return to Storage" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_SNX_UPDATE" applies-to="UNIT" description="SNX Unit Update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_SNX_UPDATE_REJECTED" applies-to="UNIT" description="Rejected SNX Unit Update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_OFFHIRE" applies-to="UNIT" description="Off-hire On-hire Action" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_ONHIRE" applies-to="UNIT" description="Off-hire On-hire Action" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_IFT_OUT" applies-to="UNIT" description="Inter-facility Transfer Action" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_IFT_IN" applies-to="UNIT" description="Inter-facility Transfer Action" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DOCUMENT_CREATE" applies-to="UNIT" description="Unit Document Created" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DOCUMENT_UPDATE" applies-to="UNIT" description="Unit Document Updated" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DOCUMENT_DELETE" applies-to="UNIT" description="Unit Document Deleted" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_NOTICE" applies-to="UNIT" description="Notice-CTR" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_DISCH" applies-to="UNIT" description="Cargo is discharged" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_LOAD" applies-to="UNIT" description="Cargo is loaded" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_DELIVER" applies-to="UNIT" description="Cargo is delivered" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_RECEIVE" applies-to="UNIT" description="Cargo is received" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_RAMP" applies-to="UNIT" description="Cargo is loaded to railcar" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_DERAMP" applies-to="UNIT" description="Cargo is unloaded from railcar" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_STRIP" applies-to="UNIT" description="Cargo is stripped from container" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_STUFF" applies-to="UNIT" description="Cargo is stuffed to container" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_MANUFACTURED" applies-to="UNIT" description="Cargo is manufactured at facility" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_TRANSLOAD" applies-to="UNIT" description="Contents transloaded to another unit" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_MOVE" applies-to="UNIT" description="Contents moved to another position" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="DISCREPANCY_NOTED" applies-to="CARGOLOT" description="Cargo quantity discrepancy is noted" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_POSITION_UPDATED" applies-to="CARGOLOT" description="Cargo lot position is updated" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_DAMAGE" applies-to="UNIT" description="Cargo damage is recorded" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_SPLIT" applies-to="UNIT" description="BL Cargo Split" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_SPLIT_OFF" applies-to="UNIT" description="BL Cargo Split To" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_RECONSIGN" applies-to="UNIT" description="BL Cargo Reconsign" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CARGO_RECONSIGN_OFF" applies-to="UNIT" description="BL Cargo Reconsign To" is-billable="Y" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NOTICE_BKG" applies-to="BKG" description="Notice-BKG" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="REROUTE_BKG" applies-to="BKG" description="Reroute Booking" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="COMMODITY_UPDATE_BKG" applies-to="BKG" description="Commodity Update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_UPDATE_BKG" applies-to="BKG" description="Equipment Update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_RECEIVE_BKG" applies-to="BKG" description="Receive" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_DISPATCH_BKG" applies-to="BKG" description="Dispatch" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_ASSIGN_BKG" applies-to="BKG" description="Assign" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_RESERVE_BKG" applies-to="BKG" description="Reserve" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_PREADVISE_BKG" applies-to="BKG" description="Preadvise" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="REROUTE_RAIL_ORDER" applies-to="RO" description="Rail Order routing changed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_RECEIVE_RO" applies-to="RO" description="Equipment received through a gate against the rail order" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NOTICE_RO" applies-to="RO" description="Notice generated for the rail order" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_UPDATE_RO" applies-to="RO" description="Rail order item updated" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_RECEIVE_ERO" applies-to="ERO" description="Equipment received through a gate against the receive order" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NOTICE_ERO" applies-to="ERO" description="Notice generated for the ERO" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_UPDATE_ERO" applies-to="ERO" description="Equipment Receive order item updated" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EDO_CREATE" applies-to="DO" description="Equipment Delivery Order created" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EDO_PROPERTY_UPDATE" applies-to="DO" description="Equipment Delivery Order properties update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_UPDATE_EDO" applies-to="DO" description="Equipment Update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_DISPATCH_EDO" applies-to="DO" description="Dispatch" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_RESERVE_EDO" applies-to="DO" description="Reserve" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NOTICE_DO" applies-to="DO" description="Notice-DO" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_UPDATE_ELO" applies-to="LO" description="Equipment Update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_ASSIGN_ELO" applies-to="LO" description="Assign" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NOTICE_ELO" applies-to="LO" description="Notice generated for the ELO" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="PHASE_VV" applies-to="VV" description="PHASE_CHANGE" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UPDATE_VV" applies-to="VV" description="Vessel visit updated" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="DELETE_STOWPLAN" applies-to="VV" description="Vessel stowplan delete" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="REPLACE_STOWPLAN" applies-to="VV" description="Vessel stowplan replace" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NOTICE_VV" applies-to="VV" description="Notice-VV" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="MOVE_TV" applies-to="TV" description="Truck Move" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NOTICE_TV" applies-to="TV" description="Notice-TV" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CUSTOM_TV" applies-to="TV" description="Custom Code" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="PHASE_RV" applies-to="RV" description="Train visit phase changed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CUS_RELEASE" applies-to="UNIT" description="CUS Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_CREATE" applies-to="UNIT" description="Create" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_ACTIVATE" applies-to="UNIT" description="Activate" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_REROUTE" applies-to="UNIT" description="Reroute" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_PROPERTY_UPDATE" applies-to="UNIT" description="Property Update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_PIN_ASSIGNED" applies-to="UNIT" description="Unit PIN number is assigned or updated" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_TRUCKER_ASSIGNED" applies-to="UNIT" description="Unit trucking company is assigned" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_IGNORED_EDI" applies-to="UNIT" description="Ignored EDI" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_LOADLIST_EDI_CREATED" applies-to="UNIT" description="Unit updated from LoadList EDI posting" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_LOADLIST_EDI_UPDATED" applies-to="UNIT" description="Unit updated by LoadList EDI posting" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_MERGE" applies-to="UNIT" description="Merge" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_RETIRE" applies-to="UNIT" description="Retire" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DEPART" applies-to="UNIT" description="Depart" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_YARD_MOVE" applies-to="UNIT" description="Yard Move" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_YARD_SHIFT" applies-to="UNIT" description="Yard Shift" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_SHIFT_ON_CARRIER" applies-to="UNIT" description="Shift on Carrier" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_POSITION_CORRECTION" applies-to="UNIT" description="Correct Position" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_LOAD" applies-to="UNIT" description="Load" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DISCH" applies-to="UNIT" description="Discharge" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_TRANSLOAD" applies-to="UNIT" description="Transload" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_RAMP" applies-to="UNIT" description="Ramp" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DERAMP" applies-to="UNIT" description="Deramp" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DELIVER" applies-to="UNIT" description="Deliver" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_RECEIVE" applies-to="UNIT" description="Receive" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_IN_GATE" applies-to="UNIT" description="Unit entered facility via gate" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_OUT_GATE" applies-to="UNIT" description="Unit exited facility via gate" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_IN_VESSEL" applies-to="UNIT" description="Unit entered facility via vessel" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_OUT_VESSEL" applies-to="UNIT" description="Unit exited facility via vessel" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_IN_RAIL" applies-to="UNIT" description="Unit entered facility via rail" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_OUT_RAIL" applies-to="UNIT" description="Unit exited facility via rail" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_STRIP" applies-to="UNIT" description="Strip" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_STUFF" applies-to="UNIT" description="Stuff" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitGoods.gdsCommodity" field-order="1" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgDeclaredCv" field-order="2" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitOogLeftCm" field-order="6" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitSealNbr1" field-order="4" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitFlexString07" field-order="4" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitOogRightCm" field-order="7" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgPOL" field-order="3" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgPOD1" field-order="3" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitOogTopCm" field-order="9" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsReeferRqmnts.rfreqTempRequiredC" field-order="4" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoodsAndCtrWtKg" field-order="2" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsDestination" field-order="3" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" field-order="10" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitOogBackCm" field-order="5" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitOogFrontCm" field-order="4" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="UNIT_POWER_CONNECT" applies-to="UNIT" description="Power On" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_POWER_DISCONNECT" applies-to="UNIT" description="Power Off" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_WANTS_POWER_YES" applies-to="UNIT" description="Wants Power Yes" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_WANTS_POWER_NO" applies-to="UNIT" description="Wants Power No" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_ALARM" applies-to="UNIT" description="Reefer container alarm is on" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_REEFER_FAULT" applies-to="UNIT" description="Unit reefer fault code changed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_SEAL" applies-to="UNIT" description="Attach Seals" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_MOUNT" applies-to="UNIT" description="Mount" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DISMOUNT" applies-to="UNIT" description="Dismount" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_SWIPE" applies-to="UNIT" description="Swipe" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_ROLL" applies-to="UNIT" description="Roll" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_RENUMBER" applies-to="UNIT" description="Renumber" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_CHECKDIGIT" applies-to="UNIT" description="Check Digit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_PREADVISE" applies-to="UNIT" description="Preadvise" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_CANCEL_PREADVISE" applies-to="UNIT" description="Cancel Preadvise" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="UNIT_RESERVE" applies-to="UNIT" description="Reserve" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_CANCEL_RESERVE" applies-to="UNIT" description="Cancel Reserve" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_BUNDLE" applies-to="UNIT" description="Bundle" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_BUNDLE_ADD" applies-to="UNIT" description="Equipment added to bundle" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_UNBUNDLE" applies-to="UNIT" description="Unbundle" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_BRING_BACK_INTO_YARD" applies-to="UNIT" description="Un-deliver" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DELIVER_REJECTED" applies-to="UNIT" description="Unit returned to yard - rejected by trucker" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_BRING_TO_COMMUNITY" applies-to="UNIT" description="Un-receive" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_RETURN_TO_INBOUND_CARRIER" applies-to="UNIT" description="Unit returned to inbound carrier due to cancellation of direct delivery request " is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_ENABLE_ROAD" applies-to="UNIT" description="Enable Road" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DISABLE_ROAD" applies-to="UNIT" description="Disable Road" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_RECORD_DAMAGE" applies-to="UNIT" description="Record Damage" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DAMAGES_UPDATED" applies-to="UNIT" description="Unit damages updated" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DAMAGED" applies-to="UNIT" description="A new damage was recorded" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_REPAIRED" applies-to="UNIT" description="Unit repaired" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DAMAGES_DELETED" applies-to="UNIT" description="Unit damages deleted" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UPDATE_RV" applies-to="RV" description="Train visit updated" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NOTICE_RV" applies-to="RV" description="Notice generated for the train visit" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="REROUTE_RV" applies-to="RV" description="Train visit rerouted" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EDI_EXTRACT" applies-to="EDISESS" description="EDI Extract" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EDI_EXTRACT_FAILED" applies-to="EDISESS" description="EDI Extract Failed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EDI_POST" applies-to="EDISESS" description="EDI Post" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EDI_UNIT_BOL_DETACHED" applies-to="BL" description="Unit and BillOfLading detached for Manifest Delete" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EDI_POST_FAILED" applies-to="EDISESS" description="EDI post Failed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NOTICE_EDISESS" applies-to="EDISESS" description="Notice generated for the edi session" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CLUSTER_ERROR_DETECTED" applies-to="YARD" description="Cluster Error Detected" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CLUSTER_ERROR_CONTINUES" applies-to="YARD" description="Cluster Error Continues" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CLUSTER_ERROR_CLEARED" applies-to="YARD" description="Cluster Error Cleared" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NOTICE_YARD" applies-to="YARD" description="Notice generated for a Yard event" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_OPERATOR_CHANGE" applies-to="UNIT" description="Equipment Operator changed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_STORAGE_UPDATE" applies-to="UNIT" description="Storage details are updated." is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_LINE_STORAGE_UPDATE" applies-to="UNIT" description="Line Storage details are updated." is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_POWER_UPDATE" applies-to="UNIT" description="Power details are updated." is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UPDATE_DELIVERY_RQMNTS" applies-to="UNIT" description="Delivery Requirements are updated." is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_HAZARDS_UPDATE" applies-to="UNIT" description="Unit Hazards are recorded." is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_HAZARDS_INSERT" applies-to="UNIT" description="Unit Hazard Items Inserted." is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_HAZARDS_DELETE" applies-to="UNIT" description="Unit Hazard Items Deleted." is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="REEFER_SETTINGS_RECORDED" applies-to="UNIT" description="Unit reefer settings are recorded" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_OVERDIMENSIONS_UPDATE" applies-to="UNIT" description="Unit Over Dimensions are recorded" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_ATTACH_TO_ERO " applies-to="UNIT" description="Attach Unit to an ERO" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_DRAY_IN" applies-to="UNIT" description="Unit drayed-in" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SERVICE_ORDER_PROPERTY_UPDATE" applies-to="SRVO" description="Service Order property update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SERVICE_ORDER_BILLING_PARTY_CHANGED" applies-to="SRVO" description="Service Order's billing party changed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SERVICE_ORDER_STATUS_CHANGED" applies-to="SRVO" description="Service Order status changed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SERVICE_ORDER_SERVICE_ADDED" applies-to="SRVO" description="Service added to the Service Order" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SERVICE_ORDER_SERVICE_REMOVED" applies-to="SRVO" description="Service removed from the Service Order" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SERVICE_ORDER_EQ_ADDED" applies-to="SRVO" description="Equipment added to the Service Order" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SERVICE_ORDER_EQ_REMOVED" applies-to="SRVO" description="Equipment removed from the Service Order" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SERVICE_ORDER_ITEM_ADDED" applies-to="SRVO" description="Item added to the Service Order" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SERVICE_ORDER_ITEM_REMOVED" applies-to="SRVO" description="Item removed from the Service Order" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SERVICE_ORDER_ITEM_PROPERTY_UPDATE" applies-to="SRVO" description="Service Order Item property update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SERVICE_ORDER_UNIT_STATUS_CHANGED" applies-to="SRVO" description="Service Order Unit status changed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQ_RESERVE_BL" applies-to="BL" description="Equipment reserved against the BL" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="BL_CREATE" applies-to="BL" description="BillOfLading Created" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="BL_PROPERTY_UPDATE" applies-to="BL" description="BillOfLading Property Updated" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="REROUTE_BL" applies-to="BL" description="BillOfLading Rerouted" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="BOOKING_HAZARDS_UPDATE" applies-to="BKG" description="Booking Hazards are recorded." is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="BOOKING_HAZARDS_INSERT" applies-to="BKG" description="Booking Hazard Items Inserted." is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="BOOKING_HAZARDS_DELETE" applies-to="BKG" description="Booking Hazard Items Deleted." is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="BOOKING_PROPERTY_UPDATE" applies-to="BKG" description="Booking properties update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="BOOKING_CREATE" applies-to="BKG" description="Booking created" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="APPT_CREATE" applies-to="GAPPT" description="Appointment created" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TVAPPT_CREATE" applies-to="TAPPT" description="Truck Visit Appointment created" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="APPT_CANCEL" applies-to="GAPPT" description="Appointment cancelled" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TVAPPT_CANCEL" applies-to="TAPPT" description="Truck Visit Appointment cancelled" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="APPT_EXPIRE" applies-to="GAPPT" description="Appointment expired" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TVAPPT_EXPIRE" applies-to="TAPPT" description="Truck Visit Appointment expired" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="APPT_CLOSE" applies-to="GAPPT" description="Appointment closed" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TVAPPT_CLOSE" applies-to="TAPPT" description="Truck Visit Appointment closed" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="APPT_USED" applies-to="GAPPT" description="Appointment used" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TVAPPT_USED" applies-to="TAPPT" description="Truck Visit Appointment used" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="APPT_USED_LATE" applies-to="GAPPT" description="Appointment used late" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TVAPPT_USED_LATE" applies-to="TAPPT" description="Truck Visit Appointment used late" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="APPT_LATE" applies-to="GAPPT" description="Appointment late" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TVAPPT_LATE" applies-to="TAPPT" description="Truck Visit Appointment late" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="APPT_USED_PEAK_HRS" applies-to="GAPPT" description="Appointment at peak hours" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TVAPPT_USED_PEAK_HRS" applies-to="TAPPT" description="Truck Visit Appointment at peak hours" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="APPT_CANCELED_NOT_REUSED" applies-to="GAPPT" description="Appointment Canceled and not reused" is-billable="N" is-notifiable="N" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CMIS_DATA_REFRESH" applies-to="UNIT" description="Refresh Selected unit in Cmis with last event action on unit" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="ASSIGN VEHICLE" applies-to="UNIT" description="Event Assign Vehicle used to record Kulana Events" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" value="SP" ui-value="SP" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" value="UTR" ui-value="UTR" order="1" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" value="TP" ui-value="TP" order="2" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitActiveUfv.ufvFlexDate04" field-order="2" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitFlexString11" field-order="1" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString04" field-order="3" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString03" field-order="4" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" field-order="5" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="HAZ_UPDATE" applies-to="UNIT" description="Update Hazardous item to gems that are inserted by DI spreadsheet " is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="RFR_PERM_GRANTED" applies-to="EQ" description="Reefer OK to Receive" is-billable="N" is-notifiable="N" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TEST_CHS_RELEASE" applies-to="EQ" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EDI_STOWPLAN" applies-to="UNIT" description="EDI Stowplan Event" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="USA_RELEASE" applies-to="UNIT" description="USA Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="DOC_RELEASE" applies-to="UNIT" description="DOC Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="HP_RELEASE" applies-to="UNIT" description="HP Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="ON_RELEASE" applies-to="UNIT" description="ON Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="ST_RELEASE" applies-to="UNIT" description="ST Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TI_RELEASE" applies-to="UNIT" description="TI Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitSpecialStow" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitSealNbr1" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="CG_DMG_HOLD" applies-to="EQ" description="CG Damaged Equipment Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SHOP_HOLD" applies-to="EQ" description="Shop Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CL_HOLD" applies-to="EQ" description="Claims Hold" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="LTV_HOLD" applies-to="EQ" description="LTV Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="OUTGATE_HOLD" applies-to="UNIT" description="Outgate Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="BDA" applies-to="UNIT" description="BDA (Booking Data Change from ACETS)" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="MDA_UNASSIGN" applies-to="UNIT" description="MDA (MDA) Unassign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" value="^MDA" ui-value="MDA (MDA)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+  </effects>
+</event-type>
+<event-type id="LNK" applies-to="UNIT" description="LNK ( Link from ACETS)" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="HOLD FOR BOOKING" applies-to="UNIT" description="Hold for Booking" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitRemark" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRouting.rtgTruckingCompany" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="CLIENT_VESSEL_COMPLETED" applies-to="UNIT" description="Client Vessel Completed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NE" metafield="unitLineOperator" value="^MAT/LINEOP" ui-value="MAT" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="UNIT_DISCH_COMPLETE" applies-to="UNIT" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="BL_UPDATE" applies-to="UNIT" description="BL Update" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="AUDIT_DISCHARGE_COMPLETE" applies-to="VV" description="Discharge audit is complete send out post reports and completion notice" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="BL_CONSIGNEE_UPDATE" applies-to="BL" description="Update unit shippe/consignne with BL values" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UPDATE_BLIPS" applies-to="UNIT" description="Update the Blips" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitFlexString12" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="SET MULTISTOP RETURNING" applies-to="UNIT" description="Sets Multistop status of a unit, returning to the terminal with remaining cargo" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitFreightKind" value=":FCL|LCL|" ui-value="[FCL,LCL]" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="SET MULTISTOP NON-RETURNING" applies-to="UNIT" description="Sets Multistop status of a unit, not returning to the terminal with cargo for additional stops" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitFreightKind" value=":FCL|LCL|" ui-value="[FCL,LCL]" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="TEST_APPY_CHASSIS_CHECKDIGIT" applies-to="BKG" description="Replace chassis check digit with X - if Proper chassis name" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="EQUIPMENT_BKG_HAZ_UPDATE" applies-to="UNIT" description="update unit with booking hazards in Hazmat system" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NOT_NULL" metafield="unitGoods.gdsBlNbr" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="UPDATEPOSITION" applies-to="UNIT" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="LINEHAUL_RESPOT" applies-to="UNIT" description="LineHaul ReSpot (Update Minor)" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S70_DEPARTED|" ui-value="Departed" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitFlexString12" field-order="2" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsConsigneeBzu" field-order="3" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString10" field-order="1" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" field-order="4" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="EQUIPMENT_HAZARD_REFRESH" applies-to="UNIT" description="Event to refresh Haz info from HAZMAT" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CANCEL_DO_NOT_BACKLOAD" applies-to="UNIT" description="Set the Do-Not_Backload Status of the unit to N" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitActiveUfv.ufvFlexString09" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" auto-value="N" />
+  </effects>
+</event-type>
+<event-type id="RELEASE MULTISTOP" applies-to="UNIT" description="This event releases the multistop from the unit - it clears the commodity and Dray Status" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitGoods.gdsCommodity" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" />
+    <effect field-name="unitGoods.gdsConsigneeBzu" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" />
+  </effects>
+</event-type>
+<event-type id="VGM RELEASE" applies-to="UNIT" description="VGM RELEASE" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitFlexString06" is-required="N" is-traceable="N" is-updatable="N" is-auto-updated="Y" auto-value="YES" />
+    <effect field-name="unitGoodsAndCtrWtKg" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="UPDATE YARD EQUIPMENTS" applies-to="UNIT" description="UPDATE YARD EQUIPMENTS" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitActiveUfv.ufvFlexString07" field-order="4" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString10" field-order="5" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitFlexString12" field-order="3" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitFlexString15" field-order="1" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString08" field-order="2" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="UPDATE_EQ_GRADE" applies-to="UNIT" description="Updaing equipment grade for the unit" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_BOOKING_VGM_UPDATE" applies-to="UNIT" description="On updating the Booking's fullReturnLocation flag" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="HAZ LTV APPLY HOLD" applies-to="UNIT" description="Hold for load to check hazard" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="DRAY_OFF" applies-to="UNIT" description="DRAY_OFF" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S40_YARD|S50_ECOUT|" ui-value="[Yard,EC/Out]" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitDrayStatus" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="Y" auto-value="OFFSITE" />
+    <effect field-name="unitFlexString07" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="BOOKING_HAZ_VERIFIED" applies-to="BKG" description="Booking Hazardous information verified" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="DRAY_IN" applies-to="UNIT" description="DRAY_IN" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S70_DEPARTED|S99_RETIRED|" ui-value="[Inbound,EC/In,Departed,Retired]" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitFlexString14" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitDrayStatus" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="Y" auto-value="DRAYIN" />
+  </effects>
+</event-type>
+<event-type id="RESPOT" applies-to="UNIT" description="ReSpot (Update Minor)" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S70_DEPARTED|" ui-value="Departed" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitActiveUfv.ufvFlexString10" field-order="1" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" field-order="4" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitFlexString12" field-order="2" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoods.gdsConsigneeBzu" field-order="3" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="CAR_DOC_HOLD" applies-to="UNIT" description="CAR DOC Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitFlexString15" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="DEPART_UNIT_APL_DUT" applies-to="UNIT" description="Departing APL Empty Unit " is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46601" ui-value="DUT" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitLineOperator" value="^APL/LINEOP" ui-value="APL" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="DISCHARGE AND DEPART UNIT" applies-to="VV" description="Discharge and deliver the Barge units having POD same as Barge facility" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="cvdCv.cvVisitPhase" value="40WORKING" ui-value="Working" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="UNIT_CLONE_NEXT_FACILITY" applies-to="UNIT" description="Create a clone of current unit for the next facility" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UPDATE_YARD_FIELDS" applies-to="UNIT" description="Update yard related fields - BLIPS, ECC, UCC etc" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitActiveUfv.ufvFlexString10" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitFlexString12" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitActiveUfv.ufvFlexString08" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitFlexString15" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="DEPART_UNIT_APL_KDK" applies-to="UNIT" description="Departing APL Empty Unit " is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46599" ui-value="KDK" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitLineOperator" value="^APL/LINEOP" ui-value="APL" order="2" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="3" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="VGM HOLD" applies-to="UNIT" description="VGM HOLD" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitFlexString06" is-required="N" is-traceable="N" is-updatable="N" is-auto-updated="Y" auto-value="NO" />
+  </effects>
+</event-type>
+<event-type id="HAZ LTV RELEASE HOLD" applies-to="UNIT" description="Hold LTV Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="DONOT_BACKLOAD" applies-to="UNIT" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="COLLAPSE AUTO FRAME" applies-to="UNIT" description="Collapse Auto frame after strip" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="SET REEFER TEMPERATURES" applies-to="UNIT" description="Sets a reefer status on-power to the stated setting" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NE" metafield="unitPrimaryUe.ueEquipment.eqEquipType.eqtypRfrType" value="NON_RFR" ui-value="Non-reefer" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitReeferRecordSet.rfrecSetPointTmp" field-order="2" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRequiresPower" field-order="1" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitReeferRecordSet.rfrecSupplyTmp" field-order="3" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="CAR CARRIER UP" applies-to="UNIT" description="Extend the height of car carrier to 13' 06&quot;" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SET BKG TEMP REQUIRED" applies-to="UNIT" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitActiveUfv.ufvFlexString07" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="SET MULTISTOP THROUGH" applies-to="UNIT" description="Sets Multistop status of a unit, returning to the terminal with remaining cargo" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="THRGH" ui-value="Through" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="UNIT_VERMAS_EDI_CANCEL" applies-to="UNIT" description="Vermas cancelled unit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_VERMAS_EDI_REPLACE" applies-to="UNIT" description="Vermas replaced unit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_VERMAS_EDI_CREATED" applies-to="UNIT" description="Vermas created unit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UNIT_VERMAS_EDI_UPDATED" applies-to="UNIT" description="Vermas updated the unit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="Y" is-event-recorded="Y" is-facility-service="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="VGM_UPDATE" applies-to="UNIT" description="Update field" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SNXHOLD" applies-to="UNIT" description="SNXHOLD" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SNX_HOLD_RELEASE" applies-to="UNIT" description="SNX_HOLD_RELEASE" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="GX_RELEASE" applies-to="UNIT" description="GX Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="INB_RELEASE" applies-to="UNIT" description="INB Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="RM_RELEASE" applies-to="UNIT" description="RM Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TD_RELEASE" applies-to="UNIT" description="TD Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="RD_RELEASE" applies-to="UNIT" description="RD Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="COBIZ_ASSIGN_BKG" applies-to="UNIT" description="CoBiz - Assign Booking to a Unit" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitFlexString10" field-order="15" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitRemark" field-order="40" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitFlexString09" field-order="10" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="XT_HOLD" applies-to="UNIT" description="XT Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="INGATE_HOLD" applies-to="EQ" description="Ingate Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="ITN_BKG_HOLD" applies-to="BKG" description="ITN Booking Hold" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="ARD" applies-to="UNIT" description="Auto Receive Date (oldest) from VINsight" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="AUTO / CONV EDIT" applies-to="UNIT" description="Auto / Conventional Edit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" value="RS" ui-value="RS" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRemark" field-order="2" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitGoodsAndCtrWtKg" field-order="1" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="ULK" applies-to="UNIT" description="ULK (UN-Link from ACETS)" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UPDATE_UNIT_NOTES" applies-to="UNIT" description="Update Unit Notes" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="AUDIT_LOAD_COMPLETE" applies-to="VV" description="Load Audit is completed Send our Reports and Email notification " is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SEND_VST" applies-to="VV" description="Repost VST msg to Gems" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="DONOT_SEND_RELEASED" applies-to="UNIT" description="DONOT_SEND_RELEASED" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="Y" />
+  </effects>
+</event-type>
+<event-type id="NEWVES_COMPLETE_FAILED" applies-to="UNIT" description="Fix all pending SN4 Errors before recording NEWVES_COMPLETED event" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="GX_HOLD" applies-to="UNIT" description="GX Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="INB_HOLD" applies-to="UNIT" description="INB Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="RM_HOLD" applies-to="UNIT" description="RM Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TD_HOLD" applies-to="UNIT" description="TD Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="RD_HOLD" applies-to="UNIT" description="RD Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="REVENUE_MTY" applies-to="UNIT" description="Revenue Mty" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="STRGE" ui-value="Storage" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S10_ADVISED|S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Advised,Inbound,EC/In,Yard]" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitFlexString09" field-order="1" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+    <effect field-name="unitFlexString10" field-order="2" is-required="Y" is-traceable="N" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="CG_DMG_RELEASE" applies-to="EQ" description="CG Damaged Equipment Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SHOP_RELEASE" applies-to="EQ" description="Shop Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="CL_RELEASE" applies-to="EQ" description="Claims Release" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="LTV_RELEASE" applies-to="EQ" description="LTV Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="OUTGATE_RELEASE" applies-to="UNIT" description="Outgate Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UPDATE" applies-to="UNIT" description="Useless Update" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="SCAN PLAN DONE" applies-to="VV" description="Scan Plan Printing Completed" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="PER_ASSIGN" applies-to="UNIT" description="PER assign" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="FCL" ui-value="FCL" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S40_YARD|" ui-value="[Inbound,Yard]" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="^PER" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="HOLD FOR BOOKING_CANCEL" applies-to="UNIT" description="cancel the hold " is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="MATCHES" metafield="unitImpediments" value="*BKG*" ui-value="*BKG*" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRouting.rtgTruckingCompany" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" />
+  </effects>
+</event-type>
+<event-type id="EDI_MANIFEST" applies-to="UNIT" description="EDI Manifest Event" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="RFR_PERM_REVOKED" applies-to="EQ" description="Reefer NOT OK to Receive" is-billable="N" is-notifiable="N" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="NEWVES_COMPLETED" applies-to="UNIT" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NE" metafield="unitPrimaryUe.ueEquipmentState.eqsFlexString01" value="CLIENT" ui-value="CLIENT" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="BARGE_ASSIGN" applies-to="UNIT" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S20_INBOUND|S30_ECIN|S40_YARD|" ui-value="[Inbound,EC/In,Yard]" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|STRGE|" ui-value="[Import,Storage]" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <effects>
+    <effect field-name="unitRouting.rtgDeclaredCv" field-order="3" is-required="Y" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+<event-type id="DONOT_SEND_PLACED" applies-to="UNIT" description="DONOT_SEND_PLACED" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitRemark" is-required="N" is-traceable="N" is-updatable="Y" is-auto-updated="Y" />
+  </effects>
+</event-type>
+<event-type id="ASSGN_EXPT_BKG" applies-to="UNIT" description="Assign Export Booking to a Import Unit" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="DOC_HOLD" applies-to="UNIT" description="DOC Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="HP_HOLD" applies-to="UNIT" description="HP Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="ON_HOLD" applies-to="UNIT" description="ON Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="ST_HOLD" applies-to="UNIT" description="ST Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="TI_HOLD" applies-to="UNIT" description="TI Hold" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitSpecialStow" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" auto-value="^INSP" />
+  </effects>
+</event-type>
+<event-type id="ROUTE_COBIZ" applies-to="UNIT" description="Route CoBiz" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="XT_RELEASE" applies-to="UNIT" description="XT Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="INGATE_RELEASE" applies-to="EQ" description="Ingate Release" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="ITN_BKG_RELEASE" applies-to="BKG" description="ITN Booking Release" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="UPU" applies-to="UNIT" description="Equipment Update (Typecode, Owner Code) from ACETS" is-billable="N" is-notifiable="Y" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+</event-type>
+<event-type id="RESET AUTO/CONV" applies-to="UNIT" description="Reset Auto / Conv back to SI Yard" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" value="RS" ui-value="RS" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+<event-type id="MDA_ASSIGN" applies-to="UNIT" description="MDA (MDA) Assign" is-billable="N" is-notifiable="Y" can-bulk-update="Y" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" life-cycle-state="ACT">
+  <filter />
+  <effects>
+    <effect field-name="unitRouting.rtgGroup" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="Y" auto-value="^MDA" />
+    <effect field-name="unitDrayStatus" is-required="N" is-traceable="Y" is-updatable="N" is-auto-updated="Y" auto-value="RETURN" />
+    <effect field-name="unitRemark" is-required="N" is-traceable="Y" is-updatable="Y" is-auto-updated="N" />
+  </effects>
+</event-type>
+</argo:snx>
+

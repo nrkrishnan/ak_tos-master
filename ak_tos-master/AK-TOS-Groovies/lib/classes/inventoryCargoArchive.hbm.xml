@@ -1,0 +1,756 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false">
+
+    <meta attribute="JavaClassPrefix">InventoryCargoArchive</meta>
+    <meta attribute="scope-set">public</meta>
+
+    <joined-subclass name="com.navis.cargo.business.model.ArchiveGoodsBl" table="crg_ar_goods_bls"
+                     extends="com.navis.inventory.business.units.ArchiveGoodsBase" dynamic-update="true">
+        <meta attribute="n4alias">argdsbl</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.ArchiveGoodsBlHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">BL associated with a container</meta>
+        <meta attribute="n4-entity-name">Archived Goods Bill of Lading</meta>
+        <meta attribute="n4-entity-name-plural">Archived Goods Bills of Lading</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">gdsblCustomFlexFields</meta>
+
+        <key column="gkey"/>
+
+        <property name="arGdsblSubclassType" type="string" length="20" column="subclass">
+            <meta attribute="field-description">Name of Good subclass</meta>
+        </property>
+
+        <!-- todo -->
+        <!--<set name="arGdsblBlGoodsBls" lazy="true" inverse="true" table="crg_bl_goods" cascade="delete">-->
+        <!--<key column="gds_gkey"/>-->
+        <!--<one-to-many class="com.navis.cargo.business.model.BlGoodsBl"/>-->
+        <!--</set>-->
+
+        <set name="arGdsblCargoLots" lazy="true" inverse="true" table="crg_ar_lots" cascade="delete-orphan">
+            <key column="goods_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.ArchiveCargoLot"/>
+        </set>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="gdsblCustomFlexFields"/>
+
+    </joined-subclass>
+
+    <class name="com.navis.cargo.business.model.ArchiveCargoLot" table="crg_ar_lots" dynamic-update="true">
+        <meta attribute="n4alias">arlot</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.ArchiveCargoLotHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Bill of Lading Cargo Lot</meta>
+        <meta attribute="n4-entity-name">Archived Bill of Lading Cargo Lot</meta>
+        <meta attribute="n4-entity-name-plural">Archived Bill of Lading Cargo Lots</meta>
+        <meta attribute="carina-oracle-index">
+            create index crg_ar_lot_arr_pos_anchor_idx on crg_ar_lots(arrive_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index crg_ar_lot_arr_pos_anchor_idx on crg_ar_lots(arrive_pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <id name="arLotGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arLotOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arLotArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this unit was archived.</meta>
+        </property>
+
+        <property name="arLotSubclass" column="lot_type" not-null="false" type="java.lang.String" length="10"/>
+
+        <!-- we are going to persist ids for all type of lots for easy access -->
+        <property name="arLotId" column="Id" type="java.lang.String" length="60">
+            <meta attribute="field-description">Identifier for this piece of cargo</meta>
+        </property>
+
+        <property name="arLotIsDefaultLot" column="is_default_lot" type="java.lang.Boolean">
+            <meta attribute="field-description">Default (Generic) Lot</meta>
+        </property>
+
+        <set name="arLotDamages" lazy="true" inverse="true" table="crg_ar_damages" cascade="all-delete-orphan">
+            <key column="crglot_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.ArchiveCargoDamage"/>
+        </set>
+
+        <property name="arLotArBlitemInboundGkey" column="blitem_ib_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">gkey of original Inbound BL Item for this cargo lot</meta>
+        </property>
+
+        <property name="arLotArBlitemInboundNbr" column="blitem_ib_nbr" type="java.lang.String">
+            <meta attribute="field-description">Nbr of Inbound BL Item for this cargo lot</meta>
+        </property>
+
+        <property name="arLotArBlitemOutboundGkey" column="blitem_ob_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">gkey of original Outbound BL Item for this cargo lot</meta>
+        </property>
+
+        <property name="arLotArBlitemOutboundNbr" column="blitem_ob_nbr" type="java.lang.String">
+            <meta attribute="field-description">Nbr of Outbound BL Item for this cargo lot</meta>
+        </property>
+
+        <property name="arLotSeqNbr" column="seq_nbr" type="java.lang.Integer">
+            <meta attribute="field-description">Sequence of this lot amongst all lots for the same BL Item</meta>
+        </property>
+
+        <property name="arLotExportReleaseAliasId" column="export_release_alias_id" type="string" length="40">
+            <meta attribute="field-description">Export Release identifier - additional information to identify the release information</meta>
+        </property>
+
+        <property name="arLotQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">Quantity currently at this location</meta>
+        </property>
+
+        <property name="arLotQuantityManifiested" column="quantity_manifested" type="java.lang.Double">
+            <meta attribute="field-description">Quantity originally declared at this location</meta>
+        </property>
+
+        <property name="arLotQuantityDiscrepency" column="quantity_discrepency" type="java.lang.Double">
+            <meta attribute="field-description">Quantity missing (-) or overage (+) at this location</meta>
+        </property>
+
+        <property name="arLotWeightTotalKg" column="weight_total_kg" type="java.lang.Double">
+            <meta attribute="field-description">Total weight of lot.</meta>
+        </property>
+
+        <property name="arLotMnftCargoSeqNo" column="mnft_cargo_seq_nbr" type="string" length="50">
+            <meta attribute="field-description">Cargo sequence number received in manifest edi</meta>
+        </property>
+
+        <property name="arLotExportReleaseNbr" column="export_release_nbr" type="string" length="10">
+            <meta attribute="field-description">Export Release Number</meta>
+        </property>
+
+        <many-to-one name="arLotGoods" column="goods_gkey" class="com.navis.inventory.business.units.ArchiveGoodsBase"
+                     cascade="none">
+            <meta attribute="field-description">Associated Unit Goods</meta>
+        </many-to-one>
+
+        <!-- The Brand, Model and Color specified on the BL ITEM can be overridden for each piece -->
+
+        <property name="arLotBrand" column="brand" type="java.lang.String" length="60">
+            <meta attribute="field-description">Brand name of the lot</meta>
+        </property>
+
+        <property name="arLotModel" column="model" type="java.lang.String" length="60">
+            <meta attribute="field-description">Model name of the lot</meta>
+        </property>
+
+        <property name="arLotColor" column="color" type="java.lang.String" length="60">
+            <meta attribute="field-description">Color of the lot</meta>
+        </property>
+
+        <property name="arLotDmgSeverity" column="dmg_severity" type="com.navis.cargo.persistence.atoms.UserTypeCargoDamageSeverityEnum">
+            <meta attribute="field-description">Damage Severity</meta>
+        </property>
+
+        <property name="arLotPlannedPosition" column="planned_position" type="java.lang.String" length="60">
+            <meta attribute="field-description">General lot planning position</meta>
+        </property>
+
+        <component name="arLotPosition" class="com.navis.argo.business.model.ArchiveLocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The last known position of the Unit from the perspective of this facility</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="arPosLocType" column="pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="false">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="arPosLocId" column="pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="arPosLocGkey" column="pos_loc_gkey" type="java.lang.Long" index="lot_unfcyvis_lplgkey_idx">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="arPosSlot" column="pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="arPosOrientation" column="pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="arPosName" column="pos_name" type="string" length="42" index="lot_unit_fcy_vst_lastposnm_idx">
+                <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <property name="arPosOperationalPosId" column="ops_pos_id" type="string" length="80">
+                <meta attribute="field-description">XPS operation position (TIP, TQ, LN.4, etc.)</meta>
+            </property>
+            <!-- 2009-10-30 pji Support persistent bin model. -->
+            <many-to-one name="arPosBin" column="arrive_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                 <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="arPosTier" column="arrive_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="arPosAnchor" column="arrive_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="arPosOrientationDegrees" column="arrive_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+         </component>
+
+        <property name="arLotCreated" column="created" type="timestamp"/>
+        <property name="arLotCreator" column="creator" type="string" length="30"/>
+        <property name="arLotChanged" column="changed" type="timestamp"/>
+        <property name="arLotChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.cargo.business.model.ArchiveCargoDamage" table="crg_ar_damages" dynamic-update="true">
+        <meta attribute="n4alias">arcrgdmgitem</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.ArchiveCargoDamageHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing damage of the BL Item and Cargo Lot</meta>
+        <meta attribute="n4-entity-name">Archived Cargo Damage Item</meta>
+        <meta attribute="n4-entity-name-plural">Archived Cargo Damages</meta>
+
+        <id name="arCrgdmgGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="arCrgdmgDmgs" column="dmgs_gkey" class="com.navis.cargo.business.model.CargoDamageType" not-null="true">
+            <meta attribute="field-description">The collection of damages this item belongs to</meta>
+        </many-to-one>
+
+        <property name="arCrgdmgQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">Damage Quantity: Used for things like multiple cracks, pin-holes, etc. Optional entry</meta>
+        </property>
+
+        <property name="arCrgdmgSeverity" column="severity" type="com.navis.cargo.persistence.atoms.UserTypeCargoDamageSeverityEnum" not-null="true">
+            <meta attribute="field-description">Damage Severity</meta>
+        </property>
+
+        <property name="arCrgdmgReported" column="reported" type="timestamp">
+            <meta attribute="field-description">Damage Reported</meta>
+        </property>
+
+        <property name="arCrgdmgRepaired" column="repaired" type="timestamp">
+            <meta attribute="field-description">Damage Repaired</meta>
+        </property>
+
+        <property name="arCrgdmgDescription" column="description" type="string" length='255'>
+            <meta attribute="field-description">Description of damage item.</meta>
+        </property>
+
+        <property name="arCrgdmgTranGkey" column="tran_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Truck transaction Gkey.</meta>
+        </property>
+
+        <many-to-one name="arCrgdmgBlItem" column="blitem_gkey"
+                     class="com.navis.cargo.business.model.ArchiveBlItem" not-null="false">
+            <meta attribute="field-description">BL Item for this damage</meta>
+        </many-to-one>
+
+        <many-to-one name="arCrgdmgCrgLot" column="crglot_gkey"
+                     class="com.navis.cargo.business.model.ArchiveCargoLot" not-null="false">
+            <meta attribute="field-description">Cargo lot for this damage</meta>
+        </many-to-one>
+
+        <property name="arCrgdmgCreated" column="created" type="timestamp"/>
+        <property name="arCrgdmgCreator" column="creator" type="string" length="30"/>
+        <property name="arCrgdmgChanged" column="changed" type="timestamp"/>
+        <property name="arCrgdmgChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.cargo.business.model.ArchiveBillOfLading" table="crg_ar_bills_of_lading" dynamic-update="true">
+        <meta attribute="n4alias">arbl</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.ArchiveBillOfLadingHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Bill of Lading</meta>
+        <meta attribute="n4-entity-name">Archived Bill of Lading</meta>
+        <meta attribute="n4-entity-name-plural">Archived Bills of Lading</meta>
+
+        <id name="arBlGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arBlOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arBlArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this unit was archived.</meta>
+        </property>
+
+        <property name="arBlNbr" column="nbr" type="string" length="30">
+            <meta attribute="field-description">Bill of Lading number</meta>
+        </property>
+
+        <property name="arBlGid" column="gid" type="java.lang.Long" length="10">
+            <meta attribute="field-description">Bill of Lading Generated Id</meta>
+        </property>
+
+        <property name="arBlCategory" column="category"
+                  type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum" not-null="true">
+            <meta attribute="field-description">The Category of the Bill of Lading (Import, Export, ...).</meta>
+        </property>
+
+        <many-to-one name="arBlComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex"
+                     not-null="true" cascade="none">
+            <meta attribute="field-description">Complex (Scope) of this BL</meta>
+        </many-to-one>
+
+        <!-- ARGO-36740 PIN number -->
+        <property name="arBlPin" column="pin" type="string" length="20">
+            <meta attribute="field-description">PIN for Bill of Lading</meta>
+        </property>
+
+        <property name="arBlLineOperatorId" column="line_id" type="string" length="100">
+            <meta attribute="field-description">Line Operator of the BL</meta>
+        </property>
+
+        <property name="arBlObsoleteConsigneeName" column="consignee_name" type="string" length='80'>
+            <meta attribute="field-description">Deprecated, use blConsignee instead: Consignee name (information only)</meta>
+        </property>
+
+        <property name="arBlObsoleteShipperName" column="shipper_name" type="string" length='80'>
+            <meta attribute="field-description">Deprecated, use blShipper instead: Shipper name (information only)</meta>
+        </property>
+
+        <property name="arBlConsigneeId" column="consignee_id" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Consignee ScopedBizUnit: Party that will recieve the cargo in the bill of lading</meta>
+        </property>
+
+        <property name="arBlShipperId" column="shipper_id" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Shipper ScopedBizUnit: Party that sent the cargo in the bill of lading</meta>
+        </property>
+
+        <property name="arBlAgentId" column="agent_id" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Agent ScopedBizUnit: Agent of the BL</meta>
+        </property>
+
+        <property name="arBlBondTruckingCompanyId" column="bond_trucking_id" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Trucking company designated by Customs to pick up the container</meta>
+        </property>
+
+        <property name="arBlExamId" column="exam" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Movement of cargo for an exam (onsite, offsite, offsite&amp;return and cancel)</meta>
+        </property>
+
+        <property name="arBlInbondId" column="inbond" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Cargo is designated to move inbond (going inbond, inbond and cancel)</meta>
+        </property>
+
+        <property name="arBlCvFcyId" column="facility" type="string" length="100" not-null="false">
+            <meta attribute="field-description">facility Id, unique within the Complex</meta>
+        </property>
+
+        <property name="arBlCvPhaseId" column="phase" type="string" length="100" not-null="false">
+            <meta attribute="field-description">The current phase/stage of the carrier visit</meta>
+        </property>
+
+        <property name="arBlCarrierVisitGkey" column="cv_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The carrier visit</meta>
+        </property>
+        <property name="arBlCarrierVisitId" column="cv_id" type="string" length="30">
+            <meta attribute="field-description">The carrier visit</meta>
+        </property>
+
+        <property name="arBlPolId" column="pol_id" type="string" length="6">
+            <meta attribute="field-description">Port of Loading</meta>
+        </property>
+
+        <property name="arBlPod1Id" column="pod1_id" type="string" length="6">
+            <meta attribute="field-description">First Port of Discharge</meta>
+        </property>
+
+        <property name="arBlPod2Id" column="pod2_id" type="string" length="6">
+            <meta attribute="field-description">Second Port of Discharge</meta>
+        </property>
+
+        <property name="arBlBondedDestinationId" column="bonded_destination_id" type="string" length="6">
+            <meta attribute="field-description">Bonded Destination</meta>
+        </property>
+
+        <property name="arBlOriginalBlGkey" column="original_bl_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Second Port of Discharge</meta>
+        </property>
+        <property name="arBlOriginalBlNbr" column="original_bl_nbr" type="string" length="30">
+            <meta attribute="field-description">Second Port of Discharge</meta>
+        </property>
+
+        <property name="arBlOrigin" column="origin" type="string" length="30">
+            <meta attribute="field-description">Origin</meta>
+        </property>
+
+        <property name="arBlDestination" column="destination" type="string" length="30">
+            <meta attribute="field-description">Final Destination</meta>
+        </property>
+
+        <property name="arBlNotes" column="notes" type="string" length="80">
+            <meta attribute="field-description">Miscellaneous notes</meta>
+        </property>
+
+        <property name="arBlManifestedQty" column="manifested_qty" type="java.lang.Double">
+            <meta attribute="field-description">Total Manifested Quantity (per Customs)</meta>
+        </property>
+
+        <property name="arBlMnftBlSeqNbr" column="mnft_bl_seq_nbr" type="string" length="50">
+            <meta attribute="field-description">BL Sequence number received in manifest edi</meta>
+        </property>
+
+        <!-- todo -->
+        <!--<set name="arBlRelatedBls" lazy="true" inverse="true" table="crg_bills_of_lading" cascade="none">-->
+        <!--<key column="original_bl_gkey"/>-->
+        <!--<one-to-many class="com.navis.cargo.business.model.BillOfLading"/>-->
+        <!--</set>-->
+
+        <set name="arBlArItems" lazy="true" inverse="true" table="crg_ar_bl_item" cascade="all-delete-orphan">
+            <key column="bl_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.ArchiveBlItem"/>
+        </set>
+
+        <!--<set name="arBlBlGoodsBls" lazy="true" inverse="true" table="crg_bl_goods" cascade="delete">-->
+        <!--<key column="bl_gkey"/>-->
+        <!--<one-to-many class="com.navis.cargo.business.model.BlGoodsBl"/>-->
+        <!--</set>-->
+
+        <set name="arBlReleases" lazy="true" inverse="true" table="crg_ar_bl_release" cascade="all-delete-orphan">
+            <key column="bl_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.ArchiveBlRelease"/>
+        </set>
+
+        <property name="arBlReleasedQty" column="released_qty" type="java.lang.Double">
+            <meta attribute="field-description">Release quantity</meta>
+        </property>
+
+        <!-- 2012-03-16 bbakthavachalam v2.4.E ARGO-35413 notify party fields added to BOL entity-->
+        <property name="arBlNotifyParty1Name" column="notify_pty1_name" type="string" length="30">
+            <meta attribute="field-description">The party1 to whom a notice of arrival should be sent</meta>
+        </property>
+
+        <property name="arBlNotifyParty2Name" column="notify_pty2_name" type="string" length="30">
+            <meta attribute="field-description">The party2 to whom a notice of arrival should be sent</meta>
+        </property>
+
+        <property name="arBlNotifyParty1Address1" column="notify_pty1_add1" type="string" length="60">
+            <meta attribute="field-description">Notify party1's mailing address1</meta>
+        </property>
+
+        <property name="arBlNotifyParty2Address1" column="notify_pty2_add1" type="string" length="60">
+            <meta attribute="field-description">Notify party2's mailing address1</meta>
+        </property>
+
+        <property name="arBlNotifyParty1ContactNo1" column="notify_pty1_ctct_no1" type="string" length="30">
+            <meta attribute="field-description">Notify party1's contact number1</meta>
+        </property>
+
+        <property name="arBlNotifyParty2ContactNo1" column="notify_pty2_ctct_no1" type="string" length="30">
+            <meta attribute="field-description">Notify party2's contact number1</meta>
+        </property>
+
+        <property name="arBlCreated" column="created" type="timestamp"/>
+        <property name="arBlCreator" column="creator" type="string" length="30"/>
+        <property name="arBlChanged" column="changed" type="timestamp"/>
+        <property name="arBlChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.cargo.business.model.ArchiveBlItem" table="crg_ar_bl_item" dynamic-update="true">
+        <meta attribute="n4alias">arblitem</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.ArchiveBlItemHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Bill of Lading Item</meta>
+        <meta attribute="n4-entity-name">Archived Bill of Lading</meta>
+        <meta attribute="n4-entity-name-plural">Archived Bill of Lading Items</meta>
+
+        <id name="arBlitemGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arBlitemOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arBlitemArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this unit was archived.</meta>
+        </property>
+
+        <property name="arBlitemNbr" column="nbr" type="string" length="30">
+            <meta attribute="field-description">Item number</meta>
+        </property>
+
+        <property name="arBlitemSeq" column="sequence" type="java.lang.Long" length="10">
+            <meta attribute="field-description">BL Item sequence.</meta>
+        </property>
+
+        <property name="arBlitemCustomerOrderNbr" column="customer_order_nbr" type="string" length="30">
+            <meta attribute="field-description">Customer Order Number</meta>
+        </property>
+
+        <property name="arBlitemCustomerProductNbr" column="customer_product_nbr" type="string" length="30">
+            <meta attribute="field-description">Customer Product Number</meta>
+        </property>
+         <!-- 2011-06-16 sahmed v2.2.Y ARGO-32353 There is no place to store and view 309 N10 segment against the BL -->
+        <property name="arBlitemCommodityNote" column="commodity_note" type="string" length="500">
+            <meta attribute="field-description">The note about the Commodity</meta>
+        </property>
+
+        <many-to-one name="arBlitemArBl" column="bl_gkey" class="com.navis.cargo.business.model.ArchiveBillOfLading"
+                     not-null="true">
+            <meta attribute="field-description">BL for this item</meta>
+        </many-to-one>
+
+        <property name="arBlitemCommodityId" column="commodity_id" type="string" not-null="true">
+            <meta attribute="field-description">Commodity</meta>
+        </property>
+
+        <property name="arBlitemProductTypeId" column="product_type_id" type="string" length="16" not-null="false">
+            <meta attribute="field-description">Specific product type</meta>
+        </property>
+
+        <set name="arBlitemArDamages" lazy="true" inverse="true" table="crg_ar_damages" cascade="all-delete-orphan">
+            <key column="blitem_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.ArchiveCargoDamage"/>
+        </set>
+
+        <property name="arBlitemQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">Total quantity of Bulk or Breakbulk cargo.</meta>
+        </property>
+
+        <property name="arBlitemWeightTotalKg" column="weight_total_kg" type="java.lang.Double">
+            <meta attribute="field-description">Total weight of cargo.</meta>
+        </property>
+
+        <property name="arBlitemIsBulk" column="is_bulk" type="java.lang.Boolean">
+            <meta attribute="field-description">Bulk cargo</meta>
+        </property>
+
+        <property name="arBlitemBulkUnit" column="bulk_unit"
+                  type="com.navis.argo.persistence.atoms.UserTypeBulkUnitEnum">
+            <meta attribute="field-description">Volume or weight units (kilograms, gallons, etc.)</meta>
+        </property>
+
+        <!-- Package properties for Breakbulk cargo -->
+
+        <property name="arBlitemPackageTypeId" column="package_type_id" type="string" length="16" not-null="false">
+            <meta attribute="field-description">Piece package type within larger package</meta>
+        </property>
+
+        <!-- 2007-01-05 ARGO-5310 eyu v1.2.O Change all WEIGHT fields from Long to Double -->
+        <property name="arBlitemPackageWeightKg" column="package_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Weight of each package in kilograms</meta>
+        </property>
+
+        <property name="arBlitemPackageLengthCm" column="package_length_cm" type="java.lang.Double">
+            <meta attribute="field-description">Length of each package in centimeters</meta>
+        </property>
+
+        <property name="arBlitemPackageWidthCm" column="package_width_cm" type="java.lang.Double">
+            <meta attribute="field-description">Width of each package in centimeters</meta>
+        </property>
+
+        <property name="arBlitemPackageHeightCm" column="package_height_cm" type="java.lang.Double">
+            <meta attribute="field-description">Height of each package in centimeters</meta>
+        </property>
+
+        <property name="arBlitemPackageValue" column="package_value" type="java.lang.Double">
+            <meta attribute="field-description">Value of each package</meta>
+        </property>
+
+        <property name="arBlitemPackageValueCurrency" column="package_value_currency" type="java.lang.String" length="3">
+            <meta attribute="field-description">Currency of value of each package</meta>
+        </property>
+
+        <!-- Piece properties for Breakbulk cargo within a Package-->
+        <property name="arBlitemPieceQuantity" column="piece_quantity" type="java.lang.Double">
+            <meta attribute="field-description">Total quantity.</meta>
+        </property>
+
+        <property name="arBlitemPiecePackageTypeId" column="piece_package_type_id" type="string" length="16" not-null="false">
+            <meta attribute="field-description">Piece package type within larger package</meta>
+        </property>
+
+        <property name="arBlitemPieceIsBulk" column="piece_is_bulk" type="java.lang.Boolean">
+            <meta attribute="field-description">Bulk cargo</meta>
+        </property>
+
+        <property name="arBlitemPieceBulkUnit" column="piece_bulk_unit"
+                  type="com.navis.argo.persistence.atoms.UserTypeBulkUnitEnum">
+            <meta attribute="field-description">Volume or weight units (kilograms, gallons, etc.)</meta>
+        </property>
+
+        <!-- 2007-01-05 ARGO-5310 eyu v1.2.O Change all WEIGHT fields from Long to Double -->
+        <property name="arBlitemPieceWeightKg" column="piece_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Weight of each piece inside packaging in kilograms</meta>
+        </property>
+
+        <property name="arBlitemPieceLengthCm" column="piece_length_cm" type="java.lang.Double">
+            <meta attribute="field-description">Length of each piece inside packaging in centimeters</meta>
+        </property>
+
+        <property name="arBlitemPieceWidthCm" column="piece_width_cm" type="java.lang.Double">
+            <meta attribute="field-description">Width of each piece inside packaging in centimeters</meta>
+        </property>
+
+        <property name="arBlitemPieceHeightCm" column="piece_height_cm" type="java.lang.Double">
+            <meta attribute="field-description">Height of each piece inside packaging in centimeters</meta>
+        </property>
+
+        <property name="arBlitemMarksAndNumbers" column="marks_and_numbers" type="java.lang.String" length="240">
+            <meta attribute="field-description">Marks and Numbers stenciled on each package</meta>
+        </property>
+
+        <property name="arBlitemBrand" column="brand" type="java.lang.String" length="60">
+            <meta attribute="field-description">Brand name of product</meta>
+        </property>
+
+        <property name="arBlitemModel" column="model" type="java.lang.String" length="60">
+            <meta attribute="field-description">Model name of product</meta>
+        </property>
+
+        <component name="arBlitemReeferRqmnts" class="com.navis.inventory.business.units.ReeferRqmnts">
+            <meta attribute="generated-class">com.navis.inventory.business.units.ReeferRqmntsHbr</meta>
+            <meta attribute="field-description">Refrigeration requirements</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="rfreqTempRequiredC" column="temp_reqd_C" type="java.lang.Double">
+                <meta attribute="field-description">Temperature required, degrees Centigrade</meta>
+            </property>
+
+            <property name="rfreqTempLimitMaxC" column="temp_max_C" type="java.lang.Double">
+                <meta attribute="field-description">Max allowed temperature, degrees Centigrade</meta>
+            </property>
+
+            <property name="rfreqTempLimitMinC" column="temp_min_C" type="java.lang.Double">
+                <meta attribute="field-description">Min allowed temperature, degrees Centigrade</meta>
+            </property>
+
+            <property name="rfreqTempShowFahrenheit" column="temp_show_fahrenheit" type="java.lang.Boolean">
+                <meta attribute="field-description">If TRUE, users want to see temperatures for this in Fahrenheit, not Centigrade</meta>
+            </property>
+
+            <property name="rfreqVentRequired" column="vent_required_pct" type="java.lang.Double">
+                <meta attribute="field-description">Ventilation required</meta>
+            </property>
+
+            <property name="rfreqVentUnit" column="vent_unit" type="com.navis.argo.persistence.atoms.UserTypeVentUnitEnum" length="40">
+                <meta attribute="field-description">Vent unit (%,cubic feet per minute, etc.) that goes with the vent required field</meta>
+            </property>
+
+            <property name="rfreqHumidityPct" column="humidity_required_pct" type="java.lang.Double">
+                <meta attribute="field-description">Humidity required, %</meta>
+            </property>
+
+            <property name="rfreqO2Pct" column="O2_pct" type="java.lang.Double">
+                <meta attribute="field-description">Oxigen required, %</meta>
+            </property>
+
+            <property name="rfreqCO2Pct" column="CO2_pct" type="java.lang.Double">
+                <meta attribute="field-description">Carbon Dioxide required, %</meta>
+            </property>
+
+            <property name="rfreqLatestOnPowerTime" column="on_power" type="timestamp">
+                <meta attribute="field-description">Time by which the Unit must be on-power to meet customer requirements</meta>
+            </property>
+
+            <property name="rfreqRequestedOffPowerTime" column="off_power_time" type="timestamp">
+                <meta attribute="field-description">Time by which the Unit should be off-power</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor1" column="time_mon1" type="timestamp">
+                <meta attribute="field-description">1st time by which reefer should be monitored</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor2" column="time_mon2" type="timestamp">
+                <meta attribute="field-description">2nd time by which reefer should be monitored</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor3" column="time_mon3" type="timestamp">
+                <meta attribute="field-description">3rd time by which reefer should be monitored</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor4" column="time_mon4" type="timestamp">
+                <meta attribute="field-description">4th time by which reefer should be monitored</meta>
+            </property>
+        </component>
+
+        <property name="arBlitemNotes" column="notes" type="string" length='255'>
+            <meta attribute="field-description">BL Item Notes</meta>
+        </property>
+
+        <property name="arBlitemCreated" column="created" type="timestamp"/>
+        <property name="arBlitemCreator" column="creator" type="string" length="30"/>
+        <property name="arBlitemChanged" column="changed" type="timestamp"/>
+        <property name="arBlitemChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!--2009-06-24 vkotha v2.0.C ARGO-19143 Inspector for Archived Bill of Ladings-->
+    <class name="com.navis.cargo.business.model.ArchiveBlRelease" table="crg_ar_bl_release" dynamic-update="true">
+        <meta attribute="n4alias">arblrel</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.ArchiveBlReleaseHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Bill of Lading Release</meta>
+        <meta attribute="n4-entity-name">Archived Bill of Lading Release</meta>
+        <meta attribute="n4-entity-name-plural">Archived Bill of Lading Releases</meta>
+
+        <id name="arBlrelGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="arBlrelBl" column="bl_gkey" class="com.navis.cargo.business.model.ArchiveBillOfLading" not-null="true">
+            <meta attribute="field-description">BL for this release</meta>
+        </many-to-one>
+
+        <property name="arBlrelReferenceNbr" column="reference_nbr" type="string" length="80">
+            <meta attribute="field-description">Release number</meta>
+        </property>
+
+        <property name="arBlrelQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">Quantity released.</meta>
+        </property>
+
+        <property name="arBlrelDispositionCode" column="disposition_code" type="string" length="10">
+            <meta attribute="field-description">Disposition Code as received from Customs</meta>
+        </property>
+
+        <property name="arBlrelQuantityType" column="quantity_type" type="com.navis.argo.persistence.atoms.UserTypeEdiReleaseMapModifyQuantityEnum">
+            <meta attribute="field-description">Whether the quantity received in release message refers to released/held quantity</meta>
+        </property>
+
+        <!--2011-07-14 bbakthavachalam ARGO-32038 v2.2.beta3 - added BL release notes column-->
+        <property name="arBlrelNotes" column="notes" type="string" length="255">
+            <meta attribute="field-description">BL release Notes</meta>
+        </property>
+
+        <!--2011-09-11 bbakthavachalam ARGO-33819 v2.3.B - added BL release reference column-->
+        <many-to-one name="arBlRelReference" column="reference_ar_bl_rel_gkey" class="com.navis.cargo.business.model.ArchiveBlRelease"
+                     not-null="false">
+            <meta attribute="field-description">This refers to the BL Release which would affect the current BL Release. For example, if 4E
+                disposition code cancels 1A disposition code then 4E becomes a reference to 1A.
+            </meta>
+        </many-to-one>
+
+        <!--2011-09-08 rkasindula ARGO-33784 trunk create posting date and time column in the BL Releases Table for processing US Customs-->
+        <property name="arBlrelPostDate" column="post_date" type="timestamp">
+            <meta attribute="field-description">Customs posting date and time stamp</meta>
+        </property>
+
+        <property name="arBlrelCreated" column="created" type="timestamp"/>
+        <property name="arBlrelCreator" column="creator" type="string" length="30"/>
+        <property name="arBlrelChanged" column="changed" type="timestamp"/>
+        <property name="arBlrelChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<weblogic-application xmlns="http://www.bea.com/ns/weblogic/90" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <listener>
+    <listener-class>com.matson.tos.util.TosAppListener</listener-class>
+    <listener-uri>tosEjb.jar</listener-uri>
+  </listener>
+</weblogic-application>

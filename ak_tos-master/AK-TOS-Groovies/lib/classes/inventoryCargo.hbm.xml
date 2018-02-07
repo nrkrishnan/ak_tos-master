@@ -1,0 +1,1052 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false">
+
+    <meta attribute="JavaClassPrefix">InventoryCargo</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- BL   A shipment from shipper to consignee being shipped together over the same route -->
+    <class name="com.navis.cargo.business.model.BillOfLading" table="crg_bills_of_lading" dynamic-update="true">
+        <meta attribute="n4alias">bl</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.BillOfLadingHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Bill of Lading</meta>
+        <meta attribute="n4-entity-name">Bill of Lading</meta>
+        <meta attribute="n4-entity-name-plural">Bills of Lading</meta>
+
+        <id name="blGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="blNbr" column="nbr" type="string" length="30">
+            <meta attribute="field-description">Bill of Lading number</meta>
+        </property>
+
+        <property name="blGid" column="gid" type="java.lang.Long" length="10">
+            <meta attribute="field-description">Bill of Lading Generated Id</meta>
+        </property>
+
+        <property name="blCategory" column="category"
+                  type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum" not-null="true">
+            <meta attribute="field-description">The Category of the Bill of Lading (Import, Export, ...).</meta>
+        </property>
+
+        <!-- 2007-03-22 lbarman v1.3.D ARGO-6561: use scopedBizUnit instead of strings for shipper and consignee; make string fields obsolete -->
+        <property name="blObsoleteConsigneeName" column="consignee_name" type="string" length='80'>
+            <meta attribute="field-description">Deprecated, use blConsignee instead: Consignee name (information only)</meta>
+        </property>
+
+        <property name="blObsoleteShipperName" column="shipper_name" type="string" length='80'>
+            <meta attribute="field-description">Deprecated, use blShipper instead: Shipper name (information only)</meta>
+        </property>
+
+        <!--2009-05-14 spabbala 1.9.F ARGO-18589 Bonded Destination field in the B/L screen to be free form instead of a Routing Point LOV-->
+        <property name="blBondedDestination" column="bonded_destination" type="string" length="255">
+            <meta attribute="field-description">Bonded Destination</meta>
+        </property>
+
+        <many-to-one name="blOriginalBl" column="original_bl_gkey" class="com.navis.cargo.business.model.BillOfLading"
+                     cascade="none">
+            <meta attribute="field-description">Second Port of Discharge</meta>
+        </many-to-one>
+
+        <property name="blOrigin" column="origin" type="string" length="30">
+            <meta attribute="field-description">Origin</meta>
+        </property>
+
+        <property name="blDestination" column="destination" type="string" length="30">
+            <meta attribute="field-description">Final Destination</meta>
+        </property>
+
+        <property name="blNotes" column="notes" type="string" length="80">
+            <meta attribute="field-description">Miscellaneous notes</meta>
+        </property>
+
+        <property name="blManifestedQty" column="manifested_qty" type="java.lang.Double">
+            <meta attribute="field-description">Total Manifested Quantity (per Customs)</meta>
+        </property>
+
+        <!-- 2009-04-08 rsatish v1.9.D ARGO-17303 new inbond movement fields-->
+        <property name="blInbond" column="inbond" type="com.navis.argo.persistence.atoms.UserTypeInbondEnum">
+            <meta attribute="field-description">Cargo is designated to move inbond (going inbond, inbond and cancel)</meta>
+        </property>
+
+        <property name="blExam" column="exam" type="com.navis.argo.persistence.atoms.UserTypeExamEnum">
+            <meta attribute="field-description">Movement of cargo for an exam (onsite, offsite, offsite&amp;return and cancel)</meta>
+        </property>
+
+        <property name="blMnftBlSeqNbr" column="mnft_bl_seq_nbr" type="string" length="50">
+            <meta attribute="field-description">BL Sequence number received in manifest edi</meta>
+        </property>
+
+        <!-- ARGO-36740 PIN number -->
+        <property name="blPin" column="pin" type="string" length="20">
+            <meta attribute="field-description">PIN for Bill of Lading</meta>
+        </property>
+
+        <!-- 2012-03-16 bbakthavachalam v2.4.E ARGO-35413 notify party fields added to BOL entity-->
+        <property name="blNotifyParty1Name" column="notify_pty1_name" type="string" length="30">
+            <meta attribute="field-description">The party1 to whom a notice of arrival should be sent</meta>
+        </property>
+
+        <property name="blNotifyParty2Name" column="notify_pty2_name" type="string" length="30">
+            <meta attribute="field-description">The party2 to whom a notice of arrival should be sent</meta>
+        </property>
+
+        <property name="blNotifyParty1Address1" column="notify_pty1_add1" type="string" length="60">
+            <meta attribute="field-description">Notify party1's mailing address1</meta>
+        </property>
+
+        <property name="blNotifyParty2Address1" column="notify_pty2_add1" type="string" length="60">
+            <meta attribute="field-description">Notify party2's mailing address1</meta>
+        </property>
+
+        <property name="blNotifyParty1ContactNo1" column="notify_pty1_ctct_no1" type="string" length="30">
+            <meta attribute="field-description">Notify party1's contact number1</meta>
+        </property>
+
+        <property name="blNotifyParty2ContactNo1" column="notify_pty2_ctct_no1" type="string" length="30">
+            <meta attribute="field-description">Notify party2's contact number1</meta>
+        </property>
+
+        <many-to-one name="blComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex"
+                     not-null="true" cascade="none">
+            <meta attribute="field-description">Complex (Scope) of this BL</meta>
+        </many-to-one>
+
+        <!-- PARTIES -->
+        <many-to-one name="blLineOperator" column="line_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"
+                     not-null="false" cascade="none">
+            <meta attribute="field-description">Line Operator of the BL</meta>
+        </many-to-one>
+
+        <!-- 2007-03-22 lbarman v1.3.D ARGO-6561: use scopedBizUnit instead of strings for shipper and consignee -->
+        <many-to-one name="blConsignee" column="consignee_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Consignee ScopedBizUnit: Party that will recieve the cargo in the bill of lading</meta>
+        </many-to-one>
+
+        <many-to-one name="blShipper" column="shipper_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Shipper ScopedBizUnit: Party that sent the cargo in the bill of lading</meta>
+        </many-to-one>
+
+        <!-- 2009-11-09 bbakthavachalam v2.1.B ARGO-21909: Changed the entity class to Agent -->
+        <many-to-one name="blAgent" column="agent_gkey" class="com.navis.argo.business.reference.Agent" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Agent of the BL</meta>
+        </many-to-one>
+
+        <!-- ROUTING -->
+        <many-to-one name="blCarrierVisit" column="cv_gkey" class="com.navis.argo.business.model.CarrierVisit"
+                     not-null="true">
+            <meta attribute="field-description">The carrier visit</meta>
+        </many-to-one>
+
+        <many-to-one name="blPol" column="pol_gkey" class="com.navis.argo.business.reference.RoutingPoint"
+                     cascade="none">
+            <meta attribute="field-description">Port of Loading</meta>
+        </many-to-one>
+
+        <many-to-one name="blPod1" column="pod1_gkey" class="com.navis.argo.business.reference.RoutingPoint"
+                     cascade="none">
+            <meta attribute="field-description">First Port of Discharge</meta>
+        </many-to-one>
+
+        <many-to-one name="blPod2" column="pod2_gkey" class="com.navis.argo.business.reference.RoutingPoint"
+                     cascade="none">
+            <meta attribute="field-description">Second Port of Discharge</meta>
+        </many-to-one>
+
+        <many-to-one name="blBondTruckingCompany" column="bond_trucking_company" class="com.navis.argo.business.reference.ScopedBizUnit"
+                     not-null="false">
+            <meta attribute="field-description">Trucking company designated by Customs to pick up the container</meta>
+        </many-to-one>
+
+        <set name="blRelatedBls" lazy="true" inverse="true" table="crg_bills_of_lading" cascade="none">
+            <key column="original_bl_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.BillOfLading"/>
+        </set>
+
+        <set name="blItems" lazy="true" inverse="true" table="crg_bl_items" cascade="all-delete-orphan">
+            <key column="bl_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.BlItem"/>
+        </set>
+
+        <set name="blBlGoodsBls" lazy="true" inverse="true" table="crg_bl_goods" cascade="delete">
+            <key column="bl_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.BlGoodsBl"/>
+        </set>
+
+        <set name="blReleases" lazy="true" inverse="true" table="crg_bl_release" cascade="all-delete-orphan">
+            <key column="bl_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.BlRelease"/>
+        </set>
+
+        <property name="blCreated" column="created" type="timestamp"/>
+        <property name="blCreator" column="creator" type="string" length="30"/>
+        <property name="blChanged" column="changed" type="timestamp"/>
+        <property name="blChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!-- BL Release to track the release quantity -->
+    <class name="com.navis.cargo.business.model.BlRelease" table="crg_bl_release" dynamic-update="true">
+        <meta attribute="n4alias">blrel</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.BlReleaseHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Bill of Lading Release</meta>
+        <meta attribute="n4-entity-name">Bill of Lading Release</meta>
+        <meta attribute="n4-entity-name-plural">Bill of Lading Releases</meta>
+
+        <id name="blrelGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="blrelBl" column="bl_gkey" class="com.navis.cargo.business.model.BillOfLading" not-null="true">
+            <meta attribute="field-description">BL for this release</meta>
+        </many-to-one>
+
+        <property name="blrelReferenceNbr" column="reference_nbr" type="string" length="80">
+            <meta attribute="field-description">Release number</meta>
+        </property>
+
+        <property name="blrelQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">Quantity released.</meta>
+        </property>
+
+        <property name="blrelDispositionCode" column="disposition_code" type="string" length="10">
+            <meta attribute="field-description">Disposition Code as received from Customs</meta>
+        </property>
+
+        <property name="blrelQuantityType" column="quantity_type" type="com.navis.argo.persistence.atoms.UserTypeEdiReleaseMapModifyQuantityEnum">
+            <meta attribute="field-description">Whether the quantity received in release message refers to released/held quantity</meta>
+        </property>
+
+        <!--2011-07-14 bbakthavachalam ARGO-32038 v2.2.beta3 - added BL release notes column-->
+        <property name="blrelNotes" column="notes" type="string" length='255'>
+            <meta attribute="field-description">BL release Notes</meta>
+        </property>
+
+        <many-to-one name="blrelFlagType" column="flag_type_gkey" class="com.navis.services.business.rules.FlagType" not-null="false">
+            <meta attribute="field-description">Hold/Permission as mapped to the disposition code</meta>
+        </many-to-one>
+
+        <!--2011-09-11 bbakthavachalam ARGO-33819 v2.3.B - added BL release reference column-->
+        <many-to-one name="blrelReference" column="reference_bl_rel_gkey" class="com.navis.cargo.business.model.BlRelease" not-null="false">
+            <meta attribute="field-description">This refers to the BL Release which would affect the current BL Release. For example, if 4E
+                disposition code cancels 1A disposition code then 4E becomes a reference to 1A.</meta>
+        </many-to-one>
+
+        <!--2011-09-08 rkasindula ARGO-33784 trunk create posting date and time column in the BL Releases Table for processing US Customs-->
+        <property name="blrelPostDate" column="post_date" type="timestamp" >
+            <meta attribute="field-description">Customs posting date and time stamp</meta>
+        </property>
+
+        <property name="blrelCreated" column="created" type="timestamp"/>
+        <property name="blrelCreator" column="creator" type="string" length="30"/>
+        <property name="blrelChanged" column="changed" type="timestamp"/>
+        <property name="blrelChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!-- BL ITEM   List of the cargo (various goods) listed on a bill of lading -->
+    <class name="com.navis.cargo.business.model.BlItem" table="crg_bl_item" dynamic-update="true">
+        <meta attribute="n4alias">blitem</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.BlItemHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Bill of Lading Item</meta>
+        <meta attribute="n4-entity-name">Bill of Lading</meta>
+        <meta attribute="n4-entity-name-plural">Bill of Lading Items</meta>
+
+        <id name="blitemGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="blitemNbr" column="nbr" type="string" length="30">
+            <meta attribute="field-description">Item number</meta>
+        </property>
+
+        <property name="blitemSeq" column="sequence" type="java.lang.Long" length="10">
+            <meta attribute="field-description">BL Item sequence.</meta>
+        </property>
+
+        <property name="blitemCustomerOrderNbr" column="customer_order_nbr" type="string" length="30">
+            <meta attribute="field-description">Customer Order Number</meta>
+        </property>
+
+        <property name="blitemCustomerProductNbr" column="customer_product_nbr" type="string" length="30">
+            <meta attribute="field-description">Customer Product Number</meta>
+        </property>
+
+        <property name="blitemQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">Total quantity of Bulk or Breakbulk cargo.</meta>
+        </property>
+
+        <property name="blitemWeightTotalKg" column="weight_total_kg" type="java.lang.Double">
+            <meta attribute="field-description">Total weight of cargo.</meta>
+        </property>
+
+        <property name="blitemIsBulk" column="is_bulk" type="java.lang.Boolean">
+            <meta attribute="field-description">Bulk cargo</meta>
+        </property>
+
+        <property name="blitemBulkUnit" column="bulk_unit"
+                  type="com.navis.argo.persistence.atoms.UserTypeBulkUnitEnum">
+            <meta attribute="field-description">Volume or weight units (kilograms, gallons, etc.)</meta>
+        </property>
+
+        <!-- 2007-01-05 ARGO-5310 eyu v1.2.O Change all WEIGHT fields from Long to Double -->
+        <property name="blitemPackageWeightKg" column="package_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Weight of each package in kilograms</meta>
+        </property>
+
+        <property name="blitemPackageLengthCm" column="package_length_cm" type="java.lang.Double">
+            <meta attribute="field-description">Length of each package in centimeters</meta>
+        </property>
+
+        <property name="blitemPackageWidthCm" column="package_width_cm" type="java.lang.Double">
+            <meta attribute="field-description">Width of each package in centimeters</meta>
+        </property>
+
+        <property name="blitemPackageHeightCm" column="package_height_cm" type="java.lang.Double">
+            <meta attribute="field-description">Height of each package in centimeters</meta>
+        </property>
+
+        <property name="blitemPackageValue" column="package_value" type="java.lang.Double">
+            <meta attribute="field-description">Value of each package</meta>
+        </property>
+
+        <property name="blitemPackageValueCurrency" column="package_value_currency" type="java.lang.String" length="3">
+            <meta attribute="field-description">Currency of value of each package</meta>
+        </property>
+
+        <!-- Piece properties for Breakbulk cargo within a Package-->
+        <property name="blitemPieceQuantity" column="piece_quantity" type="java.lang.Double">
+            <meta attribute="field-description">Total quantity.</meta>
+        </property>
+
+        <property name="blitemPieceIsBulk" column="piece_is_bulk" type="java.lang.Boolean">
+            <meta attribute="field-description">Bulk cargo</meta>
+        </property>
+
+        <property name="blitemPieceBulkUnit" column="piece_bulk_unit"
+                  type="com.navis.argo.persistence.atoms.UserTypeBulkUnitEnum">
+            <meta attribute="field-description">Volume or weight units (kilograms, gallons, etc.)</meta>
+        </property>
+
+        <!-- 2007-01-05 ARGO-5310 eyu v1.2.O Change all WEIGHT fields from Long to Double -->
+        <property name="blitemPieceWeightKg" column="piece_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Weight of each piece inside packaging in kilograms</meta>
+        </property>
+
+        <property name="blitemPieceLengthCm" column="piece_length_cm" type="java.lang.Double">
+            <meta attribute="field-description">Length of each piece inside packaging in centimeters</meta>
+        </property>
+
+        <property name="blitemPieceWidthCm" column="piece_width_cm" type="java.lang.Double">
+            <meta attribute="field-description">Width of each piece inside packaging in centimeters</meta>
+        </property>
+
+        <property name="blitemPieceHeightCm" column="piece_height_cm" type="java.lang.Double">
+            <meta attribute="field-description">Height of each piece inside packaging in centimeters</meta>
+        </property>
+
+        <property name="blitemMarksAndNumbers" column="marks_and_numbers" type="java.lang.String" length="240">
+            <meta attribute="field-description">Marks and Numbers stenciled on each package</meta>
+        </property>
+
+        <property name="blitemBrand" column="brand" type="java.lang.String" length="60">
+            <meta attribute="field-description">Brand name of product</meta>
+        </property>
+
+        <property name="blitemModel" column="model" type="java.lang.String" length="60">
+            <meta attribute="field-description">Model name of product</meta>
+        </property>
+
+        <many-to-one name="blitemBl" column="bl_gkey" class="com.navis.cargo.business.model.BillOfLading"
+                     not-null="true">
+            <meta attribute="field-description">BL for this item</meta>
+        </many-to-one>
+
+        <many-to-one name="blitemCommodity" column="commodity_gkey" class="com.navis.argo.business.reference.Commodity" not-null="true">
+            <meta attribute="field-description">Commodity</meta>
+        </many-to-one>
+
+         <!-- 2011-06-16 sahmed v2.2.Y ARGO-32353 There is no place to store and view 309 N10 segment against the BL -->
+        <property name="blitemCommodityNote" column="commodity_note" type="string" length="500">
+            <meta attribute="field-description">The note about the Commodity</meta>
+        </property>
+
+        <many-to-one name="blitemProductType" column="product_type_gkey" class="com.navis.cargo.business.model.ProductType" not-null="false">
+            <meta attribute="field-description">Specific product type</meta>
+        </many-to-one>
+
+        <many-to-one name="blitemPiecePackageType" column="piece_package_type_gkey"
+                     class="com.navis.cargo.business.model.PackageType" not-null="false">
+            <meta attribute="field-description">Piece package type within larger package</meta>
+        </many-to-one>
+
+        <!-- Package properties for Breakbulk cargo -->
+        <many-to-one name="blitemPackageType" column="package_type_gkey"
+                     class="com.navis.cargo.business.model.PackageType" not-null="false">
+            <meta attribute="field-description">Piece package type within larger package</meta>
+        </many-to-one>
+
+        <set name="blitemDamages" lazy="true" inverse="true" table="crg_damages" cascade="all-delete-orphan">
+            <key column="blitem_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.CargoDamage"/>
+        </set>
+
+        <set name="blitemLots" lazy="true" inverse="true" table="crg_lots" cascade="all-delete-orphan">
+            <key column="blitem_ib_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.CargoLot"/>
+        </set>
+
+        <component name="blitemReeferRqmnts" class="com.navis.inventory.business.units.ReeferRqmnts">
+            <meta attribute="generated-class">com.navis.inventory.business.units.ReeferRqmntsHbr</meta>
+            <meta attribute="field-description">Refrigeration requirements</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="rfreqTempRequiredC" column="temp_reqd_C" type="java.lang.Double">
+                <meta attribute="field-description">Temperature required, degrees Centigrade</meta>
+            </property>
+
+            <property name="rfreqTempLimitMaxC" column="temp_max_C" type="java.lang.Double">
+                <meta attribute="field-description">Max allowed temperature, degrees Centigrade</meta>
+            </property>
+
+            <property name="rfreqTempLimitMinC" column="temp_min_C" type="java.lang.Double">
+                <meta attribute="field-description">Min allowed temperature, degrees Centigrade</meta>
+            </property>
+
+            <property name="rfreqTempShowFahrenheit" column="temp_show_fahrenheit" type="java.lang.Boolean">
+                <meta attribute="field-description">If TRUE, users want to see temperatures for this in Fahrenheit, not Centigrade</meta>
+            </property>
+
+            <!-- 2006-10-17 svaitheas v1.2.E ARGO-4696 ARGO-4699 :Correct update reefer requirements form vent settings to conform to functional
+            requirements  -->
+            <!-- 2006-10-31 lbarman v1.2.F: Renamed the property to be in synch with the specifications -->
+            <property name="rfreqVentRequired" column="vent_required_pct" type="java.lang.Double">
+                <meta attribute="field-description">Ventilation required</meta>
+            </property>
+
+            <property name="rfreqVentUnit" column="vent_unit" type="com.navis.argo.persistence.atoms.UserTypeVentUnitEnum" length="40">
+                <meta attribute="field-description">Vent unit (%,cubic feet per minute, etc.) that goes with the vent required field</meta>
+            </property>
+
+            <property name="rfreqHumidityPct" column="humidity_required_pct" type="java.lang.Double">
+                <meta attribute="field-description">Humidity required, %</meta>
+            </property>
+
+            <property name="rfreqO2Pct" column="O2_pct" type="java.lang.Double">
+                <meta attribute="field-description">Oxigen required, %</meta>
+            </property>
+
+            <property name="rfreqCO2Pct" column="CO2_pct" type="java.lang.Double">
+                <meta attribute="field-description">Carbon Dioxide required, %</meta>
+            </property>
+
+            <property name="rfreqLatestOnPowerTime" column="on_power" type="timestamp">
+                <meta attribute="field-description">Time by which the Unit must be on-power to meet customer requirements</meta>
+            </property>
+
+            <!-- 2007-10-22 lbarman ARGO-8620: add field for requested power off time of reefer requirements -->
+            <property name="rfreqRequestedOffPowerTime" column="off_power_time" type="timestamp">
+                <meta attribute="field-description">Time by which the Unit should be off-power</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor1" column="time_mon1" type="timestamp">
+                <meta attribute="field-description">1st time by which reefer should be monitored</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor2" column="time_mon2" type="timestamp">
+                <meta attribute="field-description">2nd time by which reefer should be monitored</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor3" column="time_mon3" type="timestamp">
+                <meta attribute="field-description">3rd time by which reefer should be monitored</meta>
+            </property>
+
+            <property name="rfreqTimeMonitor4" column="time_mon4" type="timestamp">
+                <meta attribute="field-description">4th time by which reefer should be monitored</meta>
+            </property>
+        </component>
+
+        <property name="blitemNotes" column="notes" type="string" length='255'>
+            <meta attribute="field-description">BL Item Notes</meta>
+        </property>
+
+        <property name="blitemCreated" column="created" type="timestamp"/>
+        <property name="blitemCreator" column="creator" type="string" length="30"/>
+        <property name="blitemChanged" column="changed" type="timestamp"/>
+        <property name="blitemChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!-- CARGO LOT   A portion of a bl item in a unique location.  Cargo inventory is tracked three possible ways
+
+                     1) Identified Cargo, where each piece has a unique identifier for tracking each piece,
+                        hence one cargo lot per piece.
+                     2) Quantified Cargo, where each piece does not have a unique identifier so only the
+                        quantity at a location is known.  Hence one cargo lot per distinct location.
+                     3) Measured Cargo, where cargo can only be tracked by weight or volume.  Measured cargo is
+                        also referred to as BULK cargo.  Hence one cargo lot per distinct location
+
+                     Often, cargo with a unique identifier is only tracked by quantity, because either the identifiers
+                     have not been recorded or the pieces are too numerous.  As each piece is identified an
+                     "identified cargo lot" is created, and the quantity (both manifested and actual) in the
+                     quantified cargo lot is reduced by one.
+    -->
+
+    <class name="com.navis.cargo.business.model.CargoLot" table="crg_lots" discriminator-value=""
+           dynamic-update="true">
+        <meta attribute="n4alias">lot</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.CargoLotHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Bill of Lading Cargo Lot</meta>
+        <meta attribute="n4-entity-name">Bill of Lading Cargo Lot</meta>
+        <meta attribute="n4-entity-name-plural">Bill of Lading Cargo Lots</meta>
+        <meta attribute="carina-oracle-index">
+            create index lot_arrive_pos_anchor_idx on crg_lots(arrive_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index lot_arrive_pos_anchor_idx on crg_lots(arrive_pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <id name="lotGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <discriminator column="lot_type" not-null="false" type="java.lang.String" length="10"/>
+
+        <!-- When the BlItem is created: we are going to create a default lot
+            then through actions we are going to operate on the lots (will create other lots), but those
+            others will not be default ones. Only the one automatically created during BlItem creation
+            will be the default one.
+        -->
+
+        <!-- we are going to persist ids for all type of lots for easy access -->
+        <property name="lotId" column="Id" type="java.lang.String" length="60">
+            <meta attribute="field-description">Identifier for this piece of cargo</meta>
+        </property>
+
+        <property name="lotIsDefaultLot" column="is_default_lot" type="java.lang.Boolean">
+            <meta attribute="field-description">Default (Generic) Lot</meta>
+        </property>
+
+        <set name="lotDamages" lazy="true" inverse="true" table="crg_damages" cascade="all-delete-orphan">
+            <key column="crglot_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.CargoDamage"/>
+        </set>
+
+        <!-- Cargo usually arrives and then departs under the control of one shipment.  This is typical for import cargo
+             listed on an import Bill of Lading.  But cargo can arrive at the facility under one shipment and then
+             the cargo broken up into several shipments for delivery.  For example, cars are recieved under one import Bill
+             of Lading and then assigned to multiple delivery shipments.  Also export cargo can be sent to the terminal
+             under (inbound shipment), accumlated on dock and then sold and exported under a separate outbound shipments.
+
+             To facilitate this requirement a cargo lot is initially listed under an inbound shipment and then an
+             outbound shipment assigned.   When some cargo listed on an inbound shipment is assigned or delivered as
+             part of an outbound shipment, the cargo lot is split if needed to represent the portion of the lot that
+             is now related to the outbound shipment.
+        -->
+
+        <many-to-one name="lotBlitemInbound" column="blitem_ib_gkey"
+                     class="com.navis.cargo.business.model.BlItem" not-null="true">
+            <meta attribute="field-description">Inbound BL Item for this cargo lot</meta>
+        </many-to-one>
+
+        <many-to-one name="lotBlitemOutbound" column="blitem_ob_gkey"
+                     class="com.navis.cargo.business.model.BlItem" not-null="false">
+            <meta attribute="field-description">Outbound BL Item for this cargo lot</meta>
+        </many-to-one>
+
+        <!-- initially the manifested (or declared) quantity will be provided by paperwork or EDI.  For example
+             the number of pieces within a container or stowed in a cell on a Ro-ro vessel.  The actual quantity
+             is assumed to match with a descrepence of zero.  Later when the cargo is inventoried, the user can
+             modify either the [actual] quantity or enter a discrepency. In any case
+                   QuantityManifested = Quantity  + QuantityDiscrepency
+        -->
+
+        <property name="lotQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">Quantity currently at this location</meta>
+        </property>
+
+        <property name="lotQuantityManifiested" column="quantity_manifested" type="java.lang.Double">
+            <meta attribute="field-description">Quantity originally declared at this location</meta>
+        </property>
+
+        <property name="lotQuantityDiscrepency" column="quantity_discrepency" type="java.lang.Double">
+            <meta attribute="field-description">Quantity missing (-) or overage (+) at this location</meta>
+        </property>
+
+        <property name="lotWeightTotalKg" column="weight_total_kg" type="java.lang.Double">
+            <meta attribute="field-description">Total weight of lot.</meta>
+        </property>
+
+        <!-- A cargo lot is always associated to a Unit (actually goods) because
+                1) the cargo is inside a container
+                2) the cargo is loose
+
+             Cargo can be located at
+                1) Carrier Visit stow position
+                   a) on a vessel visit
+                   b) on a railcar visit
+                   c) on a truck visit
+                2) Yard position
+                3) Inside an equipment visit (container unit or mofi unit)
+
+             In all cases the physical position is tracked by the corresponding unit
+        -->
+
+        <many-to-one name="lotGoods" column="goods_gkey" class="com.navis.inventory.business.units.GoodsBase"
+                     cascade="none">
+            <meta attribute="field-description">Associated Unit Goods</meta>
+        </many-to-one>
+
+        <property name="lotSeqNbr" column="seq_nbr" type="java.lang.Integer">
+            <meta attribute="field-description">Sequence of this lot amongst all lots for the same BL Item</meta>
+        </property>
+
+        <property name="lotMnftCargoSeqNo" column="mnft_cargo_seq_nbr" type="string" length="50">
+            <meta attribute="field-description">Cargo sequence number received in manifest edi</meta>
+        </property>
+
+        <property name="lotExportReleaseNbr" column="export_release_nbr" type="string" length="10">
+            <meta attribute="field-description">Export Release Number</meta>
+        </property>
+        <property name="lotExportReleaseAliasId" column="export_release_alias_id" type="string" length="40">
+            <meta attribute="field-description">Export Release identifier - additional information to identify the release information</meta>
+        </property>
+
+        <!-- The Brand, Model and Color specified on the BL ITEM can be overridden for each piece -->
+
+        <property name="lotBrand" column="brand" type="java.lang.String" length="60">
+            <meta attribute="field-description">Brand name of lot</meta>
+        </property>
+
+        <property name="lotModel" column="model" type="java.lang.String" length="60">
+            <meta attribute="field-description">Model name of the lot</meta>
+        </property>
+
+        <property name="lotColor" column="color" type="java.lang.String" length="60">
+            <meta attribute="field-description">Color of the lot</meta>
+        </property>
+
+        <!-- ARGO-34237 lot damage severity is a de-normalized field -->
+        <property name="lotDmgSeverity" column="dmg_severity" type="com.navis.cargo.persistence.atoms.UserTypeCargoDamageSeverityEnum">
+            <meta attribute="field-description">Damage Severity</meta>
+        </property>
+
+        <property name="lotPlannedPosition" column="planned_position" type="java.lang.String" length="60">
+            <meta attribute="field-description">General lot planning position</meta>
+        </property>
+
+        <component name="lotPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The last known position of the Unit from the perspective of this facility</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="posLocType" column="pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="false">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="pos_name" type="string" length="42">
+                <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <property name="posOperationalPosId" column="ops_pos_id" type="string" length="80">
+                <meta attribute="field-description">XPS operation position (TIP, TQ, LN.4, etc.)</meta>
+            </property>
+            <!-- 2009-10-30 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="arrive_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                 <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="arrive_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="arrive_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="arrive_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+         </component>
+
+        <property name="lotCreated" column="created" type="timestamp"/>
+        <property name="lotCreator" column="creator" type="string" length="30"/>
+        <property name="lotChanged" column="changed" type="timestamp"/>
+        <property name="lotChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <subclass name="com.navis.cargo.business.model.CargoLotQuantified" extends="com.navis.cargo.business.model.CargoLot"
+              discriminator-value="QT" dynamic-update="true">
+        <meta attribute="n4alias">lotqt</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.CargoLotQuantifiedHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Bill of Lading Cargo Lot</meta>
+        <meta attribute="n4-entity-name">Bill of Lading Cargo Lot</meta>
+        <meta attribute="n4-entity-name-plural">Bill of Lading Cargo Lots</meta>
+
+    </subclass>
+
+    <subclass name="com.navis.cargo.business.model.CargoLotIdentified" extends="com.navis.cargo.business.model.CargoLot"
+              discriminator-value="ID" dynamic-update="true">
+        <meta attribute="n4alias">lotid</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.CargoLotIdentifiedHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Bill of Lading Identified Cargo Lot</meta>
+        <meta attribute="n4-entity-name">Identified Cargo Lot</meta>
+        <meta attribute="n4-entity-name-plural">Identified Cargo Lots</meta>
+
+    </subclass>
+
+    <subclass name="com.navis.cargo.business.model.CargoLotBulk" extends="com.navis.cargo.business.model.CargoLot"
+              discriminator-value="BULK" dynamic-update="true">
+        <meta attribute="n4alias">lotbulk</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.CargoLotBulkHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Bill of Lading Bulk Cargo Lot</meta>
+        <meta attribute="n4-entity-name">Bulk Cargo Lot</meta>
+        <meta attribute="n4-entity-name-plural">Bulk Cargo Lots</meta>
+
+    </subclass>
+
+    <!-- Various levels of cargo tracking are supported.  The levels supported is implemented by providing
+         several sub-classes of the inventory modules GoodsBase class as follows;
+
+         GOODS BASE - provides recording the contents of a container or discription of breakbulk cargo
+                      without the capability to record BLs associated with a container, the BL associated
+                      with a piece of breakbulk nor the tracking of the piece counts within the container
+         GOODS BL     supports recording the many to many relationship between containers and BLs and
+                      which BL a piece of break bulk is associated with
+         GOODS PKG    provides the ability to either record the many to many relationship between containers
+                      and BLs and optionally the detailed item counts within a container
+         GOODS LOOSE  provides the ability to track detailed piece count inventory for non-containerized
+                      loose cargo
+
+         The subclass used is not based on the details available.  For example a container without BLs,
+         is not represented by simply using GOODS BASE.  Instead GOODS BL or GOODS PKG are used depending
+         on the depth of details the facility has chosen to potentially support.
+
+         Therefore, the appropiate subclasses that should be used is a combination of the nature of the cargo
+         and the desired tracking level.  These tracking levels and the subclasses used are as follows;
+
+         No BL Support
+               Empty Container      - use GOODS BASE
+               Containerized Cargo  - use GOODS BASE
+               Loose Cargo          - use GOODS BASE
+         BL Support
+               Empty Container      - use GOODS BASE
+               Containerized Cargo  - use GOODS BL (regardless if BLs are associated with the container)
+               Loose Cargo          - use GOODS BL (regardless if a BL is associated with the piece of breakbulk)
+         Cargo Tracking
+               Empty Container      - use GOODS BASE
+               Containerized Cargo  - use GOODS PKG (regardless if BLs are associated with the container
+                                                     or piece count inventory is known)
+               Loose Cargo          - use GOODS LOOSE
+
+         This selection strategy is only used when initially creating a UNIT.  Once the unit exists, no assumption
+         should be made about the expected subclass.
+
+         Therefore the correct subclass is based on the maximum details that "might" be recorded, as opposed to
+         using the simplest subclass that is sufficient to record the details currently known for a container.
+
+         For a specific container visit, the details known will expand.  For example, a container might be
+         introduced from a Baplie, then BLs might be added later for most of the imports when a Manifest is posted.
+         Further data entry might be done to refine the piece count inventory for the few import containers
+         that will be worked by an on-dock CFS facility.  If the simplest sufficient subclass was chosen
+         the goods for the unit would be GOODS BASE, then GOODS BL and then eventually GOODS PKG.  It is not
+         optimal in Hibernate to recast the goods subclass associated with the unit.
+
+    -->
+    <!-- GOODS BL -->
+    <joined-subclass name="com.navis.cargo.business.model.GoodsBl" table="crg_goods_bls"
+                     extends="com.navis.inventory.business.units.GoodsBase" dynamic-update="true">
+        <meta attribute="n4alias">gdsbl</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.GoodsBlHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">BL associated with a container</meta>
+        <meta attribute="n4-entity-name">Goods Bill of Lading</meta>
+        <meta attribute="n4-entity-name-plural">Goods Bills of Lading</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">gdsblCustomFlexFields</meta>
+
+        <key column="gkey"/>
+
+        <set name="gdsblBlGoodsBls" lazy="true" inverse="true" table="crg_bl_goods" cascade="delete">
+            <key column="gds_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.BlGoodsBl"/>
+        </set>
+
+        <set name="gdsblCargoLots" lazy="true" inverse="true" table="crg_lots" cascade="save-update">
+            <key column="goods_gkey"/>
+            <one-to-many class="com.navis.cargo.business.model.CargoLot"/>
+        </set>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="gdsblCustomFlexFields"/>
+
+    </joined-subclass>
+
+    <!-- Map BL with GoodsBl -->
+    <class name="com.navis.cargo.business.model.BlGoodsBl" table="crg_bl_goods" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.cargo.business.model.BlGoodsBlHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">blgdsbl</meta>
+        <meta attribute="n4-entity-name">Bill of Lading Goods</meta>
+        <meta attribute="n4-entity-name-plural">Bills of Lading Goods</meta>
+
+        <id name="blgdsblGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="blgdsblBl" column="bl_gkey" class="com.navis.cargo.business.model.BillOfLading" cascade="none">
+            <meta attribute="field-description">Reference to the Bill of Lading Table</meta>
+        </many-to-one>
+        <many-to-one name="blgdsblGoodsBl" column="gds_gkey" class="com.navis.cargo.business.model.GoodsBl" cascade="none">
+            <meta attribute="field-description">Reference to the GoodsBl</meta>
+        </many-to-one>
+
+        <property name="blgdsblCreated" column="created" type="timestamp"/>
+        <property name="blgdsblCreator" column="creator" type="string" length="30"/>
+        <property name="blgdsblChanged" column="changed" type="timestamp"/>
+        <property name="blgdsblChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <!-- Package Type   The type of packaging (e.g. pallet) -->
+    <class name="com.navis.cargo.business.model.PackageType" table="crg_package_type" dynamic-update="true">
+        <meta attribute="n4alias">pkgtype</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.PackageTypeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="class-description">Cargo Package Type</meta>
+        <meta attribute="n4-entity-name">Package Type</meta>
+        <meta attribute="n4-entity-name-plural">Package Types</meta>
+
+        <id name="pkgtypeGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="pkgtypeId" type="java.lang.String">
+            <meta attribute="field-description">Short Id of package type.</meta>
+            <column name="id" index="pkgtype_id_idx" unique-key="unique_key" length="16"/>
+        </property>
+
+        <many-to-one name="pkgtypeScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="pkgtypeUccCode" type="java.lang.String">
+            <meta attribute="field-description">UCC/EAN-128 standard package type encoding (0=carton, 1=pallet,
+                etc.).
+            </meta>
+            <column name="ucc_code" index="pkgtype_ucc_code_idx" length="16"/>
+        </property>
+
+        <property name="pkgtypeDescription" column="description" type="java.lang.String" length="80">
+            <meta attribute="field-description">Full description of package type.</meta>
+        </property>
+
+        <many-to-one name="pkgtypeIcon" class="com.navis.argo.business.reports.DigitalAsset">
+            <meta attribute="field-description">ICON for this package type</meta>
+            <column name="icon_gkey" not-null="false" />
+        </many-to-one>
+
+        <property name="pkgtypeCreated" column="created" type="timestamp"/>
+        <property name="pkgtypeCreator" column="creator" type="string" length="30"/>
+        <property name="pkgtypeChanged" column="changed" type="timestamp"/>
+        <property name="pkgtypeChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!-- Product Type   The type of product (e.g. Grade C, 8 ft 2x4) -->
+    <class name="com.navis.cargo.business.model.ProductType" table="crg_product_type" dynamic-update="true">
+        <meta attribute="n4alias">prodtype</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.ProductTypeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="class-description">Product Type</meta>
+        <meta attribute="n4-entity-name">Product Type</meta>
+        <meta attribute="n4-entity-name-plural">Product Types</meta>
+
+        <id name="prodtypeGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="prodtypeId" type="java.lang.String">
+            <meta attribute="field-description">Short Id of specific product type.</meta>
+            <column name="id" index="prodtype_id_idx" unique-key="unique_key" length="16"/>
+        </property>
+
+        <many-to-one name="prodtypeScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="prodtypeDescription" column="description" type="java.lang.String" length="80">
+            <meta attribute="field-description">Full description of this specific product</meta>
+        </property>
+
+        <property name="prodtypeIsUnitizedByQty" column="is_unitized_by_qty" type="java.lang.Boolean">
+            <meta attribute="field-description">Do not create UNITS for each ID, just one UNIT for BL item location</meta>
+        </property>
+
+        <property name="prodtypeUniversalProductCode" column="universal_product_code" type="java.lang.String" length="13">
+            <meta attribute="field-description">Full UPC or EAN-13 uniform product code for this specific
+                product.
+            </meta>
+        </property>
+
+        <property name="prodtypePieceWeightKg" column="piece_wt_kg" type="java.lang.Double" length="13">
+            <meta attribute="field-description">Weight of each piece for non-bulk cargo</meta>
+        </property>
+
+        <property name="prodtypeKgsPerBulkLiter" column="kgs_per_liter" type="java.lang.Double" length="13">
+            <meta attribute="field-description">Weight in Kilograms of one liter of bulk cargo</meta>
+        </property>
+
+        <property name="prodtypePieceLengthCm" column="length_cm" type="java.lang.Double" length="13">
+            <meta attribute="field-description">Length of each piece in centimeters</meta>
+        </property>
+
+        <property name="prodtypePieceHeightCm" column="height_cm" type="java.lang.Double" length="13">
+            <meta attribute="field-description">Height of each piece in centimeters</meta>
+        </property>
+
+        <property name="prodtypePieceWidthCm" column="width_cm" type="java.lang.Double" length="13">
+            <meta attribute="field-description">Width of each piece in centimeters</meta>
+        </property>
+
+        <many-to-one name="prodtypeCommodity" class="com.navis.argo.business.reference.Commodity">
+            <meta attribute="field-description">Products general commodity</meta>
+            <column name="commodity_gkey" not-null="false" />
+        </many-to-one>
+
+        <many-to-one name="prodtypeIcon" class="com.navis.argo.business.reports.DigitalAsset">
+            <meta attribute="field-description">ICON for this product</meta>
+            <column name="icon_gkey" not-null="false" />
+        </many-to-one>
+
+        <property name="prodtypeCreated" column="created" type="timestamp"/>
+        <property name="prodtypeCreator" column="creator" type="string" length="30"/>
+        <property name="prodtypeChanged" column="changed" type="timestamp"/>
+        <property name="prodtypeChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.cargo.business.model.CargoDamageType" table="crg_damage_types" dynamic-update="true">
+        <meta attribute="n4alias">crgdmgtyp</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.CargoDamageTypeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="class-description">Domain entity representing cargo damage type: holed, burned, etc</meta>
+        <meta attribute="n4-entity-name">Cargo Damage Type</meta>
+        <meta attribute="n4-entity-name-plural">Cargo Damage Types</meta>
+        <meta attribute="n4-business-key">crgdmgtypId</meta>
+
+        <id name="crgdmgtypGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="crgdmgtypId" type="string">
+            <meta attribute="field-description">Damage Type Identity</meta>
+            <column name="id" index="crgmgtyp_id_idx" not-null="true" unique-key="unique_key" length="20"/>
+        </property>
+
+        <property name="crgdmgtypDescription" column="description" type="string" length="35" not-null="true">
+            <meta attribute="field-description">Damage Type Description</meta>
+        </property>
+
+        <many-to-one name="crgdmgtypScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="crgdmgtypCreated" column="created" type="timestamp"/>
+        <property name="crgdmgtypCreator" column="creator" type="string" length="30"/>
+        <property name="crgdmgtypChanged" column="changed" type="timestamp"/>
+        <property name="crgdmgtypChanger" column="changer" type="string" length="30"/>
+
+        <property name="crgdmgtypLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.cargo.business.model.CargoDamage" table="crg_damages" dynamic-update="true">
+        <meta attribute="n4alias">crgdmg</meta>
+        <meta attribute="generated-class">com.navis.cargo.business.model.CargoDamageHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing damage of the BL Item and Cargo Lot</meta>
+        <meta attribute="n4-entity-name">Cargo Damage Item</meta>
+        <meta attribute="n4-entity-name-plural">Cargo Damages</meta>
+
+        <id name="crgdmgGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="crgdmgDmgs" column="dmgs_gkey" class="com.navis.cargo.business.model.CargoDamageType" not-null="true">
+            <meta attribute="field-description">The collection of damages this item belongs to</meta>
+        </many-to-one>
+
+        <property name="crgdmgQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">Damage Quantity: Used for things like multiple cracks, pin-holes, etc. Optional entry</meta>
+        </property>
+
+        <property name="crgdmgSeverity" column="severity" type="com.navis.cargo.persistence.atoms.UserTypeCargoDamageSeverityEnum" not-null="true">
+            <meta attribute="field-description">Damage Severity</meta>
+        </property>
+
+        <property name="crgdmgReported" column="reported" type="timestamp">
+            <meta attribute="field-description">Damage Reported</meta>
+        </property>
+
+        <property name="crgdmgRepaired" column="repaired" type="timestamp">
+            <meta attribute="field-description">Damage Repaired</meta>
+        </property>
+
+        <property name="crgdmgDescription" column="description" type="string" length='255'>
+            <meta attribute="field-description">Description of damage item.</meta>
+        </property>
+
+        <property name="crgdmgTranGkey" column="tran_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Truck transaction Gkey.</meta>
+        </property>
+
+        <many-to-one name="crgdmgBlItem" column="blitem_gkey"
+                     class="com.navis.cargo.business.model.BlItem" not-null="false">
+            <meta attribute="field-description">BL Item for this damage</meta>
+        </many-to-one>
+
+        <many-to-one name="crgdmgCrgLot" column="crglot_gkey"
+                     class="com.navis.cargo.business.model.CargoLot" not-null="false">
+            <meta attribute="field-description">Cargo lot for this damage</meta>
+        </many-to-one>
+
+        <property name="crgdmgCreated" column="created" type="timestamp"/>
+        <property name="crgdmgCreator" column="creator" type="string" length="30"/>
+        <property name="crgdmgChanged" column="changed" type="timestamp"/>
+        <property name="crgdmgChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+</hibernate-mapping>

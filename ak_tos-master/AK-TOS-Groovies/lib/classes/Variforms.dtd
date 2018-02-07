@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Version 0.1 by Andrew Peterson 11/03 -->
+<!-- Based on input from many. -->
+
+<!ELEMENT variforms (actions, (table|form|dashboard|tableExtension)*) >
+<!-- Always specify the actions that will appear within the forms and tables below. -->
+
+<!ELEMENT actions (action*) >
+<!ELEMENT action (#PCDATA) >
+<!ATTLIST action id ID #REQUIRED >
+
+<!ELEMENT title (#PCDATA) >
+<!ATTLIST title lang CDATA #IMPLIED >  <!-- HJK: lang will be removed as soon as I can root this out.-->
+
+<!-- The dashboard is currently ignored by both ULC / ZK (work in progress). -->
+<!ELEMENT dashboard (dashboardColumn*) >
+<!ATTLIST dashboard variformId CDATA #REQUIRED >
+
+<!-- The dashboardColumn is currently ignored by both ULC / ZK (work in progress). -->
+<!ELEMENT dashboardColumn (portlet*) >
+
+<!-- The portlet is currently ignored by both ULC / ZK (work in progress). -->
+<!ELEMENT portlet EMPTY >
+<!ATTLIST portlet variformId CDATA #REQUIRED >
+
+<!--
+FORMS
+A form is a graphical data entry screen for a single record. -->
+<!-- Specify the "modes" in which the form may be invoked using the
+actionsAllowed element -->
+<!ELEMENT form (title*,entity?,actionsAllowed?, (insertTable|insertForm|group)*, view?, controller?, submitFormCommand?, doBeforeSubmitCommand?, doSubmitCommand?, doAfterSubmitCommand?,  attributes?, (item*|borderLayout?|tabs?|grid?)) >
+<!ATTLIST form id ID #REQUIRED >
+<!ATTLIST form width CDATA #IMPLIED >
+<!ATTLIST form height CDATA #IMPLIED >
+<!ATTLIST form columns CDATA #IMPLIED >
+<!ATTLIST form layoutStrategy CDATA #IMPLIED >
+
+<!ELEMENT group (title*,(item|insertTable|insertForm|group)+) >
+<!-- We will want various techniques to define how the items are grouped. The
+UE team can come up with some good variations here that aren't Gui-specific. -->
+<!ATTLIST group technique CDATA #IMPLIED >
+
+<!ELEMENT actionsAllowed (actionMode)+ >
+
+<!ELEMENT actionMode EMPTY >
+<!ATTLIST actionMode action IDREF #REQUIRED >
+<!ATTLIST actionMode mode (viewOnly|editable|hidden|none) #IMPLIED >
+<!ATTLIST actionMode pageId CDATA #IMPLIED >
+<!ATTLIST actionMode required (true|false|undefined) "undefined" >
+<!-- mode "hidden" is really only useful in a web app -->
+
+<!-- A table may be associated with the form in a certain place -->
+<!-- The technique may is how the form or table is inserted. This can
+evolve as we support new techniques, but possibilities envisioned now include
+popup window, disclosure box, and inline. -->
+<!ELEMENT insertTable EMPTY >
+<!ATTLIST insertTable id IDREF #REQUIRED >
+<!--<!ATTLIST insertTable technique CDATA #REQUIRED >-->
+<!ELEMENT insertForm EMPTY >
+<!ATTLIST insertForm id IDREF #REQUIRED >
+<!--<!ATTLIST insertForm technique CDATA #REQUIRED >-->
+
+<!ELEMENT entity (name+,primaryKey?,titleField?) >
+<!ELEMENT name (#PCDATA) >
+<!ELEMENT primaryKey (#PCDATA) >
+<!-- A metafield whose runtime value acts an entity's title -->
+<!ELEMENT titleField (#PCDATA) >
+
+<!ELEMENT item (actionMode*, item-attribute*, attributes?) >
+<!ATTLIST item fieldId CDATA #REQUIRED >
+<!ATTLIST item place (left|right) "left" >
+<!-- View only Place should either be "left" or "right" UE team to review TBD-->
+<!-- actionMode provides a mechanism to override the standard appearance and behavior of
+items on a form on a field-by-field basis. This is a bit awkward, but has the capabilities
+needed. Doing it this way makes processing simple, and the thought is that this will be
+by far the exception rather than the rule. -->
+
+<!--extraEntry used for lov fields only
+  none shows dash dash
+  wildcard "*" means all and is used in a query context
+  standard the default value, means do not use extra entry
+ -->
+<!ATTLIST item extraEntry (none|wildcard|standard) "standard" >
+
+<!-- displayLabel - Used to determine if the label should be displayed. If the label is not displayed then the component will be the only thing
+                    displayed in the UI.
+
+     true = show the label (default)
+     false = do not show the label.
+-->
+<!ATTLIST item displayLabel (true|false) "true">
+
+<!-- Required can be specified to override the MetafieldDictionary definition.
+Caution: This may not be implemented yet. -->
+<!ATTLIST item required (true|false|undefined) "undefined" >
+
+<!-- Configurable escape hatch to override field usages. Currently only the lov-->
+<!ELEMENT item-attribute (#PCDATA)>
+<!-- Note extra parameters will be hooked onto the lovKey instead of making this more complicated -->
+<!ATTLIST item-attribute type (lovKey|widgetSubType) #REQUIRED >
+
+<!ELEMENT customfields EMPTY >
+
+<!-- The model is currently only supported in ZK (ignored in ULC). -->
+<!ELEMENT model EMPTY>
+<!ATTLIST model ref CDATA #IMPLIED >
+<!ATTLIST model class CDATA #IMPLIED >
+
+<!ELEMENT uiManager EMPTY>
+<!ATTLIST uiManager ref CDATA #IMPLIED >
+<!ATTLIST uiManager class CDATA #IMPLIED >
+
+<!-- The view is currently only supported in ZK (ignored in ULC). -->
+<!ELEMENT view EMPTY>
+<!ATTLIST view ref CDATA #REQUIRED >
+
+<!ELEMENT uiProcessor EMPTY>
+<!ATTLIST uiProcessor ref CDATA #REQUIRED >
+
+<!ELEMENT submitFormCommand EMPTY>
+<!ATTLIST submitFormCommand ref CDATA #REQUIRED >
+
+<!ELEMENT doBeforeSubmitCommand EMPTY>
+<!ATTLIST doBeforeSubmitCommand ref CDATA #REQUIRED >
+
+<!ELEMENT doSubmitCommand EMPTY>
+<!ATTLIST doSubmitCommand ref CDATA #REQUIRED >
+
+<!ELEMENT doAfterSubmitCommand EMPTY>
+<!ATTLIST doAfterSubmitCommand ref CDATA #REQUIRED >
+
+<!ELEMENT controller EMPTY>
+<!ATTLIST controller ref CDATA #REQUIRED >
+
+<!ELEMENT menu (menuItem)* >
+<!ATTLIST menu category CDATA #REQUIRED >
+
+<!ELEMENT menuItem EMPTY >
+
+<!-- Only the controller attribute is used in ULC (all other attributes are currently ignored by ULC). -->
+<!ELEMENT attributes (attribute)* >
+<!ELEMENT attribute EMPTY >
+<!ATTLIST attribute key CDATA #REQUIRED >
+<!ATTLIST attribute value CDATA #REQUIRED >
+
+<!-- The modal attribute is only supported in ULC (since ZK modal dialogs are displayed inline).  -->
+<!ATTLIST menuItem
+label CDATA #REQUIRED
+mnemonic (A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z) #IMPLIED
+hotkey (A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T|U|V|W|X|Y|Z) #IMPLIED
+icon CDATA #IMPLIED
+selectedIcon CDATA #IMPLIED
+commandRefId CDATA #IMPLIED
+variformId CDATA #IMPLIED
+codeExtensionId CDATA #IMPLIED
+method CDATA #IMPLIED
+userActionId CDATA #IMPLIED
+modal (true|false) "false"
+destination (TAB|DIALOG|OVERLAPPED|EMBEDDED|NONE) "TAB"
+enable (noSource|zeroOrMoreSources|oneSource|oneOrMoreSources|twoOrMoreSources) "zeroOrMoreSources"
+>
+
+<!-- TABLES -->
+<!ELEMENT table (title*, entity?,tableActions?, crudCommand?, doubleClickCommand?, uiManager?, view?, controller?, attributes?, menu*,  column+) >
+<!ATTLIST table id ID #REQUIRED >
+<!ATTLIST table width CDATA #IMPLIED >
+<!ATTLIST table viewOnly (true|false) #IMPLIED >
+<!ATTLIST table cachingStrategy (primaryKey|paging|eager|inMemorySort) #IMPLIED >
+<!ATTLIST table defaultSearchfieldId CDATA #IMPLIED >
+<!ATTLIST table groupCategory CDATA #IMPLIED >
+
+<!-- The crudCommand is currently only supported in ZK (ignored in ULC). -->
+<!ELEMENT crudCommand EMPTY >
+<!ATTLIST crudCommand commandRefId CDATA #IMPLIED >
+<!ATTLIST crudCommand variformId CDATA #IMPLIED >
+<!ATTLIST crudCommand method CDATA #IMPLIED >
+<!ATTLIST crudCommand destination (TAB|DIALOG|OVERLAPPED|EMBEDDED|NONE) "DIALOG" >
+
+<!-- The doubleClickCommand is currently only supported in ZK (ignored in ULC). -->
+<!ELEMENT doubleClickCommand EMPTY >
+<!ATTLIST doubleClickCommand commandRefId CDATA #IMPLIED >
+<!ATTLIST doubleClickCommand variformId CDATA #IMPLIED >
+<!ATTLIST doubleClickCommand method CDATA #IMPLIED >
+<!ATTLIST doubleClickCommand destination (TAB|DIALOG|OVERLAPPED|EMBEDDED|NONE) "DIALOG" >
+
+<!ELEMENT tableActions (tableActionMode)+ >
+<!ELEMENT tableActionMode EMPTY >
+<!ATTLIST tableActionMode action IDREF #REQUIRED >
+<!ATTLIST tableActionMode mode (disabled|allow|none) "allow" >
+
+<!ELEMENT column EMPTY >
+<!-- changed the column the fieldId ID to CDATA, needed to do this because some variforms.xml files contain tables
+     with the same column id as tables contained within the file. This can happen tables are subclassed.
+-->
+<!ATTLIST column fieldId CDATA #REQUIRED >
+<!--<!ATTLIST column viewOnly (true|false) "true" #IMPLIED >-->
+<!-- by default, all columns are viewOnly. This isn't implemented yet. -->
+<!ATTLIST column display (visible|viewable|none) "visible" >
+<!ATTLIST column query (always|true|false) "true" >
+<!ATTLIST column simpleQuery (omit|include) "include" >
+<!ATTLIST column complexQuery (omit|include) "include" >
+<!ATTLIST column hAlignment (left|center|right) #IMPLIED>
+<!ATTLIST column groupLabel CDATA #IMPLIED >
+
+<!-- defines how to horizontally align the values within the table column, if not specified the code will decide on the alignment -->
+
+<!-- CONTAINERS - The following are containers that a) containers can go in, and b) items (atoms) can go in. -->
+
+<!-- Layout panels (north, south, east, west, center).  -->
+<!ELEMENT borderLayout (northPanel?, southPanel?, eastPanel?, westPanel?, centerPanel?)>
+<!ATTLIST borderLayout width CDATA #IMPLIED >
+<!ATTLIST borderLayout height CDATA #IMPLIED >
+<!ATTLIST borderLayout title CDATA #IMPLIED >
+<!ATTLIST borderLayout name CDATA #IMPLIED >
+
+<!--<!ELEMENT north-panel ( item*, north-panel?, south-panel?, east-panel?, west-panel?, center-panel?, tabs?) >-->
+<!ELEMENT northPanel (item*|tabs?|grid?|table?|form?|borderLayout?) >
+<!ATTLIST northPanel height CDATA #IMPLIED >
+<!ATTLIST northPanel title CDATA #IMPLIED >
+<!ATTLIST northPanel name CDATA #IMPLIED >
+<!ELEMENT southPanel (item*|tabs?|grid?|table?|form?|borderLayout?) >
+<!ATTLIST southPanel height CDATA #IMPLIED >
+<!ATTLIST southPanel title CDATA #IMPLIED >
+<!ATTLIST southPanel name CDATA #IMPLIED >
+<!ELEMENT eastPanel (item*|tabs?|grid?|table?|form?|borderLayout?) >
+<!ATTLIST eastPanel width CDATA #IMPLIED >
+<!ATTLIST eastPanel title CDATA #IMPLIED >
+<!ATTLIST eastPanel name CDATA #IMPLIED >
+<!ELEMENT westPanel (item*|tabs?|grid?|table?|form?|borderLayout?) >
+<!ATTLIST westPanel width CDATA #IMPLIED >
+<!ATTLIST westPanel title CDATA #IMPLIED >
+<!ATTLIST westPanel name CDATA #IMPLIED >
+<!ELEMENT centerPanel (item*|tabs?|grid?|table?|form?|borderLayout?) >
+<!ATTLIST centerPanel title CDATA #IMPLIED >
+<!ATTLIST centerPanel name CDATA #IMPLIED >
+
+<!-- Tab panels (tabs and tab). -->
+<!ELEMENT tabs (tab*) >
+<!ATTLIST tabs width CDATA #IMPLIED >
+<!ATTLIST tabs height CDATA #IMPLIED >
+<!ATTLIST tabs title CDATA #IMPLIED >
+<!ATTLIST tabs name CDATA #IMPLIED >
+
+<!ELEMENT tab (item*|tabs?|grid?|table?|form?|borderLayout?) >
+<!ATTLIST tab label CDATA #REQUIRED >
+<!ATTLIST tab icon CDATA #IMPLIED >
+<!ATTLIST tab name CDATA #IMPLIED >
+
+<!-- The grid panel -->
+<!ELEMENT grid (row*) >
+<!ATTLIST grid width CDATA #IMPLIED >
+<!ATTLIST grid height CDATA #IMPLIED >
+<!ATTLIST grid title CDATA #IMPLIED >
+<!ATTLIST grid name CDATA #IMPLIED >
+
+<!-- The grid row -->
+<!ELEMENT row (cell*)>
+
+<!-- The grid cell -->
+<!ELEMENT cell (item?) >
+<!ATTLIST cell span CDATA #IMPLIED >
+
+<!--  Extensions to existing objects.  -->
+<!ELEMENT tableExtension (menu*) >
+<!ATTLIST tableExtension id ID #REQUIRED >
+

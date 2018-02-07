@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<variforms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schemas/Variforms.xsd">
+    <actions>
+        <action id="create">create</action>
+        <action id="view">view</action>
+        <action id="query">query</action>
+        <action id="update">update</action>
+        <action id="delete">delete</action>
+        <action id="duplicate">duplicate</action>
+        <action id="list">list</action>
+    </actions>
+
+    <table id="CUSTOM_TABLE_SANDBOX_FOOS" defaultSearchfieldId="customEntityFields.customfooDynamicString1">
+        <title>Custom Dynamic Foos</title>
+        <customization creationType="CUSTOM_NEW"/>
+        <entity>
+            <name>com.navis.extension.sandbox.CustomFoo</name>
+        </entity>
+
+        <crudCommand variformId="CUSTOM_FORM_FOO"/>
+        <!-- open Table variforms  -->
+        <menu category="actions">
+            <!-- case 1 : custom variform-->
+            <menuItem userActionId="CUSTOM_OPEN_CUSTOM_BARS" label="Open Custom Bars Table"
+                      variformId="CUSTOM_TABLE_SANDBOX_BARS" enable="zeroOrMoreSources"/>
+        </menu>
+
+        <column fieldId="customEntityGkey"/>
+        <column fieldId="customEntityFields.customfooDynamicBusinessName" display="visible"/>
+        <!-- statically defined dynamic components-->
+        <column fieldId="customEntityFields.customfooDynamicString1" display="visible"/>
+        <column fieldId="customEntityFields.customfooDynamicString2" display="visible"/>
+        <column fieldId="customEntityFields.customfooDynamicDateTime1" display="visible"/>
+        <column fieldId="customEntityFields.customfooDynamicDateTime2" display="visible"/>
+        <column fieldId="customEntityFields.customfooDynamicLong1" display="visible"/>
+        <column fieldId="customEntityFields.customfooDynamicLong2" display="visible"/>
+        <column fieldId="customEntityFields.customfooDynamicDouble1" display="visible"/>
+        <column fieldId="customEntityFields.customfooDynamicDouble2" display="visible"/>
+
+        <column fieldId="customEntityFields.customfooDynamicEnum" display="visible"/>
+
+        <column fieldId="customEntityFields.customfooUser.buserUid" display="visible"/>
+    </table>
+
+    <form id="CUSTOM_FORM_FOO">
+        <title>Custom Foo #titleField#</title>
+        <customization creationType="CUSTOM_NEW"/>
+        <entity>
+            <name>com.navis.extension.sandbox.CustomFoo</name>
+            <primaryKey>customEntityGkey</primaryKey>
+            <titleField>customEntityFields.customfooDynamicBusinessName</titleField>
+        </entity>
+
+        <actionsAllowed>
+            <actionMode action="create" mode="editable" pageId="PAGE_QUERY_CREATE"/>
+            <actionMode action="query" mode="editable" pageId="PAGE_QUERY_QUERY"/>
+            <actionMode action="update" mode="editable" pageId="PAGE_QUERY_EDIT"/>
+            <actionMode action="delete" mode="viewOnly" pageId="PAGE_QUERY_DELETE"/>
+        </actionsAllowed>
+
+        <!-- statically defined dynamic components-->
+        <item fieldId="customEntityFields.customfooDynamicBusinessName"/>
+        <item fieldId="customEntityFields.customfooDynamicString1"/>
+        <item fieldId="customEntityFields.customfooDynamicString2"/>
+        <item fieldId="customEntityFields.customfooDynamicDateTime1"/>
+        <item fieldId="customEntityFields.customfooDynamicDateTime2"/>
+        <item fieldId="customEntityFields.customfooDynamicLong1"/>
+        <item fieldId="customEntityFields.customfooDynamicLong2"/>
+        <item fieldId="customEntityFields.customfooDynamicDouble1"/>
+        <item fieldId="customEntityFields.customfooDynamicDouble2"/>
+
+        <item fieldId="customEntityFields.customfooDynamicPosLocType"/>
+
+        <!--  <item fieldId="customEntityFields.customfooUser">
+            <item-attribute type="lovKey">com.navis.security.lov.USERS.SEARCH</item-attribute>
+            <item-attribute type="widgetSubType">search</item-attribute>
+        </item>-->
+    </form>
+
+    <table id="CUSTOM_TABLE_SANDBOX_BARS" defaultSearchfieldId="customEntityFields.custombarDynamicString1">
+        <title>Custom Dynamic Bars</title>
+        <customization creationType="CUSTOM_NEW"/>
+        <entity>
+            <name>com.navis.extension.sandbox.CustomBar</name>
+        </entity>
+        <crudCommand variformId="CUSTOM_FORM_BAR"/>
+        <column fieldId="customEntityGkey"/>
+
+        <!-- statically defined dynamic components-->
+        <column fieldId="customEntityFields.custombarDynamicBusinessName"/>
+        <column fieldId="customEntityFields.custombarUser.buserUid"/>
+        <column fieldId="customEntityFields.custombarDynamicString1" display="visible"/>
+        <column fieldId="customEntityFields.custombarDynamicString2" display="viewable"/>
+        <column fieldId="customEntityFields.custombarDynamicDateTime1" display="visible"/>
+        <column fieldId="customEntityFields.custombarDynamicDateTime2" display="viewable"/>
+        <column fieldId="customEntityFields.custombarDynamicLong1" display="visible"/>
+        <column fieldId="customEntityFields.custombarDynamicLong2" display="viewable"/>
+        <column fieldId="customEntityFields.custombarDynamicDouble1" display="visible"/>
+        <column fieldId="customEntityFields.custombarDynamicDouble2" display="viewable"/>
+
+        <column fieldId="customEntityFields.custombarDynamicFoo.customEntityFields.customfooDynamicBusinessName"/>
+        
+        <column fieldId="customEntityFields.custombarDynamicEnum" display="visible"/>
+
+    </table>
+
+    <form id="CUSTOM_FORM_BAR">
+        <title>Custom Bars</title>
+        <customization creationType="CUSTOM_NEW"/>
+        <entity>
+            <name>com.navis.extension.sandbox.CustomBar</name>
+            <primaryKey>customEntityBar</primaryKey>
+            <titleField>customEntityFields.custombarDynamicString1</titleField>
+        </entity>
+        <actionsAllowed>
+            <actionMode action="create" mode="editable" pageId="PAGE_QUERY_CREATE"/>
+            <actionMode action="query" mode="editable" pageId="PAGE_QUERY_QUERY"/>
+            <actionMode action="update" mode="editable" pageId="PAGE_QUERY_EDIT"/>
+            <actionMode action="delete" mode="viewOnly" pageId="PAGE_QUERY_DELETE"/>
+        </actionsAllowed>
+
+        <!-- statically defined dynamic components-->
+        <item fieldId="customEntityFields.custombarDynamicBusinessName"/>
+
+        <item fieldId="customEntityFields.custombarDynamicString1"/>
+        <item fieldId="customEntityFields.custombarDynamicString2"/>
+        <item fieldId="customEntityFields.custombarDynamicDateTime1"/>
+        <item fieldId="customEntityFields.custombarDynamicDateTime2"/>
+        <item fieldId="customEntityFields.custombarDynamicLong1"/>
+        <item fieldId="customEntityFields.custombarDynamicLong2"/>
+        <item fieldId="customEntityFields.custombarDynamicDouble1"/>
+        <item fieldId="customEntityFields.custombarDynamicDouble2"/>
+        <item fieldId="customEntityFields.custombarDynamicEnum"/>
+
+        <item fieldId="customEntityFields.custombarDynamicFoo" extraEntry="none">
+            <item-attribute
+                    type="lovKey">entityDynamicLov?ENTITY=com.navis.extension.sandbox.CustomFoo,FIELD1=customEntityFields.customfooDynamicBusinessName
+            </item-attribute>
+            <item-attribute type="widgetSubType">search</item-attribute>
+        </item>
+
+    </form>
+</variforms>
+

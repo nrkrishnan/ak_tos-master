@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<notice-request action="GROOVY" business-entity="UNIT" event-type="UNIT_STUFF" description="Auto stuff DCM entry">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="309431" ui-value="AUTO (AUTO)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <message-template>def unit = event.getEntity(); 
+def hazardItem = unit.getUnitGoods().attachHazard("9", "3166"); 
+def eqType = event.getProperty( "EquipmentType");
+def cSize = eqType.substring( 1, 3);
+hazardItem.setHzrdiPackageType("AUTO");
+
+if ( eqType.substring(0,2) == "A4") {
+	hazardItem.setHzrdiQuantity( new Long("4"));
+} else if ( eqType.substring(1, 2) == "4") {
+	hazardItem.setHzrdiQuantity( new Long("2"));
+} else {
+	hazardItem.setHzrdiQuantity( new Long("1"));
+}
+hazardItem.setHzrdiEmergencyTelephone( "1(800)424-9300");
+hazardItem.setHzrdiProperName( "VEHICLE, FLAMMABLE LIQUID POWERED");
+hazardItem.setHzrdiERGNumber( "128");</message-template>
+</notice-request>
+</argo:snx>
+

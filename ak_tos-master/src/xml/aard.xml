@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="¦" newRecord="\n"></Format>
+	<Field sequence="0" name="txnCode" dataType="String"></Field>
+	<Field sequence="1" name="date" dataType="String"></Field>
+	<Field sequence="2" name="time" dataType="String"></Field>
+	<Field sequence="3" name="filler1" dataType="String"></Field>
+	<Field sequence="4" name="nextId" dataType="String"></Field>
+	<Field sequence="5" name="ardFeqtNumber" dataType="String"></Field>
+	<Field sequence="6" name="ardFeqtCheckDigit" dataType="String"></Field>
+	<Field sequence="7" name="ardEqlgLoadPort" dataType="String"></Field>
+	<Field sequence="8" name="ardEqlgRecVessel" dataType="String"></Field>
+	<Field sequence="9" name="ardEqlgRecVoyage" dataType="String"></Field>
+	<Field sequence="10" name="ardEqlgRecDirection" dataType="String"></Field>
+	<Field sequence="11" name="ardAmisAutoReceiptdate" dataType="String"></Field>
+	<Field sequence="12" name="ardAmisShipper" dataType="String"></Field>
+	<Field sequence="13" name="ardAlpha3VinShipper" dataType="String"></Field>
+	<Field sequence="14" name="ardAlpha8VinReceiptDate" dataType="String"></Field>
+	<Field sequence="15" name="ardCmisFiller" dataType="String"></Field>
+</FileDesc>

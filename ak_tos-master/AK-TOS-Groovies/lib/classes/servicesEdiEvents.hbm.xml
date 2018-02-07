@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">ServicesEdiEvents</meta>
+    <meta attribute="scope-set">protected</meta>
+
+     <!--  Entity EdiEvent  -->
+     <!--  JJS: Using dynamic update "FALSE" due to the fact that these entities are rarely, if ever, modified once created.  -->
+     <joined-subclass name="com.navis.edi.business.entity.EdiEvent" table="edi_event" extends="com.navis.services.business.event.Event" dynamic-update="false">
+
+         <meta attribute="generated-class">com.navis.edi.business.entity.EdiEventHbr</meta>
+         <meta attribute="n4alias">edievent</meta>
+         <meta attribute="class-description">Entity to track edi events</meta>
+         <meta attribute="n4-entity-name">Edi Event</meta>
+         <meta attribute="n4-entity-name-plural">Edi Events</meta>
+         <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+         <meta attribute="subclassCustomComponent">edieventCustomFlexFields</meta>
+
+         <key column="edievent_gkey"/>
+
+         <property name="edieventCarrierVisitId" column="cv_id" type="java.lang.String" length="20">
+             <meta attribute="field-description">The short Id of the carrier visit (e.g vessel/voyage)</meta>
+         </property>
+
+         <property name="edieventTransactionCount" column="transaction_count" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Number of bookings, bls, containers, etc. processed</meta>
+         </property>
+
+         <property name="edieventRunTimeMs" column="run_time_ms" type="java.lang.Long" length="8">
+                     <meta attribute="field-description">Run time in milleseconds</meta>
+         </property>
+
+         <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+         <dynamic-component name="edieventCustomFlexFields"/>
+
+     </joined-subclass>
+
+</hibernate-mapping>

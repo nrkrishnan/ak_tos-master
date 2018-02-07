@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Extension</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.extension.business.Extension" table="frm_extension">
+        <meta attribute="generated-class">com.navis.extension.business.ExtensionHbr</meta>
+        <meta attribute="n4alias">ext</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+        <meta attribute="n4-entity-name">Extension</meta>
+        <meta attribute="n4-entity-name-plural">Extensions</meta>
+        <meta attribute="n4-uniqueness-description">none</meta>
+
+        <id name="extGkey" column="ext_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="extName" column="ext_name" type="string" length="80" not-null="true">
+            <meta attribute="field-description">Extension Name</meta>
+        </property>
+        <property name="extLang" column="ext_lang" type="com.navis.framework.persistence.atoms.UserTypeExtensionLanguageEnum"
+                  length="20">
+            <meta attribute="field-description">Extension Language: GROOVY, NONE</meta>
+        </property>
+        <property name="extVersion" column="ext_version" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Extension Version</meta>
+        </property>
+        <property name="extSysSeeded" column="ext_sys_seeded" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Extension System Seeded</meta>
+        </property>
+        <property name="extEnabled" column="ext_enabled" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Extension Enabled (if not enabled, it will not be executed)</meta>
+        </property>
+        <property name="extType" column="ext_type" type="string" length="255" not-null="true">
+            <meta attribute="field-description">Extension Type</meta>
+        </property>
+
+        <property name="extScopeLevel" column="ext_scope_level" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Extension Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+        </property>
+        <property name="extScopeGkey" column="ext_scope_gkey" type="string" length="50">
+            <meta attribute="field-description">Extension Scope Gkey</meta>
+        </property>
+
+        <property name="extClassName" column="ext_class_name" type="string" length="80">
+            <meta attribute="field-description">Extension Class Name as per the language type (if applicable)</meta>
+        </property>
+        <property name="extFileName" column="ext_file_name" type="string" length="80">
+            <meta attribute="field-description">Extension File Name as per the language type (if applicable, no directory path)</meta>
+        </property>
+
+        <property name="extSearchableContents" column="ext_searchable_contents" type="string" length="4000" not-null="true">
+            <meta attribute="field-description">Extension Contents Search String (subset of Contents in String format)</meta>
+        </property>
+        <property name="extDescription" column="ext_description" type="string" length="512" >
+            <meta attribute="field-description">Extension Description</meta>
+        </property>
+
+        <!--  Audit Data -->
+        <property name="extCreated" column="ext_created" type="timestamp"/>
+        <property name="extCreator" column="ext_creator" type="string" length="30"/>
+        <property name="extChanged" column="ext_updated" type="timestamp"/>
+        <property name="extChanger" column="ext_updater" type="string" length="30"/>
+
+        <property name="extContents" column="ext_contents" type="com.navis.framework.persistence.util.BlobUserType" length="1000000" not-null="true">
+            <meta attribute="field-description">Extension Contents</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.extension.business.ExtensionAuditor" table="frm_extension_auditor">
+        <meta attribute="generated-class">com.navis.extension.business.ExtensionAuditorHbr</meta>
+        <meta attribute="n4alias">extaud</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+        <meta attribute="n4-entity-name">Extension Auditor</meta>
+        <meta attribute="n4-entity-name-plural">Extension Auditors</meta>
+        <meta attribute="n4-uniqueness-description">none</meta>
+        <id name="extaudGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="extaudExtGkey" column="ext_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Extension or Groovy Plug-in Gkey</meta>
+        </property>
+        <property name="extaudExtName" column="ext_name" type="string" length="255" not-null="true">
+            <meta attribute="field-description">Extension Name or Groovy Plug-in ID</meta>
+        </property>
+        <property name="extaudExtVersion" column="ext_version" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Extension Version or Groovy Plug-in Version</meta>
+        </property>
+
+        <property name="extaudExtSysSeeded" column="ext_sys_seeded" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Extension System Seeded</meta>
+        </property>
+
+        <property name="extaudExtSearchableContents" column="searchable_contents" type="string" length="4000" not-null="true">
+            <meta attribute="field-description">Extension Contents Search String (subset of Contents in String format)</meta>
+        </property>
+        <property name="extaudExtContents" column="contents" type="com.navis.framework.persistence.util.BlobUserType" length="1000000"
+                  not-null="true">
+            <meta attribute="field-description">Extension Contents or Groovy Plug-in</meta>
+        </property>
+        <property name="extaudExtType" column="ext_type" type="com.navis.framework.persistence.atoms.UserTypeExtensionTypeEnum" not-null="true">
+            <meta attribute="field-description">Type of the Extension. CodeExtension, Groovy Plug-in, etc.,</meta>
+        </property>
+
+        <property name="extaudExtScopeLevel" column="ext_scope_level" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Extension Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+        </property>
+
+        <property name="extaudExtScopeGkey" column="ext_scope_gkey" type="string" length="50">
+            <meta attribute="field-description">Extension Scope Gkey</meta>
+        </property>
+
+        <property name="extaudExtCreated" column="ext_created" type="timestamp">
+            <meta attribute="field-description">Created date of this Extension (Code Extension or Groovy Plugin etc.,)</meta>
+        </property>
+
+        <property name="extaudExtCreator" column="ext_creator" type="string" length="30">
+            <meta attribute="field-description">Creator of this Extension (Code Extension or Groovy Plugin etc.,)</meta>
+        </property>
+
+        <property name="extaudExtChanged" column="ext_updated" type="timestamp">
+            <meta attribute="field-description">Updated date of this Extension (Code Extension or Groovy Plugin etc.,)</meta>
+        </property>
+
+        <property name="extaudExtChanger" column="ext_updater" type="string" length="30">
+            <meta attribute="field-description">Updater of this Extension (Code Extension or Groovy Plugin etc.,)</meta>
+        </property>
+
+        <!--  Audit Data -->
+        <property name="extaudCreated" column="created" type="timestamp"/>
+        <property name="extaudCreator" column="creator" type="string" length="30"/>
+        <property name="extaudChanged" column="updated" type="timestamp"/>
+        <property name="extaudChanger" column="updater" type="string" length="30"/>
+    </class>
+
+    <!--  Extension Injection Mappings  -->
+    <class name="com.navis.extension.business.ExtensionInjection" table="frm_extension_injection">
+        <meta attribute="generated-class">com.navis.extension.business.ExtensionInjectionHbr</meta>
+        <meta attribute="n4alias">extinj</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+        <meta attribute="n4-entity-name">Extension Injection</meta>
+        <meta attribute="n4-entity-name-plural">Extension Injections</meta>
+        <meta attribute="n4-uniqueness-description">none</meta>
+
+        <id name="extinjGkey" column="extinj_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="extinjEnabled" column="extinj_enabled" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Extension Injection enabled (if not enabled, it will not be executed). This only has effect if frm_extension.ext_enabled is true.</meta>
+        </property>
+        <property name="extinjType" column="extinj_type" type="string" length="255" not-null="true">
+            <meta attribute="field-description">Extension Injection Type (one of the Extension types and the same as the extension it points to)</meta>
+        </property>
+        <property name="extinjEntityName" column="extinj_entity_name" type="string" length="100">
+            <meta attribute="field-description">Extension Injection entity name</meta>
+        </property>
+        <property name="extinjVariformId" column="extinj_variform_id" type="string" length="100">
+            <meta attribute="field-description">Extension Injection variform ID</meta>
+        </property>
+        <property name="extinjNotes" column="extinj_notes" type="string" length="512">
+            <meta attribute="field-description">Extension Injection User's Notes</meta>
+        </property>
+
+        <many-to-one name="extinjExtension" column="extinj_extension_gkey" class="com.navis.extension.business.Extension" not-null="true"
+                     index="frm_extinj_ext_gkey_fki"/>
+
+        <property name="extinjScopeLevel" column="extinj_scope_level" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Extension Injection Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+        </property>
+        <property name="extinjScopeGkey" column="extinj_scope_gkey" type="string" length="50">
+            <meta attribute="field-description">Extension Injection Scope Gkey</meta>
+        </property>
+
+        <!--  Audit Data -->
+        <property name="extinjCreated" column="extinj_created" type="timestamp"/>
+        <property name="extinjCreator" column="extinj_creator" type="string" length="30"/>
+        <property name="extinjChanged" column="extinj_updated" type="timestamp"/>
+        <property name="extinjChanger" column="extinj_updater" type="string" length="30"/>
+
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<digital-asset id="GvyMsgFormatter" short-description="Groovy Txt Msg Formatter" groovy-code="//Class Formats the message string by appending Attr &amp; Attr value &#xA;&#xA;public class GvyMsgFormatter {&#xA;&#xA;   public String doIt(String attrName,Object attrValue ) &#xA;  {&#xA;       def fmtValue = ''&#xA;       if(attrValue != null)&#xA;       {&#x9;&#xA;        fmtValue = attrName+'=\''+attrValue+'\' '&#xA;        return fmtValue;&#xA;       }&#xA;       else&#xA;       {&#xA;         return fmtValue;&#xA;        }&#xA;   }&#xA;}&#xA;" />
+</argo:snx>
+

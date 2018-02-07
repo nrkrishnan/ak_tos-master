@@ -1,0 +1,4 @@
+import com.navis.argo.business.snx.DefaultCustomDynamicFlexFieldsImporter
+
+class UnitSnxImporterTest extends DefaultCustomDynamicFlexFieldsImporter {
+}

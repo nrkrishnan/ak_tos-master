@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+    <unit id="ELOU25500" category="EXPORT" transit-state="YARD" freight-kind="MTY" line="NYK" unique-key="ELOU25500">
+        <equipment eqid="ELOU25500" type="2200" class="CTR" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="NYK" operator="NYK"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="YARD" location="YRD1111"/>
+        <routing pol="OAK" pod-1="LYT" origin="OAK">
+            <carrier direction="IB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="VESSEL" id="VSL25500"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="VESSEL" id="VSL25500"/>
+        </routing>
+        <elo id="ELO25500"/>
+        <contents weight-kg="1900.0"/>
+        <unit-etc category="EXPORT" line="NYK"/>
+        <timestamps time-in="2008-11-28T01:12:48" time-last-move="2008-11-28T01:12:48"/>
+        <non-move-history>
+            <event id="UNIT_CREATE" note="test" time-event-applied="2008-11-28T01:12:47" user-id="-system-" is-billable="N"/>
+            <event id="UNIT_ACTIVATE" time-event-applied="2008-11-28T01:12:47" user-id="-system-" is-billable="N"/>
+            <event id="UNIT_RESERVE" time-event-applied="2008-11-28T01:27:15" user-id="admin" is-billable="Y"/>
+        </non-move-history>
+    </unit>
+</argo:snx>
+

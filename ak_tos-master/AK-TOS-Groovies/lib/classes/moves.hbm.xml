@@ -1,0 +1,814 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">Moves</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!--  Entity WorkInstruction  -->
+    <class name="com.navis.inventory.business.moves.WorkInstruction" table="inv_wi" dynamic-update="true">
+        <meta attribute="n4alias">wi</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.moves.WorkInstructionHbr</meta>
+        <meta attribute="class-description">Domain entity representing an instruction to move a Unit</meta>
+        <meta attribute="n4-entity-name">Work Instruction</meta>
+        <meta attribute="n4-entity-name-plural">Work Instructions</meta>
+        <meta attribute="carina-oracle-index">
+            CREATE INDEX wi_pos_anchor_idx ON inv_wi(pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE SPATIAL INDEX wi_pos_anchor_idx ON inv_wi(pos_anchor) WITH ( BOUNDING_BOX = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <id name="wiGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- 2009-08-18 spabbala v2.0.G ARGO-20251 Missing indexes for performance: adding index inv_wi_pkey_idx on pkey-->
+        <property name="wiPkey" column="pkey" type="java.lang.Long" index="inv_wi_pkey_idx" unique-key="inv_wi_unique_pkey_fcy">
+            <meta attribute="field-description">SPARCS's reference for the WI</meta>
+        </property>
+
+        <many-to-one name="wiFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility" not-null="false"
+                     unique-key="inv_wi_unique_pkey_fcy">
+            <meta attribute="field-description">Facility to which this WI belongs (JJS added 2008-03-11, ARGO-9190 for scoping)</meta>
+        </many-to-one>
+
+        <many-to-one name="wiUyv" column="uyv_gkey" class="com.navis.inventory.business.units.UnitYardVisit" not-null="false">
+            <meta attribute="field-description">If owned by a UnitYardVisit, the gkey of the UnitYardVisit. Null otherwise.</meta>
+        </many-to-one>
+
+        <many-to-one name="wiTbdUnit" column="tbdu_gkey" class="com.navis.inventory.business.units.TbdUnit" not-null="false">
+            <meta attribute="field-description">If owned by a TbdUnit, the gkey of the TbdUnit. Null otherwise. 2008-03-11, ARGO-9190</meta>
+        </many-to-one>
+
+        <property name="wiWqPkey" column="wq_pkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">SPARCS's reference to the owner work queue</meta>
+        </property>
+
+        <many-to-one name="wiWorkQueue" column="work_queue_gkey" class="com.navis.inventory.business.moves.WorkQueue" not-null="false">
+            <meta attribute="field-description">The owner work queue</meta>
+        </many-to-one>
+
+        <property name="wiArPkey" column="ar_pkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">XPS reference to an allocation range, nullable.</meta>
+        </property>
+
+        <!-- Do not convert ar_gkey to many-to-one because that could cause foreign key constraint violations upon delete of a parent XpeAr entity.
+             The problem is avoided in other FKs added for ARGO-35626 by overriding processCacheDelete().  But since XpeAr/XpmAr is all generated
+             code, there is no opportunity to cleanup this WorkInstruction FK prior to XpeAr delete requests processed from the cache. -->
+        <property name="wiArGkey" column="ar_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">N4 reference to an allocation range, nullable.</meta>
+        </property>
+
+        <property name="wiYardShiftTargetWiPkey" column="shift_target_pkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">XPS reference to the wiYardShiftTargetWi</meta>
+        </property>
+
+        <many-to-one name="wiYardShiftTargetWi" class="com.navis.inventory.business.moves.WorkInstruction"
+                     column="shift_target_gkey" not-null="false">
+            <meta attribute="field-description">If this move is a yard shift, the WI for the container it is intended to expose</meta>
+        </many-to-one>
+
+        <property name="wiCheIndex" column="che_id" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">'index' of the wiChe</meta>
+        </property>
+        <!-- 2008.05.12 johns EC-335 Below columns are from legacy Radio Server implementation, they can be dropped when
+             ECN4 is the only option -->
+        <many-to-one name="wiChe" class="com.navis.argo.business.xps.model.Che" column="che_gkey" not-null="false">
+            <meta attribute="field-description">The CHE assigned to the WI. SPARCS getMChe()</meta>
+        </many-to-one>
+
+        <property name="wiItvId" column="itv_id" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">'index' of the wiItv</meta>
+        </property>
+
+        <many-to-one name="wiItv" class="com.navis.argo.business.xps.model.Che" column="itv_gkey" not-null="false">
+            <meta attribute="field-description">The ITV (Truck) assigned to the WI. SPARCS getMTruckChe()</meta>
+        </many-to-one>
+
+        <!-- 2008.05.12 johns EC-335 Below are new columns for use with ECN4 -->
+        <property name="wiCheWorkAssignmentPkey" column="che_work_assignment_pkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The work assignment that links to the assigned CHE</meta>
+        </property>
+
+        <many-to-one name="wiCheWorkAssignment" class="com.navis.argo.business.xps.model.WorkAssignment"
+                     column="che_work_assignment_gkey" not-null="false">
+            <meta attribute="field description">Work Assignment that links to the assigned CHE</meta>
+        </many-to-one>
+
+        <property name="wiItvWorkAssignmentPkey" column="itv_work_assignment_pkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The work assignment that links to the assigned ITV (Truck)</meta>
+        </property>
+
+        <many-to-one name="wiItvWorkAssignment" class="com.navis.argo.business.xps.model.WorkAssignment"
+                     column="itv_work_assignment_gkey" not-null="false">
+            <meta attribute="field description">Work Assignment that links to the assigned ITV</meta>
+        </many-to-one>
+
+        <property name="wiIntendedCheIndex" column="intended_che_id" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">'index' of the wiIntendedChe</meta>
+        </property>
+
+        <many-to-one name="wiIntendedChe" class="com.navis.argo.business.xps.model.Che" column="intended_che_gkey" not-null="false">
+            <meta attribute="field-description">The CHE that is expected to do this move per latest PrimeRoute calculation.</meta>
+        </many-to-one>
+
+        <many-to-one name="wiNominatedChe" class="com.navis.argo.business.xps.model.Che" column="nominated_che_gkey" not-null="false">
+            <meta attribute="field-description">The CHE nominated to do this move per work instruction estimated move time.</meta>
+        </many-to-one>
+
+        <property name="wiMoveNumber" column="move_number" type="java.lang.Double">
+            <meta attribute="field-description">SPARCS getMoveNumber()</meta>
+        </property>
+
+        <property name="wiSequence" column="sequence" type="java.lang.Long">
+            <meta attribute="field-description">SPARCS getSequence()</meta>
+        </property>
+
+        <property name="wiCraneLane" column="crane_lane" type="java.lang.Long">
+            <meta attribute="field-description">SPARCS getCraneLane()</meta>
+        </property>
+
+        <property name="wiSetAside" column="set_aside" type="java.lang.Long">
+            <meta attribute="field-description">SPARCS getSetAside(). The yard shift index.</meta>
+        </property>
+
+        <property name="wiDoorDirection" column="door_direction" type="com.navis.inventory.persistence.atoms.UserTypeDoorDirectionEnum"
+                  not-null="true">
+            <meta attribute="field-description">SPARCS 'eWIBooleanDoorsCare', eWIBooleanDoorsFWD' booleans</meta>
+        </property>
+
+        <property name="wiDeckingRestrict" column="decking_restriction" type="com.navis.inventory.persistence.atoms.UserTypeDeckingRestrictionEnum"
+                  not-null="true">
+            <meta attribute="field-description">SPARCS 'eWIBooleanRestrictToWheels', eWIBooleanRestrictToGround' booleans</meta>
+        </property>
+
+        <property name="wiTwinWith" column="twin_with" type="com.navis.inventory.persistence.atoms.UserTypeTwinWithEnum" not-null="true">
+            <meta attribute="field-description">How the move is intended to be twin-lifted: which other WI to twin with</meta>
+        </property>
+
+        <property name="wiTwinIntendedFetch" column="twin_int_fetch" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if we intend to carry out the Fetch phase as a twin move</meta>
+        </property>
+
+        <property name="wiTwinIntendedCarry" column="twin_int_carry" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if we intend to carry out the Carry phase as a twin move</meta>
+        </property>
+
+        <property name="wiTwinIntendedPut" column="twin_int_put" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if we intend to carry out the Put phase as a twin move</meta>
+        </property>
+
+        <property name="wiEcStateFetch" column="ec_state_fetch" type="com.navis.inventory.persistence.atoms.UserTypeWiEcStateEnum" not-null="true">
+            <meta attribute="field-description">Fetch State (eWIBooleanFetchRequest, eWIBooleanPriorityFetch, eWIBooleanPriorityDispatch)</meta>
+        </property>
+
+        <property name="wiEcStateDispatchRequest" column="ec_state_dispatch_request" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Dispatch Request flag (eWIBooleanDispatchRequest)</meta>
+        </property>
+
+        <property name="wiEcStateItvDispatchRequest" column="ec_state_itv_dispatch_request" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Dispatch Truck Request flag (eWIBooleanDispatchTruckRequest)</meta>
+        </property>
+
+        <!-- 2008.05.15 johns EC-335 Old columns ec_state_dispatch and ec_state_itv_dispatch are deprecated. can't reuse names because they were enums -->
+        <property name="wiEcStateDispatch" column="ec_state_dispatch_b" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Dispatch State (eWIBooleanDispatched)</meta>
+        </property>
+
+        <property name="wiEcStateItvDispatch" column="ec_state_itv_dispatch_b" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">ITV Dispatch State (eWIBooleanDispatchedTruck)</meta>
+        </property>
+
+        <property name="wiSuspendState" column="suspend_state" type="com.navis.inventory.persistence.atoms.UserTypeWiSuspendStateEnum"
+                  not-null="true">
+            <meta attribute="field-description">Suspend State (eWIBooleanSuspended, eWIBooleanBypass, eWIBooleanCancelRequested)</meta>
+        </property>
+
+        <property name="wiIsLocked" column="locked" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsConfirmed" column="confirmed" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsDefiniteMove" column="definite" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsExecutable" column="executable" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsASCAbortedOnceAlready" column="asc_aborted" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">ASC-cancelled-its-MEET_THE_AGV-premature-dispatch-because-the-AGV-was-late. Once we decide to set the container down, we need to remember not to dispatch that container prematurely again.</meta>
+        </property>
+
+        <property name="wiIsIncrementCraneLane" column="increment_crane_lane" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsBeingRehandled" column="being_rehandled" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsBeingDeleted" column="being_deleted" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsShouldBeSent" column="should_be_sent" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsSequencedByPWP" column="sequenced_pwp" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsHostRequestPriority" column="host_request_priority" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsSkipHostUpdate" column="skip_host_update" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiMoveStage" column="move_stage" type="com.navis.argo.persistence.atoms.UserTypeWiMoveStageEnum" not-null="true">
+            <meta attribute="field-description">SPARCS getMoveStage()</meta>
+        </property>
+
+        <property name="wiConfirmedMoveStage" column="conf_move_stage" type="com.navis.argo.persistence.atoms.UserTypeWiMoveStageEnum"
+                  not-null="true">
+            <meta attribute="field-description">SPARCS getConfMoveStage()</meta>
+        </property>
+
+        <property name="wiEcHold" column="ec_hold" type="com.navis.inventory.persistence.atoms.UserTypeEcHoldEnum" not-null="true">
+            <meta attribute="field-description">SPARCS getECHold()</meta>
+        </property>
+
+        <property name="wiEqMovesKey" column="eq_moves_key" type="string" length="1">
+            <meta attribute="field-description">SPARCS getEquipMovesKey()</meta>
+        </property>
+
+        <property name="wiEqUsesKey" column="eq_uses_key" type="string" length="1">
+            <meta attribute="field-description">SPARCS getEquipUsesKey()</meta>
+        </property>
+
+        <property name="wiMoveKind" column="move_kind" type="com.navis.argo.persistence.atoms.UserTypeWiMoveKindEnum" not-null="false">
+            <meta attribute="field-description">Move Kind (load/disch/receive, etc.)</meta>
+        </property>
+
+        <property name="wiCarrierLocType" column="carrier_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" not-null="false">
+            <meta attribute="field-description">An Enum giving the type of carrier, if this is a move to or from a carrier</meta>
+        </property>
+
+        <property name="wiCarrierLocId" column="carrier_locid" type="string" length="16" not-null="false">
+            <meta attribute="field-description">A String giving the Id of the carrier, if this is a move to or from a carrier</meta>
+        </property>
+
+        <!-- MoveHistory fields -->
+        <property name="mvhsFetchCheIndex" column="mvhs_fetch_che_id" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">'index' of the mvhsFetchChe</meta>
+        </property>
+
+        <property name="mvhsFetchCheId" column="mvhs_fetch_che_name" type="string" not-null="false">
+            <meta attribute="field-description">Name of CHE that did the Fetch</meta>
+        </property>
+
+        <property name="mvhsCarryCheIndex" column="mvhs_carry_che_id" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">'index' of the mvhsCarryChe</meta>
+        </property>
+
+        <property name="mvhsCarryCheId" column="mvhs_carry_che_name" type="string" not-null="false">
+            <meta attribute="field-description">Name of CHE that did the Carry</meta>
+        </property>
+
+        <property name="mvhsPutCheIndex" column="mvhs_put_che_id" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">'index' of the mvhsPutChe</meta>
+        </property>
+
+        <property name="mvhsPutCheId" column="mvhs_put_che_name" type="string" not-null="false">
+            <meta attribute="field-description">Name of CHE that did the Put</meta>
+        </property>
+
+        <property name="mvhsDistToStart" column="mvhs_dist_start" type="java.lang.Long">
+            <meta attribute="field-description">Distance prime mover travelled in fetch phase, meters. SPARCS getHistoryDistToStart()</meta>
+        </property>
+
+        <property name="mvhsDistOfCarry" column="mvhs_dist_carry" type="java.lang.Long">
+            <meta attribute="field-description">Distance prime mover travelled in carry phase, meters. SPARCS getHistoryDistOfCarry()</meta>
+        </property>
+
+        <property name="mvhsTimeCarryComplete" column="mvhs_t_carry_complete" type="timestamp">
+            <meta attribute="field-description">Time at which carry phase was completed. SPARCS getHistoryCarryCompl()</meta>
+        </property>
+
+        <property name="mvhsTimeDispatch" column="mvhs_t_dispatch" type="timestamp">
+            <meta attribute="field-description">Time at which move was dispatched. SPARCS getHistoryDispatchTime()</meta>
+        </property>
+
+        <property name="mvhsTimeFetch" column="mvhs_t_fetch" type="timestamp">
+            <meta attribute="field-description">Time at which fetch phase was completed. SPARCS getHistoryFetchTime()</meta>
+        </property>
+
+        <property name="mvhsTimePut" column="mvhs_t_put" type="timestamp">
+            <meta attribute="field-description">Time at which put phase was completed. SPARCS getHistoryPutTime()</meta>
+        </property>
+
+        <property name="mvhsTimeCarryCheFetchReady" column="mvhs_t_carry_fetch_ready" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was ready to fetch. SPARCS 3.4: kWITagHistoryCarryCheFetchReadyTime</meta>
+        </property>
+
+        <property name="mvhsTimeCarryChePutReady" column="mvhs_t_carry_put_ready" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was ready to put. SPARCS 3.4: kWITagHistoryCarryChePutReadyTime</meta>
+        </property>
+
+        <property name="mvhsTimeCarryCheDispatch" column="mvhs_t_carry_dispatch" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was dispatched. SPARCS 3.4: kWITagHistoryCarryCheDispatchTime</meta>
+        </property>
+
+        <property name="mvhsTimeDischarge" column="mvhs_t_discharge" type="timestamp">
+            <meta attribute="field-description">Time at which discharge phase was completed</meta>
+        </property>
+
+        <property name="mvhsRehandleCount" column="mvhs_rehandle_count" type="java.lang.Long">
+            <meta attribute="field-description">Number of rehandles required to perform the move. SPARCS getHistoryRhndlCount()</meta>
+        </property>
+
+        <property name="mvhsPowPkey" column="mvhs_pow_pkey" type="java.lang.Long">
+            <meta attribute="field-description">Sparcs reference to the point of work</meta>
+        </property>
+
+        <property name="mvhsPoolPkey" column="mvhs_pool_pkey" type="java.lang.Long">
+            <meta attribute="field-description">Sparcs reference to the Pool</meta>
+        </property>
+
+        <property name="mvhsTwinFetch" column="mvhs_twin_fetch" type="java.lang.Boolean">
+            <meta attribute="field-description">True if we the Fetch phase was a twin move</meta>
+        </property>
+
+        <property name="mvhsTwinCarry" column="mvhs_twin_carry" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the Carry phase was a twin move</meta>
+        </property>
+
+        <property name="mvhsTwinPut" column="mvhs_twin_put" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the Put phase was a twin move</meta>
+        </property>
+
+        <property name="mvhsTandemFetch" column="mvhs_tandem_fetch" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the Fetch phase was a tandem move</meta>
+        </property>
+
+        <property name="mvhsTandemPut" column="mvhs_tandem_put" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the Put phase was a tandem move</meta>
+        </property>
+
+        <!-- 2013.10.29 Vijay ARGO-47706 To capture OTR truck arrival time to the wheeled TZ. -->
+        <property name="mvhsTZArrivalTime" column="mvhs_tz_arrival_time" type="timestamp">
+            <meta attribute="field-description">Time at truck arrival at the transfer zone. SPARCS getTZArrivalTime()</meta>
+        </property>
+
+        <property name="wiEstimatedMoveTime" column="est_move_time" type="timestamp">
+            <meta attribute="field-description">Estimated time of the move. SPARCS getEstimatedMoveTime()</meta>
+        </property>
+
+        <property name="wiTimeOrigEstStart" column="t_orig_est_start" type="timestamp">
+            <meta attribute="field-description">Original estimated move start time. SPARCS getOrigEstStartTime()</meta>
+        </property>
+
+        <property name="wiRestowAccount" column="restow_account" type="string" length="20">
+            <meta attribute="field-description">Account to charge restow cost against. SPARCS getRestowAccount()</meta>
+        </property>
+
+        <property name="wiServiceOrder" column="service_order" type="string" length="20">
+            <meta attribute="field-description">The service order against which this move is to be charged</meta>
+        </property>
+
+        <property name="wiRestowReason" column="restow_reason" type="string" length="20">
+            <meta attribute="field-description">Reason for restow. SPARCS getRestowReason()</meta>
+        </property>
+
+        <property name="wiRoadTruckCounter" column="road_truck" type="java.lang.Long">
+            <meta attribute="field-description">The truck, where 1=first road truck of the day, 2=second, etc. SPARCS getTruckVisitRef()</meta>
+        </property>
+
+        <property name="wiCheDispatchOrder" column="che_dispatch_order" type="java.lang.Long">
+            <meta attribute="field-description">The order of dispatch for this move relative to others dispatched to wiChe. SPARCS getMCheDispOrder()</meta>
+        </property>
+
+        <property name="wiItvDispatchOrder" column="itv_dispatch_order" type="java.lang.Long">
+            <meta attribute="field-description">The order of dispatch for this move relative to others dispatched to wiItv. SPARCS getMTruckCheDispOrder()</meta>
+        </property>
+
+        <component name="wiPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The position of the WI. For planned WI, this is the 'to' position. For completed WI, this is the 'from' position.</meta>
+
+            <property name="posLocType" column="pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16" not-null="true">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="pos_name" type="string" length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+
+            <!-- 2009-10-30 pji Created to support persistent bin model. -->
+            <many-to-one name="posBin" column="pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <property name="wiTruckVisitRef" column="truck_visit_ref" type="java.lang.Long">
+            <meta attribute="field-description">SPARCS managed truck visit ref. SPARCS getTrkVisitRef()</meta>
+        </property>
+
+        <property name="wiPoolLevel" column="pool_level" type="java.lang.Long">
+            <meta attribute="field-description">A value used to identify how many pools could work with this WI</meta>
+        </property>
+
+        <property name="wiMsgRef" column="msg_ref" type="java.lang.Long">
+            <meta attribute="field-description">ID of some message attached to the Work Instruction. SPARCS getMMsgRef()</meta>
+        </property>
+
+        <property name="wiPlannerCreate" column="planner_create" type="java.lang.Long">
+            <meta attribute="field-description">SPARCS user who created the WI</meta>
+        </property>
+
+        <property name="wiPlannerModify" column="planner_modify" type="java.lang.Long">
+            <meta attribute="field-description">SPARCS user who modified the WI</meta>
+        </property>
+
+        <property name="wiTimeCreated" column="t_create" type="timestamp">
+            <meta attribute="field-description">Time at which the move was planned. SPARCS getPlanTime()</meta>
+        </property>
+
+        <property name="wiTimeModified" column="t_modified" type="timestamp">
+            <meta attribute="field-description">Time at which the move was modified. SPARCS getModifiedTime()</meta>
+        </property>
+
+        <property name="wiCreateTool" column="create_tool" type="com.navis.inventory.persistence.atoms.UserTypeSparcsToolEnum" not-null="true">
+            <meta attribute="field-description">The 'tool' with which the move was created in SPARCS: getCreatedByTool()</meta>
+        </property>
+
+        <!-- todo fields below are candidates for removal.  All should be derived from other properties. -->
+
+        <property name="wiIsImminentMove" column="imminent_move" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsAlmostImminent" column="almost_imminent" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsAlmostCurrent" column="almost_current" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsBeingCarried" column="being_carried" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsCarryByStraddle" column="carry_by_straddle" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsDispatchHung" column="dispatch_hung" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS Bit</meta>
+        </property>
+
+        <property name="wiIsIgnoreGateHold" column="ignore_gate_hold" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">SPARCS thing?</meta>
+        </property>
+
+        <!--wiTvGkey is a key for a TruckVisitDetails entity which is in Road module...so cannot use foreignkey constraint.-->
+        <property name="wiTvGkey" column="tv_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Gate move truck visit key</meta>
+        </property>
+        <!--wiTranGkey is a key for a TruckTransaction entity which is in Road module...so cannot use foreignkey constraint.-->
+        <property name="wiTranGkey" column="tran_gkey" type="java.lang.Long" index="inv_wi_tran_gkey_idx">
+            <meta attribute="field-description">Gate move truck transaction key</meta>
+        </property>
+
+        <property name="wiOriginalFromQual" column="origin_from_qual" type="string" length="1">
+            <meta attribute="field-description">Original from location qualifier</meta>
+        </property>
+
+        <property name="wiAssignedChassId" column="assigned_chassid" type="string" length="20">
+            <meta attribute="field-description">Chassis assigned to Work Instruction</meta>
+        </property>
+
+        <!-- todo lifecycle fields kWITagCreator, kWITagModifierID How does this fit with N4 Security? -->
+
+        <!--rmk/pbennett removing space from the column name ARGO-23526-->
+        <property name="wiIsSwappableDelivery" column="swappable_delivery" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Empty container assigned can be swapped</meta>
+        </property>
+
+        <property name="wiIsN4SpecifiedQueue" column="n4_specified_queue" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">An N4 gate message specified the queue</meta>
+        </property>
+
+        <property name="wiGateTranSeq" column="gate_transaction_sequence" type="java.lang.Integer" not-null="false">
+            <meta attribute="field-description">Gate transaction sequence</meta>
+        </property>
+
+        <property name="wiCraneLaneTier" column="crane_lane_tier" type="java.lang.Integer" not-null="false">
+            <meta attribute="field-description">Crane lane tier for containers placed under QC</meta>
+        </property>
+
+        <!--  WWAN 2010-12-10 pen ARGO-27875 - merge of yard move filters -->
+        <property name="wiYardMoveFilter" column="yard_move_filter" type="string" length="20">
+            <meta attribute="field-description">Yard Move Filter assigned to Work Instruction</meta>
+        </property>
+
+        <!--  ccasey 2011-01-12 ARGO-28751 - twin model new fields -->
+        <property name="wiActualSequence" column="actual_sequence" type="java.lang.Long">
+            <meta attribute="field-description">Actual sequence of drop is recorded if different from planned sequence()</meta>
+        </property>
+        <property name="wiActualVesselTwinWiPkey" column="actual_vessel_twin_pkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">XPS reference of WI discharged with this Work Instruction</meta>
+        </property>
+        <many-to-one name="wiActualVesselTwinWi" class="com.navis.inventory.business.moves.WorkInstruction"
+                     column="actual_vessel_twin_gkey" not-null="false">
+            <meta attribute="field-description">WI discharged with this Work Instruction</meta>
+        </many-to-one>
+        <property name="wiIsStrictLoad" column="strict_load" type="java.lang.Boolean" not-null="false">
+            <!-- see ARGO-40249 -->
+            <meta attribute="field-description">Boolean value indicating whether flexible loading is allowed (false = flexible, not strict)</meta>
+        </property>
+
+        <!-- 2013.04.18 mpadhye ARGO-47018 Add Preferred TransferZone Type at Destination of move -->
+        <property name="wiPreferredTransferLocation" column="preferred_transfer_location" type="com.navis.argo.persistence.atoms.UserTypeTransferLocationEnum" not-null="false">
+            <meta attribute="field-description">Preferred transfer location at destination</meta>
+        </property>
+
+        <property name="wiIsTandemWithNext" column="is_tandem_with_next" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Is tandem with next Work Instruction</meta>
+        </property>
+
+        <property name="wiIsTandemWithPrevious" column="is_tandem_with_previous" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Is tandem with previous Work Instruction</meta>
+        </property>
+
+        <!-- 2013.12.17 benneco ARGO-51965 WorkInstruction Update collisions between N4 and XPS will be detected using this field.-->
+        <property name="wiXpsObjectVersion" column="xps_object_version" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Object Version for XPS WI Update collision detection</meta>
+        </property>
+
+    </class>
+
+    <!--  Entity WorkQueue  -->
+
+    <class name="com.navis.inventory.business.moves.WorkQueue" table="inv_wq" dynamic-update="true">
+        <meta attribute="n4alias">wq</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.moves.WorkQueueHbr</meta>
+        <meta attribute="class-description">WorkQueue: an ordered list of WorkInstructions</meta>
+        <meta attribute="n4-entity-name">Work Queue</meta>
+        <meta attribute="n4-entity-name-plural">Work Queues</meta>
+
+        <id name="wqGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="wqPkey" column="pkey" type="java.lang.Long" unique-key="wq_pkey_yard">
+            <meta attribute="field-description">SPARCS primary key for this wq</meta>
+        </property>
+
+        <!-- REFERENCE TO OWNER POW (Point Of Work) -->
+
+        <property name="wqPowPkey" column="pow_pkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">SPARCS reference to the POW that owns this Work Queue</meta>
+        </property>
+
+        <many-to-one name="wqPow" class="com.navis.argo.business.xps.model.PointOfWork"
+                     column="pow_gkey" not-null="false">
+            <meta attribute="field-description">N4 reference to the POW that owns this Work Queue</meta>
+        </many-to-one>
+
+        <!-- END REFERENCE TO OWNER POW -->
+
+        <!-- This refernce will become obsolete once N4 adopts the POW entity (POW will reference the Yard) -->
+        <many-to-one name="wqYard" column="yrd_gkey" class="com.navis.argo.business.model.Yard" not-null="true" unique-key="wq_pkey_yard">
+            <meta attribute="field-description">The Yard of this WorkQueue</meta>
+        </many-to-one>
+
+        <!-- REFERENCE TO COMPANION QUEUE -->
+
+        <property name="wqCycleCompanionPkey" column="cycle_companion_pkey" type="java.lang.Long">
+            <meta attribute="field-description">Pkey of wqDoubleCycleCompanion</meta>
+        </property>
+
+        <many-to-one name="wqCycleCompanion" column="cycle_companion_gkey" class="com.navis.inventory.business.moves.WorkQueue">
+            <meta attribute="field-description">Another Work Queue that contributes alternating moves when double cycling</meta>
+        </many-to-one>
+
+        <!-- END REFERENCE TO COMPANION QUEUE -->
+
+        <!-- REFERENCE TO SHIFT -->
+
+        <property name="wqFirstRelatedShiftPkey" column="first_shift_pkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">SPARCS reference to the first Shift that processes this queue</meta>
+        </property>
+
+        <many-to-one name="wqFirstRelatedShift" column="first_shift_Gkey" class="com.navis.argo.business.xps.model.WorkShift" not-null="false">
+            <meta attribute="field-description">N4 reference to the first Shift that processes this queue</meta>
+        </many-to-one>
+
+        <!-- END REFERENCE TO SHIFT -->
+
+        <!-- REFERENCE TO CHILD WORK INSTRUCTIONS -->
+
+        <!--
+                2007-04-19 (3024) JJS v1.3I More clean-up: removed formal relationships to other XPS objects
+                <list name="wqWiList" inverse="true" lazy="true" cascade="none">
+                    <key column="wq_gkey"/>
+                    <index column="sequence"/>
+                    <one-to-many class="com.navis.inventory.business.moves.WorkInstruction"/>
+                </list>
+        -->
+
+        <!-- END REFERENCE TO CHILD WORK INSTRUCTIONS -->
+
+        <property name="wqOrder" column="qorder" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Order of the Work Queue within its POW</meta>
+        </property>
+
+        <property name="wqType" column="qtype" type="com.navis.inventory.persistence.atoms.UserTypeWqTypeEnum" not-null="true">
+            <meta attribute="field-description">Work Queue Type</meta>
+        </property>
+
+        <property name="wqFission" column="qfission" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Work Queue Fission Number: differentiates multiple queues for same section/deck</meta>
+        </property>
+
+        <property name="wqhasWisSentToTLS" column="wis_sent_tls" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Indicates whether the queue contains moves that were sent to the TLS system.</meta>
+        </property>
+
+        <property name="wqSaveCompletedMoves" column="save_completed_moves" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Indicates whether completeed moves are saved.</meta>
+        </property>
+
+        <property name="wqIsBlue" column="is_blue" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Indicates whether work queue is active (YES means active).</meta>
+        </property>
+
+        <property name="wqPermanent" column="permanent" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Is the queue permanent, i.e. associated with an automated planning process?</meta>
+        </property>
+
+        <property name="wqServiceOrderQueue" column="service_order_queue" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Is the queue associated with a service orders.</meta>
+        </property>
+
+        <property name="wqManualSequenceMode" column="manual_sequence_mode" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Is the work queue manually sequenced?</meta>
+        </property>
+
+        <property name="wqYardLoadbackQueue" column="yard_loadback_queue" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Is the queue a loadback queue?</meta>
+        </property>
+
+        <property name="wqAllowCntr40" column="allow_40" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Does the queue accept 40ft containers?</meta>
+        </property>
+
+        <property name="wqAllowCntr20" column="allow_20" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Does the queue accept 20ft containers?</meta>
+        </property>
+
+        <property name="wqPosLocType" column="pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16" not-null="true">
+            <meta attribute="field-description">An Enum giving the location type of the queue (vessel, yard, ...).</meta>
+        </property>
+
+        <property name="wqPosLocId" column="pos_locid" type="string" length="16">
+            <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+        </property>
+
+        <!-- This fk removed.  It would have been a nice replacement for the pos_loctype/pos_locid couplet but could not be maintained due
+            to fk constraints when a CarrierVisit is deleted.  Too difficult to preProcessDelete on CarrierVisit (in Argo) to null out this
+            foreign key in WorkQueue (in Inventory).
+        <many-to-one name="wqQueueOwner" class="com.navis.argo.business.model.CarrierVisit"
+                     column="queue_owner_gkey" not-null="false">
+            <meta attribute="field-description">Owning carrier visit of the queue</meta>
+        </many-to-one> -->
+
+        <property name="wqCode" column="qcode" type="string" length="10">
+            <meta attribute="field-description">Short code for the queue. Useful for sorting.</meta>
+        </property>
+
+        <property name="wqDeck" column="qdeck" type="string" length="1">
+            <meta attribute="field-description">Indidicates whether the queue is above or below deck.</meta>
+        </property>
+
+        <property name="wqRow" column="qrow" type="string" length="3">
+            <meta attribute="field-description">Vessel bay of the queue.</meta>
+        </property>
+
+        <property name="wqName" column="name" type="string" length="31">
+            <meta attribute="field-description">Name of the work queue.</meta>
+        </property>
+
+        <property name="wqDeleteReadinessTime" column="t_delete_ready" type="timestamp">
+            <meta attribute="field-description">Internal field.</meta>
+        </property>
+
+        <property name="wqDoubleCycleFromSequence" column="doublecycle_from_sequence" type="java.lang.Long">
+            <meta attribute="field-description">Sequence number of the first move for double cycling.</meta>
+        </property>
+
+        <property name="wqDoubleCycleToSequence" column="doublecycle_to_sequence" type="java.lang.Long">
+            <meta attribute="field-description">Sequence number of the last move for double cycling.</meta>
+        </property>
+
+        <property name="wqNote" column="note" type="string" length="60">
+            <meta attribute="field-description">Note.</meta>
+        </property>
+
+        <property name="wqComputed20sProjectionCount" column="computed_20_projection" type="java.lang.Long">
+            <meta attribute="field-description">The projected number of 20ft moves in the work queue.</meta>
+        </property>
+
+        <property name="wqComputed40sProjectionCount" column="computed_40_projection" type="java.lang.Long">
+            <meta attribute="field-description">The projected number of 40ft moves in the work queue.</meta>
+        </property>
+
+        <property name="wqVesselLcg" column="vessel_lcg" type="java.lang.Long">
+            <meta attribute="field-description">Longitudinal center of gravity position of this work queue against the vessel.</meta>
+        </property>
+
+        <property name="wqUseWqProd" column="use_wq_prod" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">If true use the estimated productivity of the work queue (rather than the POW).</meta>
+        </property>
+
+        <property name="wqProductivityStd" column="productivity_std" type="java.lang.Long">
+            <meta attribute="field-description">Productivity for standard operations (single cycling).</meta>
+        </property>
+
+        <property name="wqProductivityDual" column="productivity_dual" type="java.lang.Long">
+            <meta attribute="field-description">Productivity for dual cycling.</meta>
+        </property>
+
+        <property name="wqProductivityTwin" column="productivity_twin" type="java.lang.Long">
+            <meta attribute="field-description">Productivity when twin lifting.</meta>
+        </property>
+
+        <property name="wqMaxTeuCap" column="max_teu_cap" type="java.lang.Long">
+            <meta attribute="field-description">Maximum number of TEUs for the work queue.</meta>
+        </property>
+
+        <property name="wqPercentCapToStartPriority" column="pct_cap_start_prty" type="java.lang.Long">
+            <meta attribute="field-description">Percentage of queue capacity to start prioritize the jobs (used for Prime Route buffers)</meta>
+        </property>
+
+        <property name="wqPenaltyForExceedingPerCap" column="pnlty_exceed_cap" type="java.lang.Long">
+            <meta attribute="field-description">Penalty to apply if a Prime Route buffer (queue) exceeds a certain percentage of capacity</meta>
+        </property>
+
+        <property name="wqTlsSortKey" column="tls_sort_key" type="java.lang.Long">
+            <meta attribute="field-description">Unique key used by the TLS system.</meta>
+        </property>
+
+        <!-- 2011.01.31 SDanielson ARGO-27058 Multilift -->
+        <property name="wqProductivityTandem" column="productivity_tandem" type="java.lang.Long">
+            <meta attribute="field-description">Productivity when tandem lifting.</meta>
+        </property>
+
+        <!-- 2011.01.31 SDanielson ARGO-27058 Multilift -->
+        <property name="wqProductivityQuad" column="productivity_quad" type="java.lang.Long">
+            <meta attribute="field-description">Productivity when quad lifting.</meta>
+        </property>
+
+        <property name="wqAbsBerthCallSlaveId" column="berth_call_slave_id" type="java.lang.Long">
+            <meta attribute="field-description">Berth call id.</meta>
+        </property>
+
+    </class>
+
+</hibernate-mapping>
+

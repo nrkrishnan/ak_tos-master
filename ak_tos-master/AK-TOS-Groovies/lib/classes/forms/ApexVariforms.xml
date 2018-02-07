@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<variforms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="schemas/Variforms.xsd">
+
+    <actions>
+        <action id="create">create</action>
+        <action id="query">query</action>
+        <action id="update">update</action>
+        <action id="delete">delete</action>
+        <action id="view">view</action>
+    </actions>
+
+    <table id="APX001" cachingStrategy="inMemorySort">
+        <title>Cluster Status</title>
+        <entity>
+            <name></name>
+        </entity>
+        <tableActions>
+            <tableActionMode action="view" mode="allow"/>
+        </tableActions>
+        <!-- 2010.02.24 tisaacson ARGO-24194 Restructured cluster management UI / service status tracking. -->
+        <column fieldId="nodeCacheItemScope" display="visible"/>
+        <column fieldId="nodeCacheItemType" display="visible"/>
+        <column fieldId="nodeCacheItemName" display="visible"/>
+        <column fieldId="nodeCacheItemState" display="visible"/>
+        <column fieldId="nodeCacheItemAddress" display="visible"/>
+        <column fieldId="nodeCacheItemStorage" display="visible"/>
+        <column fieldId="nodeCacheItemInfo" display="visible"/>
+        <column fieldId="nodeCacheItemVersion" display="visible"/>
+        <column fieldId="nodeCacheItemStartupTime" display="visible"/>
+        <column fieldId="nodeCacheItemHeartbeatTime" display="visible"/>
+        <column fieldId="nodeCacheItemActivityTime" display="visible"/>
+        <column fieldId="nodeCacheItemShutdownTime" display="visible"/>
+        <column fieldId="nodeCacheItemUserName" display="visible"/>
+        <column fieldId="nodeCacheItemMemory" display="visible"/>
+    </table>
+
+    <form id="APX_INTEGRITY_CHECKER">
+        <title>{Integrity Checker}</title>
+
+        <actionsAllowed>
+            <actionMode action="create" mode="editable"/>
+        </actionsAllowed>
+
+        <controller ref="integrityCheckerController"/>
+        <attributes>
+            <attribute key="closeOnSubmit" value="true"/>
+            <attribute key="clearValuesOnSubmit" value="true"/>
+        </attributes>
+        <borderLayout>
+            <northPanel title="Source Data">
+                <item fieldId="idcSourceType" required="true"/>
+                <item fieldId="idcSource"/>
+            </northPanel>
+            <centerPanel title="Target Data">
+                <item fieldId="idcTargetType" required="true"/>
+                <item fieldId="idcTarget"/>
+            </centerPanel>
+            <southPanel>
+                <item fieldId="idcOutput"/>
+            </southPanel>
+        </borderLayout>
+    </form>
+
+    <table id="TABLE_PURGED_FAILED_ENTITY" cachingStrategy="primaryKey">
+    <title>Failed Purges</title>
+    <entity>
+        <name>PurgedFailedEntity</name>
+        <primaryKey>pfailGkey</primaryKey>
+    </entity>
+    <tableActions>
+        <tableActionMode action="create" mode="disabled"/>
+        <tableActionMode action="update" mode="disabled"/>
+        <tableActionMode action="delete" mode="allow"/>
+        <tableActionMode action="view" mode="allow"/>
+    </tableActions>
+    <doubleClickCommand commandRefId="failedPurgeDetailsFormCommand"/>
+    <menu category="actions">
+        <menuItem userActionId="PURGE_DELETE_FAILED_ENTITY" label="Delete All Purge Failures for the Entity"
+                  commandRefId="deleteAllFailedPurgesCommand" enable="oneSource"/>
+        <menuItem userActionId="PURGE_DELETE_FAILED" label="Delete Selected Purge Failures" commandRefId="deleteFailedPurgesCommand"
+                  enable="oneOrMoreSources"/>
+    </menu>
+    <column fieldId="pfailEntityName"/>
+    <column fieldId="pfailEntityGkey"/>
+    <column fieldId="pfailLastAttempt"/>
+    <column fieldId="pfailComplex"/>
+    <column fieldId="pfailStateTable" display="viewable"/>
+    <column fieldId="pfailReason" display="viewable"/>
+    </table>
+
+    <form id="FORM_DELETION_FAILED_PURGES">
+    <entity>
+        <name>PurgedFailedEntity</name>
+    </entity>
+    <actionsAllowed>
+        <actionMode action="delete" mode="editable"/>
+    </actionsAllowed>
+    </form>
+
+    <table id="TABLE_PURGE_ARCHIVE_ENTITY" cachingStrategy="inMemorySort">
+    <title>Purging/Archiving</title>
+    <entity>
+        <name>arPur</name>
+    </entity>
+    <tableActions>
+        <tableActionMode action="create" mode="disabled"/>
+        <tableActionMode action="update" mode="disabled"/>
+        <tableActionMode action="delete" mode="disabled"/>
+        <tableActionMode action="view" mode="allow"/>
+    </tableActions>
+    <doubleClickCommand commandRefId="archivePurgeDetailsFormCommand"/>
+    <uiManager ref="archivePurgeSharedUiTableManager"/>
+
+    <menu category="actions">
+        <menuItem userActionId="ARCHIVE_PURGE_DISABLE" label="Disable Archiving/Purging" commandRefId="archivePurgeDisableCommand" enable="oneSource"/>
+        <menuItem userActionId="ARCHIVE_PURGE_ENABLE" label="Enable Archiving/Purging" commandRefId="archivePurgeEnableCommand"
+                  enable="oneSource"/>
+        <menuItem userActionId="ARCHIVE_PURGE_ENHANCE" label="Enable/Disable Failure Check"
+                  commandRefId="archivePurgeFlipEnhancingCommand" enable="oneSource"/>
+        <menuItem userActionId="ARCHIVE_PURGE_SETTINS" label="Show Archive/Purge Settings"
+                  commandRefId="archivePurgeShowSettingsCommand" enable="zeroOrMoreSources"/>
+    </menu>
+
+        <column fieldId="entityName"/>
+        <column fieldId="archComplex"/>
+        <column fieldId="archDomainQueryText" display="viewable"/>
+        <column fieldId="entityClassName" display="viewable"/>
+        <column fieldId="entityIsCustom" display="viewable"/>
+        <column fieldId="entityPrimaryKey" display="viewable"/>
+        <column fieldId="entityAlias" display="viewable"/>
+        <column fieldId="entityTableName"/>
+        <column fieldId="entityBusinessKey" display="viewable"/>
+        <column fieldId="entityParentClass" display="viewable"/>
+        <column fieldId="entityIsSubclass" display="viewable"/>
+        <column fieldId="entitySubclasses" display="viewable"/>
+        <column fieldId="arEntityClassName" display="viewable"/>
+        <column fieldId="arPurArchivable" display="viewable"/>
+        <column fieldId="arPurFullQuery" display="viewable"/>
+        <column fieldId="arMaxQueryResultSize"/>
+        <column fieldId="archFailuresCount"/>
+        <column fieldId="archFailuresCountingEnabled"/>
+        <column fieldId="archStatus"/>
+        <column fieldId="archLastRun"/>
+        <column fieldId="archLastDuration"/>
+        <column fieldId="archLastCount"/>
+        <column fieldId="archTotalPurged"/>
+    </table>
+
+
+</variforms>

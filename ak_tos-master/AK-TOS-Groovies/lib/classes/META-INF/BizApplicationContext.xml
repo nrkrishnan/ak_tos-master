@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:util="http://www.springframework.org/schema/util"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/util
+    http://www.springframework.org/schema/util/spring-util.xsd"
+        default-lazy-init="true">
+    <!--
+      0.3 For multiple context files. Contains beans which should *NOT* be included if another module uses this module
+      -->
+    <!-- ========================= PERSISTENCE DEFINITIONS ========================= -->
+        <!--
+      - Makes a JNDI DataSource available as bean reference, assuming a J2EE environment.
+      - By default, "java:comp/env/" will be prepended if "java:" doesn't start the value.
+      -->
+
+    <bean id="primaryDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName"><value>java:comp/env/jdbc/apexDS</value></property>
+    </bean>
+
+    <bean id="systemDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName"><value>java:comp/env/jdbc/apexSystemDS</value></property>
+    </bean>
+
+
+
+    <!--
+      - Builds a Hibernate SessionFactory and makes it available as bean reference.
+      - All necessary settings get specified here, without relying on an external
+      - Hibernate config file like "WEB-INF/classes/hibernate.cfg.xml".
+      -
+      - The SessionFactory will use the locally defined DataSource in this context.
+      - This allows for convenient sharing of transactions with plain JDBC access
+      - code, if HibernateTransactionManager is explictly given the same DataSource.
+      -
+      - This definition could also use a JDBC DataSource specified via Hibernate
+      - properties. Note that to be able to share transactions with plain JDBC access
+      - code then, that DataSource would need to be a JNDI one that should match the
+      - one given to HibernateTransactionManager and data access objects.
+      -
+      - This definition can be replaced by a JndiObjectFactoryBean definition for fetching
+      - a JNDI-bound SessionFactory, but this only makes sense when using Hibernate's
+      - JCA Connector (not recommended for most types of applications).
+      -->
+
+    <bean id="hibernateSessionFactory" class="com.navis.framework.persistence.DefaultSessionFactory">
+        <property name="autoSpringMappingLocation">
+            <ref bean="beanFactoryLocation"/>
+        </property>
+
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernatespatial.mysql.MySQLSpatialDialect</prop>
+                <!-- prop key="hibernate.query.substitutions">true=1 false=0</prop -->
+                <prop key="hibernate.show_sql">false</prop>
+                <prop key="hibernate.order_updates">true</prop>
+                <prop key="hibernate.max_fetch_depth">1</prop>
+                <!--prop key="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</prop-->
+                <prop key="hibernate.query.factory_class">org.hibernate.hql.ast.ASTQueryTranslatorFactory</prop>
+                <!-- Second level cache  - done through Cache context file and session factory -->
+                <!--<prop key="hibernate.cache.usesecondlevel_cache">true</prop>-->
+                <prop key="hibernate.cache.region.factory_class">com.hazelcast.hibernate.HazelcastLocalCacheRegionFactory</prop><prop key="hibernate.cache.hazelcast.instance_name">navis-instance</prop>
+            </props>
+        </property>
+        <property name="dataSource">
+            <ref bean="primaryDataSource"/>
+        </property>
+        <property name="entityInterceptor">
+            <ref bean="auditInterceptor"/>
+        </property>
+        <property name="upgradeManager">
+            <ref bean="upgradeManager"/>
+        </property>
+        <property name="dbHelper">
+            <ref bean="dbHelper"/>
+        </property>
+    </bean>
+
+    <!--  3rd. Party Cache: Cluster & Hibernate 2nd-level  -->
+   <!--  For 1.0, default is the non coherence cached version  -->
+   <util:map id="cacheProviderProperties" scope="singleton">
+       <entry key="name" value="HAZELCAST"/>
+   </util:map>
+
+    <bean id="configProvider" class="com.navis.cache.hazelcast.configuration.provider.CachedConfigProvider">
+        <property name="hibernateApi">
+            <ref bean="hibernateApi"/>
+        </property>
+        <!-- use the built-in cache provider, which means caches will not be Coherence Caches, but PrivateCache instances -->
+        <property name="cacheProvider">
+            <value>HAZELCAST</value>
+        </property>
+    </bean>
+
+    <bean id="moduleDependency" class="com.navis.framework.util.context.modules.ModulesDependency">
+        <property name="modules">
+            <list>
+                <value>framework</value>
+                <value>spatial</value>
+                <value>xpscache</value>
+                <value>optimization</value>
+                <value>workflow</value>
+                <value>argo</value>
+                <value>inventory</value>
+                <value>services</value>
+                <value>edi</value>
+                <value>vessel</value>
+                <value>cargo</value>
+                <value>rail</value>
+                <value>orders</value>
+                <value>cap</value>
+                <value>crane</value>
+                <value>road</value>
+                <value>mensa</value>
+                <value>yard</value>
+                <value>control</value>
+                <value>apex</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

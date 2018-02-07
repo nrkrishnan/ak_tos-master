@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">UserArgo</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- Argo User -->
+    <subclass name="com.navis.argo.business.security.ArgoUser" extends="com.navis.security.business.user.BaseUser" discriminator-value="A">
+        <meta attribute="n4alias">argouser</meta>
+        <meta attribute="generated-class">com.navis.argo.business.security.ArgoUserHbr</meta>
+        <meta attribute="class-description">Extend base user from generic security model</meta>
+        <meta attribute="n4-entity-name">User</meta>
+        <meta attribute="n4-entity-name-plural">Users</meta>
+        <meta attribute="n4-business-key">buserUid</meta>
+        <meta attribute="n4-uniqueness-description">buserUid</meta>
+
+        <many-to-one name="argouserBizGroup" column="bizgrp_gkey" class="com.navis.argo.business.security.BizGroup">
+            <meta attribute="field-description">Business group this user belongs to</meta>
+        </many-to-one>
+
+        <many-to-one name="argouserOperator" class="com.navis.argo.business.model.Operator" column="opr_gkey"/>
+
+        <many-to-one name="argouserComplex" class="com.navis.argo.business.model.Complex" column="cpx_gkey"/>
+
+        <many-to-one name="argouserFacility" class="com.navis.argo.business.model.Facility" column="fcy_gkey"/>
+
+        <many-to-one name="argouserYard" class="com.navis.argo.business.model.Yard" column="yrd_gkey"/>
+
+        <property name="argouserHorizonDays" column="horizon_days" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">User's time horizon in terms of days in the past</meta>
+        </property>
+
+        <property name="argouserMyListChoice" column="owner_type" type="com.navis.argo.persistence.atoms.UserTypeKeySetOwnerEnum" not-null="false">
+            <meta attribute="field-description">Defines whether this user's "My List" is private, by business group, or by user's company</meta>
+        </property>
+
+        <many-to-one name="argouserCompanyBizUnit" column="company_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Company (ScopedBizUnit) to which this user belongs</meta>
+        </many-to-one>
+
+    </subclass>
+
+    <!-- Business Group -->
+    <class name="com.navis.argo.business.security.BizGroup" table="argo_business_groups">
+        <meta attribute="n4alias">bizgrp</meta>
+        <meta attribute="generated-class">com.navis.argo.business.security.BizGroupHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="class-description">Collection of scoped Business Units</meta>
+        <meta attribute="n4-entity-name">Business Group</meta>
+        <meta attribute="n4-entity-name-plural">Business Groups</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">bizgrpId</meta>
+
+        <id name="bizgrpGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="bizgrpId" column="id" type="string" length="20" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">Short ID of business group</meta>
+        </property>
+
+        <many-to-one name="bizgrpScope" class="com.navis.argo.business.reference.EntitySet" unique-key="unique_key">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true"/>
+        </many-to-one>
+
+        <property name="bizgrpName" column="name" type="string" length="80" not-null="true">
+            <meta attribute="field-description">Full NAME of business group</meta>
+        </property>
+
+        <property name="bizgrpLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <set name="bizgrpBusinessUnits" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Business units belonging to this group</meta>
+            <key column="bizgrp_gkey"/>
+            <one-to-many class="com.navis.argo.business.security.BizGroupBizUnit"/>
+        </set>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!-- Business Group Business Units-->
+    <class name="com.navis.argo.business.security.BizGroupBizUnit" table="argo_business_group_businesses">
+        <meta attribute="n4alias">bizgrpbzu</meta>
+        <meta attribute="generated-class">com.navis.argo.business.security.BizGroupBizUnitHbr</meta>
+        <meta attribute="class-description">Collection of scoped Business Units</meta>
+        <meta attribute="n4-entity-name">Business Group Business Unit</meta>
+        <meta attribute="n4-entity-name-plural">Business Group Business Units</meta>
+
+        <id name="bizgrpbzuGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="bizgrpbzuLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <many-to-one name="bizgrpbzuBizGroup" column="bizgrp_gkey" class="com.navis.argo.business.security.BizGroup" not-null="true">
+            <meta attribute="field-description">Business Group business unit belongs to</meta>
+        </many-to-one>
+
+        <many-to-one name="bizgrpbzuBizUnit" column="bzugrp_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="true">
+            <meta attribute="field-description">Business unit which belongs to this business group</meta>
+        </many-to-one>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <subclass name="com.navis.argo.business.security.ArgoSecRole" extends="com.navis.security.business.user.SecRole" discriminator-value="A">
+        <meta attribute="n4alias">argrole</meta>
+        <meta attribute="generated-class">com.navis.argo.business.security.ArgoSecRoleHbr</meta>
+        <meta attribute="class-description">Argo security role</meta>
+        <meta attribute="n4-entity-name">Role</meta>
+        <meta attribute="n4-entity-name-plural">Roles</meta>
+        <meta attribute="n4-business-key">roleSecName</meta>
+        <meta attribute="n4-uniqueness-description">role name</meta>
+
+        <many-to-one name="argroleOperator" class="com.navis.argo.business.model.Operator" column="oprGkey">
+            <meta attribute="scope-set">public</meta>
+        </many-to-one>
+    </subclass>
+
+    <!-- User Key Sets: sets of primary keys stored for a user or group.  Backing store for 'My List' and similar functions -->
+    <class name="com.navis.argo.business.security.UserKeySet" table="argo_user_key_set">
+        <meta attribute="n4alias">kyset</meta>
+        <meta attribute="generated-class">com.navis.argo.business.security.UserKeySetHbr</meta>
+        <meta attribute="class-description">Collection entity primary keys by user or group</meta>
+        <meta attribute="n4-entity-name">Key Set</meta>
+        <meta attribute="n4-entity-name-plural">Key Sets</meta>
+        <meta attribute="carina-index">auser_keyset_ogkey_ent_idx(owner_gkey,entity)</meta>
+
+        <id name="kysetGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="kysetOwnerType" column="owner_type" type="com.navis.argo.persistence.atoms.UserTypeKeySetOwnerEnum" not-null="true">
+        </property>
+
+        <!-- 2008-11-04 rsatish ARGO-15279 1.8.B  Adding multi-column index using upgrade action so removing it from here -->
+        <property name="kysetOwnerGkey" column="owner_gkey" type="java.lang.Long" not-null="true">
+        </property>
+
+        <property name="kysetName" column="set_name" type="string" not-null="false">
+            <meta attribute="field-description">Name of this key-set</meta>
+        </property>
+
+        <!-- 2008-11-04 rsatish ARGO-15279 1.8.B  Adding multi-column index using upgrade action so removing it from here -->
+        <property name="kysetEntityName" column="entity" type="string" not-null="true">
+            <meta attribute="field-description">Short ID of business group</meta>
+        </property>
+
+        <property name="kysetKeys" column="stored_keys" type="com.navis.framework.persistence.util.BlobUserType" length="10000000" not-null="false">
+            <meta attribute="field-description">A list of primary keys</meta>
+        </property>
+
+        <property name="kysetTimeLastPreen" column="last_preened" type="timestamp" not-null="false">
+            <meta attribute="field-description">Time at which the keys were last checked for validity</meta>
+        </property>
+
+    </class>
+
+</hibernate-mapping>

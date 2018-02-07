@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="¦" newRecord="\n"></Format>
+	<Field sequence="0" name="txnCode" dataType="String"></Field>
+	<Field sequence="1" name="date" dataType="String"></Field>
+	<Field sequence="2" name="time" dataType="String"></Field>
+	<Field sequence="3" name="filler1" dataType="String"></Field>
+	<Field sequence="4" name="nextId" dataType="String"></Field>
+	<Field sequence="5" name="bill" dataType="String"></Field>
+	<Field sequence="6" name="eqNbr" dataType="String"></Field>
+	<Field sequence="7" name="vesVoy" dataType="String"></Field>
+	<Field sequence="8" name="service" dataType="String"></Field>
+	<Field sequence="9" name="holdCode" dataType="String"></Field>
+	<Field sequence="10" name="placeBy" dataType="String"></Field>
+	<Field sequence="11" name="holdType" dataType="String"></Field>
+	<Field sequence="12" name="isInGate" dataType="String"></Field>
+	<Field sequence="13" name="isOutGate" dataType="String"></Field>
+	<Field sequence="14" name="rfs" dataType="String"></Field>
+	<Field sequence="15" name="desc" dataType="String"></Field>
+	<Field sequence="16" name="localDate" dataType="String"></Field>
+	<Field sequence="17" name="localTime" dataType="String"></Field>
+	<Field sequence="18" name="noUseDate" dataType="String"></Field>
+	<Field sequence="19" name="noUseTime" dataType="String"></Field>
+	<Field sequence="20" name="aFlag" dataType="String"></Field>
+	<Field sequence="21" name="userId" dataType="String"></Field>
+	<Field sequence="22" name="leg" dataType="String"></Field>
+	<Field sequence="23" name="holdPort" dataType="String"></Field>
+	<Field sequence="24" name="checkDigit" dataType="String"></Field>
+	<Field sequence="25" name="equipClass" dataType="String"></Field>
+	<Field sequence="26" name="equipType" dataType="String"></Field>	
+</FileDesc>

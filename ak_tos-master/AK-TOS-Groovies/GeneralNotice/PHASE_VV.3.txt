@@ -1,0 +1,37 @@
+def vesselDetails = api.getGroovyClassInstance("GvyCmisDataProcessor")
+def noa = api.getGroovyClassInstance("GvyNOA")
+
+def visit = event.getEntity();
+def doer = event.event.evntAppliedBy
+def facility = visit.getFieldValue("cvdCv.cvFacility.fcyId")
+def visitId = visit.cvdCv.cvId
+def service =  visit.cvdService.srvcId
+def phase = event.getPropertyAsString("VisitPhase");
+def prevPhase = event.getPreviousPropertyAsString("VisitPhase");
+if(prevPhase == null)  prevPhase = '10CREATED';
+if(  phase.equals("60DEPARTED") &&! (prevPhase.equals("60DEPARTED") || prevPhase.equals("70CLOSED") || prevPhase.equals("80CANCELED") ) ) {
+   try {
+     if(facility != null && (facility.equals('ANK') || facility.equals('DUT') || facility.equals('KDK')))
+     {
+          noa.execute( visit, event);
+     }
+   } catch (Exception e ) {
+      api.log("NOA error "+e.getMessage());
+      e.printStackTrace();
+   }
+  println("Send Visit");
+  // Send Visit - 02/15/11 Post VST and Email from SEND_VST
+  //def result = vesselDetails.doTheVessel(event, "VST" )
+  if(!service.startsWith('CLI') && facility != null &&  (facility.equals('ANK') || facility.equals('DUT') || facility.equals('KDK'))){  //Gems Fix 02/02/2011
+     //api.sendXml(result);
+     com.navis.argo.ContextHelper.setThreadExternalUser(doer);
+     def sendvstEvent = new GroovyEvent( null,visit);
+     sendvstEvent.postNewEvent( "SEND_VST","Dept from PhaseVV");
+  }
+} else if(  ( prevPhase.equals("60DEPARTED") || prevPhase.equals("70CLOSED") || prevPhase.equals("80CANCELED")  ) &&  !( phase.equals("60DEPARTED") || phase.equals("70CLOSED") || phase.equals("80CANCELED")  )  ) {
+  println("Send UnVisit");
+  // Send UnVisit
+}
+
+// Trucker Coding Email Notification
+api.getGroovyClassInstance("GvyCmisEventSIT").truckerCodingNotification(visit, visitId);

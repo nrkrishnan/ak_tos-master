@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TDPMapping>
+<Message type="IGT" mappingFile="unit.xml" />
+<Message type="OGT" mappingFile="unit.xml" />
+<Message type="UNIT_YARD_MOVE" mappingFile="unit.xml" />
+<Message type="UNIT_PROPERTY_UPDATE" mappingFile="unit.xml" />
+</TDPMapping>

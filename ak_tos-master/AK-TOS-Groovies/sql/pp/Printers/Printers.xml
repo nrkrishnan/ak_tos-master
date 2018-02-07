@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<printer id="TROUBLET" location="Trouble Ticket" host-address="10.157.32.93:9100" life-cycle-state="ACT" />
+<printer id="HQPQ137" location="oakland office" host-address="10.3.7.186:9100" life-cycle-state="ACT" />
+<printer id="DONOTUSE" location="OAK" host-address="10.3.6.38:9100" life-cycle-state="ACT" />
+<printer id="PDF" location="localhost:9100" host-address="localhost:9100" life-cycle-state="ACT" />
+<printer id="TROUBLE" location="Navis-Oakland - to be changed" host-address="10.157.32.93:9100" life-cycle-state="ACT" />
+<printer id="GATEHONW" location="GATEHouse" host-address="10.157.32.239:9100" life-cycle-state="ACT" />
+<printer id="GATEHOU" location="GATEHouse" host-address="10.3.6.38:9100" life-cycle-state="ACT" />
+<printer id="LASER1" location="Oakland-Navis to be changed" host-address="10.157.32.72" life-cycle-state="ACT" />
+</argo:snx>
+

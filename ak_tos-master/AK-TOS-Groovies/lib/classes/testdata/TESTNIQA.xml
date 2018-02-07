@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gateConfiguration name="NIQA" description="Created to test ARGO-18768">
+    <gateStages>
+        <apptStage leg="appt" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="false" allowStageId="" nextStageIdNoTran=""
+                   autoStage="false" pollNextTruck="false" pollTruckInterval="" allowAnyStage="false" id="appointment"/>
+        <outStage leg="out" menuId="NIQA Out gate" order="3" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="false" allowStageId=""
+                  nextStageIdNoTran="" autoStage="false" pollNextTruck="false" pollTruckInterval="" allowAnyStage="false" id="OUTGATE"/>
+    </gateStages>
+    <gateStageSubTypes>
+        <gateStagesDI>
+            <apptStage id="appointment" leg="appt">
+                <bizTasks>
+                    <!--System Task ReadTruckingCompany-->
+                    <!--System Task ReadDriver-->
+                    <!--System Task ReadTruck-->
+                    <bizTask name="RejectDriverUnknown"/>
+                    <!--System Task ReadReleaseNbr-->
+                    <!--System Task ReadContainer-->
+                    <!--System Task ReadChassis-->
+                    <!--System Task ReadAccessory-->
+                    <!--System Task ReadUnitActive-->
+                    <!--System Task ReadContainerOperator-->
+                    <!--System Task ReadLine-->
+                    <!--System Task ReadContainerPosition-->
+                    <!--System Task ReadCarrierVisit-->
+                    <bizTask name="ApplyContainerHazards"/>
+                    <bizTask name="RejectDriverNoHazLicense"/>
+                    <bizTask name="RejectImportContainerDepartingByRail"/>
+                    <bizTask name="RejectContainerNotImport"/>
+                    <bizTask name="RejectTruckUnknown"/>
+                    <!--System Task ReadAccessory-->
+                </bizTasks>
+                <uiForm>
+                    <uiField fieldId="gapptImportReleaseNbr" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="gapptCtrId" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="gapptChassisId" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                </uiForm>
+            </apptStage>
+            <outStage id="OUTGATE" leg="out" addAllowed="false" pollScale="false" autoSubmit="false">
+                <bizTasks>
+                    <!--System Task ReadTruckingCompany-->
+                    <bizTask name="PositionTruckVisit">
+                        <parameter id="truckPosition" value="OUT"/>
+                    </bizTask>
+                </bizTasks>
+                <uiForm>
+                    <uiField fieldId="tranPinNbr" fieldDisplayMode="EDITABLE" fieldRequired="true"/>
+                    <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true"/>
+                </uiForm>
+            </outStage>
+        </gateStagesDI>
+    </gateStageSubTypes>
+    <gateStageTruckVisit>
+        <outStage id="OUTGATE" leg="out" autoStage="false" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" pollNextTruck="false"
+                  pollTruckInterval="" allowAnyStage="false">
+            <bizTasks>
+                <bizTask name="RejectScannedContainerNbrMismatch">
+                    <parameter id="ignoreThrough" value="YES"/>
+                </bizTask>
+                <bizTask name="PositionTruckVisit">
+                    <parameter id="truckPosition" value="OUT"/>
+                </bizTask>
+                <bizTask name="DepartUnit"/>
+                <bizTask name="DepartTruckVisit"/>
+            </bizTasks>
+            <uiForm/>
+        </outStage>
+    </gateStageTruckVisit>
+</gateConfiguration>
+

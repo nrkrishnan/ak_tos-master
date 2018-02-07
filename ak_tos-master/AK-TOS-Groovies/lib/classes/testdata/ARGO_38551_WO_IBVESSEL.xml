@@ -1,0 +1,31 @@
+<!--
+  ~ Copyright (c) 2012 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<edi:loadlistTransactions xmlns:edi="http://www.navis.com/argo">
+  <edi:loadlistTransaction edi:msgClass="LOADLIST" edi:msgProducedDateTime="2011-06-10T18:52:00" edi:msgTypeId="COPRAR">
+      <edi:Interchange edi:Date="" edi:InterchangeNumber="BALA001" edi:InterchangeReceipientQualifier="123456" edi:InterchangeSenderQualifier="LL" edi:Time="21:18:00" />
+      <edi:ediOutboundVesselVisit edi:inVoyageNbr="10" edi:outVoyageNbr="10" edi:vesselId="VESTES" edi:vesselIdConvention="VESID">
+          <edi:visitId>111565</edi:visitId>
+          <edi:shippingLine edi:shippingLineCode="" />
+          <edi:loadPort edi:portId="USOAK" edi:portIdConvention="UNLOCCODE" />
+      </edi:ediOutboundVesselVisit>
+    <edi:category>TRSHP</edi:category>
+    <edi:freightKind>FCL</edi:freightKind>
+    <edi:containerId>LGKCT220061</edi:containerId>
+    <edi:containerType>2200</edi:containerType>
+    <edi:containerOperator edi:operator="CTR204" />
+    <edi:containerOwner edi:owner="CTR204" />
+    <edi:exportRouting>
+      <edi:loadPort edi:portId="USOAK" edi:portIdConvention="UNLOCCODE" />
+      <edi:dischargePort1 edi:portId="ZADUR" edi:portIdConvention="UNLOCCODE" />
+    </edi:exportRouting>
+    <edi:grossWeight edi:wtUnit="KG" edi:wtValue="24460" />
+    <edi:sealNbr1>258685</edi:sealNbr1>
+    <edi:ediCommodity>
+      <edi:destinationPort edi:portId="ZADUR" edi:portIdConvention="UNLOCCODE" />
+    </edi:ediCommodity>
+    <edi:ediHazard edi:imdgClass="8" edi:unNbr="1744" />
+    </edi:loadlistTransaction>
+</edi:loadlistTransactions>

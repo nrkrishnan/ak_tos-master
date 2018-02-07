@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+    <File name="CmisChassisFields" padChar=" "/>
+    <Field sequence="0"  name="msgType"  size="40"></Field>    
+    <Field sequence="1"  name="unitClass" size="15"></Field>
+    <Field sequence="2"	 name="chassisNumber" size="11"></Field>
+    <Field sequence="3"	 name="chassisCd"  size="1"></Field>
+    <Field sequence="4"	 name="chassTareWeight" size="10"></Field>
+    <Field sequence="5"	 name="chassisHold" size="10"></Field>
+    <Field sequence="6"	 name="damageCode" size="1"></Field>
+    <Field sequence="7"	 name="gateSeqNo" size="12"></Field>
+    <Field sequence="8"	 name="srv" size="5"></Field>
+    <Field sequence="9"	 name="loc"  size="6"></Field>
+    <Field sequence="10" name="truck"  size="4"></Field>
+    <Field sequence="11" name="sectionCode" size="1"></Field>
+    <Field sequence="12" name="typeCode"  size="8"></Field>
+    <Field sequence="13" name="owner"  size="4"></Field>
+    <Field sequence="14" name="locationStatus"  size="1"></Field>
+    <Field sequence="15" name="accessory" size="11"></Field>
+    <Field sequence="16" name="mgWeight"  size="10"></Field>
+    <Field sequence="17" name="ctrNo"  size="12"></Field>
+    <Field sequence="18" name="chassisNotes"   size="65"></Field>
+    <Field sequence="19" name="action"  size="5"></Field>
+    <Field sequence="20" name="aDate" size="10"></Field>
+    <Field sequence="21" name="aTime"   size="8"></Field>
+    <Field sequence="22" name="doer"   size="5"></Field>
+    <Field sequence="23" name="safetyExpiry"  size="10"></Field>
+    <Field sequence="24" name="lastInspection"  size="10"></Field>
+    <Field sequence="25" name="lastAnnual"	size="10"></Field>
+    <Field sequence="26" name="planDisp" size="1"></Field>
+    <Field sequence="27" name="vesvoy"  size="7"></Field>
+    <Field sequence="28" name="dPort"  size="4"></Field>
+    <Field sequence="29" name="cell" size="9"></Field>
+    <Field sequence="30" name="aei" size="1"></Field>
+    <Field sequence="31" name="chassisAlert" size="3"></Field>
+    <Field sequence="32" name="mgp" size="1"></Field>
+    <Field sequence="33" name="loadPort"  size="4"></Field>
+	<Field sequence="34" name="gateTruckId" size="10"></Field>
+	<Field sequence="35" name="gateTruckCmpyCd" size="4"></Field>
+	<Field sequence="36" name="gateTruckCmpyName" size="41"></Field>
+	<Field sequence="37" name="batNumber" size="4"></Field>
+	<Field sequence="38" name="turnTime" size="10"></Field>
+	<Field sequence="39" name="category" size="5"></Field>
+	<Field sequence="40" name="laneGateId" size="10"></Field>
+	<Field sequence="41" name="leg"  size="1"></Field>
+	<Field sequence="42" name="laneId" size="2"></Field>
+
+</FileDesc>

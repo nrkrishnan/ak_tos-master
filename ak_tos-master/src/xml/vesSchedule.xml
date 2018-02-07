@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="," newRecord="\n"></Format>
+	<Field sequence="0" name="seqNum" dataType="String"></Field>
+	<Field sequence="1" name="recType" dataType="String"></Field>
+	<Field sequence="2" name="aTA" dataType="String"></Field>
+	<Field sequence="3" name="aTD" dataType="String"></Field>
+	<Field sequence="4" name="eTA" dataType="String"></Field>
+	<Field sequence="5" name="eTD" dataType="String"></Field>
+	<Field sequence="6" name="inVoyNbr" dataType="String"></Field>
+	<Field sequence="7" name="id" dataType="String"></Field>
+	<Field sequence="8" name="inCallNumber" dataType="String"></Field>
+	<Field sequence="9" name="inboundFirstFreeDay" dataType="String"></Field>
+	<Field sequence="10" name="isCommonCarrier" dataType="String"></Field>
+	<Field sequence="11" name="isDrayOff" dataType="String"></Field>
+	<Field sequence="12" name="isNoClientAccess" dataType="String"></Field>
+	<Field sequence="13" name="notes" dataType="String"></Field>
+	<Field sequence="14" name="outVoyNbr" dataType="String"></Field>
+	<Field sequence="15" name="operatorId" dataType="String"></Field>
+	<Field sequence="16" name="outCallNumber" dataType="String"></Field>
+	<Field sequence="17" name="publishedEta" dataType="String"></Field>
+	<Field sequence="18" name="publishedEtd" dataType="String"></Field>
+	<Field sequence="19" name="serviceId" dataType="String"></Field>
+	<Field sequence="20" name="itineraryId" dataType="String"></Field>
+	<Field sequence="21" name="timeBeginReceive" dataType="String"></Field>
+	<Field sequence="22" name="timeCargoCutoff" dataType="String"></Field>
+	<Field sequence="23" name="timeDischargeComplete" dataType="String"></Field>
+	<Field sequence="24" name="timeEndWork" dataType="String"></Field>
+	<Field sequence="25" name="timeFirstAvailability" dataType="String"></Field>
+	<Field sequence="26" name="timeHazCutoff" dataType="String"></Field>
+	<Field sequence="27" name="timeLaborOffBoard" dataType="String"></Field>
+	<Field sequence="28" name="timeLaborOnBoard" dataType="String"></Field>
+	<Field sequence="29" name="timePilotOffBoard" dataType="String"></Field>
+	<Field sequence="30" name="timePilotOnBoard" dataType="String"></Field>
+	<Field sequence="31" name="timeReeferCutoff" dataType="String"></Field>
+	<Field sequence="32" name="timeStartWork" dataType="String"></Field>
+	<Field sequence="33" name="vesselId" dataType="String"></Field>
+	<Field sequence="34" name="visitPhase" dataType="String"></Field>
+	<Field sequence="35" name="nextFacility" dataType="String"></Field>
+	<Field sequence="36" name="quayId" dataType="String"></Field>
+	<Field sequence="37" name="shipSideTo" dataType="String"></Field>
+	<Field sequence="38" name="timeShift" dataType="String"></Field>
+	<Field sequence="39" name="bbkDischarge" dataType="String"></Field>
+	<Field sequence="40" name="bbkLoad" dataType="String"></Field>
+	<Field sequence="41" name="discharge" dataType="String"></Field>
+	<Field sequence="42" name="load" dataType="String"></Field>
+	<Field sequence="43" name="restow" dataType="String"></Field>
+	<Field sequence="44" name="shift" dataType="String"></Field>
+	<Field sequence="45" name="lineId" dataType="String"></Field>
+	<Field sequence="46" name="lineInVoyNbr" dataType="String"></Field>
+	<Field sequence="47" name="lineOutVoyNbr" dataType="String"></Field>
+	<Field sequence="48" name="lineTimeCargoCutoff" dataType="String"></Field>
+	<Field sequence="49" name="lineTimeEmptyPickup" dataType="String"></Field>
+	<Field sequence="50" name="destQueueId" dataType="String"></Field>
+</FileDesc>

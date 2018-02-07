@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+
+    <bean id="navigationTreeProvider" class="com.navis.apex.zk.navigation.ZkAppScopedNavigationTreeProvider"
+          scope="prototype">
+        <property name="defaultProvider">
+            <ref bean="zkApexNavigationTreeProvider"/>
+        </property>
+        <property name="providerMapping">
+            <!-- this map defines which navigation tree provider to use, depending on the app at which the user has logged in -->
+            <!-- if no mapping is specified for a certain scope level, the default mapping is applied -->
+            <map>
+                <entry key="apex" value-ref="zkApexNavigationTreeProvider"/>
+                <entry key="cap" value-ref="zkCapNavigationTreeProvider"/>
+                <entry key="crane" value-ref="zkCraneNavigationTreeProvider"/>
+                <entry key="yard" value-ref="zkYardEditorNavigationTreeProvider"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="zkApexNavigationTreeProvider" class="com.navis.apex.zk.navigation.ApexZkNavigationTreeProvider"
+          scope="prototype">
+        <constructor-arg index="0">
+            <value>/zk/ApexNavigationTree.xml</value>
+        </constructor-arg>
+        <!-- the securedPath property defines whether intermediate nodes between a given node and the root node must be granted by security or not -->
+        <property name="securedPath" value="false"/>
+        <property name="app" value="apex"/>
+        <property name="navigationTemplateProvider">
+            <ref bean="zkNavigationTemplateProvider"/>
+        </property>
+    </bean>
+
+    <bean id="zkNavigationTemplateProvider" class="com.navis.framework.ulc.server.application.navigation.CompositeNavigationTemplateProvider"
+          scope="singleton">
+        <property name="providers">
+            <list>
+                <ref bean="frameworkZkNavigationTemplates"/>
+                <ref bean="spatialZkNavigationTemplates"/>
+                <ref bean="optimizationZkNavigationTemplates"/>
+                <ref bean="argoZkNavigationTemplates"/>
+                <ref bean="inventoryZkNavigationTemplates"/>
+                <ref bean="vesselZkNavigationTemplates"/>
+                <ref bean="railZkNavigationTemplates"/>
+                <ref bean="ordersZkNavigationTemplates"/>
+                <ref bean="roadZkNavigationTemplates"/>
+                <ref bean="apexZkNavigationTemplates"/>
+                <ref bean="servicesZkNavigationTemplates"/>
+                <ref bean="cargoZkNavigationTemplates"/>
+                <ref bean="ediZkNavigationTemplates"/>
+                <ref bean="capZkNavigationTemplates"/>
+                <ref bean="craneZkNavigationTemplates"/>
+                <ref bean="yardZkNavigationTemplates"/>
+                <ref bean="controlZkNavigationTemplates"/>
+                <ref bean="workflowZkNavigationTemplates"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="apexZkNavigationTemplates" class="com.navis.framework.ulc.server.application.navigation.XMLNavigationTemplateProvider"
+          scope="singleton">
+        <constructor-arg index="0">
+            <value>/zk/ApexNavigationNodes.xml</value>
+        </constructor-arg>
+    </bean>
+
+</beans>

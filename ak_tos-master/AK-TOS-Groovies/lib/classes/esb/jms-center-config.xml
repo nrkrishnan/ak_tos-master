@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2012 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:spring="http://www.springframework.org/schema/beans"
+      xmlns:p="http://www.springframework.org/schema/p"
+      xmlns:jms="http://www.mulesoft.org/schema/mule/jms"
+      xmlns:stdio="http://www.mulesoft.org/schema/mule/stdio"
+      xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/3.1/mule-jms.xsd
+          http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/3.1/mule.xsd
+          http://www.mulesoft.org/schema/mule/stdio http://www.mulesoft.org/schema/mule/stdio/3.1/mule-stdio.xsd
+          http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/3.1/mule-http.xsd
+          http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/3.1/mule-vm.xsd">
+    <configuration>
+        <default-dispatcher-threading-profile maxThreadsActive="1" poolExhaustedAction="RUN"/>
+        <default-receiver-threading-profile maxThreadsActive="1" poolExhaustedAction="RUN"/>
+        <default-service-threading-profile maxThreadsActive="1" poolExhaustedAction="RUN"/>
+    </configuration>
+
+    <jms:activemq-connector name="jmsActiveCenter"
+                            specification="1.1"
+                            disableTemporaryReplyToDestinations="true"
+                            brokerURL="vm://local-amq-broker"
+                            numberOfConsumers="1"
+                            maxRedelivery="3"
+                            persistentDelivery="true">
+        <spring:property name="retryPolicyTemplate">
+            <spring:bean scope="prototype"  class="com.navis.framework.esb.server.configuration.ESBJmsForeverRetryPolicy"/>
+        </spring:property>
+    </jms:activemq-connector>
+    <jms:activemq-connector name="jmsActiveCenterToBridge"
+                            specification="1.1"
+                            disableTemporaryReplyToDestinations="true"
+                            brokerURL="vm://local-amq-broker"
+                            numberOfConsumers="1"
+                            maxRedelivery="3"
+                            persistentDelivery="${persistedToBridge}">
+    </jms:activemq-connector>
+
+
+    <carina:bean id="xpsHttpServiceConfigGenerator"/>
+
+    <http:endpoint name="syncCall" host="${hostname}" port="${port}" path="synchronous/get" keep-alive="false" responseTimeout="0" method="GET"
+                   connector-ref="httpConnector"/>
+    <!-- HTTP connector to establish http connections -->
+    <http:connector name="httpConnector" keepAlive="false" enableCookies="false">
+        <receiver-threading-profile doThreading="true" maxThreadsActive="${httpThreads}"/>
+    </http:connector>
+
+    <model name="jmsCenterAMQ">
+        <!-- Generate mule services for each yard to translate XpsTasks to XpsObjects -->
+        <carina:output arg="translationService"/>
+        <!-- using this service for making synchronous call to hydrate cache, this needs to be reviewed by Edwin -->
+        <service name="bridge-to-n4-sync-call">
+            <inbound>
+                <http:inbound-endpoint exchange-pattern="request-response" ref="syncCall"/>
+            </inbound>
+            <component class="com.navis.apex.business.xps.N4MuleSyncHandler"/>
+            <default-exception-strategy/>
+        </service>
+
+        <service name="generalTopicListenerService">
+            <inbound>
+                <!-- Make it synchronous inbound so that no SEDA queue is created to accept unlimited incoming messsages -->
+                <jms:inbound-endpoint topic="generalClusterTopic?connector=jmsExternalConnector" exchange-pattern="request-response"/>
+            </inbound>
+            <component class="com.navis.argo.business.integration.jms.ProcessClusterMessageComponent"/>
+        </service>
+
+    </model>
+
+</mule>

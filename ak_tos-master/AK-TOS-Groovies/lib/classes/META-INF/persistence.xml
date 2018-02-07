@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~ Copyright (c) 2012 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<persistence version="1.0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+             xmlns="http://java.sun.com/xml/ns/persistence">
+    <persistence-unit name="com.navis.workflow.persistence.jpa"
+                      transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+<!--        <non-jta-data-source>java:comp/env/jdbc/jbpmDS</non-jta-data-source>-->
+        <mapping-file>META-INF/JBPMorm.xml</mapping-file>
+        <mapping-file>META-INF/ProcessInstanceInfo.hbm.xml</mapping-file>
+        <class>org.drools.persistence.info.SessionInfo</class>
+        <class>org.drools.persistence.info.WorkItemInfo</class>
+        <class>org.jbpm.persistence.processinstance.ProcessInstanceInfo</class>
+        <class>org.jbpm.process.audit.ProcessInstanceLog</class>
+        <class>org.jbpm.process.audit.NodeInstanceLog</class>
+        <class>org.jbpm.process.audit.VariableInstanceLog</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+       <properties>
+            <property name="hibernate.max_fetch_depth" value="1"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.show_sql" value="false"/>
+        </properties>
+    </persistence-unit>
+</persistence>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2012 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">IntegrationService</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.carina.integrationservice.business.IntegrationService" table="frm_integration_service">
+        <meta attribute="class-description">IntegrationService</meta>
+        <meta attribute="generated-class">com.navis.carina.announcement.business.IntegrationServiceHbr</meta>
+        <meta attribute="n4alias">intserv</meta>
+        <meta attribute="n4-entity-name">IntegrationService</meta>
+        <meta attribute="n4-entity-name-plural">IntegrationServices</meta>
+        <id name="intservGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="intservName" type="java.lang.String" column="intserv_name" length="60" not-null="true" >
+            <meta attribute="field-description">Name of the IntegrationService</meta>
+        </property>
+        <property name="intservType" type="com.navis.framework.persistence.atoms.UserTypeIntegrationServiceTypeEnum"
+                  not-null="true" column="intserv_type" length="20">
+            <meta attribute="field-description">Type of the IntegrationService(JMS, WebService)</meta>
+        </property>
+        <property name="intservUrl" type="java.lang.String" column="intserv_url" length="1024" not-null="true" >
+            <meta attribute="field-description">URL of  the IntegrationService</meta>
+        </property>
+        <property name="intservGroup" type="java.lang.String" column="intserv_group" length="60" not-null="false" >
+            <meta attribute="field-description">Group the IntegrationService belongs to</meta>
+        </property>
+        <property name="intservUserId" type="java.lang.String" column="intserv_user_id" length="100">
+            <meta attribute="field-description">Type of IntegrationService</meta>
+        </property>
+        <property name="intservPassword" type="java.lang.String" column="intserv_password" length="100">
+            <meta attribute="field-description">Type of IntegrationService</meta>
+        </property>
+        <property name="intservDirection" type="com.navis.framework.persistence.atoms.UserTypeIntegrationServiceDirectionEnum"
+                  not-null="true" column="intserv_direction" length="20">
+            <meta attribute="field-description">Direction of the IntegrationService(Inbound or OutBound)</meta>
+        </property>
+        <many-to-one name="intservProcessExtension" class="com.navis.extension.business.Extension" lazy="false" column="intserv_extension_gkey" not-null="false">
+            <meta attribute="field-description">Code Extension</meta>
+        </many-to-one>
+        <property name="intservDefault" type="java.lang.Boolean" column="intserv_default" not-null="false">
+            <meta attribute="field-description">Whether the IntegrationService is the default jms outbound destination</meta>
+        </property>
+        <property name="intservActive" type="java.lang.Boolean" column="intserv_active" not-null="true">
+            <meta attribute="field-description">Whether the IntegrationService is active</meta>
+        </property>
+        <property name="intservScopeLevel" column="intserv_scope_level" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">IntegrationService Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+        </property>
+        <property name="intservScopeGkey" column="intserv_scope_gkey" type="string" length="50">
+            <meta attribute="field-description">IntegrationService Scope Gkey</meta>
+        </property>
+        <property name="intservCreated" type="java.sql.Timestamp" column="created">
+            <meta attribute="field-description">IntegrationService created Time</meta>
+        </property>
+        <property name="intservCreator" type="java.lang.String" column="creator" length="30">
+            <meta attribute="field-description">IntegrationService created by user</meta>
+        </property>
+        <property name="intservChanged" type="java.sql.Timestamp" column="changed">
+            <meta attribute="field-description">IntegrationService last modified Time</meta>
+        </property>
+        <property name="intservChanger" type="java.lang.String" column="changer" length="30">
+            <meta attribute="field-description">IntegrationService last modified by user</meta>
+        </property>
+
+    </class>
+
+</hibernate-mapping>

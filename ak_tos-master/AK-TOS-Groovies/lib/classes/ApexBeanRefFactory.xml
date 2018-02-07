@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    USED FOR WEB, PRESENTATION AND ULC.
+    FOR BUSINESS TIER, SEE /CONF/CONTEXT.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+
+    <bean id="com.navis.apex.ulc.beanfactorymappings" class="com.navis.framework.util.context.filepath.FilePathMappings">
+        <property name="mappings">
+            <list>
+                <value>presentation/ApexPresentationAppContext.xml</value>
+                <value>ulc/ApexUlcAppContext.xml</value>
+                <value>ulc/ApexNavigationUlcAppContext.xml</value>
+                <value>ulc/ApexMenuUlcAppContext.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="com.navis.apex.zk.beanfactorymappings" class="com.navis.framework.util.context.filepath.FilePathMappings">
+        <property name="mappings">
+            <list>
+                <value>presentation/ApexPresentationAppContext.xml</value>
+                <value>zk/ApexZkAppContext.xml</value>
+                <value>zk/ApexNavigationZkAppContext.xml</value>
+                <value>zk/ApexMenuZkAppContext.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- 2008-04-24 rsatish v1.5.0 ARGO-11210 inspection refactoring: allow code to be testable, this configuration is needed for web test suite -->
+    <bean id="com.navis.app.web" class="org.springframework.context.support.ClassPathXmlApplicationContext">
+        <constructor-arg index="0">
+            <list>
+                <value>mobile/InventoryMobileAppContext.xml</value>
+                <value>/presentation/FrameworkPresentationAppContext.xml</value>
+                <value>/presentation/ArgoPresentationAppContext.xml</value>
+                <value>/presentation/InventoryPresentationAppContext.xml</value>
+                <value>/presentation/YardPresentationAppContext.xml</value>
+                <value>/presentation/OrdersPresentationAppContext.xml</value>
+                <value>/presentation/VesselPresentationAppContext.xml</value>
+                <value>/presentation/RoadPresentationAppContext.xml</value>
+                <value>/presentation/MensaPresentationAppContext.xml</value>
+                <value>/presentation/ControlPresentationAppContext.xml</value>
+                <value>/presentation/WorkflowPresentationAppContext.xml</value>
+                <value>/presentation/OptimizationPresentationAppContext.xml</value>
+                <value>/mobile/RailMobileAppContext.xml</value>
+                <value>/mobile/InventoryMobileAppContext.xml</value>
+                <value>/mobile/CargoMobileAppContext.xml</value>
+                <value>/mobile/VesselMobileAppContext.xml</value>
+                <value>/mobile/RoadMobileAppContext.xml</value>
+                <value>/web/FrameworkApplicationContext.xml</value>
+                <value>/web/CapApplicationContext.xml</value>
+                <value>/web/CraneApplicationContext.xml</value>
+                <value>/web/YardApplicationContext.xml</value>
+                <value>/mobile/ApexMobileAppContext.xml</value>
+                <value>/mobile/ArgoMobileAppContext.xml</value>
+            </list>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <ref bean="com.navis.framework.web"/>
+        </constructor-arg>
+    </bean>
+</beans>

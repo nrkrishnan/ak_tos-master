@@ -1,0 +1,963 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">Yard</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <subclass name="com.navis.yard.business.model.AbstractYardBlock" extends="com.navis.spatial.business.model.block.AbstractBlock"
+              discriminator-value="AYB" dynamic-update="true">
+        <meta attribute="n4alias">ayblk</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.AbstractYardBlockHbr</meta>
+        <meta attribute="class-description">Abstract Yard Block</meta>
+        <meta attribute="n4-entity-name">Abstract Yard Block</meta>
+        <meta attribute="n4-entity-name-plural">Abstract Yard Blocks</meta>
+
+        <property name="ayblkLabelSchemeHost" column="label_scheme_host" type="string" length="15">
+            <meta attribute="field-description">The host (XPS - N4) label scheme for the block.</meta>
+        </property>
+
+        <property name="ayblkLabelUIFullPosition" column="label_scheme_full_position" type="string" length="15">
+            <meta attribute="field-description">The full slot label scheme for the block.</meta>
+        </property>
+
+        <property name="ayblkLabelUIRowOnly" column="label_scheme_row_only" type="string" length="15">
+            <meta attribute="field-description">The row label scheme for the block.</meta>
+        </property>
+
+        <property name="ayblkLabelUIColOnly" column="label_scheme_col_only" type="string" length="15">
+            <meta attribute="field-description">The column label scheme for the block.</meta>
+        </property>
+
+        <property name="ayblkLabelUITierOnly" column="label_scheme_tier_only" type="string" length="15">
+            <meta attribute="field-description">The tier label scheme for the block.</meta>
+        </property>
+
+        <!-- This field is no longer needed to rotate block image. However, John Scattergood may need it for rotating block label.
+             Wait and see what his block labeling code needs. If it doesn't need this field, remove it. -->
+        <!-- NOMINATED FOR DEPRECATION : DO NOT USE WITHOUT DISCUSSING WITH JSCATTERGOOD OR PJI -->
+        <property name="ayblkAngleRotation" column="angle_rotation" type="java.lang.Double">
+            <meta attribute="field-description">Specifies the degrees to rotate block from x axis.</meta>
+        </property>
+
+        <property name="ayblkCodeChars" column="code_chars" type="string" length="5">
+	        <meta attribute="field-description">Block affiliation and yard affiliation codes.</meta>
+        </property>
+
+        <property name="ayblkBlockType" column="block_type_enum" type="com.navis.yard.persistence.atoms.UserTypeYardBlockTypeEnum">
+	        <meta attribute="field-description">The block's type code (e.g., RTG, Straddles).</meta>
+        </property>
+
+        <property name="ayblkBlockPurpose" column="purpose" type="com.navis.yard.persistence.atoms.UserTypeYardBlockPurposeEnum">
+	        <meta attribute="field-description">The purpose of the block (e.g., APRN, LANE).</meta>
+        </property>
+
+        <property name="ayblkSubYardCode" column="sub_yard_code" type="string" length="7">
+	        <meta attribute="field-description">Sub-yard code.</meta>
+        </property>
+
+        <property name="ayblkBlockGroup" column="block_group" type="string" length="16">
+	        <meta attribute="field-description">Block group.</meta>
+        </property>
+
+        <property name="ayblkIconId" column="icon_id" type="java.lang.Integer">
+	        <meta attribute="field-description">Id for block's display icon.</meta>
+        </property>
+        
+        <property name="ayblkRoadAccessDelaySecs" column="road_access_delay_secs" type="java.lang.Integer">
+	        <meta attribute="field-description">Time in seconds to drive from road pedestal to block.</meta>
+        </property>
+
+
+        <!-- NOMINATED FOR DEPRECATION : DO NOT USE WITHOUT DISCUSSING WITH JSCATTERGOOD OR PJI -->
+        <set name="ayblkAdjacentBlockLocationSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">AdjacentBlockLocations belonging to this AbstractYardBlock</meta>
+            <key column="adj_block_gkey"/>
+            <one-to-many class="com.navis.yard.business.model.AdjacentBlockLocation"/>
+        </set>
+
+    </subclass>
+
+    <!-- NOMINATED FOR DEPRECATION : DO NOT USE -->
+    <!-- See "DD331 Inter-block hazard check.doc" for details. -->
+    <!-- Note: Translation fields are relative to block coordinate system and not yard.-->
+    <class name="com.navis.yard.business.model.AdjacentBlockLocation" table="yard_adj_block_locs" dynamic-update="true">
+        <meta attribute="n4alias">ajl</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.AdjacentBlockLocationHbr</meta>
+        <meta attribute="class-description">Adjacent Block Location</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Adjacent Block Location</meta>
+        <meta attribute="n4-entity-name-plural">Adjacent Block Locations</meta>
+
+        <id name="ajlGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="ajlBlock" column="block_gkey" class="com.navis.yard.business.model.AbstractYardBlock">
+             <meta attribute="field-description">The Yard Block owning this object.</meta>
+        </many-to-one>
+
+        <many-to-one name="ajlAdjacentBlock" column="adj_block_gkey" class="com.navis.yard.business.model.AbstractYardBlock">
+             <meta attribute="field-description">The adjacent Yard Block that is being located.</meta>
+        </many-to-one>
+
+        <property name="ajlBlockSequence" column="sequence" type="java.lang.Integer">
+	        <meta attribute="field-description">Sequence for searching.</meta>
+        </property>
+
+        <property name="ajlRelativeXCm" column="relative_x_cm" type="java.lang.Double">
+	        <meta attribute="field-description">Shift of coordinate system in X direction in cm.</meta>
+        </property>
+
+        <property name="ajlRelativeYCm" column="relative_y_cm" type="java.lang.Double">
+	        <meta attribute="field-description">Shift of coordinate system in Y direction in cm.</meta>
+        </property>
+
+        <property name="ajlRelativeAngleDeg" column="relative_angle_deg" type="java.lang.Double">
+	        <meta attribute="field-description">Rotation of coordinate system in degrees.</meta>
+        </property>
+
+        <property name="ajlLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <subclass name="com.navis.yard.business.model.NonStackBlock" extends="com.navis.yard.business.model.AbstractYardBlock"
+              discriminator-value="NSB" dynamic-update="true">
+        <meta attribute="n4alias">nsblk</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.NonStackBlockHbr</meta>
+        <meta attribute="class-description">NonStack Block</meta>
+        <meta attribute="n4-entity-name">Non-Stack Block</meta>
+        <meta attribute="n4-entity-name-plural">Non-Stack Blocks</meta>
+
+        <property name="nsblkTeuCapacity" column="teu_capacity" type="java.lang.Integer">
+            <meta attribute="field-description">TEU Capacity.</meta>
+        </property>
+
+        <property name="nsblkCheKind1" column="che_kind_1" type="com.navis.yard.persistence.atoms.UserTypeHeapCheKindEnum">
+	        <meta attribute="field-description">Heap CHE Kind 1.</meta>
+        </property>
+
+        <property name="nsblkCheKind2" column="che_kind_2" type="com.navis.yard.persistence.atoms.UserTypeHeapCheKindEnum">
+	        <meta attribute="field-description">Heap CHE Kind 2.</meta>
+        </property>
+
+    </subclass>
+
+    <!-- PJI091002: Created to support persistent bin model. -->
+    <subclass name="com.navis.yard.business.model.StackBlock" extends="com.navis.yard.business.model.AbstractYardBlock"
+              discriminator-value="SBL" dynamic-update="true">
+        <meta attribute="n4alias">stkblk</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.StackBlockHbr</meta>
+        <meta attribute="carina-oracle-index">
+            create index sbl_geom_rot_pt_idx on spatial_bins(geometry_rotation_point) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            create index sbl_grid_anch_idx on spatial_bins(grid_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            create index sbl_prox_bnds_idx on spatial_bins(vehicle_proximity_bounds) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            create index sbl_trvl_axis_idx on spatial_bins(vehicle_travel_axis) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index sbl_geom_rot_pt_idx on spatial_bins(geometry_rotation_point) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+            create spatial index sbl_grid_anch_idx on spatial_bins(grid_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+            create spatial index sbl_prox_bnds_idx on spatial_bins(vehicle_proximity_bounds) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+            create spatial index sbl_trvl_axis_idx on spatial_bins(vehicle_travel_axis) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+        <meta attribute="class-description">Stack Block</meta>
+        <meta attribute="n4-entity-name">Stack Block</meta>
+        <meta attribute="n4-entity-name-plural">Stack Blocks</meta>
+
+        <property name="stkblkInvertX" column="invert_x" type="java.lang.Boolean">
+            <meta attribute="field-description">Display block row numbering in ascending or descending order.</meta>
+        </property>
+
+        <property name="stkblkInvertY" column="invert_y" type="java.lang.Boolean">
+            <meta attribute="field-description">Display block column numbering in ascending or descending order.</meta>
+        </property>
+
+        <property name="stkblkRotate90" column="rotate_90" type="java.lang.Boolean">
+            <meta attribute="field-description">Display rows vertically instead of horizontally.</meta>
+        </property>
+
+        <property name="stkblkGeometryRotation" column="geometry_rotation" type="java.lang.Double">
+            <meta attribute="field-description">The rotation of the geometry in radians</meta>
+        </property>
+
+        <property name="stkblkGeometryRotationPoint" column="geometry_rotation_point" type="org.hibernatespatial.GeometryUserType">
+            <meta attribute="field-description">Point from which the geometry rotation is calculated. Usually, the centroid.</meta>
+        </property>
+
+        <property name="stkblkInvertScanX" column="invert_scan_x" type="java.lang.Boolean">
+            <meta attribute="field-description">Display block row numbering in ascending or descending order in yard scan view.</meta>
+        </property>
+
+        <property name="stkblkInvertScanY" column="invert_scan_y" type="java.lang.Boolean">
+            <meta attribute="field-description">Display block column numbering in ascending or descending order in yard scan view.</meta>
+        </property>
+
+        <property name="stkblkCompressScan" column="compress_scan" type="java.lang.Boolean">
+            <meta attribute="field-description">Only label columns at top of yard view?</meta>
+        </property>
+
+        <property name="stkblkPixelsStackLength" column="pixels_stack_length" type="java.lang.Long">
+            <meta attribute="field-description">Specify the length of a slot as it appears in yard block view.</meta>
+        </property>
+
+        <property name="stkblkPixelsStackWidth" column="pixels_stack_width" type="java.lang.Long">
+            <meta attribute="field-description">Specify the width of a slot as it appears in yard block view.</meta>
+        </property>
+
+        <property name="stkblkPixelsBetween" column="pixels_between" type="java.lang.Long">
+            <meta attribute="field-description">Number of pixels displayed between rows.</meta>
+        </property>
+
+        <property name="stkblkDirection" column="direction" type="com.navis.argo.persistence.atoms.UserTypeCompassDirectionEnum">
+	        <meta attribute="field-description">The compass direction doors will face in the block.</meta>
+        </property>
+
+        <property name="stkblkGridRotation" column="grid_rotation" type="java.lang.Double">
+             <meta attribute="field-description">Specify the physical grid angle relative to yard x-y axes.</meta>
+         </property>
+
+        <property name="stkblkGridExtendsEast" column="grid_extends_east" type="java.lang.Boolean">
+            <meta attribute="field-description">Does grid extend East from block anchor point?</meta>
+        </property>
+
+        <property name="stkblkGridExtendsNorth" column="grid_extends_north" type="java.lang.Boolean">
+            <meta attribute="field-description">Does grid extend North from block anchor point?</meta>
+        </property>
+
+        <property name="stkblkGridAnchor" column="grid_anchor" type="org.hibernatespatial.GeometryUserType">
+	        <meta attribute="field-description">Grid anchor point in x-y coordinates.</meta>
+        </property>
+
+        <property name="stkblkVehicleProximityBounds" column="vehicle_proximity_bounds" type="org.hibernatespatial.GeometryUserType">
+	        <meta attribute="field-description">Vehicle proximity bounds - offset from block bounds.</meta>
+        </property>
+
+        <property name="stkblkVehicleTravelAxis" column="vehicle_travel_axis" type="org.hibernatespatial.GeometryUserType">
+	        <meta attribute="field-description">Vehicle travel axis as a line string.</meta>
+        </property>
+
+        <property name="stkblkMaxHeightCm" column="max_height_cm" type="java.lang.Double">
+            <meta attribute="field-description">Maximum allowed height in cm.</meta>
+        </property>
+
+        <property name="stkblkSortLogical" column="sort_logical" type="java.lang.Boolean">
+            <meta attribute="field-description">True if block positions sort logically. False if they sort alpha-numerically.</meta>
+        </property>
+
+        <property name="stkblk40sExtendAscending" column="forties_extend_ascending" type="java.lang.Boolean">
+            <meta attribute="field-description">40's extend into 20' slots in the direction of ascending logical coordinates.</meta>
+        </property>
+
+        <property name="stkblkDefaultRowSpacingCm" column="default_row_spacing_cm" type="java.lang.Double">
+            <meta attribute="field-description">Default spacing between rows in cm.</meta>
+        </property>
+
+        <property name="stkblkDefaultColSpacingCm" column="default_col_spacing_cm" type="java.lang.Double">
+            <meta attribute="field-description">Default spacing between colums in cm.</meta>
+        </property>
+
+        <property name="stkblkDefaultRowWidthCm" column="default_row_width_cm" type="java.lang.Double">
+            <meta attribute="field-description">Default width of rows in cm.</meta>
+        </property>
+
+        <property name="stkblkDefaultColWidthCm" column="default_col_width_cm" type="java.lang.Double">
+            <meta attribute="field-description">Default width of columns in cm.</meta>
+        </property>
+
+        <property name="stkblkRtgLaneName" column="rtg_lane_name" type="string" length="18">
+             <meta attribute="field-description">Name of RTG Lane associated with this block.</meta>
+        </property>
+
+    </subclass>
+
+    <class name="com.navis.yard.business.model.YardBinPath" table="yard_bin_paths" dynamic-update="true">
+        <meta attribute="n4alias">bph</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.YardBinPathHbr</meta>
+        <meta attribute="class-description">Yard Bin Path</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Yard Bin Path</meta>
+        <meta attribute="n4-entity-name-plural">Yard Bin Paths</meta>
+        
+        <id name="bphGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="bphOwnerBin" column="owner_bin_gkey" class="com.navis.spatial.business.model.AbstractBin">
+             <meta attribute="field-description">Bin that owns this YardBinPath</meta>
+        </many-to-one>
+
+        <property name="bphPathIndex" column="path_index" type="java.lang.Integer" not-null="true">
+            <meta attribute="field-description">Index of path.</meta>
+        </property>
+
+        <property name="bphPathLabel" column="path_label" type="string" length="5">
+	        <meta attribute="field-description">Path label.</meta>
+        </property>
+
+        <many-to-one name="bphIngressVertex" column="ingress_vertex_gkey" class="com.navis.spatial.business.model.graph.GraphVertex">
+             <meta attribute="field-description">The ingress vertex positioned at logical low, that is the vertex where the container handling equipment (CHE) enters the yard bin.</meta>
+        </many-to-one>
+
+        <many-to-one name="bphEgressVertex" column="egress_vertex_gkey" class="com.navis.spatial.business.model.graph.GraphVertex">
+            <meta attribute="field-description">The egress vertex positioned at logical high, that is the vertex where the container handling equipment (CHE) exits the yard bin.</meta>
+        </many-to-one>
+
+        <property name="bphIngressIsLowEnd" column="ingress_is_low_end" type="java.lang.Boolean">
+            <meta attribute="field-description">Is bin ingress is at low end?</meta>
+        </property>
+
+        <property name="bphAccessLocation" column="access_location" type="com.navis.yard.persistence.atoms.UserTypeYardBinAccessEnum">
+            <meta attribute="field-description">The location of the first cpath.</meta>
+        </property>
+
+        <property name="bphTrafficFlow" column="traffic_flow" type="com.navis.yard.persistence.atoms.UserTypeTrafficDirectionEnum">
+    	    <meta attribute="field-description">The direction of traffic for the container handling equipment operating in the yard bin.</meta>
+        </property>
+
+        <property name="bphReceivalsProhibited" column="receivals_prohibited" type="java.lang.Boolean">
+            <meta attribute="field-description">Are receivals prohibited?</meta>
+        </property>
+
+        <property name="bphDeliveriesProhibited" column="deliveries_prohibited" type="java.lang.Boolean">
+            <meta attribute="field-description">Are deliveries prohibited?</meta>
+        </property>
+
+        <property name="bphYardShiftsProhibited" column="yard_shifts_prohibited" type="java.lang.Boolean">
+            <meta attribute="field-description">Are yard shifts prohibited?</meta>
+        </property>
+
+        <property name="bphYardMovesProhibited" column="yard_moves_prohibited" type="java.lang.Boolean">
+            <meta attribute="field-description">Are yard moves prohibited?</meta>
+        </property>
+
+        <property name="bphVesselDischsProhibited" column="vessel_dischs_prohibited" type="java.lang.Boolean">
+            <meta attribute="field-description">Are vessel discharges prohibited?</meta>
+        </property>
+
+        <property name="bphVesselLoadsProhibited" column="vessel_loads_prohibited" type="java.lang.Boolean">
+            <meta attribute="field-description">Are vessel loads prohibited?</meta>
+        </property>
+
+        <property name="bphRailDischsProhibited" column="rail_dischs_prohibited" type="java.lang.Boolean">
+            <meta attribute="field-description">Are rail discharges prohibited?</meta>
+        </property>
+
+        <property name="bphRailLoadsProhibited" column="rail_loads_prohibited" type="java.lang.Boolean">
+            <meta attribute="field-description">Are rail loads prohibited?</meta>
+        </property>
+
+        <property name="bphLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+    
+
+    <class name="com.navis.yard.business.model.ReeferMonitorRange" table="yard_rfr_mon_ranges" dynamic-update="true">
+        <meta attribute="n4alias">rmr</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.ReeferMonitorRangeHbr</meta>
+        <meta attribute="class-description">Reefer Monitor Range</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Reefer Monitor Range</meta>
+        <meta attribute="n4-entity-name-plural">Reefer Monitor Ranges</meta>
+
+        <id name="rmrGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <component name="rmrBlockRange" class="com.navis.spatial.business.model.block.BlockRange">
+            <meta attribute="generated-class">com.navis.argo.business.model.BlockRangeHbr</meta>
+            <meta attribute="field-description">The BlockRange of this this ReeferMonitorRange</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <many-to-one name="brBlock" column="block_gkey" class="com.navis.spatial.business.model.block.AbstractBlock">
+                 <meta attribute="field-description">Block that owns this BlockRange</meta>
+            </many-to-one>
+
+            <property name="brFirstRowIndex" column="first_row_index" type="java.lang.Integer">
+                <meta attribute="field-description">First row in range (can be numerically larger than last row)</meta>
+            </property>
+
+            <property name="brLastRowIndex" column="last_row_index" type="java.lang.Integer">
+                <meta attribute="field-description">Last row in range</meta>
+            </property>
+
+            <property name="brFirstColumnIndex" column="first_column_index" type="java.lang.Integer">
+                <meta attribute="field-description">First column in range  (can be numerically larger than last column)</meta>
+            </property>
+
+            <property name="brLastColumnIndex" column="last_column_index" type="java.lang.Integer">
+                <meta attribute="field-description">Last column in range</meta>
+            </property>
+
+            <property name="brFirstTierIndex" column="first_tier_index" type="java.lang.Integer">
+                <meta attribute="field-description">First tier in range (can be numerically larger than last tier)</meta>
+            </property>
+
+            <property name="brLastTierIndex" column="last_tier_index" type="java.lang.Integer">
+                <meta attribute="field-description">Last tier in range</meta>
+            </property>
+
+        </component>
+
+        <property name="rmrEntryOrder" column="entry_order" type="java.lang.Integer">
+	        <meta attribute="field-description">Entry serial.</meta>
+        </property>
+
+        <property name="rmrSortKey" column="sort_key" type="com.navis.yard.persistence.atoms.UserTypeReeferMonitorSortKeyEnum">
+            <meta attribute="field-description">Primary sort key, e.g., ROW or COLUMN</meta>
+        </property>
+
+        <property name="rmrRowOrder" column="row_order" type="com.navis.yard.persistence.atoms.UserTypeReeferMonitorSortOrderEnum">
+            <meta attribute="field-description">Sort order of rows, e.g. ASCENDING or DESCENDING</meta>
+        </property>
+
+        <property name="rmrColumnOrder" column="column_order" type="com.navis.yard.persistence.atoms.UserTypeReeferMonitorSortOrderEnum">
+            <meta attribute="field-description">Sort order of columns, e.g. ASCENDING or DESCENDING</meta>
+        </property>
+
+        <property name="rmrTierOrder" column="tier_order" type="com.navis.yard.persistence.atoms.UserTypeReeferMonitorSortOrderEnum">
+            <meta attribute="field-description">Sort order of tiers, e.g. ASCENDING or DESCENDING</meta>
+        </property>
+
+        <property name="rmrLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <class name="com.navis.yard.business.model.TransferZoneAssociation" table="yard_xfr_block_assoc" dynamic-update="true">
+        <meta attribute="n4alias">tza</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.TransferZoneAssociationHbr</meta>
+        <meta attribute="class-description">Transfer Block Association</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Transfer Block Association</meta>
+        <meta attribute="n4-entity-name-plural">Transfer Block Associations</meta>
+
+        <id name="tzaGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="tzaOwningYardModel" column="owning_yard_model_gkey" class="com.navis.yard.business.model.YardBinModel">
+             <meta attribute="field-description">Owning YardModel</meta>
+        </many-to-one>
+
+        <many-to-one name="tzaStowageBin" column="stack_block_gkey" class="com.navis.spatial.business.model.AbstractBin">
+             <meta attribute="field-description">Stowage bin side of association</meta>
+        </many-to-one>
+
+        <many-to-one name="tzaTransferZoneBin" column="xfer_zone_block_gkey" class="com.navis.spatial.business.model.AbstractBin">
+             <meta attribute="field-description">Transfer zone bin side of association</meta>
+        </many-to-one>
+
+        <property name="tzaGroupName" column="group_name" type="string" length="16">
+	        <meta attribute="field-description">Group name</meta>
+        </property>
+
+        <property name="tzaStartLocIndex" column="start_loc_index" type="java.lang.Long">
+	        <meta attribute="field-description">Start location index.</meta>
+        </property>
+
+        <property name="tzaEndLocIndex" column="end_loc_index" type="java.lang.Long">
+	        <meta attribute="field-description">End location index.</meta>
+        </property>
+
+        <property name="tzaLocation" column="association_block_end" type="com.navis.yard.persistence.atoms.UserTypeTZBlockAssociationEnum">
+	        <meta attribute="field-description">Associated location</meta>
+        </property>
+
+        <property name="tzaLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <subclass name="com.navis.yard.business.model.YardSection" extends="com.navis.argo.business.model.AbstractCntrSection"
+              discriminator-value="YSN" dynamic-update="true">
+        <meta attribute="n4alias">yrdsctn</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.YardSectionHbr</meta>
+        <meta attribute="class-description">Yard Section</meta>
+        <meta attribute="n4-entity-name">Yard Section</meta>
+        <meta attribute="n4-entity-name-plural">Yard Sections</meta>
+
+        <property name="yrdsctnRoadwayColumn" column="roadway_column" type="java.lang.Long">
+            <meta attribute="field-description">The number of the column near or adjacent to a roadway.</meta>
+        </property>
+
+        <property name="yrdsctnIsAccessBlockedAtFirstColumn" column="is_access_blocked_first_col" type="java.lang.Boolean">
+            <meta attribute="field-description">Access to section is blocked at first column.</meta>
+        </property>
+
+        <property name="yrdsctnIsAccessBlockedAtLastColumn" column="is_access_blocked_last_col" type="java.lang.Boolean">
+            <meta attribute="field-description">Access to section is blocked at last column.</meta>
+        </property>
+
+        <many-to-one name="yrdsctnConvIdCol40" column="coord_col_conv_id_40" class="com.navis.spatial.business.model.BinNameTable">
+            <meta attribute="field-description">The table ID for names of columns for 40 foot containers in straddle rows.</meta>
+        </many-to-one>
+
+        <!-- It is possible that this column could go away once bin polygon data is commonly provided by customers. -->
+        <!-- NOMINATED FOR DEPRECATION : DO NOT USE WITHOUT DISCUSSING WITH JSCATTERGOOD OR PJI  -->
+        <property name="yrdsctnSectionLengthCm" column="section_length_cm" type="java.lang.Double">
+            <meta attribute="field-description">The length of the section in cm.</meta>
+        </property>
+
+        <property name="yrdsctnExtendOpposesBlock20s" column="extend_x_20s" type="java.lang.Boolean">
+            <meta attribute="field-description">Extend direction opposes block default for 20s.</meta>
+        </property>
+
+        <property name="yrdsctnExtendOpposesBlock40s" column="extend_x_40s" type="java.lang.Boolean">
+            <meta attribute="field-description">Extend direction opposes block default for 40s.</meta>
+        </property>
+
+        <property name="yrdsctnExtendOpposesBlock45s" column="extend_x_45s" type="java.lang.Boolean">
+            <meta attribute="field-description">Extend direction opposes block default for 45s.</meta>
+        </property>
+
+        <property name="yrdsctnExtendOpposesBlock24s" column="extend_x_24s" type="java.lang.Boolean">
+            <meta attribute="field-description">Extend direction opposes block default for 24s.</meta>
+        </property>
+
+        <property name="yrdsctnExtendOpposesBlock48s" column="extend_x_48s" type="java.lang.Boolean">
+            <meta attribute="field-description">Extend direction opposes block default for 48s.</meta>
+        </property>
+
+        <property name="yrdsctnExtendOpposesBlock53s" column="extend_x_53s" type="java.lang.Boolean">
+            <meta attribute="field-description">Extend direction opposes block default for 53s.</meta>
+        </property>
+
+        <property name="yrdsctnExtendOpposesBlock30s" column="extend_x_30s" type="java.lang.Boolean">
+            <meta attribute="field-description">Extend direction opposes block default for 30s.</meta>
+        </property>
+
+        <property name="yrdsctnExtendOpposesBlock35s" column="extend_x_35s" type="java.lang.Boolean">
+            <meta attribute="field-description">Extend direction opposes block default for 35s.</meta>
+        </property>
+
+    </subclass>
+
+    <subclass name="com.navis.yard.business.model.YardBinModel" extends="com.navis.spatial.business.model.AbstractBin"
+              discriminator-value="YDM" dynamic-update="true">
+        <meta attribute="n4alias">yrdmdl</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.YardBinModelHbr</meta>
+        <meta attribute="class-description">Yard Bin Model</meta>
+        <meta attribute="n4-entity-name">Yard Bin Model</meta>
+        <meta attribute="n4-entity-name-plural">Yard Bin Models</meta>
+
+        <property name="yrdmdlModelName" column="model_name" type="string" length="70">
+	        <meta attribute="field-description">The yard model name.</meta>
+        </property>
+
+        <many-to-one name="yrdmdlOwningYard" column="yard_gkey" class="com.navis.argo.business.model.Yard">
+            <meta attribute="field-description">Yard that owns this YardBinModel.</meta>
+        </many-to-one>
+
+        <!-- the length attribute is not enforced in the database for blobs -->
+        <!-- it is only used at column creation time -->
+        <property name="yrdmdlMapImage" column="map_image" type="com.navis.framework.persistence.util.BlobUserType" length="10000000" not-null="false" lazy="true">
+            <meta attribute="field-description">The background image of the yard model. Usual sources are CAD, Aerial or Satellite Imagery</meta>
+        </property>
+        <property name="yrdmdlMapImageUpdateTime" column="map_image_update_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">The update time of the yard model map image</meta>
+        </property>
+
+    </subclass>
+
+    <!-- PJI091002: Created to support persistent bin model. -->
+    <!-- PJI091022: Promoted all members to AbstractStack. -->
+    <subclass name="com.navis.yard.business.model.YardStack" extends="com.navis.argo.business.model.AbstractCntrStack"
+              discriminator-value="YST" dynamic-update="true">
+        <meta attribute="n4alias">yst</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.YardStackHbr</meta>
+        <meta attribute="class-description">Yard Stack</meta>
+        <meta attribute="n4-entity-name">Yard Stack</meta>
+        <meta attribute="n4-entity-name-plural">Yard Stacks</meta>
+
+    </subclass>
+
+    <!-- 2010-06-11 pji ARGO-21942 Created to support persistent bin model. -->
+    <subclass name="com.navis.yard.business.model.TrackPlan" extends="com.navis.spatial.business.model.AbstractBin"
+              discriminator-value="TPP" dynamic-update="true">
+        <meta attribute="n4alias">tpp</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.TrackPlanHbr</meta>
+        <meta attribute="class-description">Track Plan</meta>
+        <meta attribute="n4-entity-name">Track Plan</meta>
+        <meta attribute="n4-entity-name-plural">Track Plans</meta>
+
+        <property name="tppMaxPlatformsSpot" column="max_platforms_spot" type="java.lang.Integer">
+            <meta attribute="field-description">Number of platforms allowed per spot (up to six) </meta>
+        </property>
+
+        <property name="tppSubSpotsR2L" column="sub_spots_r2l" type="java.lang.Boolean">
+            <meta attribute="field-description">True if ordering subspots from left to right.</meta>
+        </property>
+
+        <property name="tppSpotsShowR2L" column="spots_show_r2l" type="java.lang.Boolean">
+            <meta attribute="field-description">True if spots should show right to left.</meta>
+        </property>
+
+        <property name="tppSpotsAreRelative" column="spots_are_relative" type="java.lang.Boolean">
+            <meta attribute="field-description">True if relative track plan.</meta>
+        </property>
+
+        <many-to-one name="tppSubSpotNameTable" column="sub_spot_name_table_gkey" class="com.navis.spatial.business.model.BinNameTable">
+            <meta attribute="field-description">Specifies the naming table that defines the subspot labels.</meta>
+        </many-to-one>
+
+        <!-- 2013-10-23 kamblsh ARGO-50260 meter mark offset in meters for Track Plan. This will be used for locating Railcars using Meter Mark-->
+        <property name="tppMeterMarkOffset" column="meter_mark_offset" type="java.lang.Double">
+            <meta attribute="field-description">Meter Mark Offset for Track Plan in meters</meta>
+        </property>
+
+    </subclass>
+
+    <!-- 2010-06-11 pji ARGO-21942 Created to support persistent bin model. -->
+    <subclass name="com.navis.yard.business.model.RailTrack" extends="com.navis.spatial.business.model.AbstractBin"
+              discriminator-value="TPT" dynamic-update="true">
+        <meta attribute="n4alias">tpt</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.RailTrackHbr</meta>
+        <meta attribute="class-description">Rail Track</meta>
+        <meta attribute="carina-oracle-index">
+            create index tpt_display_bndry_idx on spatial_bins(display_boundary) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index tpt_display_bndry_idx on spatial_bins(display_boundary)with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+        <meta attribute="n4-entity-name">Rail Track</meta>
+        <meta attribute="n4-entity-name-plural">Rail Tracks</meta>
+
+        <property name="tptSAICPocketID" column="saic_pocket_id" type="java.lang.Integer">
+            <meta attribute="field-description">SAIC Pocket ID</meta>
+        </property>
+
+        <property name="tptDisplayBoundary" column="display_boundary" type="org.hibernatespatial.GeometryUserType">
+	        <meta attribute="field-description">Polygon that specifies display boundary.</meta>
+        </property>
+
+        <many-to-one name="tptAdjacentBlock" column="adjacent_block_gkey" class="com.navis.yard.business.model.StackBlock">
+             <meta attribute="field-description">The Stack Block adjacent to Rail Track.</meta>
+        </many-to-one>
+
+        <property name="tptTrackDisplayOrder" column="display_order_index" type="java.lang.Integer">
+	        <meta attribute="field-description">Tracks display in ascending or descending order.</meta>
+        </property>
+
+        <many-to-one name="tptPrestageGroup" column="prestage_group_gkey" class="com.navis.yard.business.model.PrestageGroup">
+             <meta attribute="field-description">Prestage Group associated with Rail Track.</meta>
+        </many-to-one>
+
+    </subclass>
+
+    <!-- 2010-06-11 pji ARGO-21942 Created to support persistent bin model. -->
+    <subclass name="com.navis.yard.business.model.TrackSpot" extends="com.navis.spatial.business.model.AbstractBin"
+              discriminator-value="TPS" dynamic-update="true">
+        <meta attribute="n4alias">tps</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.TrackSpotHbr</meta>
+        <meta attribute="class-description">Track Spot</meta>
+        <meta attribute="n4-entity-name">Track Spot</meta>
+        <meta attribute="n4-entity-name-plural">Track Spots</meta>
+
+        <property name="tpsIndexWithinTrack" column="index_within_track" type="java.lang.Integer">
+            <meta attribute="field-description">Logical index of Track Spot within Rail Track</meta>
+        </property>
+
+        <property name="tpsDisplayBoundary" column="display_boundary" type="org.hibernatespatial.GeometryUserType">
+	        <meta attribute="field-description">Polygon that specifies display boundary.</meta>
+        </property>
+
+    </subclass>
+
+    <class name="com.navis.yard.business.model.PrestageGroup" table="yard_prestage_groups" dynamic-update="true">
+        <meta attribute="n4alias">psg</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.PrestageGroupHbr</meta>
+        <meta attribute="class-description">Prestage Group</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Prestage Group</meta>
+        <meta attribute="n4-entity-name-plural">Prestage Groups</meta>
+
+        <id name="psgGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <property name="psgName" column="name" type="string" length="3">
+            <meta attribute="field-description">Prestage Group Name</meta>
+        </property>
+
+        <many-to-one name="psgTrackPlan" column="track_plan_gkey" class="com.navis.yard.business.model.TrackPlan">
+             <meta attribute="field-description">The Track Plan that owns this Prestage Group.</meta>
+        </many-to-one>
+
+        <property name="psgLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <class name="com.navis.yard.business.model.PrestageLocation" table="yard_prestage_locations" dynamic-update="true">
+        <meta attribute="n4alias">psl</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.PrestageLocationHbr</meta>
+        <meta attribute="class-description">Prestage Location</meta>
+        <meta attribute="carina-oracle-index">
+            create index psl_dsply_rect_idx on yard_prestage_locations(display_rectangle) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index psl_dsply_rect_idx on yard_prestage_locations(display_rectangle) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Prestage Location</meta>
+        <meta attribute="n4-entity-name-plural">Prestage Locations</meta>
+
+        <id name="pslGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="pslBlock" column="stack_block_gkey" class="com.navis.yard.business.model.StackBlock">
+             <meta attribute="field-description">The Stack Block being used for prestage operations.</meta>
+        </many-to-one>
+
+        <property name="pslDisplayRectangle" column="display_rectangle" type="org.hibernatespatial.GeometryUserType">
+	        <meta attribute="field-description">Display rectangle.</meta>
+        </property>
+
+        <many-to-one name="pslPrestageGroup" column="prestage_group_gkey" class="com.navis.yard.business.model.PrestageGroup">
+             <meta attribute="field-description">The owning Prestage Group.</meta>
+        </many-to-one>
+
+        <property name="pslLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <subclass name="com.navis.yard.business.model.Berth" extends="com.navis.spatial.business.model.AbstractBin"
+              discriminator-value="BTH" dynamic-update="true">
+        <meta attribute="n4alias">bth</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.BerthHbr</meta>
+        <meta attribute="class-description">Berth</meta>
+        <meta attribute="n4-entity-name">Berth</meta>
+        <meta attribute="n4-entity-name-plural">Berths</meta>
+
+        <property name="bth1DSequence" column="one_d_sequence" type="java.lang.Integer">
+            <meta attribute="field-description">Index within Complex 1D berth sequence. Specifies how Berths and Divisions show in Berth Scheduler UI.</meta>
+        </property>
+
+        <property name="bthMeterMarkCm" column="meter_mark_cm" type="java.lang.Double">
+            <meta attribute="field-description">meter mark of left boundary</meta>
+        </property>
+
+        <property name="bthShowConflicts" column="show_conflicts" type="java.lang.Boolean">
+            <meta attribute="field-description">Should conflicts show in berth planner for conflicts on this berth? (Used in XPS today.)</meta>
+        </property>
+
+        <property name="bthDynamicTrafficMode" column="dynamic_traffic_enum" type="com.navis.yard.persistence.atoms.UserTypeDynamicTrafficModeEnum">
+	        <meta attribute="field-description">Dynamic traffic mode</meta>
+        </property>
+        
+        <property name="bthFacingDirectionDeg" column="facing_direction_deg" type="java.lang.Double">
+	        <meta attribute="field-description">Which way is the water in compass degrees?</meta>
+        </property>
+
+        <many-to-one name="bthPairedBerth" column="paired_berth_gkey" class="com.navis.yard.business.model.Berth">
+            <meta attribute="field-description">Opposite Berth in a Slip Berth arrangement.</meta>
+        </many-to-one>
+
+    </subclass>
+
+    <class name="com.navis.yard.business.model.BerthMarker" table="yard_berth_markers" dynamic-update="true">
+        <meta attribute="n4alias">bhm</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.BerthMarkerHbr</meta>
+        <meta attribute="class-description">Berth Marker</meta>
+        <meta attribute="carina-oracle-index">
+            create index bhm_location_idx on yard_berth_markers(location) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index bhm_location_idx on yard_berth_markers(location) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Berth Marker</meta>
+        <meta attribute="n4-entity-name-plural">Berth Markers</meta>
+
+        <id name="bhmGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <property name="bhmName" column="name" type="string" length="128">
+	        <meta attribute="field-description">Marker name</meta>
+        </property>
+
+        <property name="bhmType" column="type_enum" type="com.navis.yard.persistence.atoms.UserTypeBerthMarkerTypeEnum">
+	        <meta attribute="field-description">Marker type (bollard, label, etc...)</meta>
+        </property>
+
+        <property name="bhmLocation" column="location" type="org.hibernatespatial.GeometryUserType">
+	        <meta attribute="field-description">2d location of bollard, label, etc....</meta>
+        </property>
+
+        <many-to-one name="bhmOwningBerth" column="owning_berth_gkey" class="com.navis.yard.business.model.Berth">
+            <meta attribute="field-description">Berth object that owns this BerthMarker object.</meta>
+        </many-to-one>
+
+        <many-to-one name="bhmIngressVertex" column="ingress_vertex_gkey" class="com.navis.spatial.business.model.graph.GraphVertex">
+            <meta attribute="field-description">Nearby ingress vertex.</meta>
+        </many-to-one>
+
+        <many-to-one name="bhmEgressVertex" column="egress_vertex_gkey" class="com.navis.spatial.business.model.graph.GraphVertex">
+            <meta attribute="field-description">Nearby ingress vertex.</meta>
+        </many-to-one>
+
+        <property name="bhmLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <class name="com.navis.yard.business.model.BerthUserRange" table="yard_berth_user_ranges" dynamic-update="true">
+        <meta attribute="n4alias">ubr</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.BerthUserRangeHbr</meta>
+        <meta attribute="class-description">Berth User Range</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Berth User Range</meta>
+        <meta attribute="n4-entity-name-plural">Berth User Ranges</meta>
+
+        <id name="ubrGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <property name="ubrName" column="name" type="string" length="128">
+	        <meta attribute="field-description">BerthUserRange name</meta>
+        </property>
+
+        <property name="ubrBerthRangeType" column="berth_range_type_enum" type="com.navis.yard.persistence.atoms.UserTypeBerthRangeTypeEnum">
+	        <meta attribute="field-description">Dynamic traffic mode</meta>
+        </property>
+
+        <property name="ubrCode" column="code" type="string" length="16">
+	        <meta attribute="field-description">BerthUserRange code</meta>
+        </property>
+
+        <property name="ubr1DSequence" column="one_d_sequence" type="java.lang.Integer">
+            <meta attribute="field-description">Index within Complex 1D berth sequence. Specifies how Berths and Divisions show in Berth Scheduler UI.</meta>
+        </property>
+
+        <property name="ubr1DStartLocCm" column="one_d_start_cm" type="java.lang.Double">
+            <meta attribute="field-description">Used for mapping between 1D and 2D coordinate systems.</meta>
+        </property>
+
+        <property name="ubr1DEndLocCm" column="one_d_end_cm" type="java.lang.Double">
+            <meta attribute="field-description">Used for mapping between 1D and 2D coordinate systems.</meta>
+        </property>
+
+        <many-to-one name="ubrOwningBerthModel" column="owning_berth_model_gkey" class="com.navis.yard.business.model.BerthModel">
+            <meta attribute="field-description">BerthModel object that owns this BerthUserRange</meta>
+        </many-to-one>
+
+    </class>
+
+    <class name="com.navis.yard.business.model.BerthModel" table="yard_berth_models" dynamic-update="true">
+        <meta attribute="n4alias">brm</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.BerthModelHbr</meta>
+        <meta attribute="class-description">Berth Model</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Berth Model</meta>
+        <meta attribute="n4-entity-name-plural">Berth Models</meta>
+
+        <id name="brmGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <property name="brmName" column="name" type="string" length="128">
+	        <meta attribute="field-description">Berth model name for planning user interface.</meta>
+        </property>
+
+        <property name="brmLengthCm" column="length_cm" type="java.lang.Double">
+            <meta attribute="field-description">Linear length of model in cm.</meta>
+        </property>
+
+        <property name="brmMinGapCm" column="min_gap_cm" type="java.lang.Double">
+            <meta attribute="field-description">Minimum allowed spacing distance between ships in cm.</meta>
+        </property>
+
+        <property name="brmMinTimeSecs" column="min_time_secs" type="java.lang.Long">
+            <meta attribute="field-description">Minimum time delay between ships in seconds to allow for one ship to depart before the next ship arrives.</meta>
+        </property>
+
+        <many-to-one name="brmComplex" column="owner_key" class="com.navis.argo.business.model.Complex">
+            <meta attribute="field-description">Complex that owns the berth model.</meta>
+        </many-to-one>
+
+        <property name="brmLinearOrigin" column="vertex_direction_enum" type="com.navis.yard.persistence.atoms.UserTypeLinearOriginEnum">
+	        <meta attribute="field-description">Location of linear origin of model (left or right when facing the water)</meta>
+        </property>
+
+        <set name="brmUserRangeSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">BerthUserRanges belonging to this BerthModel</meta>
+            <key column="owning_berth_model_gkey"/>
+            <one-to-many class="com.navis.yard.business.model.BerthUserRange"/>
+        </set>
+    </class>
+
+    <class name="com.navis.yard.business.model.YardMapReferencePoint" table="yard_map_reference_points" dynamic-update="true">
+        <meta attribute="n4alias">ymrp</meta>
+        <meta attribute="generated-class">com.navis.yard.business.model.YardMapReferencePointHbr</meta>
+        <meta attribute="class-description">Map Reference Point</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Map Reference Point</meta>
+        <meta attribute="n4-entity-name-plural">Map Reference Points</meta>
+
+        <id name="ymrpGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="ymrpBinModel" column="abm_gkey" class="com.navis.spatial.business.model.AbstractBin" not-null="true">
+            <meta attribute="field-description">The bin model that is associated with this reference point</meta>
+        </many-to-one>
+
+        <property name="ymrpMapXCoord" column="map_x" type="java.lang.Double">
+            <meta attribute="field-description">Map coordinate on the X-axis</meta>
+        </property>
+        <property name="ymrpMapYCoord" column="map_y" type="java.lang.Double">
+            <meta attribute="field-description">Map coordinate on the Y-axis</meta>
+        </property>
+        <property name="ymrpSpatialXCoord" column="spatial_x" type="java.lang.Double">
+            <meta attribute="field-description">Spatial coordinate on the X-axis</meta>
+        </property>
+        <property name="ymrpSpatialYCoord" column="spatial_y" type="java.lang.Double">
+            <meta attribute="field-description">Spatial coordinate on the Y-axis</meta>
+        </property>
+
+        <property name="ymrpLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+</hibernate-mapping>

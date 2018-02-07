@@ -1,0 +1,1330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- PICT Existing data in xml.Created by Adnan Memon  -->
+<SNXDATA>
+<commodity id="PT" description="PTA" short-name="PT">
+</commodity>
+<commodity id="FF" description="FROZEN FISH" short-name="FF">
+</commodity>
+<commodity id="UAS" description="US ARMY CARGO" short-name="UAS">
+</commodity>
+<commodity id="DGS" description="DANGEROUS GOODS" short-name="DGS">
+</commodity>
+<commodity id="FRE" description="FREE GOODS" short-name="FRE">
+</commodity>
+<commodity id="HHP" description="HOUSE HOLD / P. EFFECTS" short-name="HHP">
+</commodity>
+<commodity id="DPY" description="DRY PORT" short-name="DPY">
+</commodity>
+<commodity id="DFS" description="DEFENCE STORE" short-name="DFS">
+</commodity>
+<commodity id="RWO" description="RAW WOOL" short-name="RWO">
+</commodity>
+<commodity id="MDS" description="MADE UPS" short-name="MDS">
+</commodity>
+<commodity id="PTD" description="PIETTED DATES" short-name="PTD">
+</commodity>
+<commodity id="BIS" description="BISCUIT" short-name="BIS">
+</commodity>
+<commodity id="PF" description="PET FLAKES" short-name="PF">
+</commodity>
+<commodity id="MDC" description="MEDICINE" short-name="MDC">
+</commodity>
+<commodity id="RBS" description="RUBBER SCRAB" short-name="RBS">
+</commodity>
+<commodity id="BARM" description="BAR MOB" short-name="BARM">
+</commodity>
+<commodity id="JFS" description="JERSEY FITTED SHEET" short-name="JFS">
+</commodity>
+<commodity id="GLV" description="GLOVES" short-name="GLV">
+</commodity>
+<commodity id="RUBS" description="RUBBER STRIPS" short-name="RUBS">
+</commodity>
+<commodity id="SENT" description="SENETRY" short-name="SENT">
+</commodity>
+<commodity id="PTO" description="POTATOS" short-name="PTO">
+</commodity>
+<commodity id="MAGN" description="MAGNESE" short-name="MAGN">
+</commodity>
+<commodity id="ETHL" description="ETHYL ALCOHOL" short-name="ETHL">
+</commodity>
+<commodity id="WRB" description="WOODEN  REHAL BOXES" short-name="WRB">
+</commodity>
+<commodity id="PNC" description="PENCIL" short-name="PNC">
+</commodity>
+<commodity id="BLK" description="BLANKET" short-name="BLK">
+</commodity>
+<commodity id="CTPR" description="COBALT POWDER" short-name="CTPR">
+</commodity>
+<commodity id="GIP" description="G. I. PIPES" short-name="GIP">
+</commodity>
+<commodity id="ELF" description="ELECTRICAL FAN" short-name="ELF">
+</commodity>
+<commodity id="SPP" description="SPAIR PARTS" short-name="SPP">
+</commodity>
+<commodity id="USA" description="U. S. CARGO" short-name="USA">
+</commodity>
+<commodity id="PRR" description="PRESSUR COOKER" short-name="PRR">
+</commodity>
+<commodity id="FLT" description="FLOAT" short-name="FLT">
+</commodity>
+<commodity id="FTS" description="FITTED SHEETS" short-name="FTS">
+</commodity>
+<commodity id="CFG" description="CLEAR FLOAT GLASS" short-name="CFG">
+</commodity>
+<commodity id="MOP" description="MOPS" short-name="MOP">
+</commodity>
+<commodity id="FN" description="FISHNET WASTE" short-name="FN">
+</commodity>
+<commodity id="UTB" description="USED TUBES BUTYLE" short-name="UTB">
+</commodity>
+<commodity id="MIR" description="MEDICAL INSTRUNENTH" short-name="MIR">
+</commodity>
+<commodity id="TAL" description="TARPULIANS" short-name="TAL">
+</commodity>
+<commodity id="SRB" description="STON RAW BLOCK" short-name="SRB">
+</commodity>
+<commodity id="CNT" description="CEMENT" short-name="CNT">
+</commodity>
+<commodity id="RPE" description="RESIN PIGMENT ELECRON" short-name="RPE">
+</commodity>
+<commodity id="POO" description="POLY COTTON CLIPS" short-name="POO">
+</commodity>
+<commodity id="GCL" description="GREY CLOTH" short-name="GCL">
+</commodity>
+<commodity id="JPE" description="JAMS PICKEL" short-name="JPE">
+</commodity>
+<commodity id="LBTS" description="LEATHER BELTS" short-name="LBTS">
+</commodity>
+<commodity id="ROS" description="ROCK SALT" short-name="ROS">
+</commodity>
+<commodity id="GLU" description="GLUE" short-name="GLU">
+</commodity>
+<commodity id="ACT" description="AIR CRAFT TYRES" short-name="ACT">
+</commodity>
+<commodity id="LQRS" description="LIQUORICE ROOTS" short-name="LQRS">
+</commodity>
+<commodity id="TRP" description="TANKER PARTS" short-name="TRP">
+</commodity>
+<commodity id="SH" description="SHEETS" short-name="SH">
+</commodity>
+<commodity id="GOE" description="GOOD EARTH" short-name="GOE">
+</commodity>
+<commodity id="APRT" description="AUTO PARTS" short-name="APRT">
+</commodity>
+<commodity id="ACTF" description="ACETATE FILTER ROAD" short-name="ACTF">
+</commodity>
+<commodity id="ATR" description="AUTO RICKSHA" short-name="ATR">
+</commodity>
+<commodity id="LETG" description="LEATHER JACKET" short-name="LETG">
+</commodity>
+<commodity id="EXSL" description="EXXSOL DSP80\100 FLUID" short-name="EXSL">
+</commodity>
+<commodity id="VECH" description="TOYOTA GXR" short-name="VECH">
+</commodity>
+<commodity id="PLHG" description="PLASTIC HANGERS" short-name="PLHG">
+</commodity>
+<commodity id="GBS" description="GUAR BEAN SPLITS" short-name="GBS">
+</commodity>
+<commodity id="BAG" description="BAGS" short-name="BAG">
+</commodity>
+<commodity id="HPW" description="HINA POWDER" short-name="HPW">
+</commodity>
+<commodity id="PLM" description="PLASTIC MATERIAL" short-name="PLM">
+</commodity>
+<commodity id="KWE" description="KITCHEN WEAR" short-name="KWE">
+</commodity>
+<commodity id="BWY" description="BLENDED WAXED YARN" short-name="BWY">
+</commodity>
+<commodity id="VE" description="VEHICLE" short-name="VE">
+</commodity>
+<commodity id="DSF" description="DRIED SHARK FINS" short-name="DSF">
+</commodity>
+<commodity id="ALUM" description="ALUMINIUM FOIL" short-name="ALUM">
+</commodity>
+<commodity id="IRPW" description="IRON POWDER" short-name="IRPW">
+</commodity>
+<commodity id="PCO" description="POLY COTTON" short-name="PCO">
+</commodity>
+<commodity id="ALM" description="ALUMINIUM TUBE" short-name="ALM">
+</commodity>
+<commodity id="PB" description="POLY BAGS" short-name="PB">
+</commodity>
+<commodity id="MST" description="MASTER BATCH" short-name="MST">
+</commodity>
+<commodity id="GLN" description="GELATINE" short-name="GLN">
+</commodity>
+<commodity id="FDR" description="FOOD WARE" short-name="FDR">
+</commodity>
+<commodity id="CWS" description="COTTON WICS &amp; SPARE PARTS" short-name="CWS">
+</commodity>
+<commodity id="SPI" description="SPICES" short-name="SPI">
+</commodity>
+<commodity id="WFL" description="WHEAT FLOUR" short-name="WFL">
+</commodity>
+<commodity id="APR" description="APRON" short-name="APR">
+</commodity>
+<commodity id="RCS" description="RICE SYRUP" short-name="RCS">
+</commodity>
+<commodity id="ANM" description="ANIMAL BILE WATER" short-name="ANM">
+</commodity>
+<commodity id="EQP" description="EQUIPMENT" short-name="EQP">
+</commodity>
+<commodity id="STM" description="STONE TEA MUGS" short-name="STM">
+</commodity>
+<commodity id="CMR" description="CHOMER" short-name="CMR">
+</commodity>
+<commodity id="BCH" description="BLACK CHANNA" short-name="BCH">
+</commodity>
+<commodity id="JUT" description="JUTE BAGS" short-name="JUT">
+</commodity>
+<commodity id="FEL" description="FENNEL SEED" short-name="FEL">
+</commodity>
+<commodity id="RLR" description="ROAD ROLLER" short-name="RLR">
+</commodity>
+<commodity id="MTF" description="METTALIC YARN" short-name="MTF">
+</commodity>
+<commodity id="CPC" description="COTTON PRINTED CLOTH" short-name="CPC">
+</commodity>
+<commodity id="CLP" description="SLEEPERS" short-name="CLP">
+</commodity>
+<commodity id="LON" description="NYLON  TYRE WASTES" short-name="LON">
+</commodity>
+<commodity id="MYS" description="MYSELLALA 40 OIL" short-name="MYS">
+</commodity>
+<commodity id="RHA" description="ROOH AFZAH" short-name="RHA">
+</commodity>
+<commodity id="LC" description="LIQUID CHLORINE" short-name="LC">
+</commodity>
+<commodity id="WI" description="WIRE" short-name="WI">
+</commodity>
+<commodity id="TABC" description="TABLE COVER" short-name="TABC">
+</commodity>
+<commodity id="EXG" description="EXHIBITION GOODS" short-name="EXG">
+</commodity>
+<commodity id="HOSC" description="HOSIERY CLIPL" short-name="HOSC">
+</commodity>
+<commodity id="FIR" description="FURNACE INDUSTRIES &amp; REROLLING" short-name="FIR">
+</commodity>
+<commodity id="CLT" description="CUT LINTER" short-name="CLT">
+</commodity>
+<commodity id="TEL" description="TERRY RAGS" short-name="TEL">
+</commodity>
+<commodity id="GWR" description="GLASS WEAR" short-name="GWR">
+</commodity>
+<commodity id="SPRI" description="SUPARI" short-name="SPRI">
+</commodity>
+<commodity id="FRP" description="FROZEN PARATHA" short-name="FRP">
+</commodity>
+<commodity id="PBB" description="PRINTED BOX BOARD CARTONS" short-name="PBB">
+</commodity>
+<commodity id="WHL" description="WHEELS" short-name="WHL">
+</commodity>
+<commodity id="ZOP" description="ZNC ORE POWDER" short-name="ZOP">
+</commodity>
+<commodity id="BFL" description="BUFFALO LEATHER" short-name="BFL">
+</commodity>
+<commodity id="DNM" description="DENIM PC" short-name="DNM">
+</commodity>
+<commodity id="BRM" description="BONDING MATERIAL" short-name="BRM">
+</commodity>
+<commodity id="COW" description="COTTON WIPERS" short-name="COW">
+</commodity>
+<commodity id="MOT" description="MOTOR CYCLE" short-name="MOT">
+</commodity>
+<commodity id="RACC" description="RADIATOR CORE" short-name="RACC">
+</commodity>
+<commodity id="OPLY" description="POLYESTER" short-name="OPLY">
+</commodity>
+<commodity id="HQ" description="HOLLY QURAN" short-name="HQ">
+</commodity>
+<commodity id="IB" description="ISLAMIC BOOKS" short-name="IB">
+</commodity>
+<commodity id="SML" description="SEMOLINA" short-name="SML">
+</commodity>
+<commodity id="NYL" description="NYLON FILAMENT WASTE" short-name="NYL">
+</commodity>
+<commodity id="DOS" description="DOVE SHAMPOO" short-name="DOS">
+</commodity>
+<commodity id="DBS" description="DOVE BAR SOAP" short-name="DBS">
+</commodity>
+<commodity id="WD" description="WET DATES" short-name="WD">
+</commodity>
+<commodity id="KNT" description="KENTUCKY MOP" short-name="KNT">
+</commodity>
+<commodity id="RO" description="RAWBASITE ORE" short-name="RO">
+</commodity>
+<commodity id="VSW" description="VELOUR SHOWER WRAPS" short-name="VSW">
+</commodity>
+<commodity id="ADSF" description="ASSORTED DRY SEA FOOD" short-name="ADSF">
+</commodity>
+<commodity id="WET" description="WASTAGE OF RECYCLED FOAM" short-name="WET">
+</commodity>
+<commodity id="WAC" description="WATHER CLOOR" short-name="WAC">
+</commodity>
+<commodity id="CPF" description="COTTON PRINTED FLANNEL PILLOW" short-name="CPF">
+</commodity>
+<commodity id="GOT" description="GOAT HAIR" short-name="GOT">
+</commodity>
+<commodity id="PRBD" description="PRINTED BADLINEN" short-name="PRBD">
+</commodity>
+<commodity id="FRZ" description="FROZEN HAIRTAIL  IPOYORI SURIM" short-name="FRZ">
+</commodity>
+<commodity id="CULT" description="CUTLERY" short-name="CULT">
+</commodity>
+<commodity id="RPR" description="RICE PROTEIN" short-name="RPR">
+</commodity>
+<commodity id="INS" description="IRON &amp; STEEL" short-name="INS">
+</commodity>
+<commodity id="MIS" description="MISCELLANEOUS" short-name="MIS">
+</commodity>
+<commodity id="STN" description="STONE" short-name="STN">
+</commodity>
+<commodity id="KGT" description="KAMAL GATA" short-name="KGT">
+</commodity>
+<commodity id="INLT" description="INSULATOR" short-name="INLT">
+</commodity>
+<commodity id="BYS" description="BABY SOOTHER" short-name="BYS">
+</commodity>
+<commodity id="PTOC" description="POTATO CHIPS" short-name="PTOC">
+</commodity>
+<commodity id="CRTR" description="CRUDE TAR" short-name="CRTR">
+</commodity>
+<commodity id="WHH" description="WHEEL HUBS" short-name="WHH">
+</commodity>
+<commodity id="PCM" description="POLY COTTOM MADUPS W/FABRICS" short-name="PCM">
+</commodity>
+<commodity id="WLS" description="WHEEL SUPPORT" short-name="WLS">
+</commodity>
+<commodity id="SP" description="STEEL PIPES" short-name="SP">
+</commodity>
+<commodity id="MSE" description="METHI SEEDS" short-name="MSE">
+</commodity>
+<commodity id="COM" description="COMPUTERS" short-name="COM">
+</commodity>
+<commodity id="GC" description="GENERAL CARGO" short-name="GC">
+</commodity>
+<commodity id="LTL" description="LT. LADELISTE" short-name="LTL">
+</commodity>
+<commodity id="EL" description="ELECTRONICS" short-name="EL">
+</commodity>
+<commodity id="CL" description="CLOTHES" short-name="CL">
+</commodity>
+<commodity id="TL" description="TOOLS" short-name="TL">
+</commodity>
+<commodity id="AC" description="AIR CONDITIONERS" short-name="AC">
+</commodity>
+<commodity id="PR" description="PRINTERS" short-name="PR">
+</commodity>
+<commodity id="HH" description="HOUSEHOLD GOODS" short-name="HH">
+</commodity>
+<commodity id="PAP" description="PAPER" short-name="PAP">
+</commodity>
+<commodity id="AUD" description="AUDIO" short-name="AUD">
+</commodity>
+<commodity id="PL" description="PLASTIC PROD." short-name="PL">
+</commodity>
+<commodity id="TY" description="TYRES" short-name="TY">
+</commodity>
+<commodity id="FD" description="FOOD STUFF" short-name="FD">
+</commodity>
+<commodity id="TIM" description="TIMBER" short-name="TIM">
+</commodity>
+<commodity id="CEL" description="CELLULOSE" short-name="CEL">
+</commodity>
+<commodity id="G" description="GARMENTS" short-name="G">
+</commodity>
+<commodity id="BO" description="BOTTLE" short-name="BO">
+</commodity>
+<commodity id="MA" description="MARBLE" short-name="MA">
+</commodity>
+<commodity id="WCA" description="W' CACES" short-name="WCA">
+</commodity>
+<commodity id="AROO" description="ARMY CARGO" short-name="AROO">
+</commodity>
+<commodity id="CONES" description="CONES" short-name="CONES">
+</commodity>
+<commodity id="LMS" description="LAMPS ANERGY" short-name="LMS">
+</commodity>
+<commodity id="COR" description="COTTON RAGS" short-name="COR">
+</commodity>
+<commodity id="JP" description="JELLY PRODUCTS" short-name="JP">
+</commodity>
+<commodity id="MRY" description="MACHINERY" short-name="MRY">
+</commodity>
+<commodity id="AGB" description="AGERBATTI" short-name="AGB">
+</commodity>
+<commodity id="MCP" description="MOTOR CYCLE PARTS" short-name="MCP">
+</commodity>
+<commodity id="JUS" description="JUICE" short-name="JUS">
+</commodity>
+<commodity id="RBG" description="RAW BON GRIST" short-name="RBG">
+</commodity>
+<commodity id="PPP" description="PLASTIC WAIST" short-name="PPP">
+</commodity>
+<commodity id="VNC" description="VALANCE" short-name="VNC">
+</commodity>
+<commodity id="MLTB" description="MILD STEEL TUBES" short-name="MLTB">
+</commodity>
+<commodity id="MIB" description="MIX BRASS" short-name="MIB">
+</commodity>
+<commodity id="BAR" description="BATH ROBES" short-name="BAR">
+</commodity>
+<commodity id="FOP" description="FOOTBAL PANT" short-name="FOP">
+</commodity>
+<commodity id="CMC" description="CASTOR MEAL &amp; CAKE" short-name="CMC">
+</commodity>
+<commodity id="FRSG" description="FROZEN SHRIMPS" short-name="FRSG">
+</commodity>
+<commodity id="SPR" description="SPRIT" short-name="SPR">
+</commodity>
+<commodity id="PSH" description="PRINTED SHEET" short-name="PSH">
+</commodity>
+<commodity id="TCH" description="TOMMATO CATCHUP" short-name="TCH">
+</commodity>
+<commodity id="RMO" description="RIMULA OIL" short-name="RMO">
+</commodity>
+<commodity id="ALI" description="ALUMINUM INGOTS" short-name="ALI">
+</commodity>
+<commodity id="TBRM" description="TERRY BAR MOPS" short-name="TBRM">
+</commodity>
+<commodity id="TWC" description="TERRY WASH CLOTH" short-name="TWC">
+</commodity>
+<commodity id="WIR" description="WIRE" short-name="WIR">
+</commodity>
+<commodity id="PCS" description="PLASTIC SCRAP" short-name="PCS">
+</commodity>
+<commodity id="HAN" description="HANGER" short-name="HAN">
+</commodity>
+<commodity id="WYP" description="WIPER RAGS" short-name="WYP">
+</commodity>
+<commodity id="ENGP" description="ENGINE PARTS" short-name="ENGP">
+</commodity>
+<commodity id="PRM" description="PRAYER MAT" short-name="PRM">
+</commodity>
+<commodity id="BR" description="BRASS ROD" short-name="BR">
+</commodity>
+<commodity id="MAS" description="MATCH SPLINTS" short-name="MAS">
+</commodity>
+<commodity id="SAD" description="SAND" short-name="SAD">
+</commodity>
+<commodity id="LMW" description="LUMPS WASTE" short-name="LMW">
+</commodity>
+<commodity id="WEC" description="WEHICLE" short-name="WEC">
+</commodity>
+<commodity id="CTL" description="COTTON LINTER" short-name="CTL">
+</commodity>
+<commodity id="CWR" description="COPPER WIRE" short-name="CWR">
+</commodity>
+<commodity id="ZNC" description="ZINC ASH" short-name="ZNC">
+</commodity>
+<commodity id="PPPP" description="PELLETISED POLYPROP" short-name="PPPP">
+</commodity>
+<commodity id="BGL" description="BANGLES" short-name="BGL">
+</commodity>
+<commodity id="THR" description="THREAD" short-name="THR">
+</commodity>
+<commodity id="HER" description="HERBS (LURAND)" short-name="HER">
+</commodity>
+<commodity id="DRR" description="DRY RED ROSE" short-name="DRR">
+</commodity>
+<commodity id="TXM" description="TEXTILE MACHINERY" short-name="TXM">
+</commodity>
+<commodity id="FBR" description="FABRIC CHADDERS" short-name="FBR">
+</commodity>
+<commodity id="MGN" description="MANGANESEORE" short-name="MGN">
+</commodity>
+<commodity id="ZO" description="ZINC OXIDE" short-name="ZO">
+</commodity>
+<commodity id="WMP" description="WASHING MACHINE PARTS" short-name="WMP">
+</commodity>
+<commodity id="RAC" description="ROOM AIR COOLER" short-name="RAC">
+</commodity>
+<commodity id="LAN" description="LANNATE" short-name="LAN">
+</commodity>
+<commodity id="CCP" description="CALCIUM CARBONATE POWDER" short-name="CCP">
+</commodity>
+<commodity id="THW" description="THREAD WAST" short-name="THW">
+</commodity>
+<commodity id="IC" description="INTRAVENOUS CATHETER" short-name="IC">
+</commodity>
+<commodity id="CTN" description="COTTON BAG" short-name="CTN">
+</commodity>
+<commodity id="PTF" description="PET LUMPS" short-name="PTF">
+</commodity>
+<commodity id="SB" description="STEEL BILLETS" short-name="SB">
+</commodity>
+<commodity id="LCH" description="LEATHER CHEMICAL" short-name="LCH">
+</commodity>
+<commodity id="LAME" description="LATHE MACHINE" short-name="LAME">
+</commodity>
+<commodity id="DPR" description="DRY PRAWNS" short-name="DPR">
+</commodity>
+<commodity id="OLP" description="OLIVE PEMAC OIL" short-name="OLP">
+</commodity>
+<commodity id="GRB" description="GUAR BEAN" short-name="GRB">
+</commodity>
+<commodity id="BIP" description="BIOLER PARTS" short-name="BIP">
+</commodity>
+<commodity id="NYS" description="NYLON 6 SOFT WASTES" short-name="NYS">
+</commodity>
+<commodity id="CCF" description="CHICKEN CLAWS FROZEN" short-name="CCF">
+</commodity>
+<commodity id="GR" description="GARMENT WASTE" short-name="GR">
+</commodity>
+<commodity id="MR" description="MARKER" short-name="MR">
+</commodity>
+<commodity id="NTL" description="NATURAL TALC LUMPS" short-name="NTL">
+</commodity>
+<commodity id="BSP" description="BAFFALOW SPLIT" short-name="BSP">
+</commodity>
+<commodity id="GUL" description="GUGGAL" short-name="GUL">
+</commodity>
+<commodity id="HRN" description="HORNS" short-name="HRN">
+</commodity>
+<commodity id="TLW" description="TEXTILE WASTE" short-name="TLW">
+</commodity>
+<commodity id="CMG" description="CALCINED MAGNESITE" short-name="CMG">
+</commodity>
+<commodity id="TGC" description="TANING CHEMICAL" short-name="TGC">
+</commodity>
+<commodity id="COZ" description="CROWN SIZERS" short-name="COZ">
+</commodity>
+<commodity id="GRR" description="GREEN RAISEN" short-name="GRR">
+</commodity>
+<commodity id="CHI" description="CHILLI WHOLE" short-name="CHI">
+</commodity>
+<commodity id="MXT" description="MIXTURE TRUCK" short-name="MXT">
+</commodity>
+<commodity id="BDCR" description="BLENDED CORDAGE" short-name="BDCR">
+</commodity>
+<commodity id="TXT" description="TEXTILE CUTTING" short-name="TXT">
+</commodity>
+<commodity id="DRA" description="DRY APPRICOTE" short-name="DRA">
+</commodity>
+<commodity id="FRF" description="FRESH FRUIT" short-name="FRF">
+</commodity>
+<commodity id="ELA" description="ELASTEX" short-name="ELA">
+</commodity>
+<commodity id="TP" description="TALC POWDER" short-name="TP">
+</commodity>
+<commodity id="WPS" description="WASTE PLASTIC" short-name="WPS">
+</commodity>
+<commodity id="DBM" description="DEAD BURNT MAGNESITE" short-name="DBM">
+</commodity>
+<commodity id="EA" description="ETHYLE ACRYLATE" short-name="EA">
+</commodity>
+<commodity id="DEOA" description="DENATURED ETHYL OF ALCHOHOL" short-name="DEOA">
+</commodity>
+<commodity id="VRT" description="VIBRATOR ROLLER MARE" short-name="VRT">
+</commodity>
+<commodity id="SUR" description="SUGAR" short-name="SUR">
+</commodity>
+<commodity id="CO" description="CHROME ORE" short-name="CO">
+</commodity>
+<commodity id="CD" description="CONVEYOR DRYER" short-name="CD">
+</commodity>
+<commodity id="HLT" description="HOSPITAL EQUIPMENT" short-name="HLT">
+</commodity>
+<commodity id="TWO" description="TANNERY WOOL" short-name="TWO">
+</commodity>
+<commodity id="SMS" description="SORGHUM &amp; MILLET STRAW" short-name="SMS">
+</commodity>
+<commodity id="FRG" description="SORGHUM STRAW" short-name="FRG">
+</commodity>
+<commodity id="WCH" description="WHITE CEMENT" short-name="WCH">
+</commodity>
+<commodity id="MZE" description="MAIZE" short-name="MZE">
+</commodity>
+<commodity id="CY" description="COTTON YARN" short-name="CY">
+</commodity>
+<commodity id="CW" description="COTTON WASTE" short-name="CW">
+</commodity>
+<commodity id="RI" description="RICE" short-name="RI">
+</commodity>
+<commodity id="MAN" description="MANGO" short-name="MAN">
+</commodity>
+<commodity id="AT" description="AFGHAN TRANSIT" short-name="AT">
+</commodity>
+<commodity id="SD" description="SKIDS" short-name="SD">
+</commodity>
+<commodity id="SLT" description="SALT" short-name="SLT">
+</commodity>
+<commodity id="DRI" description="DRIED &amp; SALTED BUFFALO OMASUM" short-name="DRI">
+</commodity>
+<commodity id="EGB" description="EMPTY GLASS BOTTLES" short-name="EGB">
+</commodity>
+<commodity id="PLCT" description="POLISHING CLOTH" short-name="PLCT">
+</commodity>
+<commodity id="CNC" description="COTTON CANVAS" short-name="CNC">
+</commodity>
+<commodity id="TND" description="TENTS" short-name="TND">
+</commodity>
+<commodity id="TLG" description="TEXTILE GOODS" short-name="TLG">
+</commodity>
+<commodity id="TRA" description="TRACTOR &amp; ACCESSORIES" short-name="TRA">
+</commodity>
+<commodity id="FLO" description="FLOAT GLASS SHEET" short-name="FLO">
+</commodity>
+<commodity id="CYW" description="COTTON YARN WASTE" short-name="CYW">
+</commodity>
+<commodity id="GLL" description="GLASS LAMPS" short-name="GLL">
+</commodity>
+<commodity id="PRNT" description="PRINTING PLATES" short-name="PRNT">
+</commodity>
+<commodity id="RCGL" description="RICE GLUTEN" short-name="RCGL">
+</commodity>
+<commodity id="BON" description="BONE" short-name="BON">
+</commodity>
+<commodity id="CFSH" description="COW BUFFALO STOMACH" short-name="CFSH">
+</commodity>
+<commodity id="HRG" description="HOSIERY RAGS" short-name="HRG">
+</commodity>
+<commodity id="FNS" description="FANS" short-name="FNS">
+</commodity>
+<commodity id="CML" description="CAMICAL" short-name="CML">
+</commodity>
+<commodity id="BTS" description="BATH SHEET" short-name="BTS">
+</commodity>
+<commodity id="GML" description="GUAR MEAL" short-name="GML">
+</commodity>
+<commodity id="CTP" description="COTTON CLIP" short-name="CTP">
+</commodity>
+<commodity id="TILS" description="TILES" short-name="TILS">
+</commodity>
+<commodity id="MTP" description="EMPTY PLASTIC BOTLE" short-name="MTP">
+</commodity>
+<commodity id="EXBG" description="EXHIBITION GOODS" short-name="EXBG">
+</commodity>
+<commodity id="KNI" description="KNIF" short-name="KNI">
+</commodity>
+<commodity id="CON" description="CANOLA MEAL" short-name="CON">
+</commodity>
+<commodity id="HRP" description="HIPS REPRO PALLETS" short-name="HRP">
+</commodity>
+<commodity id="STI" description="STATIONARY" short-name="STI">
+</commodity>
+<commodity id="BAT" description="BATTRIES" short-name="BAT">
+</commodity>
+<commodity id="WBD" description="WAIST BAND" short-name="WBD">
+</commodity>
+<commodity id="SBIT" description="SCRAP BUTYL INNER TUBE" short-name="SBIT">
+</commodity>
+<commodity id="SSS" description="SHOES SOUL" short-name="SSS">
+</commodity>
+<commodity id="OPS" description="ORANGE PEELS SWEET" short-name="OPS">
+</commodity>
+<commodity id="COE" description="CARGO ROPE" short-name="COE">
+</commodity>
+<commodity id="CPM" description="CPP FILM" short-name="CPM">
+</commodity>
+<commodity id="INB" description="IRON BED" short-name="INB">
+</commodity>
+<commodity id="CSW" description="CERAMIC SANITRY WARE" short-name="CSW">
+</commodity>
+<commodity id="AJS" description="AJWAIN SEED" short-name="AJS">
+</commodity>
+<commodity id="TBH" description="THOR BHOOSA" short-name="TBH">
+</commodity>
+<commodity id="VMC" description="VERMICELLIES" short-name="VMC">
+</commodity>
+<commodity id="DF" description="DRY FRUIT" short-name="DF">
+</commodity>
+<commodity id="MG" description="METAL GOODS" short-name="MG">
+</commodity>
+<commodity id="SHC" description="SHEEP CASING" short-name="SHC">
+</commodity>
+<commodity id="BAC" description="BATH COVERS" short-name="BAC">
+</commodity>
+<commodity id="CURT" description="CURTAINS" short-name="CURT">
+</commodity>
+<commodity id="MZS" description="MAIZ STRACH" short-name="MZS">
+</commodity>
+<commodity id="MS" description="MAIZ STARCH" short-name="MS">
+</commodity>
+<commodity id="CALC" description="CALCIUM CHLORITE" short-name="CALC">
+</commodity>
+<commodity id="THO" description="THORI" short-name="THO">
+</commodity>
+<commodity id="DDT" description="DRY DATES" short-name="DDT">
+</commodity>
+<commodity id="SPEQ" description="SPECIAL EQUIPMENT" short-name="SPEQ">
+</commodity>
+<commodity id="SFT" description="SAFTY RAZOR" short-name="SFT">
+</commodity>
+<commodity id="UPD" description="UNPITTED DATES" short-name="UPD">
+</commodity>
+<commodity id="COK" description="COTTON KNIT CLIPS" short-name="COK">
+</commodity>
+<commodity id="CMY" description="COMBED YARN" short-name="CMY">
+</commodity>
+<commodity id="BRS" description="BROSS GOODS" short-name="BRS">
+</commodity>
+<commodity id="NYPL" description="NYLON POLYESTER" short-name="NYPL">
+</commodity>
+<commodity id="TRW" description="TRACTOR WHEEL" short-name="TRW">
+</commodity>
+<commodity id="REQ" description="RESTURANT EQUIPMENT" short-name="REQ">
+</commodity>
+<commodity id="NPS" description="NAPPIES" short-name="NPS">
+</commodity>
+<commodity id="MGP" description="MANGO PLUPS" short-name="MGP">
+</commodity>
+<commodity id="WBN" description="WHEAT BRAN" short-name="WBN">
+</commodity>
+<commodity id="CPR" description="COPPER ROD" short-name="CPR">
+</commodity>
+<commodity id="ACR" description="ACRYLAMIDE" short-name="ACR">
+</commodity>
+<commodity id="RUT" description="RHUPARBROOT" short-name="RUT">
+</commodity>
+<commodity id="SFP" description="SALTED FISH" short-name="SFP">
+</commodity>
+<commodity id="WSH" description="WASHER" short-name="WSH">
+</commodity>
+<commodity id="CHF" description="CHICKEN FEETS" short-name="CHF">
+</commodity>
+<commodity id="CWL" description="COTTON WASTES LINTER" short-name="CWL">
+</commodity>
+<commodity id="LYT" description="LUTEXALHIT" short-name="LYT">
+</commodity>
+<commodity id="ZIS" description="ZIN INGOTS" short-name="ZIS">
+</commodity>
+<commodity id="CBL" description="COPPER BLISTER" short-name="CBL">
+</commodity>
+<commodity id="FRS" description="FRESH DATES" short-name="FRS">
+</commodity>
+<commodity id="BEB" description="BLEACH EARTH BEROZA" short-name="BEB">
+</commodity>
+<commodity id="DRF" description="DRIED FISH MEAL" short-name="DRF">
+</commodity>
+<commodity id="FNL" description="FLANNEL PILOW SHELL" short-name="FNL">
+</commodity>
+<commodity id="PAN" description="PANEL" short-name="PAN">
+</commodity>
+<commodity id="DPC" description="DIPLOMATIC CARGO" short-name="DPC">
+</commodity>
+<commodity id="EMB" description="EMPTY BAGS" short-name="EMB">
+</commodity>
+<commodity id="FRZM" description="FROZEN MEAT MOTTON" short-name="FRZM">
+</commodity>
+<commodity id="MDCR" description="MEDICAM DENTAL CREAM" short-name="MDCR">
+</commodity>
+<commodity id="MBP" description="MARBLE POWDER" short-name="MBP">
+</commodity>
+<commodity id="HG" description="HARBAL GOODS" short-name="HG">
+</commodity>
+<commodity id="YWS" description="YARN WASTE" short-name="YWS">
+</commodity>
+<commodity id="STW" description="STEEL WIRE" short-name="STW">
+</commodity>
+<commodity id="MSD" description="MUSTARD SEEDS" short-name="MSD">
+</commodity>
+<commodity id="DBC" description="DIRED BEEF CASING" short-name="DBC">
+</commodity>
+<commodity id="IFT" description="IRON FABRIC TROLLY" short-name="IFT">
+</commodity>
+<commodity id="PETF" description="PET FILAMENT YARN WEST" short-name="PETF">
+</commodity>
+<commodity id="PET" description="PET FILAMENT YARN WASTE" short-name="PET">
+</commodity>
+<commodity id="CPTR" description="COMPUTER BODY SCRAP" short-name="CPTR">
+</commodity>
+<commodity id="ZF" description="ZINC FINE ASHES" short-name="ZF">
+</commodity>
+<commodity id="PPG" description="P.P.GRANULE" short-name="PPG">
+</commodity>
+<commodity id="CC" description="COTTON CORDAGE" short-name="CC">
+</commodity>
+<commodity id="FV" description="FROZEN VEGETABLE" short-name="FV">
+</commodity>
+<commodity id="TOM" description="PUMIC STONE" short-name="TOM">
+</commodity>
+<commodity id="GD" description="GLASS DOOR" short-name="GD">
+</commodity>
+<commodity id="NYW" description="NYLON WASTE" short-name="NYW">
+</commodity>
+<commodity id="CHK" description="CHICKEN PAWS" short-name="CHK">
+</commodity>
+<commodity id="PCR" description="PET CRUSH" short-name="PCR">
+</commodity>
+<commodity id="ST" description="SILITE CORIANDAR" short-name="ST">
+</commodity>
+<commodity id="PVC" description="PVC SOLE" short-name="PVC">
+</commodity>
+<commodity id="TBW" description="TOWELS  &amp; WASH CLOTHS" short-name="TBW">
+</commodity>
+<commodity id="CCS" description="COTTON CORE SPUN YARN" short-name="CCS">
+</commodity>
+<commodity id="RDD" description="REMELTED LEAD" short-name="RDD">
+</commodity>
+<commodity id="MO" description="MAGNESE ONE" short-name="MO">
+</commodity>
+<commodity id="SOS" description="SODA ASH" short-name="SOS">
+</commodity>
+<commodity id="B" description="BAMBOOS" short-name="B">
+</commodity>
+<commodity id="CTOW" description="COTTON TERRY TOWELS" short-name="CTOW">
+</commodity>
+<commodity id="TERT" description="TERRY TOWELS" short-name="TERT">
+</commodity>
+<commodity id="PTC" description="PLASTIC TEXTILE CONES" short-name="PTC">
+</commodity>
+<commodity id="ANF" description="ANIMAL FEET" short-name="ANF">
+</commodity>
+<commodity id="PIBND" description="PRINTO FIX BINDER" short-name="PIBND">
+</commodity>
+<commodity id="IMS" description="IRON+MULTIVITAMIN SYP" short-name="IMS">
+</commodity>
+<commodity id="GCY" description="GREY COTTON YARN" short-name="GCY">
+</commodity>
+<commodity id="PPB" description="P.P BAGES WASTE" short-name="PPB">
+</commodity>
+<commodity id="MAKR" description="MACARONI" short-name="MAKR">
+</commodity>
+<commodity id="DBWB" description="DRIED BEEF WEASANDS &amp; BLADDERS" short-name="DBWB">
+</commodity>
+<commodity id="GAR" description="GARLIC" short-name="GAR">
+</commodity>
+<commodity id="PHC" description="PLASTIC WHEEL COVERS" short-name="PHC">
+</commodity>
+<commodity id="PLJ" description="POLYPROPYLENE" short-name="PLJ">
+</commodity>
+<commodity id="CRB" description="CRUSHED BONES" short-name="CRB">
+</commodity>
+<commodity id="CBN" description="COMBER NOIL" short-name="CBN">
+</commodity>
+<commodity id="CP" description="CP GOODS" short-name="CP">
+</commodity>
+<commodity id="TW" description="TOWELS" short-name="TW">
+</commodity>
+<commodity id="FAB" description="FABRICS" short-name="FAB">
+</commodity>
+<commodity id="CHR" description="CHROME" short-name="CHR">
+</commodity>
+<commodity id="ALMS" description="ALUMINUM SCRAP" short-name="ALMS">
+</commodity>
+<commodity id="FIN" description="FINISHED LEATHER" short-name="FIN">
+</commodity>
+<commodity id="QLT" description="QUILT COVER" short-name="QLT">
+</commodity>
+<commodity id="CMP" description="COMFORTERS" short-name="CMP">
+</commodity>
+<commodity id="HIN" description="HINGH" short-name="HIN">
+</commodity>
+<commodity id="GUR" description="GUAR GUM" short-name="GUR">
+</commodity>
+<commodity id="LEA" description="LEAD INGOTS" short-name="LEA">
+</commodity>
+<commodity id="SDS" description="SEEDS" short-name="SDS">
+</commodity>
+<commodity id="WHC" description="WHEAT" short-name="WHC">
+</commodity>
+<commodity id="DYF" description="DRY FISH" short-name="DYF">
+</commodity>
+<commodity id="PC" description="POLYESTER CHIPS" short-name="PC">
+</commodity>
+<commodity id="RPM" description="RAID POWER MAT" short-name="RPM">
+</commodity>
+<commodity id="MEHN" description="MEHNDI" short-name="MEHN">
+</commodity>
+<commodity id="TBO" description="TOBACCO" short-name="TBO">
+</commodity>
+<commodity id="BODT" description="BEEF OMASUM &amp; DRY THROAT" short-name="BODT">
+</commodity>
+<commodity id="GUM" description="GUMBASE" short-name="GUM">
+</commodity>
+<commodity id="STCR" description="STEEL SCRAP" short-name="STCR">
+</commodity>
+<commodity id="CTNM" description="COTTON COMBER NOIL" short-name="CTNM">
+</commodity>
+<commodity id="FSHM" description="FISH MEAL" short-name="FSHM">
+</commodity>
+<commodity id="SATK" description="SALT LAMPS" short-name="SATK">
+</commodity>
+<commodity id="DUS" description="DUSTER" short-name="DUS">
+</commodity>
+<commodity id="UC" description="USED CLOTHING" short-name="UC">
+</commodity>
+<commodity id="FLPS" description="FUEL PUMPS" short-name="FLPS">
+</commodity>
+<commodity id="POC" description="POTTASIUM SILICATE" short-name="POC">
+</commodity>
+<commodity id="SRCJ" description="SURG ABSORBENT CTN" short-name="SRCJ">
+</commodity>
+<commodity id="LFW" description="LEATHER FOOTWEAR" short-name="LFW">
+</commodity>
+<commodity id="SC" description="SURGICAL COTTON" short-name="SC">
+</commodity>
+<commodity id="OAM" description="OMASUM" short-name="OAM">
+</commodity>
+<commodity id="WRG" description="WIPING RAGS" short-name="WRG">
+</commodity>
+<commodity id="DYRN" description="DYED YARN" short-name="DYRN">
+</commodity>
+<commodity id="GOH" description="GOAT HAIR" short-name="GOH">
+</commodity>
+<commodity id="FCO" description="PIGMENT COLORS" short-name="FCO">
+</commodity>
+<commodity id="MKI" description="METHI QASURI" short-name="MKI">
+</commodity>
+<commodity id="CLY" description="CLAY POTS" short-name="CLY">
+</commodity>
+<commodity id="PLL" description="PILLOW CASE" short-name="PLL">
+</commodity>
+<commodity id="RICF" description="RICE FLOOR" short-name="RICF">
+</commodity>
+<commodity id="RDC" description="RED CHILLIES" short-name="RDC">
+</commodity>
+<commodity id="PES" description="PULSES" short-name="PES">
+</commodity>
+<commodity id="FLS" description="FLANNEL SHEET SET" short-name="FLS">
+</commodity>
+<commodity id="CGO" description="COSMETIC GOODS" short-name="CGO">
+</commodity>
+<commodity id="BOC" description="BRIQUETTES OF CRUMB" short-name="BOC">
+</commodity>
+<commodity id="QUPO" description="QUARTZ POWDER" short-name="QUPO">
+</commodity>
+<commodity id="SET" description="SOC EMPTY TANK" short-name="SET">
+</commodity>
+<commodity id="PYW" description="POLYSTER WASTE" short-name="PYW">
+</commodity>
+<commodity id="FIB" description="FIRE BRICKS" short-name="FIB">
+</commodity>
+<commodity id="FUI" description="FURNACE INDUSTRY MATERIAL" short-name="FUI">
+</commodity>
+<commodity id="PPS" description="PUMPS" short-name="PPS">
+</commodity>
+<commodity id="BSC" description="BRASS SCRAP" short-name="BSC">
+</commodity>
+<commodity id="RJR" description="REJECTED RUBBER" short-name="RJR">
+</commodity>
+<commodity id="HKT" description="HASHMI KAJAL TUBE" short-name="HKT">
+</commodity>
+<commodity id="PLFP" description="PLASTER OF PARIS" short-name="PLFP">
+</commodity>
+<commodity id="PRS" description="PUR SACHET" short-name="PRS">
+</commodity>
+<commodity id="CNSS" description="CUMMIN SEEDS" short-name="CNSS">
+</commodity>
+<commodity id="CHW" description="COTTON HARD WASTE" short-name="CHW">
+</commodity>
+<commodity id="LSC" description="LEATHER SCRAP" short-name="LSC">
+</commodity>
+<commodity id="MDB" description="MEDICAL BANDAGES" short-name="MDB">
+</commodity>
+<commodity id="TAC" description="TALCSTONE" short-name="TAC">
+</commodity>
+<commodity id="PLP" description="PLASTER OF PARIS" short-name="PLP">
+</commodity>
+<commodity id="POL" description="POLYSTYRENE" short-name="POL">
+</commodity>
+<commodity id="IPA" description="INSPECT REPAIR" short-name="IPA">
+</commodity>
+<commodity id="DFC" description="DISPOSBLE FOAM CUP" short-name="DFC">
+</commodity>
+<commodity id="PS" description="POLYSTER SAARI" short-name="PS">
+</commodity>
+<commodity id="JF" description="JELLY FISH" short-name="JF">
+</commodity>
+<commodity id="SPS" description="SHEEPS SKIN" short-name="SPS">
+</commodity>
+<commodity id="KEP" description="KNIT WIPERS" short-name="KEP">
+</commodity>
+<commodity id="CSO" description="CASTOR OIL" short-name="CSO">
+</commodity>
+<commodity id="BGD" description="BRASS GOODS" short-name="BGD">
+</commodity>
+<commodity id="BL" description="BED LINEN" short-name="BL">
+</commodity>
+<commodity id="CRY" description="COTTON CARDFLY" short-name="CRY">
+</commodity>
+<commodity id="ZIN" description="ZINC ORE POWDER" short-name="ZIN">
+</commodity>
+<commodity id="LS" description="LAMINATED SHEETS" short-name="LS">
+</commodity>
+<commodity id="NAP" description="NAPKINS" short-name="NAP">
+</commodity>
+<commodity id="CDW" description="COTTON DENIM WASTES" short-name="CDW">
+</commodity>
+<commodity id="SUNP" description="SANI PLAST" short-name="SUNP">
+</commodity>
+<commodity id="LYN" description="LYCRA YARN" short-name="LYN">
+</commodity>
+<commodity id="POTR" description="POTTERY" short-name="POTR">
+</commodity>
+<commodity id="MBS" description="MOTH BEANS" short-name="MBS">
+</commodity>
+<commodity id="MPR" description="MICRO PROCESSOR" short-name="MPR">
+</commodity>
+<commodity id="FDL" description="FRONTIER DEXTROSE LTD" short-name="FDL">
+</commodity>
+<commodity id="YS" description="MYSELLA LA OIL" short-name="YS">
+</commodity>
+<commodity id="SLP" description="SHIP BERAKING PARTS" short-name="SLP">
+</commodity>
+<commodity id="PYM" description="POLYSTER FILM" short-name="PYM">
+</commodity>
+<commodity id="PSY" description="POLYSTER YARD" short-name="PSY">
+</commodity>
+<commodity id="BDCH" description="BLENDED CLOTH" short-name="BDCH">
+</commodity>
+<commodity id="HLP" description="HERBAL PRODUCT" short-name="HLP">
+</commodity>
+<commodity id="BCS" description="BUS CHASSIS" short-name="BCS">
+</commodity>
+<commodity id="CRW" description="COTTON ROVING" short-name="CRW">
+</commodity>
+<commodity id="PPC" description="PP CO POLYMER" short-name="PPC">
+</commodity>
+<commodity id="PSS" description="PVC SOLE SCRAP" short-name="PSS">
+</commodity>
+<commodity id="THC" description="PHTHALIC ANHY DRIDE" short-name="THC">
+</commodity>
+<commodity id="PRW" description="PRINTED WRAPPER" short-name="PRW">
+</commodity>
+<commodity id="BLP" description="BLEACHING POWDER" short-name="BLP">
+</commodity>
+<commodity id="PER" description="PERFUME" short-name="PER">
+</commodity>
+<commodity id="MAR" description="MARBELEX" short-name="MAR">
+</commodity>
+<commodity id="AMO" description="ANTIMONY ORE" short-name="AMO">
+</commodity>
+<commodity id="RAMT" description="RAW MATERIAL" short-name="RAMT">
+</commodity>
+<commodity id="LUST" description="LUXGARAG STEET" short-name="LUST">
+</commodity>
+<commodity id="LICR" description="LICORICE ROOTS" short-name="LICR">
+</commodity>
+<commodity id="WBT" description="WATHER BLATER TANKS" short-name="WBT">
+</commodity>
+<commodity id="LE" description="LEATHER GARMENTS" short-name="LE">
+</commodity>
+<commodity id="CTS" description="COTTON BALES" short-name="CTS">
+</commodity>
+<commodity id="SULP" description="SULPHATE RESISTANT CEMENT" short-name="SULP">
+</commodity>
+<commodity id="PTG" description="PLASTIC GOODS" short-name="PTG">
+</commodity>
+<commodity id="MUSK" description="MUSTOVITE MICA FLAKES" short-name="MUSK">
+</commodity>
+<commodity id="WHLO" description="WHEELS LOADER" short-name="WHLO">
+</commodity>
+<commodity id="TEC" description="TEXTILE CHEMICAL" short-name="TEC">
+</commodity>
+<commodity id="FCB" description="FROZEN CRABS" short-name="FCB">
+</commodity>
+<commodity id="RBB" description="RUBBER BASKET" short-name="RBB">
+</commodity>
+<commodity id="WCED" description="WHITE CUTTING EDGING" short-name="WCED">
+</commodity>
+<commodity id="CTW" description="COTTON WASTE COMBER" short-name="CTW">
+</commodity>
+<commodity id="PRY" description="PRAYING RUGS" short-name="PRY">
+</commodity>
+<commodity id="COT" description="COTTON BANDAGES" short-name="COT">
+</commodity>
+<commodity id="CST" description="CASTOR SEEDS OIL CAKE" short-name="CST">
+</commodity>
+<commodity id="WFT" description="WATER FILTER" short-name="WFT">
+</commodity>
+<commodity id="EMC" description="EMPTY CARTON" short-name="EMC">
+</commodity>
+<commodity id="LED" description="LEAD BAR" short-name="LED">
+</commodity>
+<commodity id="DFL" description="DRY FLOWER" short-name="DFL">
+</commodity>
+<commodity id="PMG" description="POMEGRANATE" short-name="PMG">
+</commodity>
+<commodity id="PBO" description="PET BOTTLE" short-name="PBO">
+</commodity>
+<commodity id="BWC" description="BUFFALOW WHITE CRUST" short-name="BWC">
+</commodity>
+<commodity id="OIL" description="OIL" short-name="OIL">
+</commodity>
+<commodity id="EPS" description="E.P.S.POWDER" short-name="EPS">
+</commodity>
+<commodity id="PEUT" description="PEANUT" short-name="PEUT">
+</commodity>
+<commodity id="AAM" description="AAMCHUR" short-name="AAM">
+</commodity>
+<commodity id="BFS" description="BLENDED FLAT SHEET" short-name="BFS">
+</commodity>
+<commodity id="FM" description="FOOTWEAR MATERIALS" short-name="FM">
+</commodity>
+<commodity id="BAP" description="BABY DIAPER" short-name="BAP">
+</commodity>
+<commodity id="PM" description="PACKING MATERIAL" short-name="PM">
+</commodity>
+<commodity id="PSP" description="POLYSTER SPANGLES" short-name="PSP">
+</commodity>
+<commodity id="AGR" description="AGARBATTI" short-name="AGR">
+</commodity>
+<commodity id="WP" description="WHEY POWDER" short-name="WP">
+</commodity>
+<commodity id="DRS" description="DRY RISIN" short-name="DRS">
+</commodity>
+<commodity id="CLS" description="CABLES" short-name="CLS">
+</commodity>
+<commodity id="ARCE" description="AIR CRAFT ENGINES" short-name="ARCE">
+</commodity>
+<commodity id="MB" description="MATCH BOX" short-name="MB">
+</commodity>
+<commodity id="FB" description="FIBER" short-name="FB">
+</commodity>
+<commodity id="BG" description="BUBBLE GUM" short-name="BG">
+</commodity>
+<commodity id="CN" description="COMBER NOIL" short-name="CN">
+</commodity>
+<commodity id="CF" description="CONFECTIONERY" short-name="CF">
+</commodity>
+<commodity id="LT" description="LEATHER GOODS" short-name="LT">
+</commodity>
+<commodity id="FC" description="FURNITURE" short-name="FC">
+</commodity>
+<commodity id="GM" description="GARMENTS" short-name="GM">
+</commodity>
+<commodity id="HC" description="HANDICRAFT" short-name="HC">
+</commodity>
+<commodity id="D" description="DALL" short-name="D">
+</commodity>
+<commodity id="SG" description="SPORTS GOODS" short-name="SG">
+</commodity>
+<commodity id="RC" description="RAW COTTON" short-name="RC">
+</commodity>
+<commodity id="SI" description="SURGICAL INSTRUMENTS" short-name="SI">
+</commodity>
+<commodity id="KI" description="KINOO" short-name="KI">
+</commodity>
+<commodity id="CA" description="CARPET" short-name="CA">
+</commodity>
+<commodity id="O" description="ONIONS" short-name="O">
+</commodity>
+<commodity id="SCR" description="SCRAPE" short-name="SCR">
+</commodity>
+<commodity id="BED" description="BED SHEETS" short-name="BED">
+</commodity>
+<commodity id="SOC" description="SOCKS" short-name="SOC">
+</commodity>
+<commodity id="CR" description="C.RAGS" short-name="CR">
+</commodity>
+<commodity id="HDA" description="HYDROCHLORIC ACID" short-name="HDA">
+</commodity>
+<commodity id="SHE" description="SHOES" short-name="SHE">
+</commodity>
+<commodity id="RSL" description="RICE SYRUP LIQUID GLUCOSE" short-name="RSL">
+</commodity>
+<commodity id="BLM" description="BLENDED MOP" short-name="BLM">
+</commodity>
+<commodity id="SFM" description="SUN FLOWER &amp; MEAL" short-name="SFM">
+</commodity>
+<commodity id="HCA" description="HYDRO CLORID ACID" short-name="HCA">
+</commodity>
+<commodity id="CB" description="COKE BREEZE" short-name="CB">
+</commodity>
+<commodity id="LP" description="LINING POWDER" short-name="LP">
+</commodity>
+<commodity id="ING" description="INGOTS" short-name="ING">
+</commodity>
+<commodity id="GLS" description="GLASS CHIMNY" short-name="GLS">
+</commodity>
+<commodity id="ECD" description="EMPTY CYLINDERS" short-name="ECD">
+</commodity>
+<commodity id="CNS" description="LIQUID CHLORINE GAS" short-name="CNS">
+</commodity>
+<commodity id="CRU" description="CRUDE DRUGES" short-name="CRU">
+</commodity>
+<commodity id="DYG" description="DEHYDRATED GARLIC" short-name="DYG">
+</commodity>
+<commodity id="SAN" description="SANITORY ITEMS" short-name="SAN">
+</commodity>
+<commodity id="GRT" description="GREY COTTON" short-name="GRT">
+</commodity>
+<commodity id="FMO" description="FLOOR MOP" short-name="FMO">
+</commodity>
+<commodity id="LTT" description="LATHER SCRAP" short-name="LTT">
+</commodity>
+<commodity id="BPR" description="BLACK RAISIN" short-name="BPR">
+</commodity>
+<commodity id="RAM" description="RAPESEED MEAL" short-name="RAM">
+</commodity>
+<commodity id="TIB" description="TUBES" short-name="TIB">
+</commodity>
+<commodity id="CPO" description="COPPER ORE" short-name="CPO">
+</commodity>
+<commodity id="HCP" description="HOSEIRY CLIPS" short-name="HCP">
+</commodity>
+<commodity id="PTB" description="PRINTED TAB TOP CUPTAIN" short-name="PTB">
+</commodity>
+<commodity id="BWT" description="BLEACHED WHITE WASH" short-name="BWT">
+</commodity>
+<commodity id="SPKW" description="SPOOKY CHEW" short-name="SPKW">
+</commodity>
+<commodity id="TLP" description="TALCUM POWDER" short-name="TLP">
+</commodity>
+<commodity id="FCL" description="FABRIC CLIP" short-name="FCL">
+</commodity>
+<commodity id="PRC" description="PC REGRIND MIX COLORS" short-name="PRC">
+</commodity>
+<commodity id="DB" description="DRILING BUCKETS" short-name="DB">
+</commodity>
+<commodity id="RAT" description="RATAN JOT" short-name="RAT">
+</commodity>
+<commodity id="BLD" description="BLADE" short-name="BLD">
+</commodity>
+<commodity id="BPS" description="BOPP FILMS" short-name="BPS">
+</commodity>
+<commodity id="URR" description="USED BUTYL RUBBER" short-name="URR">
+</commodity>
+<commodity id="SLL" description="SOOVIN LESS LAMIN" short-name="SLL">
+</commodity>
+<commodity id="PYF" description="POLYSTER FLAKES" short-name="PYF">
+</commodity>
+<commodity id="CTI" description="C.TRICYLE AND ICE CREAM COOLER" short-name="CTI">
+</commodity>
+<commodity id="BKT" description="BLACK TEA" short-name="BKT">
+</commodity>
+<commodity id="WAZ" description="WAX ZOL PA" short-name="WAZ">
+</commodity>
+<commodity id="KICE" description="KINO JUICE" short-name="KICE">
+</commodity>
+<commodity id="PLST" description="PLASTIC SHEET" short-name="PLST">
+</commodity>
+<commodity id="WHS" description="WHEAT STRAW" short-name="WHS">
+</commodity>
+<commodity id="COP" description="COPPER" short-name="COP">
+</commodity>
+<commodity id="PLK" description="PLASTIC FLAKES" short-name="PLK">
+</commodity>
+<commodity id="SF" description="STAPLE FIBRE" short-name="SF">
+</commodity>
+<commodity id="BOMA" description="BOOKS &amp; MAGAZINES" short-name="BOMA">
+</commodity>
+<commodity id="WBLE" description="WET BLUE LEATHER" short-name="WBLE">
+</commodity>
+<commodity id="FBW" description="FIBER WASTE" short-name="FBW">
+</commodity>
+<commodity id="PRYS" description="PET RECYCLE SNOW WHITE" short-name="PRYS">
+</commodity>
+<commodity id="HM" description="HERBAL MEDICINE" short-name="HM">
+</commodity>
+<commodity id="FTP" description="FLINT PEBBLES" short-name="FTP">
+</commodity>
+<commodity id="FPP" description="FC PRESSURE PIPES" short-name="FPP">
+</commodity>
+<commodity id="SOJ" description="SOJEE" short-name="SOJ">
+</commodity>
+<commodity id="BMP" description="BAMBO POLES" short-name="BMP">
+</commodity>
+<commodity id="TRT" description="TRANSITION PIECES" short-name="TRT">
+</commodity>
+<commodity id="GTP" description="GAS TURBINE PARTS" short-name="GTP">
+</commodity>
+<commodity id="CBS" description="CHOCOLATE BEANS" short-name="CBS">
+</commodity>
+<commodity id="SRM" description="SHOES RAW MATERIAL" short-name="SRM">
+</commodity>
+<commodity id="CRS" description="COVER SETS" short-name="CRS">
+</commodity>
+<commodity id="URN" description="URECOMT RETURN" short-name="URN">
+</commodity>
+<commodity id="HOO" description="HOODIES" short-name="HOO">
+</commodity>
+<commodity id="CNM" description="CONTRECTION METRIAL" short-name="CNM">
+</commodity>
+<commodity id="HAC" description="HASSEN CLOTH" short-name="HAC">
+</commodity>
+<commodity id="COPR" description="COOPER SCRAP" short-name="COPR">
+</commodity>
+<commodity id="MRP" description="MOPE ROPE" short-name="MRP">
+</commodity>
+<commodity id="GLT" description="GLASS TUBE" short-name="GLT">
+</commodity>
+<commodity id="FRL" description="FROZEN SHELL" short-name="FRL">
+</commodity>
+<commodity id="MDX" description="MEDICAL X-RAY" short-name="MDX">
+</commodity>
+<commodity id="BARL" description="BARLEY" short-name="BARL">
+</commodity>
+<commodity id="CMS" description="CUMIN SEEDS" short-name="CMS">
+</commodity>
+<commodity id="CHLM" description="CHLORIDE OF LIME" short-name="CHLM">
+</commodity>
+<commodity id="FLR" description="FIOUR &amp; MAIDAA" short-name="FLR">
+</commodity>
+<commodity id="ZER" description="ZEERA BAGS" short-name="ZER">
+</commodity>
+<commodity id="UWL" description="UNWROUGHT LEADS" short-name="UWL">
+</commodity>
+<commodity id="PETC" description="PET COTTON" short-name="PETC">
+</commodity>
+<commodity id="SHEM" description="SHOE MOULD" short-name="SHEM">
+</commodity>
+<commodity id="CPY" description="CARPET GRADE YELLOW PULLED" short-name="CPY">
+</commodity>
+<commodity id="VISY" description="VISCOSE YARN" short-name="VISY">
+</commodity>
+<commodity id="WC" description="WAISTAGE FOAM" short-name="WC">
+</commodity>
+<commodity id="PNT" description="PAINT" short-name="PNT">
+</commodity>
+<commodity id="SCH" description="SURF CHEMICAL" short-name="SCH">
+</commodity>
+<commodity id="OWS" description="OILE WELL SUPPLIES" short-name="OWS">
+</commodity>
+<commodity id="CALD" description="CALCIUM CHLORIDE" short-name="CALD">
+</commodity>
+<commodity id="TTS" description="TROLLEY TRIVISION SIGHT SEREEN" short-name="TTS">
+</commodity>
+<commodity id="BP" description="BARYTES POWDER" short-name="BP">
+</commodity>
+<commodity id="TBRB" description="TOWELS, BATHMAT, ROBES" short-name="TBRB">
+</commodity>
+<commodity id="CHP" description="CHAPPALS" short-name="CHP">
+</commodity>
+<commodity id="STS" description="STAIN LESS STEEL" short-name="STS">
+</commodity>
+<commodity id="TMG" description="TOME GRANET" short-name="TMG">
+</commodity>
+<commodity id="MOL" description="MOULDING" short-name="MOL">
+</commodity>
+<commodity id="FLN" description="FURNACE LINING" short-name="FLN">
+</commodity>
+<commodity id="LU" description="LUTEXAL CHEMICAL" short-name="LU">
+</commodity>
+<commodity id="OWL" description="OIL WELL EQUIPMENT" short-name="OWL">
+</commodity>
+<commodity id="RER" description="REFREEGRATER" short-name="RER">
+</commodity>
+<commodity id="CKUY" description="COMBED KNITTING UNWEXED YARN" short-name="CKUY">
+</commodity>
+<commodity id="ITG" description="IRON GATE" short-name="ITG">
+</commodity>
+<commodity id="REDS" description="RED SORGHUM" short-name="REDS">
+</commodity>
+<commodity id="MWK" description="MISWAK" short-name="MWK">
+</commodity>
+<commodity id="T3O" description="TELLUS 32 OIL" short-name="T3O">
+</commodity>
+<commodity id="CDS" description="COTTON DYED SHEET" short-name="CDS">
+</commodity>
+<commodity id="DYE" description="DYESTUFF" short-name="DYE">
+</commodity>
+<commodity id="HGT" description="HONEY GREEN TEA" short-name="HGT">
+</commodity>
+<commodity id="BSS" description="BLENDED STITCHED SHEETS" short-name="BSS">
+</commodity>
+<commodity id="PWP" description="PUR WATER PURIFIER" short-name="PWP">
+</commodity>
+<commodity id="F" description="FLUORSPAR" short-name="F">
+</commodity>
+<commodity id="CFB" description="COTTON PRINTED FLANNEL" short-name="CFB">
+</commodity>
+<commodity id="CHC" description="CALCIUM HAPO CLORITE" short-name="CHC">
+</commodity>
+<commodity id="CTM" description="COTTON TERRY MADE" short-name="CTM">
+</commodity>
+<commodity id="AAG" description="AAGMINTAN" short-name="AAG">
+</commodity>
+</SNXDATA>

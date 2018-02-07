@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">Pools</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!--
+    EQUIPMENT POOLS
+    -->
+    <class name="com.navis.inventory.business.pools.Pool" table="inv_pools" dynamic-update="true">
+        <meta attribute="n4alias">pool</meta>
+        <meta attribute="generated-class">com.navis.inventory.business.pools.PoolHbr</meta>
+        <meta attribute="class-description">Domain entity representing an equipment pool</meta>
+
+        <id name="poolGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="poolId" column="id" type="string" length="8" not-null="true">
+            <meta attribute="field-description">Id of this pool</meta>
+        </property>
+
+        <many-to-one name="poolComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The complex to which this pool belongs</meta>
+        </many-to-one>
+
+        <property name="poolName" column="name" type="string" length="35">
+            <meta attribute="field-description">Full name of this pool</meta>
+        </property>
+
+        <property name="poolTag" column="tag" type="string" length="35">
+            <meta attribute="field-description">Used to print on the gate EIR, instead of the list of pool members</meta>
+        </property>
+
+        <!-- Pool Administrator Info -->
+        <!-- @TODO : putting contact fields in here is temperary! It should be a component refering
+        to the entity that will reside in security module (together with organization, etc -->
+
+        <property name="poolAdminName" column="admin_name" type="string" length="35">
+            <meta attribute="field-description">Pool administrator's name</meta>
+        </property>
+        <property name="poolAdminPhone" column="admin_phone" type="string" length="35">
+            <meta attribute="field-description">Pool administrator's phone</meta>
+        </property>
+        <property name="poolAdminMobile" column="admin_mobile" type="string" length="35">
+            <meta attribute="field-description">Pool administrator's mobile phone</meta>
+        </property>
+        <property name="poolAdminFax" column="admin_fax" type="string" length="35">
+            <meta attribute="field-description">Pool administrator's mobile fax number</meta>
+        </property>
+        <!--  2007-Jan-10 svaitheas ARGO-5920 v1.2.0 v1.1.21 Long email address (over 35 chars) causes failure in notifications in CAP.Hence increase the email address column size to 255 chars -->
+        <property name="poolAdminEmail" column="admin_email" type="string" length="255">
+            <meta attribute="field-description">Pool administrator's mobile fax number</meta>
+        </property>
+        <property name="poolAdminLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <!--    Audit Data -->
+        <property name="poolCreated" column="created" type="timestamp"/>
+        <property name="poolCreator" column="creator" type="string" length="30"/>
+        <property name="poolChanged" column="changed" type="timestamp"/>
+        <property name="poolChanger" column="changer" type="string" length="30"/>
+
+        <!-- This pool members -->
+        <set name="poolMembers" lazy="true" table="inv_pool_members" inverse="true">
+            <key column="pool_gkey"/>
+            <one-to-many class="com.navis.inventory.business.pools.PoolMember"/>
+        </set>
+
+        <!-- This pool equipment -->
+        <set name="poolEquipment" lazy="true" table="inv_pool_equipment" inverse="true">
+            <key column="pool_gkey"/>
+            <one-to-many class="com.navis.inventory.business.pools.PoolEquipment"/>
+        </set>
+
+        <!-- This pool trucking companies -->
+        <set name="poolTruckCos" lazy="true" table="inv_pool_truck_co" inverse="true">
+            <key column="pool_gkey"/>
+            <one-to-many class="com.navis.inventory.business.pools.PoolTruckCo"/>
+        </set>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.inventory.business.pools.PoolMember" table="inv_pool_members" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.inventory.business.pools.PoolMemberHbr</meta>
+        <meta attribute="n4alias">poolmbr</meta>
+        <id name="poolmbrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="poolmbrPool" column="pool_gkey" class="com.navis.inventory.business.pools.Pool" not-null="true"/>
+        <many-to-one name="poolmbrEqOper" column="eq_oper_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"/>
+        <property name="poolmbrLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <!--    Audit Data -->
+        <property name="poolmbrCreated" column="created" type="timestamp"/>
+        <property name="poolmbrCreator" column="creator" type="string" length="30"/>
+        <property name="poolmbrChanged" column="changed" type="timestamp"/>
+        <property name="poolmbrChanger" column="changer" type="string" length="30"/>
+
+        <!-- The types of equipment this member contributes to the pool -->
+        <set name="poolmbrEquipTypes" lazy="true" table="inv_pool_member_equip_type" inverse="true">
+            <key column="pool_member_gkey"/>
+            <one-to-many class="com.navis.inventory.business.pools.PoolMemberEquipType"/>
+        </set>
+        <!-- All equipment of this class contributed -->
+        <set name="poolmbrEqClasses" lazy="true" table="inv_pool_member_eq_classes" inverse="true">
+            <key column="pool_membr_gkey"/>
+            <one-to-many class="com.navis.inventory.business.pools.PoolMemberEqClass"/>
+        </set>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.inventory.business.pools.PoolEquipment" table="inv_pool_equipment" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.inventory.business.pools.PoolEquipmentHbr</meta>
+        <meta attribute="n4alias">pooleq</meta>
+        <id name="pooleqGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="pooleqEquipment" column="eq_gkey" class="com.navis.argo.business.reference.Equipment" not-null="true"/>
+        <many-to-one name="pooleqPool" column="pool_gkey" class="com.navis.inventory.business.pools.Pool" not-null="true"/>
+        <property name="pooleqJoined" column="joined" type="timestamp" not-null="true"/>
+        <property name="pooleqRemoved" column="removed" type="timestamp"/>
+
+        <!--    Audit Data -->
+        <property name="pooleqCreated" column="created" type="timestamp"/>
+        <property name="pooleqCreator" column="creator" type="string" length="30"/>
+        <property name="pooleqChanged" column="changed" type="timestamp"/>
+        <property name="pooleqChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <class name="com.navis.inventory.business.pools.PoolMemberEquipType" table="inv_pool_member_equip_type" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.inventory.business.pools.PoolMemberEquipTypeHbr</meta>
+        <meta attribute="n4alias">pooleqtype</meta>
+        <id name="pooleqtypeGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="pooleqtypePoolMember" column="pool_member_gkey" class="com.navis.inventory.business.pools.PoolMember" not-null="true"/>
+        <!-- <many-to-one name="poolMembrEquipType" column="equip_type_gkey" class="com.navis.argo.business.reference.EquipType" not-null="true"/>  -->
+        <property name="pooleqtypeLength" column="eq_size" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalLengthEnum" not-null="true">
+            <meta attribute="field-description">Length: 20, 24, 30, 40, 45, 53</meta>
+        </property>
+        <property name="pooleqtypeIsoGroup" column="iso_group" type="com.navis.argo.persistence.atoms.UserTypeEquipIsoGroupEnum">
+            <meta attribute="field-description">ISO group code. See http://www.smdg.org/documents/</meta>
+        </property>
+        <property name="pooleqtypeHeight" column="eq_height" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalHeightEnum">
+            <meta attribute="field-description">Height: 8'0", 8'6", 9'0"</meta>
+        </property>
+        <property name="pooleqtypeJoined" column="joined" type="timestamp" not-null="true"/>
+        <property name="pooleqtypeRemoved" column="removed" type="timestamp"/>
+
+        <!--    Audit Data -->
+        <property name="pooleqtypeCreated" column="created" type="timestamp"/>
+        <property name="pooleqtypeCreator" column="creator" type="string" length="30"/>
+        <property name="pooleqtypeChanged" column="changed" type="timestamp"/>
+        <property name="pooleqtypeChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <class name="com.navis.inventory.business.pools.PoolTruckCo" table="inv_pool_truck_co" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.inventory.business.pools.PoolTruckCoHbr</meta>
+        <meta attribute="n4alias">pooltrkco</meta>
+        <id name="pooltrkcoGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="pooltrkcoTruckingCompany" column="truckco_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="true"/>
+        <many-to-one name="pooltrkcoPool" column="pool_gkey" class="com.navis.inventory.business.pools.Pool" not-null="true"/>
+        <property name="pooltrkcoBanned" column="banned" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">If true this trucking company is banned from picking up the pool equipment</meta>
+        </property>
+
+        <!--    Audit Data -->
+        <property name="pooltrkcoCreated" column="created" type="timestamp"/>
+        <property name="pooltrkcoCreator" column="creator" type="string" length="30"/>
+        <property name="pooltrkcoChanged" column="changed" type="timestamp"/>
+        <property name="pooltrkcoChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <class name="com.navis.inventory.business.pools.PoolMemberEqClass" table="inv_pool_member_equip_classes" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.inventory.business.pools.PoolMemberEqClassHbr</meta>
+        <meta attribute="n4alias">pooleqclass</meta>
+        <id name="pooleqclassGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="pooleqclassPoolMember" column="pool_membr_gkey" class="com.navis.inventory.business.pools.PoolMember" not-null="false"/>
+
+        <property name="pooleqclassEqClassEnum" column="eqClass" type="com.navis.argo.persistence.atoms.UserTypeEquipClassEnum" not-null="true">
+            <meta attribute="field-description">Class of equipment contributed by pool member (e.g. CHASSIS)</meta>
+        </property>
+
+        <!--    Audit Data -->
+        <property name="pooleqclassCreated" column="created" type="timestamp"/>
+        <property name="pooleqclassCreator" column="creator" type="string" length="30"/>
+        <property name="pooleqclassChanged" column="changed" type="timestamp"/>
+        <property name="pooleqclassChanger" column="changer" type="string" length="30"/>
+    </class>
+
+</hibernate-mapping>

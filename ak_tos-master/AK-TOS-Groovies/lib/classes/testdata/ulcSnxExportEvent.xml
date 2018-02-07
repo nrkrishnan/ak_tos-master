@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<event-type id="EXPORT_UNIT_EVENT" applies-to="UNIT" is-billable="Y" is-notifiable="N" can-bulk-update="N" is-builtin-event="N" is-event-recorded="Y" is-facility-service="Y" is-auto-extract="N" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="EXPRT" ui-value="Export" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</event-type>
+</argo:snx>
+

@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<variforms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schemas/Variforms.xsd">
+    <actions>
+        <action id="create">create</action>
+        <action id="view">view</action>
+        <action id="query">query</action>
+        <action id="update">update</action>
+        <action id="delete">delete</action>
+        <action id="duplicate">duplicate</action>
+        <action id="list">list</action>
+    </actions>
+
+    <tableExtension id="INV007">
+        <menu category="actions">
+            <menuItem userActionId="CUSTOM_RECORD_SERVICE" label="record test service" codeExtensionId="record test service" enable="oneOrMoreSources"
+                      mnemonic="T"/>
+
+            <menuItem userActionId="CUSTOM_OPEN_DYNAMIC_FIELDS" label="Edit Dynamic Unit Fields" variformId="CUSTOM_FORM_UNIT" enable="oneSource"/>
+            <menuItem userActionId="CUSTOM_SHOW_CUSTOM_FIELDS" label="Show Custom Unit Table View" variformId="CUSTOM_TABLE_CUSTOM_FIELD_FOR_UNITS"
+                      enable="zeroOrMoreSources" modal="true" destination="tab"/>
+        </menu>
+        <menu category="display"/>
+        <menu category="context">
+            <menuItem userActionId="CUSTOM_OPEN_DYNAMIC_FIELDS" label="Edit Dynamic Unit Fields" variformId="CUSTOM_FORM_UNIT" enable="oneSource"/>
+            <menuItem userActionId="CUSTOM_SHOW_CUSTOM_FIELDS" label="Show Custom Units Table View" variformId="CUSTOM_TABLE_CUSTOM_FIELD_FOR_UNITS"
+                      modal="true" enable="zeroOrMoreSources"/>
+        </menu>
+    </tableExtension>
+
+    <tableExtension id="ARG001">
+        <menu category="actions">
+            <menuItem userActionId="CUSTOM_OPEN_DYNAMIC_FIELDS" label="Edit Dynamic Fields" variformId="CUSTOM_ARG002_FORM_EQUIPMENT_TYPE"
+                      enable="oneSource"/>
+            <menuItem userActionId="CUSTOM_SHOW_CUSTOM_FIELDS" label="Show Custom Equip Type Table View"
+                      variformId="CUSTOM_ARG001_TABLE_EQUIPMENT_TYPE"
+                      enable="zeroOrMoreSources" modal="true" destination="tab"/>
+
+            <!-- dynamic entity foo here since dynamic nodes not ready-->
+            <menuItem userActionId="CUSTOM_OPEN_FOOS" label="Open Custom Foos"
+                      variformId="CUSTOM_TABLE_SANDBOX_FOOS" enable="zeroOrMoreSources" destination="tab"/>
+            <menuItem userActionId="CUSTOM_OPEN_BARS" label="Open Custom Bars"
+                      variformId="CUSTOM_TABLE_SANDBOX_BARS" enable="zeroOrMoreSources" destination="tab"/>
+        </menu>
+
+        <menu category="display"/>
+        <menu category="context">
+            <menuItem userActionId="CUSTOM_OPEN_DYNAMIC_FIELDS" label="Edit Dynamic Fields" variformId="CUSTOM_ARG002_FORM_EQUIPMENT_TYPE"
+                      enable="oneSource"/>
+            <menuItem userActionId="CUSTOM_SHOW_CUSTOM_FIELDS" label="Show Custom Table View" variformId="CUSTOM_ARG001_TABLE_EQUIPMENT_TYPE"
+                      enable="zeroOrMoreSources" modal="true"/>
+        </menu>
+    </tableExtension>
+
+    <table id="CUSTOM_ARG001_TABLE_EQUIPMENT_TYPE">
+        <title>CUSTOM Equipment Type Extras</title>
+        <customization creationType="CUSTOM_NEW"/>
+        <entity>
+            <name>EquipType</name>
+        </entity>
+        <crudCommand variformId="CUSTOM_ARG002_FORM_EQUIPMENT_TYPE"/>
+        <column fieldId="eqtypId" display="visible"/>
+        <column fieldId="eqtypNominalLength" display="visible"/>
+        <column fieldId="eqtypNominalHeight" display="visible"/>
+        <column fieldId="eqtypIsoGroup" hAlignment="left" display="visible"/>
+
+        <column fieldId="customFlexFields.eqtypCustomDFFString1" display="visible"/>
+        <column fieldId="customFlexFields.eqtypCustomDFFString2" display="visible"/>
+        <column fieldId="customFlexFields.eqtypCustomDFFDateTime1" display="visible"/>
+        <column fieldId="customFlexFields.eqtypCustomDFFLong1" display="visible"/>
+        <column fieldId="customFlexFields.eqtypCustomDFFDouble2" display="visible"/>
+    </table>
+
+    <form id="CUSTOM_ARG002_FORM_EQUIPMENT_TYPE">
+        <title>Equipment Type</title>
+        <customization creationType="CUSTOM_NEW"/>
+        <entity>
+            <name>EquipType</name>
+            <primaryKey>eqtypGkey</primaryKey>
+        </entity>
+        <actionsAllowed>
+            <actionMode action="create" mode="hidden" pageId="PAGE_EQUIP_TYPE_CREATE"/>
+            <actionMode action="query" mode="editable" pageId="PAGE_EQUIP_TYPE_QUERY"/>
+            <actionMode action="update" mode="editable" pageId="PAGE_EQUIP_TYPE_EDIT"/>
+            <actionMode action="delete" mode="viewOnly" pageId="PAGE_EQUIP_TYPE_DELETE"/>
+        </actionsAllowed>
+
+        <item fieldId="eqtypId">
+            <actionMode action="create" required="true" mode="editable"/>
+            <actionMode action="query" required="true" mode="editable"/>
+            <actionMode action="update" required="true" mode="viewOnly"/>
+            <actionMode action="delete" required="true" mode="viewOnly"/>
+        </item>
+
+        <item fieldId="customFlexFields.eqtypCustomDFFString1"/>
+        <item fieldId="customFlexFields.eqtypCustomDFFString2"/>
+        <item fieldId="customFlexFields.eqtypCustomDFFDateTime1"/>
+        <item fieldId="customFlexFields.eqtypCustomDFFLong1"/>
+        <item fieldId="customFlexFields.eqtypCustomDFFDouble2"/>
+    </form>
+
+    <table id="CUSTOM_TABLE_CUSTOM_FIELD_FOR_UNITS" defaultSearchfieldId="customEntityFields.unitCustomDFFString1">
+        <title>Custom Dynamic Unit Fields</title>
+        <customization creationType="CUSTOM_NEW"/>
+        <entity>
+            <name>UnitFacilityVisit</name>
+        </entity>
+
+        <tableActions>
+            <tableActionMode action="create" mode="disabled"/>
+            <tableActionMode action="view" mode="disabled"/>
+            <tableActionMode action="delete" mode="disabled"/>
+        </tableActions>
+
+        <crudCommand variformId="CUSTOM_FORM_UNIT"/>
+
+        <column fieldId="ufvUnit.unitId"/>
+        <!-- unit fields-->
+        <column fieldId="ufvUnit.customFlexFields.unitCustomDFFString1" display="visible"/>
+        <column fieldId="ufvUnit.customFlexFields.unitCustomDFFDateTime1" display="visible"/>
+        <column fieldId="ufvUnit.customFlexFields.unitCustomDFFCustomFoo.customEntityFields.customfooDynamicBusinessName" display="visible"/>
+        <column fieldId="ufvUnit.customFlexFields.unitCustomDFFCarrierVisit.cvId" display="visible"/>
+        <column fieldId="ufvUnit.customFlexFields.unitCustomDFFAnotherShipper.bzuId" display="visible"/>
+
+        <!-- join to equipmenttype custom fields-->
+        <column fieldId="ufvUnit.unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" display="visible" complexQuery="include"/>
+        <!-- this is confusing because the label defaults to "Type" -->
+        <column fieldId="ufvUnit.unitPrimaryUe.ueEquipment.eqEquipType.customFlexFields.eqtypCustomDFFString1" display="visible"
+                complexQuery="include"/>
+
+        <!-- ufv dynamic fields-->
+        <column fieldId="customFlexFields.ufvCustomDFFString1" display="visible"/>
+        <column fieldId="customFlexFields.ufvCustomDFFDateTime1" display="visible"/>
+
+        <!-- for complex query only-->
+        <column fieldId="customFlexFields.ufvCustomDFFCarrierVisit.cvId" display="visible"/>
+        <column fieldId="customFlexFields.ufvCustomDFFAnotherShipper.bzuId" display="visible"/>
+
+    </table>
+
+    <form id="CUSTOM_FORM_UNIT">
+        <title>Custom Unit and UFV Fields #titleField#</title>
+        <customization creationType="CUSTOM_NEW"/>
+        <entity>
+            <name>UnitFacilityVisit</name>
+        </entity>
+
+        <actionsAllowed>
+            <actionMode action="create" mode="editable" pageId="PAGE_QUERY_CREATE"/>
+            <actionMode action="query" mode="editable" pageId="PAGE_QUERY_QUERY"/>
+            <actionMode action="update" mode="editable" pageId="PAGE_QUERY_EDIT"/>
+            <actionMode action="delete" mode="viewOnly" pageId="PAGE_QUERY_DELETE"/>
+        </actionsAllowed>
+
+        <!-- UNIT FIELDS-->
+        <item fieldId="ufvUnit.customFlexFields.unitCustomDFFString1"/>
+        <item fieldId="ufvUnit.customFlexFields.unitCustomDFFDateTime1"/>
+
+        <item fieldId="ufvUnit.customFlexFields.unitCustomDFFCarrierVisit">
+            <item-attribute type="lovKey">argoLov.obCarrierVisitIncludingNonOpFacilityVisits</item-attribute>
+            <item-attribute type="widgetSubType">search</item-attribute>
+        </item>
+
+        <item fieldId="ufvUnit.customFlexFields.unitCustomDFFAnotherShipper">
+            <item-attribute type="lovKey">argoLov.shipper</item-attribute>
+            <item-attribute type="widgetSubType">search</item-attribute>
+        </item>
+
+        <item fieldId="ufvUnit.customFlexFields.unitCustomDFFCustomFoo" extraEntry="none">
+            <item-attribute
+                    type="lovKey">entityDynamicLov?ENTITY=com.navis.extension.sandbox.CustomFoo,FIELD1=customEntityFields.customfooDynamicBusinessName
+            </item-attribute>
+            <item-attribute type="widgetSubType">search</item-attribute>
+        </item>
+
+        <!-- UNIT facility FIELDS-->
+        <item fieldId="customFlexFields.ufvCustomDFFString1"/>
+        <item fieldId="customFlexFields.ufvCustomDFFDateTime1"/>
+
+        <item fieldId="customFlexFields.ufvCustomDFFCarrierVisit">
+            <item-attribute type="lovKey">argoLov.obCarrierVisitIncludingNonOpFacilityVisits</item-attribute>
+            <item-attribute type="widgetSubType">search</item-attribute>
+        </item>
+
+        <item fieldId="customFlexFields.ufvCustomDFFAnotherShipper">
+            <item-attribute type="lovKey">argoLov.shipper</item-attribute>
+            <item-attribute type="widgetSubType">search</item-attribute>
+        </item>
+
+    </form>
+
+    <table id="CUSTOM_TABLE_VSL005_EXTENSIONS" defaultSearchfieldId="cvdCv.cvId">
+        <title>Custom Vessel Visits</title>
+        <entity>
+            <name>VesselVisitDetails</name>
+            <primaryKey>vvdGkey</primaryKey>
+        </entity>
+
+        <tableActions>
+            <tableActionMode action="create" mode="disabled"/>
+            <tableActionMode action="update" mode="allow"/>
+            <tableActionMode action="view" mode="disabled"/>
+            <tableActionMode action="delete" mode="allow"/>
+        </tableActions>
+        <crudCommand variformId="CUSTOM_FORM_VSL006_EXTENSION"/>
+        <column fieldId="vvdIbVygNbr"/>
+
+        <column fieldId="cvdCv.cvId"/>
+        <column fieldId="vvdCustomFlexFields.vvdCustomDFFString1"/>
+        <column fieldId="vvdCustomFlexFields.vvdCustomDFFString1"/>
+        <column fieldId="vvdCustomFlexFields.vvdCustomDFFDateTime1"/>
+
+        <column fieldId="cvdCv.cvCustomsId" display="viewable"/>
+        <!-- provide this field for complex query to allow entry of any facility id, also non-operational ones (instead of lov)-->
+        <column fieldId="cvdCv.cvFacility.fcyId"/>
+        <!-- 2008-10-30 1.8.B lbarman ARGO-14483: allow vessel visits for non-op facilities; show if non-operational or not-->
+        <column fieldId="cvdCv.cvFacility.fcyIsNonOperational" display="viewable"/>
+        <column fieldId="cvdCv.cvNextFacility" complexQuery="include" simpleQuery="omit" display="none"/>
+        <column fieldId="cvdCv.cvNextFacility.fcyId" complexQuery="omit" simpleQuery="include"/>
+        <column fieldId="vvdBizu.bzuId" complexQuery="omit" simpleQuery="include"/>
+        <column fieldId="vvdBizu" complexQuery="include" simpleQuery="omit" display="none"/>
+        <column fieldId="vvdVessel.vesName"/>
+        <column fieldId="vvdIbVygNbr"/>
+        <column fieldId="vvdObVygNbr"/>
+    </table>
+
+    <tableExtension id="VSL005">
+        <menu category="actions">
+            <menuItem userActionId="VIEW_CUSTOM_TABLE_VSL005_EXTENSIONS" label="Open Vessel Visit Extensions"
+                      variformId="CUSTOM_TABLE_VSL005_EXTENSIONS" enable="zeroOrMoreSources"/>
+        </menu>
+    </tableExtension>
+
+    <form id="CUSTOM_FORM_VSL006_EXTENSION">
+
+        <title>Vessel Visit Details for #titleField#</title>
+        <entity>
+            <name>VesselVisitDetails</name>
+            <primaryKey>cvdGkey</primaryKey>
+            <titleField>cvdCv.cvId</titleField>
+        </entity>
+        <actionsAllowed>
+
+            <actionMode action="update" mode="editable"/>
+        </actionsAllowed>
+        <!-- identity (hidden fields) -->
+
+        <item fieldId="cvdCv.cvId">
+            <actionMode action="update" mode="viewOnly"/>
+        </item>
+        <item fieldId="cvdCv.cvVisitPhase">
+            <actionMode action="update" mode="viewOnly"/>
+        </item>
+        <item fieldId="vvdCustomFlexFields.vvdCustomDFFString1"/>
+        <item fieldId="vvdCustomFlexFields.vvdCustomDFFString2"/>
+        <item fieldId="vvdCustomFlexFields.vvdCustomDFFDateTime1"/>
+
+    </form>
+
+    <tableExtension id="ARG068">
+        <menu category="actions">
+            <menuItem userActionId="VIEW_CUSTOM_TABLE_ARG068_SHIPPER" label="View custom shipper table" variformId="CUSTOM_TABLE_ARG068_SHIPPER"
+                      enable="zeroOrMoreSources"/>
+            <menuItem userActionId="CUSTOM_EDIT_SHIPPER" label="Edit shipper custom fields" variformId="CUSTOM_FORM_SHIPPER_EXTENSIONS"
+                      enable="oneSource"/>
+
+        </menu>
+          <menu category="context">
+            <menuItem userActionId="VIEW_CUSTOM_TABLE_ARG068_SHIPPER" label="View custom shipper table" variformId="CUSTOM_TABLE_ARG068_SHIPPER"
+                      enable="zeroOrMoreSources"/>
+            <menuItem userActionId="CUSTOM_EDIT_SHIPPER" label="Edit shipper custom fields" variformId="CUSTOM_FORM_SHIPPER_EXTENSIONS"
+                      enable="oneSource"/>
+
+        </menu>
+    </tableExtension>
+
+    <form id="CUSTOM_FORM_SHIPPER_EXTENSIONS">
+        <title>Shipper and Consignee</title>
+        <entity>
+            <name>Shipper</name>
+            <primaryKey>bizuGkey</primaryKey>
+        </entity>
+        <actionsAllowed>
+            <actionMode action="create" mode="editable" pageId=""/>
+            <actionMode action="query" mode="editable" pageId=""/>
+            <actionMode action="update" mode="editable" pageId=""/>
+            <actionMode action="delete" mode="viewOnly" pageId=""/>
+        </actionsAllowed>
+        <item fieldId="bzuId"/>
+        <item fieldId="bzuName"/>
+
+        <!--parent class -->
+        <item fieldId="customFlexFields.bzuCustomDFFString1"/>
+        <item fieldId="customFlexFields.bzuCustomDFFDateTime1"/>
+
+        <item fieldId="shpprCustomFlexFields.shpprCustomDFFString1"/>
+        <item fieldId="shpprCustomFlexFields.shpprCustomDFFDateTime1"/>
+        <item fieldId="shpprCustomFlexFields.shpprCustomDFFEvilTwinShipper">
+            <item-attribute type="lovKey">argoLov.shipper</item-attribute>
+            <item-attribute type="widgetSubType">search</item-attribute> 
+        </item>
+
+    </form>
+
+    <table id="CUSTOM_TABLE_ARG068_SHIPPER">
+        <title>Shippers and Consignees Custom Fields</title>
+        <entity>
+            <name>Shipper</name>
+        </entity>
+        <crudCommand variformId="CUSTOM_FORM_SHIPPER_EXTENSIONS"/>
+        <column fieldId="bzuId"/>
+        <column fieldId="customFlexFields.bzuCustomDFFString1"/>
+        <column fieldId="customFlexFields.bzuCustomDFFDateTime1"/>
+
+        <column fieldId="shpprCustomFlexFields.shpprCustomDFFString1"/>
+        <column fieldId="shpprCustomFlexFields.shpprCustomDFFDateTime1"/>
+        <column fieldId="shpprCustomFlexFields.shpprCustomDFFEvilTwinShipper.bzuName"/>
+        <column fieldId="shpprCustomFlexFields.shpprCustomDFFEvilTwinShipper.bzuId"/>
+
+        <column fieldId="bzuNotes" display="viewable"/>
+        <column fieldId="bzuCreated" display="viewable"/>
+        <column fieldId="bzuCreator" display="viewable"/>
+        <column fieldId="bzuChanged" display="viewable"/>
+        <column fieldId="bzuChanger" display="viewable"/>
+        <column fieldId="bzuLifeCycleState"/>
+    </table>
+
+</variforms>
+

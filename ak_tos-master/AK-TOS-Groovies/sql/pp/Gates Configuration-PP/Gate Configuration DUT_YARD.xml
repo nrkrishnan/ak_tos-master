@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gateConfiguration name="DUT_YARD" description="Gate Config. for DUT Yard Dawgs">
+  <gateStages>
+    <inStage id="ingate" leg="in" menuId="In Gate" order="10" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" autoStage="false" isTruckVisitRequired="false" pollNextTruck="false" pollTruckInterval="" extraTime="" timeAllowed="" allowAnyStage="false" exchangeLaneAssignmentBooth="false" allowTransactionEdit="false" includeAppointmentTab="" appointmentsTabFilterId="" includeGroupsTab="" cargoLotsFilterId="" supportsCallup="false" isExcluded="false">
+      <stagesAllowed />
+    </inStage>
+  </gateStages>
+  <gateStageSubTypes>
+    <gateStagesRM>
+      <inStage id="ingate" leg="in" addAllowed="false" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadUnitPreadvised-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerInYard" include="true" />
+          <bizTask name="CreateContainerVisit" customCode="MATSetGateCarrierVisitNoTruck" include="true" />
+          <bizTask name="ApplyPhysicalDetails" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="MATSetUnitFlex" include="true" />
+          <bizTask name="ApplyContainerNotes" include="true" />
+          <bizTask name="ApplyReeferDetails" include="true" />
+          <bizTask name="PlaceContainerOnTruck" include="true" />
+          <bizTask name="PlaceUnitIntoYard" customCode="MATPlaceUnitInYardHeap" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="unitFlexString15" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="HIDDEN" fieldRequired="false" />
+          <uiField fieldId="unitFlexString12" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </inStage>
+    </gateStagesRM>
+  </gateStageSubTypes>
+  <gateStageTruckVisit>
+    <inStage id="ingate" leg="in" autoStage="false" isTruckVisitRequired="false" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" pollNextTruck="false" pollTruckInterval="" allowAnyStage="false" supportsCallup="false" isExcluded="false">
+      <bizTasks>
+        <!--System Task ReadTruckVisitAppointment-->
+        <!--System Task ReadTruck-->
+        <!--System Task ReadDriver-->
+        <!--System Task ReadTruckVisitAppointment-->
+        <!--System Task ReadTruck-->
+        <!--System Task ReadDriver-->
+        <!--System Task SelectChassisProfile-->
+      </bizTasks>
+      <uiForm>
+        <uiField fieldId="tvdtlsDriverName" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tTranCtrNumber" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+      </uiForm>
+    </inStage>
+  </gateStageTruckVisit>
+</gateConfiguration>
+

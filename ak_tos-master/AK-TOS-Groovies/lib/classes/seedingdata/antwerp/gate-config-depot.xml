@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gateConfiguration name="EMPTYGATE" description="Empty Gate" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:noNamespaceSchemaLocation="schema\GateConfiguration.xsd">
+    <gateStages>
+        <inStage leg="in" menuId="Empty Gate - Office" id="office" order="1"/>
+        <inStage leg="in" id="kiosk" order="1"/>
+        <outStage leg="out" menuId="Empty Gate - Yard" id="yard" order="3"/>
+    </gateStages>
+    <gateStageSubTypes>
+        <gateStagesRM>
+            <inStage id="office" leg="in" nextStageId="yard">
+                <bizTasks>
+                    <bizTask name="ReadTruckingCompany" order="1"/>
+                    <bizTask name="ReadDriver" order="2"/>
+                    <bizTask name="ReadTruck" order="3"/>
+                    <bizTask name="ReadContainer" order="4"/>
+                    <bizTask name="ReadUnitActive" order="5"/>
+                    <bizTask name="ReadContainerOperator" order="6"/>
+                    <bizTask name="ReadContainerPosition" order="7"/>
+                    <bizTask name="ReadAccessory" order="8"/>
+                    <bizTask name="ReadLine" order="9"/>
+                    <bizTask name="CreateNewDriver" order="10"/>
+                    <bizTask name="CreateNewTruck" order="11"/>
+                    <bizTask name="CreateNewContainer" order="12"/>
+                    <bizTask name="CreateNewAccessory" order="15"/>
+                    <bizTask name="AssignTrkcToDriver" order="16"/>
+                    <bizTask name="RejectDuplicateTransaction" order="17"/>
+                    <bizTask name="RejectTruckingCompanyUnknown" order="18"/>
+                    <bizTask name="RejectTruckingCompanyDeprecated" order="19"/>
+                    <bizTask name="RejectShippingLineDeprecated" order="20"/>
+                    <bizTask name="RejectTruckingCompanyExpiredLineAgreement" order="21"/>
+                    <bizTask name="RejectDriverNotProvided" order="23"/>
+                    <bizTask name="RejectDriverUnknown" order="24"/>
+                    <bizTask name="RejectDriverSuspended" order="25"/>
+                    <bizTask name="RejectDriverBanned" order="26"/>
+                    <bizTask name="RejectTruckingCompanyBanned" order="27"/>
+                    <bizTask name="RejectTrkcLineBanned" order="28"/>
+                    <bizTask name="RejectContainerOverWeightEmpty" order="33"/>
+                    <bizTask name="RejectContainerInYard" order="34"/>
+                    <bizTask name="RejectAccessoryInYard" order="35"/>
+                    <bizTask name="CreateContainerVisit" order="39"/>
+                    <bizTask name="RejectContainerEquipmentHold" order="40"/>
+                    <bizTask name="PlaceContainerOnTruck" order="41"/>
+                    <bizTask name="PositionTruckVisit" order="42">
+                        <parameter id="truckPosition" value="TQ"/>
+                    </bizTask>
+                    <bizTask name="PlanUnitIntoYard" order="43">
+                        <parameter id="truckPosition" value="TQ"/>
+                        <parameter id="workQueue" value="EMPTIES"/>
+                    </bizTask>
+                    <bizTask name="LogBundleMission" order="46"/>
+                    <bizTask name="LogHazardMission" order="47"/>
+                    <bizTask name="logOverDimensionMission" order="48"/>
+                    <bizTask name="LogReeferMission" order="49"/>
+                    <bizTask name="CreateDocument" order="50">
+                        <parameter id="docTypeId" value="DROPOFF"/>
+                    </bizTask>
+                    <bizTask name="printDocument" order="51">
+                        <parameter id="docTypeId" value="DROPOFF"/>
+                    </bizTask>
+                </bizTasks>
+                <uiForm>
+                    <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCtrTypeId" fieldDisplayMode="EDITABLE" fieldRequired="true"/>
+                    <uiField fieldId="tranCtrOperator" fieldDisplayMode="EDITABLE" fieldRequired="true"/>
+                    <uiField fieldId="tTranCtrDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCtrAccNbr" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCtrAccTypeId" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tTranBndleVao" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranTrkcId" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                </uiForm>
+            </inStage>
+            <inStage id="kiosk" leg="in" nextStageId="yard">
+                <bizTasks>
+                    <bizTask name="ReadTruckingCompany" order="1"/>
+                    <bizTask name="ReadDriver" order="2"/>
+                    <bizTask name="ReadTruck" order="3"/>
+                    <bizTask name="ReadContainer" order="4"/>
+                    <bizTask name="ReadUnitActive" order="5"/>
+                    <bizTask name="ReadContainerOperator" order="6"/>
+                    <bizTask name="ReadContainerPosition" order="7"/>
+                    <bizTask name="ReadAccessory" order="8"/>
+                    <bizTask name="ReadLine" order="9"/>
+                    <bizTask name="ReadTruckingCompany" order="0"/>
+                    <bizTask name="ReadTruckingCompany" order="1"/>
+                    <bizTask name="ReadDriver" order="1"/>
+                    <bizTask name="RejectDriverUnknown" order="10"/>
+                    <bizTask name="RejectDriverSuspended" order="11"/>
+                    <bizTask name="RejectDriverBanned" order="12"/>
+                    <bizTask name="RejectContainerNotFound" order="13"/>
+                    <bizTask name="RejectContainerOverWeightEmpty" order="14"/>
+                    <bizTask name="RejectContainerInYard" order="15"/>
+                    <bizTask name="RejectTruckingCompanyBanned" order="16"/>
+                    <bizTask name="RejectTrkcLineBanned" order="17"/>
+                    <bizTask name="CreateContainerVisit" order="18"/>
+                    <bizTask name="RejectContainerEquipmentHold" order="19"/>
+                    <bizTask name="ReadContainer" order="2"/>
+                    <bizTask name="ReadDriver" order="2"/>
+                    <bizTask name="PlaceContainerOnTruck" order="20"/>
+                    <bizTask name="PositionTruckVisit" order="21">
+                        <parameter id="truckPosition" value="TQ"/>
+                    </bizTask>
+                    <bizTask name="PlanUnitIntoYard" order="22">
+                        <parameter id="truckPosition" value="TQ"/>
+                        <parameter id="workQueue" value="EMPTIES"/>
+                    </bizTask>
+                    <bizTask name="LogBundleMission" order="23"/>
+                    <bizTask name="LogHazardMission" order="24"/>
+                    <bizTask name="logOverDimensionMission" order="25"/>
+                    <bizTask name="LogReeferMission" order="26"/>
+                    <bizTask name="CreateDocument" order="27">
+                        <parameter id="docTypeId" value="DROPOFF"/>
+                    </bizTask>
+                    <bizTask name="printDocument" order="28">
+                        <parameter id="docTypeId" value="DROPOFF"/>
+                    </bizTask>
+                    <bizTask name="ReadUnitPreadvised" order="3"/>
+                    <bizTask name="ReadTruck" order="3"/>
+                    <bizTask name="ReadContainer" order="4"/>
+                    <bizTask name="AssignTrkcToDriver" order="4"/>
+                    <bizTask name="RejectDuplicateTransaction" order="5"/>
+                    <bizTask name="ReadUnitActive" order="5"/>
+                    <bizTask name="RejectTruckingCompanyUnknown" order="6"/>
+                    <bizTask name="ReadContainerOperator" order="6"/>
+                    <bizTask name="RejectTruckingCompanyDeprecated" order="7"/>
+                    <bizTask name="ReadContainerPosition" order="7"/>
+                    <bizTask name="ReadAccessory" order="8"/>
+                    <bizTask name="RejectShippingLineDeprecated" order="8"/>
+                    <bizTask name="ReadLine" order="9"/>
+                    <bizTask name="RejectDriverNotProvided" order="9"/>
+                </bizTasks>
+                <uiForm/>
+            </inStage>
+            <outStage id="yard" leg="out">
+                <bizTasks/>
+                <uiForm/>
+            </outStage>
+        </gateStagesRM>
+        <gateStagesRE>
+            <inStage id="office" leg="in" nextStageId="yard">
+                <bizTasks>
+                    <bizTask name="ReadTruckingCompany" order="1"/>
+                    <bizTask name="ReadOrder" order="10"/>
+                    <bizTask name="ReadOrderItem" order="11"/>
+                    <bizTask name="ReadUnitPreadvised" order="13"/>
+                    <bizTask name="ReadCarrierVisit" order="14"/>
+                    <bizTask name="ReadDischargePoint1" order="15"/>
+                    <bizTask name="ReadCommodity" order="16"/>
+                    <bizTask name="ReadDriver" order="2"/>
+                    <bizTask name="ReadTruck" order="3"/>
+                    <bizTask name="ReadContainer" order="4"/>
+                    <bizTask name="ReadUnitActive" order="5"/>
+                    <bizTask name="ReadContainerOperator" order="6"/>
+                    <bizTask name="ReadContainerPosition" order="7"/>
+                    <bizTask name="ReadAccessory" order="8"/>
+                    <bizTask name="ReadLine" order="9"/>
+                    <bizTask name="SelectOrderItemForRcvCtr" order="12"/>
+                    <bizTask name="CreateNewDriver" order="18"/>
+                    <bizTask name="CreateNewTruck" order="19"/>
+                    <bizTask name="CreateNewContainer" order="20"/>
+                    <bizTask name="OnHireContainerToMatchLine" order="21"/>
+                    <bizTask name="CreateNewAccessory" order="23"/>
+                    <bizTask name="CreateOrderIfUnknown" order="24"/>
+                    <bizTask name="CreateOrderItemIfUnknown" order="25"/>
+                    <bizTask name="AssignTrkcToDriver" order="26"/>
+                    <bizTask name="AdjustTally" order="27"/>
+                    <bizTask name="RejectDuplicateTransaction" order="28"/>
+                    <bizTask name="RejectTruckingCompanyUnknown" order="29"/>
+                    <bizTask name="RejectTruckingCompanyDeprecated" order="30"/>
+                    <bizTask name="RejectShippingLineDeprecated" order="31"/>
+                    <bizTask name="RejectTruckingCompanyBanned" order="32"/>
+                    <bizTask name="RejectTruckingCompanyExpiredLineAgreement" order="33"/>
+                    <bizTask name="RejectTrkcLineBanned" order="35"/>
+                    <bizTask name="RejectDriverNotProvided" order="36"/>
+                    <bizTask name="RejectDriverUnknown" order="37"/>
+                    <bizTask name="RejectDriverSuspended" order="38"/>
+                    <bizTask name="RejectDriverBanned" order="39"/>
+                    <bizTask name="RejectOrderItemQtyExceeded" order="40"/>
+                    <bizTask name="RejectContainerRequired" order="41"/>
+                    <bizTask name="RejectContainerCannotBeUsedByLine" order="42"/>
+                    <bizTask name="RejectWrongGate" order="43"/>
+                    <bizTask name="RejectContainerInYard" order="44"/>
+                    <bizTask name="RejectContainerSeal1Required" order="47"/>
+                    <bizTask name="RejectGrossWeightRequired" order="51"/>
+                    <bizTask name="RejectAccessoryInYard" order="53"/>
+                    <bizTask name="RejectAccessoryCannotBeUsedByLine" order="54"/>
+                    <bizTask name="RejectCommodityForEmpty" order="56"/>
+                    <bizTask name="RejectCommodityHazRequired" order="57"/>
+                    <bizTask name="RejectCommodityNotmatchingBooking" order="58"/>
+                    <bizTask name="RejectCommodityRequired" order="60"/>
+                    <bizTask name="RejectCommodityTempOutOfRange" order="61"/>
+                    <bizTask name="RejectCommodityTempRequired" order="62"/>
+                    <bizTask name="RejectCommodityVentIncorrect" order="63"/>
+                    <bizTask name="RejectCommodityVentRequired" order="64"/>
+                    <bizTask name="RejectTranNotMatchingNonHazardBooking" order="65"/>
+                    <bizTask name="RejectTranNotMatchingNonOOGBooking" order="67"/>
+                    <bizTask name="RejectTranNotMatchingBookingTrkc" order="69"/>
+                    <bizTask name="RejectFreightKindNotMatchingBooking" order="71"/>
+                    <bizTask name="RejectIfBookingRequired" order="72"/>
+                    <bizTask name="RejectIfBookingNotUsed" order="73"/>
+                    <bizTask name="RejectCarrierVisitNotProvided" order="74"/>
+                    <bizTask name="RejectCarrierVisitPhaseDeparted" order="75"/>
+                    <bizTask name="RejectCarrierVisitPastCutoff" order="76"/>
+                    <bizTask name="RejectCarrierVisitLineNotAllowed" order="77"/>
+                    <bizTask name="RejectCarrierVisitBeforeBeginReceive" order="78"/>
+                    <bizTask name="RejectDischargePointBeforeLoadPoint" order="80"/>
+                    <bizTask name="RejectDischargePointNotInRotation" order="81"/>
+                    <bizTask name="RejectDischargePointNotProvided" order="82"/>
+                    <bizTask name="CreateContainerVisit" order="85"/>
+                    <bizTask name="RejectOrderHold" order="86"/>
+                    <bizTask name="RejectReeferDetailsNotRequired" order="87"/>
+                    <bizTask name="PlaceContainerOnTruck" order="88"/>
+                    <bizTask name="PositionTruckVisit" order="90">
+                        <parameter id="truckPosition" value="TQ"/>
+                    </bizTask>
+                    <bizTask name="PlanUnitIntoYard" order="91">
+                        <parameter id="truckPosition" value="TQ"/>
+                        <parameter id="workQueue" value="EMPTIES"/>
+                    </bizTask>
+                    <bizTask name="LogBundleMission" order="93"/>
+                    <bizTask name="LogHazardMission" order="94"/>
+                    <bizTask name="logOverDimensionMission" order="95"/>
+                    <bizTask name="LogReeferMission" order="96"/>
+                    <bizTask name="CreateDocument" order="97">
+                        <parameter id="docTypeId" value="DROPOFF"/>
+                    </bizTask>
+                    <bizTask name="printDocument" order="98">
+                        <parameter id="docTypeId" value="DROPOFF"/>
+                    </bizTask>
+                </bizTasks>
+                <uiForm>
+                    <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCtrTypeId" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCtrFreightKind" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranLineId" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranEqoNbr" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCarrierVisit" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranDischargePoint1" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranDischargePoint2" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCtrGrossWeight" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranSealNbr2" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCommodityCode" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCtrTruckPosition" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCtrDoorDirection" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranShandId" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranShandId2" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranShandId3" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tTranCtrDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tTranHazVao" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tTranReeferVao" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tTranOogVao" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tTranBndleVao" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranTrkcId" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                </uiForm>
+            </inStage>
+            <outStage id="yard" leg="out">
+                <bizTasks/>
+                <uiForm/>
+            </outStage>
+        </gateStagesRE>
+        <gateStagesDM>
+            <inStage id="office" leg="in" nextStageId="yard">
+                <bizTasks>
+                    <bizTask name="ReadTruckingCompany" order="1"/>
+                    <bizTask name="ReadDriver" order="2"/>
+                    <bizTask name="ReadContainer" order="27"/>
+                    <bizTask name="ReadUnitActive" order="28"/>
+                    <bizTask name="ReadContainerOperator" order="29"/>
+                    <bizTask name="ReadTruck" order="3"/>
+                    <bizTask name="ReadContainerPosition" order="30"/>
+                    <bizTask name="ReadCarrierVisit" order="32"/>
+                    <bizTask name="ReadOrder" order="4"/>
+                    <bizTask name="ReadOrderItem" order="5"/>
+                    <bizTask name="ReadLine" order="6"/>
+                    <bizTask name="AssignTrkcToDriver" order="12"/>
+                    <bizTask name="RejectDuplicateTransaction" order="13"/>
+                    <bizTask name="RejectTruckingCompanyUnknown" order="14"/>
+                    <bizTask name="RejectTruckingCompanyDeprecated" order="16"/>
+                    <bizTask name="RejectTrkcLineBanned" order="17"/>
+                    <bizTask name="RejectDriverNotProvided" order="18"/>
+                    <bizTask name="RejectDriverUnknown" order="19"/>
+                    <bizTask name="RejectDriverSuspended" order="20"/>
+                    <bizTask name="RejectDriverBanned" order="21"/>
+                    <bizTask name="RejectShippingLineDeprecated" order="22"/>
+                    <bizTask name="RejectOrderRequiredForDispatch" order="23"/>
+                    <bizTask name="RejectOrderItemRequiredForDispatch" order="24"/>
+                    <bizTask name="RejectOrderItemTallyExceeded" order="25"/>
+                    <bizTask name="AdviceXpsTbdEmptyDelivery" order="26"/>
+                    <bizTask name="RejectTruckingCompanyExpiredLineAgreement" order="33"/>
+                    <bizTask name="RejectDateNotMatchingEarlyOrLatestDate" order="52"/>
+                    <bizTask name="IncrementOrderItemTally" order="58"/>
+                    <bizTask name="PositionTruckVisit" order="62">
+                        <parameter id="truckPosition" value="TQ"/>
+                    </bizTask>
+                    <bizTask name="CreateDocument" order="67">
+                        <parameter id="docTypeId" value="PICKUP"/>
+                    </bizTask>
+                    <bizTask name="printDocument" order="68">
+                        <parameter id="docTypeId" value="PICKUP"/>
+                    </bizTask>
+                    <bizTask name="CreateNewDriver" order="7"/>
+                    <bizTask name="RejectOrderHold" order="75"/>
+                    <bizTask name="RejectTranNotMatchingBookingTrkc" order="79"/>
+                    <bizTask name="CreateNewTruck" order="8"/>
+                </bizTasks>
+                <uiForm>
+                    <uiField fieldId="tranCtrOperator" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranEqo" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranEqoItem" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCtrTruckPosition" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranCtrDoorDirection" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranTrkcId" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                    <uiField fieldId="tranNotes" fieldDisplayMode="EDITABLE" fieldRequired="false"/>
+                </uiForm>
+            </inStage>
+            <inStage id="kiosk" leg="in" nextStageId="yard">
+                <bizTasks>
+                    <bizTask name="ReadTruckingCompany" order="1"/>
+                    <bizTask name="ReadDriver" order="2"/>
+                    <bizTask name="ReadContainer" order="27"/>
+                    <bizTask name="ReadUnitActive" order="28"/>
+                    <bizTask name="ReadContainerOperator" order="29"/>
+                    <bizTask name="ReadTruck" order="3"/>
+                    <bizTask name="ReadContainerPosition" order="30"/>
+                    <bizTask name="ReadCarrierVisit" order="32"/>
+                    <bizTask name="ReadOrder" order="4"/>
+                    <bizTask name="ReadOrderItem" order="5"/>
+                    <bizTask name="ReadLine" order="6"/>
+                    <bizTask name="ReadContainer" order="69"/>
+                    <bizTask name="ReadUnitActive" order="70"/>
+                    <bizTask name="ReadContainerOperator" order="71"/>
+                    <bizTask name="ReadContainerPosition" order="72"/>
+                    <bizTask name="ReadTruckingCompany" order="0"/>
+                    <bizTask name="ReadTruckingCompany" order="1"/>
+                    <bizTask name="ReadDriver" order="1"/>
+                    <bizTask name="RejectTruckingCompanyBanned" order="10"/>
+                    <bizTask name="RejectTruckingCompanyDeprecated" order="11"/>
+                    <bizTask name="RejectTrkcLineBanned" order="12"/>
+                    <bizTask name="RejectShippingLineDeprecated" order="13"/>
+                    <bizTask name="RejectTruckingCompanyExpiredLineAgreement" order="14"/>
+                    <bizTask name="RejectDriverNotProvided" order="15"/>
+                    <bizTask name="RejectDriverUnknown" order="16"/>
+                    <bizTask name="RejectDriverSuspended" order="17"/>
+                    <bizTask name="RejectDriverBanned" order="18"/>
+                    <bizTask name="RejectOrderRequiredForDispatch" order="19"/>
+                    <bizTask name="ReadOrder" order="2"/>
+                    <bizTask name="ReadDriver" order="2"/>
+                    <bizTask name="RejectOrderItemTallyExceeded" order="20"/>
+                    <bizTask name="RejectOrderHold" order="21"/>
+                    <bizTask name="SelectEmptyContainer" order="22">
+                        <parameter id="truckPosition" value="GRIDQ"/>
+                        <parameter id="workQueue" value="EMPTIES"/>
+                    </bizTask>
+                    <bizTask name="CopyContainerAssignedToNbr" order="23"/>
+                    <bizTask name="RejectContainerRequired" order="24"/>
+                    <bizTask name="ReadContainer" order="25"/>
+                    <bizTask name="ReadUnitActive" order="26"/>
+                    <bizTask name="ReadContainer" order="27"/>
+                    <bizTask name="ReadContainerPosition" order="27"/>
+                    <bizTask name="ReadUnitActive" order="28"/>
+                    <bizTask name="RejectEqMaterialNotMatchingBooking" order="28"/>
+                    <bizTask name="ReadContainerOperator" order="29"/>
+                    <bizTask name="RejectContainerNotAtFacility" order="29"/>
+                    <bizTask name="ReadOrderItem" order="3"/>
+                    <bizTask name="ReadTruck" order="3"/>
+                    <bizTask name="ReadContainerPosition" order="30"/>
+                    <bizTask name="RejectContainerNotInYard" order="30"/>
+                    <bizTask name="RejectWrongGate" order="31"/>
+                    <bizTask name="RejectContainerEquipmentHold" order="32"/>
+                    <bizTask name="ReadCarrierVisit" order="32"/>
+                    <bizTask name="RejectContainerNotEmpty" order="33"/>
+                    <bizTask name="RejectContainerCannotBeUsedByLine" order="34"/>
+                    <bizTask name="RejectTruckingCompanyNotAssignedForPickup" order="35"/>
+                    <bizTask name="PositionTruckVisit" order="36">
+                        <parameter id="truckPosition" value="TQ"/>
+                    </bizTask>
+                    <bizTask name="PlanUnitOntoTruck" order="37"/>
+                    <bizTask name="LogHazardMission" order="38"/>
+                    <bizTask name="logOverDimensionMission" order="39"/>
+                    <bizTask name="ReadLine" order="4"/>
+                    <bizTask name="ReadOrder" order="4"/>
+                    <bizTask name="LogReeferMission" order="40"/>
+                    <bizTask name="CreateDocument" order="41">
+                        <parameter id="docTypeId" value="PICKUP"/>
+                    </bizTask>
+                    <bizTask name="printDocument" order="42">
+                        <parameter id="docTypeId" value="PICKUP"/>
+                    </bizTask>
+                    <bizTask name="IncrementOrderItemTally" order="5"/>
+                    <bizTask name="ReadOrderItem" order="5"/>
+                    <bizTask name="ReadLine" order="6"/>
+                    <bizTask name="AssignTrkcToDriver" order="6"/>
+                    <bizTask name="ReadContainer" order="69"/>
+                    <bizTask name="CopyContainerAssignedToNbr" order="7"/>
+                    <bizTask name="ReadUnitActive" order="70"/>
+                    <bizTask name="ReadContainerOperator" order="71"/>
+                    <bizTask name="ReadContainerPosition" order="72"/>
+                    <bizTask name="RejectDuplicateTransaction" order="8"/>
+                    <bizTask name="RejectTruckingCompanyUnknown" order="9"/>
+                </bizTasks>
+                <uiForm/>
+            </inStage>
+            <outStage id="yard" leg="out">
+                <bizTasks>
+                    <bizTask name="ReadTruckingCompany" order="1"/>
+                    <bizTask name="ReadDriver" order="2"/>
+                    <bizTask name="ReadContainer" order="27"/>
+                    <bizTask name="ReadUnitActive" order="28"/>
+                    <bizTask name="ReadContainerOperator" order="29"/>
+                    <bizTask name="ReadTruck" order="3"/>
+                    <bizTask name="ReadContainerPosition" order="30"/>
+                    <bizTask name="ReadCarrierVisit" order="32"/>
+                    <bizTask name="ReadOrder" order="4"/>
+                    <bizTask name="ReadOrderItem" order="5"/>
+                    <bizTask name="ReadLine" order="6"/>
+                    <bizTask name="ReadContainer" order="69"/>
+                    <bizTask name="ReadUnitActive" order="70"/>
+                    <bizTask name="ReadContainerOperator" order="71"/>
+                    <bizTask name="ReadContainerPosition" order="72"/>
+                    <bizTask name="placeUnitOnTruck" order="0"/>
+                    <bizTask name="ReadTruckingCompany" order="1"/>
+                    <bizTask name="ReadDriver" order="2"/>
+                    <bizTask name="ReadContainer" order="27"/>
+                    <bizTask name="ReadUnitActive" order="28"/>
+                    <bizTask name="ReadContainerOperator" order="29"/>
+                    <bizTask name="ReadTruck" order="3"/>
+                    <bizTask name="ReadContainerPosition" order="30"/>
+                    <bizTask name="ReadCarrierVisit" order="32"/>
+                    <bizTask name="ReadOrder" order="4"/>
+                    <bizTask name="ReadOrderItem" order="5"/>
+                    <bizTask name="ReadLine" order="6"/>
+                    <bizTask name="ReadContainer" order="69"/>
+                    <bizTask name="ReadUnitActive" order="70"/>
+                    <bizTask name="ReadContainerOperator" order="71"/>
+                    <bizTask name="ReadContainerPosition" order="72"/>
+                </bizTasks>
+                <uiForm/>
+            </outStage>
+        </gateStagesDM>
+    </gateStageSubTypes>
+    <gateStageTruckVisit>
+        <inStage id="office" leg="in">
+            <bizTasks>
+                <bizTask name="callStageDone" order="0"/>
+                <bizTask name="PositionTruckVisit" order="1">
+                    <parameter id="truckPosition" value="TIP"/>
+                </bizTask>
+            </bizTasks>
+            <uiForm/>
+        </inStage>
+        <inStage id="kiosk" leg="in">
+            <bizTasks>
+                <bizTask name="callStageDone" order="0"/>
+                <bizTask name="PositionTruckVisit" order="1">
+                    <parameter id="truckPosition" value="TIP"/>
+                </bizTask>
+            </bizTasks>
+            <uiForm/>
+        </inStage>
+        <outStage id="yard" leg="out" setStageDone="submitAll" checkIfAllDone="true">
+            <bizTasks>
+                <bizTask name="departUnit" order="0"/>
+                <bizTask name="departTruckVisit" order="1"/>
+                <bizTask name="PositionTruckVisit" order="2">
+                    <parameter id="truckPosition" value="OUT"/>
+                </bizTask>
+            </bizTasks>
+            <uiForm/>
+        </outStage>
+    </gateStageTruckVisit>
+</gateConfiguration>

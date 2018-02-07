@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="¦" newRecord="\n"></Format>
+	<Field sequence="0" name="msgType" dataType="String"></Field>
+	<Field sequence="1" name="id" dataType="String"></Field>
+	<Field sequence="2" name="Qty" dataType="String"></Field>
+</FileDesc>
+	

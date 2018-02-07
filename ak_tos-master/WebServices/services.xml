@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+
+	<service xmlns="http://xfire.codehaus.org/config/1.0">
+		<name>FileUpload</name>
+		<serviceClass>
+			com.matson.tos.upload.FileUploadImpl
+		</serviceClass>
+		<style>wrapped</style>
+		<use>literal</use>
+		<scope>application</scope>
+	</service>
+	<service xmlns="http://xfire.codehaus.org/config/1.0">
+		<name>PositionUpdate</name>
+		<serviceClass>
+			com.matson.tos.upload.PositionUpdate
+		</serviceClass>
+		<style>wrapped</style>
+		<use>literal</use>
+		<scope>application</scope>
+	</service>
+</beans>

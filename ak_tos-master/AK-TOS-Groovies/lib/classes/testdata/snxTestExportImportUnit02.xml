@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd" user-id="RS" event-time="2007-11-05T15:05:00">
+
+    <unit id="MATU2064601" transit-state="ADVISED" category="EXPORT" freight-kind="FCL" line="MAT">
+
+        <equipment eqid="MATU2064601" class="CTR" type="4200" role="PRIMARY" tare-kg="1900.0" height-mm="2831"
+                   strength-code="AA" material="ALUMINUM" owner="ITT" operator="YBR">
+            <damages>
+                <damage type="BENT" component="DOOR" severity="MAJOR"/>
+            </damages>
+        </equipment>
+
+        <position loc-type="VESSEL" location="RJP001" slot="010280"/>
+
+        <routing pol="LAX" pod-1="OAK" pod-2="KHH" opl="HKG" origin="VENTURA" destination="MAKAWAO"
+                 designated-trucker="ABC" carrier-service="USWC" group="HOT">
+            <carrier direction="OB" qualifier="DECLARED" mode="VESSEL" id="RJP001"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="VESSEL" id="RJP001"/>
+            <carrier direction="IB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK"/>
+        </routing>
+
+        <booking id="E01" line="MAT"/>
+
+        <hazards>
+            <hazard imdg="1.2" un="1203" tech-name="GASOLINE" page-number="13"/>
+            <hazard imdg="4.1" un="6789" tech-name="PEROXIDE" page-number="45"/>
+            <hazard imdg="6.1" un="5634" ltd-qty-flag="Y" package-type="BOX" inhalation-zone="Z" explosive-class="B"
+                    page-number="32"
+                    flash-point="98.0" tech-name="TECH" proper-name="PROPER" ems-nbr="EMS" mfag="MFAG"
+                    packing-group="II"
+                    haz-id-upper="UPPR" substance-lower="LWER" weight-kg="234.0" planner-ref="PREF" quantity="5"
+                    move-method="MOVE"
+                    secondary-imo-1="1.4" secondary-imo-2="6.1" deck-restrictions="A" marine-pollutants="Y"
+                    dc-lg-ref="LC" emergency-telephone="911"
+                    ems-response-guide-nbr="001" notes="-hazard notes-"/>
+        </hazards>
+
+        <reefer temp-reqd-c="10.0" temp-min-c="5.0" temp-max-c="15.0" temp-display-unit="F"
+                vent-required-value="5.0" vent-required-unit="PERCENTAGE" humidity-pct="65.0" o2-pct="45.0"
+                co2-pct="55.0"
+                time-latest-on-power="2007-05-12T10:12:01" time-monitor-1="2007-05-12T11:12:00"
+                time-monitor-2="2007-05-12T12:12:01"
+                time-monitor-3="2007-05-12T13:12:01" time-monitor-4="2007-05-12T22:12:01"/>
+
+        <oog left-cm="13" right-cm="14" top-cm="29" back-cm="15" front-cm="16"/>
+
+        <handling special-stow="UDK" deck-requirement="EITHER" remark="OK" last-free-day="2007-05-28"/>
+
+        <contents weight-kg="11000.0" consignee-id="ROAD" consignee-name="RUNNER" shipper-id="WILY" shipper-name="COYOTE"
+                  commodity-id="DRYF" commodity-name="Dry Fruits" bl-nbr="TX778866" weight-kg-advised="12000.0" weight-kg-gate-measured="12100.0"
+                  weight-kg-yard-measured="12110.0"/>
+
+        <seals seal-1="SEAL00001"/>
+
+        <flags/>
+
+        <unit-etc requires-power="Y" dray-status="OFFSITE"/>
+
+        <unit-flex unit-flex-1="FLEX1" unit-flex-2="FLEX2" unit-flex-3="FLEX3" unit-flex-4="FLEX4" unit-flex-5="FLEX5"
+                   unit-flex-6="FLEX6" unit-flex-7="FLEX7" unit-flex-8="FLEX8" unit-flex-9="FLEX9" unit-flex-10="FLEX10"/>
+
+        <ufv-flex ufv-flex-date-1="2007-05-19T19:12:00" ufv-flex-date-2="2007-05-20T19:12:00" ufv-flex-date-3="2007-05-21T19:12:00"
+                  ufv-flex-date-4="2007-05-22T19:12:00" ufv-flex-date-5="2007-05-23T19:12:00" ufv-flex-date-6="2007-05-24T19:12:00"
+                  ufv-flex-date-7="2007-05-25T19:12:00" ufv-flex-date-8="2007-05-26T19:12:00"
+                  ufv-flex-1="UFVFLEX1" ufv-flex-2="UFVFLEX2" ufv-flex-3="UFVFLEX3" ufv-flex-4="UFVFLEX4"/>
+
+    </unit>
+</argo:snx>

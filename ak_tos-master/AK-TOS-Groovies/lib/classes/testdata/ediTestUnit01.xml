@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+    <container eqid="CONTAINERID" type="2200" created-by="admin" created-date="2010-12-15T05:58:12" class="CTR" life-cycle-state="ACT">
+        <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                  material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+        <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                      stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+        <transponder/>
+    </container>
+    <unit id="CONTAINERID" category="THROUGH" restow="NONE" transit-state="INBOUND" freight-kind="FCL" unique-key="CONTAINERID" line="MAT">
+        <equipment eqid="CONTAINERID" type="2200" created-by="admin" created-date="2010-12-15T05:58:12" class="CTR" life-cycle-state="ACT"
+                   role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="VESSEL" location="VL11117" slot="270646"/>
+        <routing pol="TRIST" pol-name="India" pod-1="ILASH" pod-1-name="India" pod-2="ADL" group="MAT_GRP" destination="LAX">
+            <carrier direction="IB" qualifier="DECLARED" mode="VESSEL" id="VL11117"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="VESSEL" id="VL11117"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="VESSEL" id="VL11117"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="VESSEL" id="VL11117"/>
+        </routing>
+        <contents weight-kg="6400.0"/>
+        <unit-etc category="THROUGH" line="MAT" dray-status="OFFSITE"/>
+        <unit-flex unit-flex-4="2210"/>
+        <timestamps time-last-move="2010-12-15T06:20:51"/>
+        <non-move-history/>
+
+    </unit>
+</argo:snx>
+

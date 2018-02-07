@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<console hardware-id="RIGHT" external-console-id="10.157.33.5" life-cycle-state="ACT" />
+<console hardware-id="MIDDLE" external-console-id="10.157.32.177" life-cycle-state="ACT" />
+<console hardware-id="LEFT" external-console-id="10.157.32.207" life-cycle-state="ACT" />
+<console hardware-id="AGING" external-console-id="10.157.32.239" life-cycle-state="ACT" />
+<console hardware-id="EQCTRL" external-console-id="10.157.32.232" life-cycle-state="ACT" />
+</argo:snx>
+

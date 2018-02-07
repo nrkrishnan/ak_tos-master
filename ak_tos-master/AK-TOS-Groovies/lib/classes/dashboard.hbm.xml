@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <meta attribute="JavaClassPrefix">Dashboard</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.framework.configuration.dashboard.Dashboard" table="frm_dashboard">
+        <meta attribute="generated-class">com.navis.framework.configuration.dashboard.DashboardHbr</meta>
+        <meta attribute="n4alias">dshbrd</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+        <meta attribute="n4-entity-name">Dashboard</meta>
+        <meta attribute="n4-entity-name-plural">Dashboard</meta>
+        <id name="dashboardGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="dashboardUserGkey" column="user_gkey" class="com.navis.security.business.user.BaseUser" not-null="false"
+                     index="frm_dashb_user_gkey_fki"/>
+        <!-- If role is not null, this query is scoped to role even if dashboardRoleGkey is not null -->
+        <many-to-one name="dashboardRoleGkey" column="role_gkey" class="com.navis.security.business.user.SecRole"/>
+        <property name="dashboardCreated" column="created" type="timestamp"/>
+        <property name="dashboardCreator" column="creator_userid" type="string" length="30"/>
+        <property name="dashboardChanged" column="changed" type="timestamp"/>
+        <property name="dashboardChanger" column="changer_userid" type="string" length="30"/>
+        <property name="dashboardName" column="name" type="string" length="50" unique="false" not-null="true">
+            <meta attribute="field-description">Name of this dashboard</meta>
+        </property>
+        <property name="dashboardDescription" column="description" type="string" length="100">
+            <meta attribute="field-description">Description of this dashboard</meta>
+        </property>
+        <property name="dashboardLayout" column="layout" type="string" length="4000">
+            <meta attribute="field-description">Layout (defined in XML) of this dashboard</meta>
+        </property>
+        <property name="dashboardScopeLevel" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Dashboard Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+            <column name="dashboard_scope_level" default="1"/>
+        </property>
+        <property name="dashboardScopeGkey" column="dashboard_scope_gkey" type="string" length="50">
+            <meta attribute="field-description">Dashboard Scope Gkey</meta>
+        </property>
+        <set name="dashboardGadgetList" cascade="all-delete-orphan" inverse="true">
+            <key column="dashboard_gkey"/>
+            <one-to-many class="com.navis.framework.configuration.dashboard.Gadget"/>
+        </set>
+
+        <!--  This set is only used for deletion purposes  -->
+        <set name="dashboardUserList" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="userdashlay_dashboard_gkey"/>
+            <one-to-many class="com.navis.framework.configuration.dashboard.UserDashboardLayout"/>
+        </set>
+
+    </class>
+
+    <class name="com.navis.framework.configuration.dashboard.Gadget" table="frm_gadget">
+        <meta attribute="generated-class">com.navis.framework.configuration.dashboard.GadgetHbr</meta>
+        <meta attribute="n4alias">gadget</meta>
+        <meta attribute="n4-entity-name">Gadget</meta>
+        <meta attribute="n4-entity-name-plural">Gadgets</meta>
+        <meta attribute="n4-scope-description">relational to Dashboard</meta>
+        <id name="gadgetGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="gadgetId" column="id" type="string" length="50" unique="false" not-null="true">
+            <meta attribute="field-description">Bean name of this gadget</meta>
+        </property>
+        <property name="gadgetSource" column="gadget_source" type="string" length="20" not-null="false"/>
+
+        <!--
+              Properties regarding gadget layout in the dashboard.
+          -->
+        <component name="gadgetWndProperties" class="com.navis.framework.configuration.dashboard.GadgetWndView">
+            <meta attribute="generated-class">com.navis.framework.configuration.dashboard.GadgetWndViewHbr</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+            <property name="wndPosX" type="integer">
+                <meta attribute="field-description">X position of normal state gadget origin (top-left) relative to dashboard origin (top-left).</meta>
+                <column name="gadget_wnd_pos_x" default="0" not-null="true"/>
+            </property>
+            <property name="wndPosY" type="integer">
+                <meta attribute="field-description">Y position of normal state gadget origin (top-left) relative to dashboard origin (top-left).</meta>
+                <column name="gadget_wnd_pos_y" default="0" not-null="true"/>
+            </property>
+            <property name="wndWidth" type="integer">
+                <meta attribute="field-description">X size of normal state gadget.</meta>
+                <column name="gadget_wnd_width" default="0" not-null="true"/>
+            </property>
+            <property name="wndHeight" type="integer">
+                <meta attribute="field-description">Y size of normal state gadget.</meta>
+                <column name="gadget_wnd_height" default="0" not-null="true"/>
+            </property>
+            <!-- Note: Hibernate 3.2.2ga cannot generate appropriate default value for SQL Server when using default="false"  -->
+            <property name="wndIconized" type="boolean">
+                <meta attribute="field-description">True if gadget is iconized.</meta>
+                <column name="gadget_wnd_iconized" default="0" not-null="true"/>
+            </property>
+            <property name="wndMaximized" type="boolean">
+                <meta attribute="field-description">True if gadget is maximized.</meta>
+                <column name="gadget_wnd_maximized" default="0" not-null="true"/>
+            </property>
+            <property name="iconPosX" type="integer">
+                <meta attribute="field-description">X position of iconized gadget origin (top-left) relative to dashboard origin (top-left).</meta>
+                <column name="gadget_icon_pos_x" default="0" not-null="true"/>
+            </property>
+            <property name="iconPosY" type="integer">
+                <meta attribute="field-description">Y position of iconized gadget origin (top-left) relative to dashboard origin (top-left).</meta>
+                <column name="gadget_icon_pos_y" default="0" not-null="true"/>
+            </property>
+        </component>
+
+        <many-to-one name="gadgetDashboard" column="dashboard_gkey" class="com.navis.framework.configuration.dashboard.Dashboard" not-null="true"
+                     index="frm_gadget_dashb_gkey_fki"/>
+
+        <map name="gadgetStringProperty" lazy="true" table="frm_gadget_property">
+            <key column="property_gkey"/>
+            <index column="gadget_property_fieldId" type="string" length="100"/>
+            <element column="gadget_property_value" type="string" length="255"/>
+        </map>
+
+        <!--  This set is only used for deletion purposes  -->
+        <set name="gadgetUserList" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="userdgp_gadget_gkey"/>
+            <one-to-many class="com.navis.framework.configuration.dashboard.UserGadgetProps"/>
+        </set>
+    </class>
+
+    <class name="com.navis.framework.configuration.dashboard.GadgetDefaults" table="frm_gadget_defaults">
+        <meta attribute="generated-class">com.navis.framework.configuration.dashboard.GadgetDefaultsHbr</meta>
+        <meta attribute="n4alias">gadgetDefaults</meta>
+        <meta attribute="n4-entity-name">Gadget Defaults</meta>
+        <meta attribute="n4-entity-name-plural">Gadget Default Properties</meta>
+        <meta attribute="n4-scope-description">Gadget Default Properties</meta>
+        <id name="gadgetDefaultsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="gadgetName" column="gadget_name" type="string" length="50" unique="true" not-null="true">
+            <meta attribute="field-description">Name of this gadget (this is the Spring bean id).</meta>
+        </property>
+
+        <map name="gadgetDefaultStringProperty" lazy="true" table="frm_gadget_default_props">
+            <key column="default_prop_gkey"/>
+            <index column="default_prop_fieldId" type="string" length="100"/>
+            <element column="default_prop_value" type="string" length="255"/>
+        </map>
+    </class>
+
+    <!--  This class stores the current user view of the dashboard -->
+    <class name="com.navis.framework.configuration.dashboard.UserDashboardLayout" table="user_dashboard_layout">
+        <meta attribute="generated-class">com.navis.framework.configuration.dashboard.UserDashboardLayoutHbr</meta>
+        <meta attribute="n4alias">userdashlay</meta>
+        <meta attribute="n4-entity-name">User Dashboard Layout</meta>
+        <meta attribute="n4-entity-name-plural">User Dashboard Layout</meta>
+        <meta attribute="n4-scope-description">User Dashboard Layout</meta>
+        <id name="userdashlayGkey" column="userdashlay_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="userdashlayBuser" column="userdashlay_buser_gkey" class="com.navis.security.business.user.BaseUser" not-null="true"
+                     index="userdashlay_buser_gkey_fki"/>
+        <many-to-one name="userdashlayDashboard" column="userdashlay_dashboard_gkey" class="com.navis.framework.configuration.dashboard.Dashboard"
+                     not-null="true" index="userdashlay_dash_gkey_fki"/>
+
+        <set name="userdashlayGadgetList" lazy="false" cascade="all-delete-orphan" inverse="true">
+            <key column="userdgp_userdashlay_gkey"/>
+            <one-to-many class="com.navis.framework.configuration.dashboard.UserGadgetProps"/>
+        </set>
+
+    </class>
+
+    <class name="com.navis.framework.configuration.dashboard.UserGadgetProps" table="user_dashgadget_props">
+        <meta attribute="generated-class">com.navis.framework.configuration.dashboard.UserDashboardGadgetWndPropsHbr</meta>
+        <meta attribute="n4alias">userdgp</meta>
+        <meta attribute="n4-entity-name">User Dashboard Gadget Property</meta>
+        <meta attribute="n4-entity-name-plural">User Dashboard Gadget Properties</meta>
+        <meta attribute="n4-scope-description">User Dashboard Gadget Properties</meta>
+        <id name="userdgpGkey" column="userdgp_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        
+        <property name="userdgpDisabled" type="boolean">
+            <meta attribute="field-description">Whether this entry has been disabled.</meta>
+            <column name="userdgp_disabled" default="0" not-null="true"/>
+        </property>
+
+        <component name="userdgpWndProperties" class="com.navis.framework.configuration.dashboard.GadgetWndView">
+            <meta attribute="generated-class">com.navis.framework.configuration.dashboard.GadgetWndViewHbr</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+            <property name="wndPosX" type="integer">
+                <meta attribute="field-description">X position of normal state gadget origin (top-left) relative to dashboard origin (top-left).</meta>
+                <column name="userdgp_wnd_pos_x" default="0" not-null="true"/>
+            </property>
+            <property name="wndPosY" type="integer">
+                <meta attribute="field-description">Y position of normal state gadget origin (top-left) relative to dashboard origin (top-left).</meta>
+                <column name="userdgp_wnd_pos_y" default="0" not-null="true"/>
+            </property>
+            <property name="wndWidth" type="integer">
+                <meta attribute="field-description">X size of normal state gadget.</meta>
+                <column name="userdgp_wnd_width" default="0" not-null="true"/>
+            </property>
+            <property name="wndHeight" type="integer">
+                <meta attribute="field-description">Y size of normal state gadget.</meta>
+                <column name="userdgp_wnd_height" default="0" not-null="true"/>
+            </property>
+            <property name="wndIconized" type="boolean">
+                <meta attribute="field-description">True if gadget is iconized.</meta>
+                <column name="userdgp_wnd_iconized" default="0" not-null="true"/>
+            </property>
+            <property name="wndMaximized" type="boolean">
+                <meta attribute="field-description">True if gadget is maximized.</meta>
+                <column name="userdgp_wnd_maximized" default="0" not-null="true"/>
+            </property>
+            <property name="iconPosX" type="integer">
+                <meta attribute="field-description">X position of iconized gadget origin (top-left) relative to dashboard origin (top-left).</meta>
+                <column name="userdgp_icon_pos_x" default="0" not-null="true"/>
+            </property>
+            <property name="iconPosY" type="integer">
+                <meta attribute="field-description">Y position of iconized gadget origin (top-left) relative to dashboard origin (top-left).</meta>
+                <column name="userdgp_icon_pos_y" default="0" not-null="true"/>
+            </property>
+        </component>
+
+        <many-to-one name="userdgpDashboardLayout" column="userdgp_userdashlay_gkey"
+                     class="com.navis.framework.configuration.dashboard.UserDashboardLayout" not-null="true"
+                     index="userdgp_userdashb_gkey_fki"/>
+
+        <many-to-one name="userdgpGadget" lazy="false" column="userdgp_gadget_gkey" class="com.navis.framework.configuration.dashboard.Gadget"
+                     not-null="true"
+                     index="userdgp_gadget_gkey_fki"/>
+
+    </class>
+
+</hibernate-mapping>

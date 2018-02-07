@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">ServicesArchive</meta>
+    <meta attribute="scope-set">public</meta>
+
+    <class name="com.navis.services.business.rules.ArchiveHoldsPermissions" table="srv_ar_flags" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.services.business.rules.ArchiveHoldsPermissionsHbr</meta>
+        <meta attribute="class-description">Domain entity for an applied FlagType</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">arhlpm</meta>
+        <meta attribute="n4-entity-name">Archived Flag</meta>
+        <meta attribute="n4-entity-name-plural">Archived Flags</meta>
+
+        <id name="arFlagGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arFlagArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this entity was archived.</meta>
+        </property>
+
+        <property name="arFlagOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <!-- todo double check.  clean up ArchiveHoldsPermissions when the archived applied entity is removed. -->
+        <!--<many-to-one name="arFlagUnit" column="unit_gkey" class="com.navis.inventory.business.units.ArchiveUnit" not-null="true">-->
+            <!--<meta attribute="field-description">The Unit to which this ArchiveHoldsPermissions belongs</meta>-->
+        <!--</many-to-one>-->
+
+        <property name="arFlagTypeId" column="type_id" type="string"/>
+
+        <property name="arFlagTypeDescription" column="type_desc" type="string"/>
+
+        <property name="arFlagTypePurpose" column="purpose" type="com.navis.argo.persistence.atoms.UserTypeFlagPurposeEnum"/>
+
+        <property name="arFlagTypeIsFlagReferenceIdUnique" column="is_ref_id_unique" type="boolean"/>
+
+        <property name="arFlagTypeIsFlagReferenceIdRequired" column="is_ref_id_required" type="boolean"/>
+
+        <property name="arFlagImpedimentAffectedClass" column="affected_class" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum"/>
+
+        <property name="arFlagImpedimentDate" column="placed_time" type="timestamp" index="ar_flag_applied_idx">
+            <meta attribute="field-description">Time the Hold/Permission was placed</meta>
+        </property>
+
+        <property name="arFlagImpedimentAppliedBy" column="placed_by" type="string" length="30">
+            <meta attribute="field-description">Name of the user who placed this Hold/Permission</meta>
+        </property>
+
+        <property name="arFlagImpedimentReferenceId" column="reference_id" type="string" length="80">
+            <meta attribute="field-description">Reference information recorded with this Hold/Permission - depending on Flag Type this field contributes to uniqueness of Flag.</meta>
+        </property>
+
+        <property name="arFlagNote" column="note" type="string" length="200">
+            <meta attribute="field-description">Note recorded with this Hold/Permission</meta>
+        </property>
+
+        <property name="arFlagImpedimentStatus" column="status" type="com.navis.argo.persistence.atoms.UserTypeFlagStatusEnum">
+            <meta attribute="field-description">status</meta>
+        </property>
+
+        <property name="arFlagImpedimentRuleTypeRole" column="role" type="com.navis.argo.persistence.atoms.UserTypeServiceRuleTypeRoleEnum">
+            <meta attribute="field-description">rule type role</meta>
+        </property>
+
+        <property name="arFlagImpedimentAppliedToClass" column="applied_to_class" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum"
+                  not-null="true">
+            <meta attribute="field-description">The logical entity class of the Serviceable to which this Hold/Permission is applied</meta>
+        </property>
+
+        <property name="arFlagImpedimentAppliedToNaturalKey" column="applied_to_id" type="string" length="30" not-null="true">
+            <meta attribute="field-description">The natural key of the Serviceable to which this Hold/Permission is applied</meta>
+        </property>
+
+        <property name="arFlagImpedimentGuardianClass" column="guardian_class" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum"
+                  not-null="false">
+            <meta attribute="field-description">The logical entity class of the Guardian to which this Hold/Permission refers</meta>
+        </property>
+
+        <property name="arFlagImpedimentGuardianNaturalKey" column="guardian_id" type="string" length="30" not-null="false">
+            <meta attribute="field-description">The natural key of the Guardian to which this Hold/Permission refers</meta>
+        </property>
+
+        <property name="arFlagVetoAppliedDate" column="veto_time" type="timestamp">
+            <meta attribute="field-description">Veto date</meta>
+        </property>
+
+        <property name="arFlagVetoAppliedBy" column="veto_by" type="string" length="30">
+            <meta attribute="field-description">Veto by</meta>
+        </property>
+
+        <property name="arFlagVetoReferenceId" column="veto_reference_id" type="string" length="80">
+            <meta attribute="field-description">Reference information recorded with this Veto - depending on Falg Type is_flag_reference_id_unique field it must match Flag reference id.</meta>
+        </property>
+
+        <property name="arFlagVetoCancelClass" column="veto_cancel_class" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum"/>
+
+        <property name="arFlagVetoAppliedToNaturalKey" column="veto_to_id" type="string" length="30">
+            <meta attribute="field-description">Natural key of Entity for which the Flag has been negated</meta>
+        </property>
+
+        <property name="arFlagVetoNote" column="veto_note" type="string" length="200">
+            <meta attribute="field-description">Note recorded with this Veto</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.services.business.event.ArchiveEvent" table="srv_ar_event" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.services.business.event.ArchiveEventHbr</meta>
+        <meta attribute="class-description">Records the execution of an event</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">arevnt</meta>
+        <meta attribute="n4-entity-name">Archived Event</meta>
+        <meta attribute="n4-entity-name-plural">Archived Events</meta>
+
+        <id name="arEvntGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arEvntArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this entity was archived.</meta>
+        </property>
+
+        <property name="arEvntOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <many-to-one name="arEvntOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator" not-null="false">
+            <meta attribute="field-description">The Operator to which this Event belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="arEvntComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="false">
+            <meta attribute="field-description">The Complex to which this Event belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="arEvntFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility" not-null="false">
+            <meta attribute="field-description">The Facility to which this Event belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="arEvntYard" column="yard_gkey" class="com.navis.argo.business.model.Yard" not-null="false">
+            <meta attribute="field-description">The Yard to which this Event belongs</meta>
+        </many-to-one>
+
+        <property name="arEvntAppliedBy" column="placed_by" type="string" length="100" not-null="true">
+            <meta attribute="field-description">User or process that created the event</meta>
+        </property>
+
+        <property name="arEvntAppliedDate" column="placed_time" type="timestamp" index="ar_evnt_applied_idx">
+            <meta attribute="field-description">Date and Time Event was executed</meta>
+        </property>
+
+        <property name="arEvntEventType" column="event_type_id" type="string" length="50">
+            <meta attribute="field-description">The type of event performed</meta>
+        </property>
+
+        <property name="arEvntAppliedToClass" column="applied_to_class" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum"
+                  not-null="true">
+            <meta attribute="field-description">Name of the business class of the servicable entity</meta>
+        </property>
+
+        <property name="arEvntAppliedToPrimaryKey" column="applied_to_gkey" type="java.lang.Long" not-null="true" index="ar_applied_to_idx">
+            <meta attribute="field-description">Primary key of the serviceable entity</meta>
+        </property>
+
+        <property name="arEvntAppliedToNaturalKey" column="applied_to_natural_key" type="string" not-null="true">
+            <meta attribute="field-description">Natural key of the serviceable entity</meta>
+        </property>
+
+        <property name="arEvntNote" column="note" type="string" not-null="false">
+            <meta attribute="field-description">Note registered when recording the event</meta>
+        </property>
+
+        <property name="arEvntBillingExtractBatchId" column="billing_extract_batch_id" type="java.lang.Long">
+            <meta attribute="field-description">The batch Id used for billing extract</meta>
+        </property>
+
+        <property name="arEvntQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">The quantity for this event; measurement unit is defined in seperate field evntQuantityUnit.</meta>
+        </property>
+
+        <property name="arEvntQuantityUnit" column="quantity_unit" type="com.navis.argo.persistence.atoms.UserTypeServiceQuantityUnitEnum">
+            <meta attribute="field-description">The unit that defines the measurement of the quantity field.</meta>
+        </property>
+        <!--2011-01-17 rkasindula ARGO-28894 v2.2.K, added rleated entity fields to archive event table-->
+        <property name="arEvntRelatedEntityClass" column="related_entity_class" type="string">
+            <meta attribute="field-description">Type of entity i.e unit, equipment, unitEquipment, serviceOrderItem, etc.</meta>
+        </property>
+
+        <property name="arEvntRelatedEntityGkey" column="related_entity_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Related entity gkey</meta>
+        </property>
+
+        <property name="arEvntRelatedEntityId" column="related_entity_id" type="string">
+            <meta attribute="field-description">Identifier of related entity i.e. unit ID, equipment ID, service order ID, etc.</meta>
+        </property>
+
+        <!-- todo -->
+        <!--<set name="evntFieldChanges" lazy="true" cascade="all-delete-orphan" inverse="true">-->
+        <!--<key column="event_gkey"/>-->
+        <!--<one-to-many class="com.navis.services.business.event.EventFieldChange"/>-->
+        <!--</set>-->
+        <property name="arEvntFieldChangesString" column="fieldChanges" type="string" length="2000">
+            <meta attribute="field-description">Field changes</meta>
+        </property>
+
+        <property name="arEvntRelatedBatchNbr" column="batchNbr" type="java.lang.Long">
+            <meta attribute="field-description">Batch Nbr</meta>
+        </property>
+
+        <!-- 2008-12-17 muraliR ARGO-16162 : add flag to manage payment hold -->
+        <!-- todo -->
+        <!--<set name="evntSrvFlags" lazy="true" cascade="all-delete-orphan" inverse="true">-->
+        <!--<key column="flag_gkey"/>-->
+        <!--<one-to-many class="com.navis.services.business.rules.Flag"/>-->
+        <!--</set>-->
+
+        <!-- Flex fields-->
+        <!--ARGO-53136 added by Murali R 11/20/2013-->
+        <property name="arEvntFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="arEvntFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="arEvntFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="arEvntFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="arEvntFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="arEvntFlexDate01" column="flex_date01" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+        <property name="arEvntFlexDate02" column="flex_date02" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+        <property name="arEvntFlexDate03" column="flex_date03" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+
+        <property name="arEvntFlexDouble01" column="flex_double01" type="double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+        <property name="arEvntFlexDouble02" column="flex_double02" type="double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+        <property name="arEvntFlexDouble03" column="flex_double03" type="double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+        <property name="arEvntFlexDouble04" column="flex_double04" type="double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+        <property name="arEvntFlexDouble05" column="flex_double05" type="double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+
+        <property name="arEvntCreated" column="created" type="timestamp" index="ar_evnt_created_idx"/>
+        <property name="arEvntCreator" column="creator" type="string" length="30"/>
+        <property name="arEvntChanged" column="changed" type="timestamp"/>
+        <property name="arEvntChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+</hibernate-mapping>

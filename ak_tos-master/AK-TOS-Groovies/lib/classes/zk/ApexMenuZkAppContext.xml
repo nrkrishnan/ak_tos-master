@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+
+    <bean id="zkMenuTreeProvider" class="com.navis.framework.zk.navigation.ZXMLMenuTreeProvider"
+        scope="prototype">
+        <constructor-arg index="0">
+            <value>/zk/ApexMenuTree.xml</value>
+        </constructor-arg>
+        <property name="menuTemplateProvider">
+            <ref bean="zkMenuTemplateProvider"/>
+        </property>
+    </bean>
+
+    <bean id="zkMenuTemplateProvider" class="com.navis.framework.ulc.server.application.menu.CompositeMenuTemplateProvider"
+        scope="singleton">
+        <property name="providers">
+            <list>
+                <ref bean="frameworkZkMenuTemplates"/>
+                <ref bean="apexZkMenuTemplates"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="apexZkMenuTemplates" class="com.navis.framework.ulc.server.application.menu.XMLMenuTemplateProvider"
+        scope="singleton">
+        <constructor-arg index="0">
+            <value>/zk/ApexMenuNodes.xml</value>
+        </constructor-arg>
+    </bean>
+
+
+</beans>

@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">ExtensionDataModel</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.extension.model.event.business.PersistenceEvent" table="ext_persistence_event">
+        <meta attribute="generated-class">com.navis.extension.model.business.PersistenceEventHbr</meta>
+        <meta attribute="n4alias">perev</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-entity-name">Persistence Event</meta>
+        <meta attribute="n4-entity-name-plural">Persistence Events</meta>
+        <meta attribute="n4-uniqueness-description">global</meta>
+
+        <id name="perevGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="perevEventType" column="perev_event_type" type="string" length="200" not-null="true">
+        </property>
+
+        <property name="perevStartTime" column="perev_start_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">Start timestamp of the event</meta>
+        </property>
+
+        <property name="perevEndTime" column="perev_end_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">End timestamp of the event</meta>
+        </property>
+
+        <property name="perevNodeName" column="perev_node_name" type="string" length="200" not-null="true">
+            <meta attribute="field-description">Name of node in which this startup was executed</meta>
+        </property>
+
+        <property name="perevStatus" column="perev_status" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Status of the event</meta>
+        </property>
+
+        <many-to-one name="perevSnapshot" column="perev_snapshot_gkey" class="com.navis.extension.model.business.ModelExtensionSnapshot"
+                     not-null="false"
+                     index="perev_parent_snapshot_gkey_fki"/>
+
+        <one-to-one name="perevEventDetails" class="com.navis.extension.model.event.business.PersistenceEventDetails"
+                    cascade="all" lazy="proxy"/>
+
+        <property name="perevHotReload" column="perev_hot" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Hot reload, i.e. done after initialization sequence</meta>
+        </property>
+
+        <property name="perevJvmSequence" column="perev_jvm_sequence" not-null="true" type="java.lang.Long"></property>
+        <property name="perevSessionFactoryReloadSequence" column="perev_reload_sequence" not-null="true" type="java.lang.Long"></property>
+
+        <!--  Audit Data -->
+        <property name="perevCreated" column="perev_created" type="timestamp"/>
+        <property name="perevCreator" column="perev_creator" type="string" length="30"/>
+        <property name="perevChanged" column="perev_updated" type="timestamp"/>
+        <property name="perevChanger" column="perev_updater" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.extension.model.event.business.PersistenceEventDetails" table="ext_persistence_event_details">
+        <meta attribute="generated-class">com.navis.extension.model.business.PersistenceEventDetailsHbr</meta>
+        <meta attribute="n4alias">perevd</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-entity-name">Persistence Event Details</meta>
+        <meta attribute="n4-entity-name-plural">Persistence Details</meta>
+        <meta attribute="n4-uniqueness-description">global</meta>
+
+        <id name="perevdGkey" column="perevd_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="foreign">
+                <param name="property">perevdParentEvent</param>
+            </generator>
+        </id>
+        <one-to-one name="perevdParentEvent" class="com.navis.extension.model.event.business.PersistenceEvent" constrained="true"/>
+
+        <property name="perevdSearchableDDL" column="perevd_ddl_search" type="string" length="4000">
+        </property>
+
+        <property name="perevdExecutedDDL" column="perevd_executed_ddl" type="text" length="500000">
+            <meta attribute="field-description">ddl applied in this event</meta>
+        </property>
+
+        <property name="perevdMessage" column="perevd_message" type="text">
+            <meta attribute="field-description">Any message string related to the event</meta>
+        </property>
+
+    </class>
+
+    <!-- SNAP SHOT REGISTRY-->
+
+    <class name="com.navis.extension.model.business.ModelExtensionSnapshot" table="ext_snapshot">
+        <meta attribute="generated-class">com.navis.extension.model.business.ModelExtensionSnapshotHbr</meta>
+        <meta attribute="n4alias">mextss</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-entity-name">Model Extension Snapshot</meta>
+        <meta attribute="n4-entity-name-plural">Model Extension Snapshots</meta>
+
+        <id name="mextssGkey" column="mextss_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- Type: UPGRADE_ON_RESTART - new changes which need to be applied, causes schema update
+       LAST_SUCCESSFUL
+       PREVIOUSLY_APPLIED -->
+        <property name="mextssSnapShotName" column="perev_snapshot_name" type="string" length="200"
+                  unique="true" not-null="true">
+            <meta attribute="field-description">Human readable snapshot name</meta>
+        </property>
+
+        <property name="mextssEnabled" column="mextss_enabled" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Snapshot Enabled. Only one snapshot can be enabled at any time.</meta>
+        </property>
+
+        <property name="mextssUpgradeOnRestart" column="mextss_restart" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Upgrade on restarting the session factory.</meta>
+        </property>
+
+        <property name="mextssCurrentSnapshot" column="mextss_current" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Current snapshot applied</meta>
+        </property>
+
+        <property name="mextssSnapshotStatus" column="mextme_snapshot_status" not-null="true"
+                  type="com.navis.framework.persistence.atoms.UserTypeExtensionSnapshotStatusEnum">
+        </property>
+
+        <!-- currently not used but was going to put in human readable string representing contents-->
+        <property name="mextssAutoSummary" column="mextss_auto_summary" type="string" length="4000" not-null="true">
+        </property>
+
+        <property name="mextssDesc" column="mextss_desc" type="string" length="4000">
+        </property>
+
+        <property name="mextssExpectedDDL" column="mextss_expected_ddl" type="text" length="500000">
+            <meta attribute="field-description">expected ddl for this upgrade</meta>
+        </property>
+
+
+        <!-- might have to be indexed-->
+        <set name="mextssSnapshotItems" lazy="true" inverse="true" cascade="all-delete-orphan">
+            <key column="mextsi_snapshot_gkey"/>
+            <one-to-many class="com.navis.extension.model.business.ModelExtensionSnapshotItem"/>
+        </set>
+
+        <!--  Audit Data -->
+        <property name="mextssCreated" column="mextss_created" type="timestamp"/>
+        <property name="mextssCreator" column="mextss_creator" type="string" length="30"/>
+        <property name="mextssChanged" column="mextss_updated" type="timestamp"/>
+        <property name="mextssChanger" column="mextss_updater" type="string" length="30"/>
+    </class>
+
+    <class name="com.navis.extension.model.business.ModelExtensionSnapshotItem" table="ext_snapshot_item">
+        <meta attribute="generated-class">com.navis.extension.model.business.ModelExtensionSnapshotItemHbr</meta>
+        <meta attribute="n4alias">mextsi</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-entity-name">Model Extension Snapshot Item</meta>
+        <meta attribute="n4-entity-name-plural">Model Extension Snapshot Items</meta>
+
+        <id name="mextsiGkey" column="mextsi_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="mextsiExtensionType" type="com.navis.framework.persistence.atoms.UserTypeExtensionModelTypeEnum">
+            <column name="mextsi_ext_type" not-null="true"/>
+        </property>
+
+        <!--source modification entity-->
+        <many-to-one name="mextsiModificationEntity" column="mextsi_mod_entity"
+                     class="com.navis.extension.model.business.modificationregistry.ModificationEntity"
+                     not-null="true"
+                     index="mextsi_mod_entity_fki"
+                     cascade=""/>
+
+        <many-to-one name="mextsiSnapshot" column="mextsi_snapshot_gkey" class="com.navis.extension.model.business.ModelExtensionSnapshot"
+                     not-null="true"
+                     index="mextsi_parent_sna_gkey_fki"
+                     cascade=""/>
+
+        <property name="mextsiHbmMapping" column="mextsi_clob_value" type="text" length="100000">
+            <meta attribute="field-description">hbm mapping file</meta>
+        </property>
+
+        <property name="mextsiDesc" column="mextsi_desc" type="string" length="4000">
+        </property>
+
+    </class>
+
+    <!-- MODIFICATION REGISTRY-->
+
+    <class name="com.navis.extension.model.business.modificationregistry.ModificationEntity" table="ext_mod_entity">
+        <meta attribute="generated-class">com.navis.extension.model.business.modificationregistry.ModificationEntityHbr</meta>
+        <meta attribute="n4alias">mextme</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-entity-name">Model Extension Modification</meta>
+        <meta attribute="n4-entity-name-plural">Model Extension Snapshots</meta>
+
+        <id name="mextmeGkey" column="mextme_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="mextmeEntitySubType" column="mextme_entity_subtype"
+                  type="com.navis.framework.persistence.atoms.UserTypeExtensionModelTypeEnum"
+                  not-null="true">
+            <meta attribute="field-description">Entity subtype</meta>
+        </property>
+
+        <property name="mextmeEntityName" column="mextme_entity_name" type="string" length="200"
+                  unique="true" not-null="true">
+            <meta attribute="field-description">Fully qualified name</meta>
+        </property>
+
+        <property name="mextmeEnabled" column="mextme_enabled" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Enabled.</meta>
+        </property>
+
+        <property name="mextmeDesc" column="mextme_desc" type="string" length="255">
+        </property>
+
+        <property name="mextmeSchemaState" column="mextme_schema_state" not-null="true"
+                  type="com.navis.framework.persistence.atoms.UserTypeExtensionSchemaStatusEnum">
+        </property>
+
+        <property name="mextmeComponentFieldId" column="mextme_component_field" type="string" length="100" not-null="true">
+        </property>
+
+        <property name="mextmeCreated" column="mextme_created" type="timestamp"/>
+        <property name="mextmeCreator" column="mextme_creator" type="string" length="30"/>
+        <property name="mextmeChanged" column="mextme_updated" type="timestamp"/>
+        <property name="mextmeChanger" column="mextme_updater" type="string" length="30"/>
+    </class>
+
+    <joined-subclass name="com.navis.extension.model.business.modificationregistry.CustomModificationEntity"
+                     extends="com.navis.extension.model.business.modificationregistry.ModificationEntity"
+                     table="ext_mod_entity_custom">
+        <meta attribute="generated-class">com.navis.extension.model.business.modificationregistry.CustomModificationEntityHbr</meta>
+        <meta attribute="n4alias">mextce</meta>
+        <meta attribute="n4-entity-name">Custom Entity</meta>
+        <key column="CUSTOM"/>
+
+        <property name="mextceTableName" column="mextce_table_name" type="string" length="30"
+                  unique="true" not-null="true">
+            <meta attribute="field-description">Database table name</meta>
+        </property>
+
+        <property name="mextceAlias" column="mextce_alias" type="string" length="12"
+                  unique="true" not-null="true">
+            <meta attribute="field-description">short prefix which is used to form the column and field names. Must comply with naming convention.
+            </meta>
+        </property>
+
+    </joined-subclass>
+
+    <joined-subclass name="com.navis.extension.model.business.modificationregistry.SystemModificationEntity"
+                     extends="com.navis.extension.model.business.modificationregistry.ModificationEntity"
+                     table="ext_mod_entity_system">
+        <meta attribute="generated-class">com.navis.extension.model.business.modificationregistry.SystemModificationEntityHbr</meta>
+        <meta attribute="n4alias">mextse</meta>
+        <meta attribute="n4-entity-name">Custom Entity</meta>
+        <key column="SYSTEM"/>
+    </joined-subclass>
+
+    <class name="com.navis.extension.model.business.modificationregistry.ModificationField" table="ext_mod_field">
+        <meta attribute="generated-class">com.navis.extension.model.business.modificationregistry.ModificationFieldHbr</meta>
+        <meta attribute="n4alias">mextmf</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-entity-name">Modification Field</meta>
+        <meta attribute="n4-entity-name-plural">Modification Fields</meta>
+
+        <id name="mextmfGkey" column="mextmf_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="mextmfFieldId" column="mextmf_field_id" type="string" length="100"
+                  unique="true" not-null="true">
+            <meta attribute="field-description">field id which is globally unique</meta>
+        </property>
+
+        <property name="mextmfFieldType" column="mextmf_field_type"
+                  type="com.navis.framework.persistence.atoms.UserTypeExtensionFieldTypeEnum"
+                  not-null="true">
+            <meta attribute="field-description">field type</meta>
+        </property>
+
+        <property name="mextmfFieldName" column="mextmf_field_name" type="string" length="100" not-null="true">
+            <meta attribute="field-description">field name</meta>
+        </property>
+        
+        <property name="mextmfFieldDesc" column="mextmf_field_desc" type="string" length="256">
+            <meta attribute="field-description">field desc</meta>
+        </property>
+
+        <property name="mextmfFieldIdClassName" column="mextmf_class_name" type="string" length="255" not-null="true">
+            <meta attribute="field-description">class name for relation or for enum</meta>
+        </property>
+
+        <many-to-one name="mextmfParentEntity" column="mextmfv_parent_entity"
+                     class="com.navis.extension.model.business.modificationregistry.ModificationEntity"
+                     not-null="true"
+                     index="mextmfv_parent_entity_fki"/>
+
+        <property name="mextmfEnabled" column="mextmf_enabled" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Enabled.</meta>
+        </property>
+
+        <many-to-one name="mextmfModificationCurrentVersion" column="mextmfv_current_version"
+                     class="com.navis.extension.model.business.modificationregistry.ModificationFieldVersion"
+                     not-null="false"
+                     index="mextmfv_current_version_fki"/>
+
+        <!-- children of ModificationFieldVersion -->
+        <property name="mextmfCreated" column="mextmf_created" type="timestamp"/>
+        <property name="mextmfCreator" column="mextmf_creator" type="string" length="30"/>
+        <property name="mextmfChanged" column="mextmf_updated" type="timestamp"/>
+        <property name="mextmfChanger" column="mextmf_updater" type="string" length="30"/>
+    </class>
+
+    <class name="com.navis.extension.model.business.modificationregistry.ModificationFieldVersion" table="ext_mod_field_version">
+        <meta attribute="generated-class">com.navis.extension.model.business.modificationregistry.ModificationFieldVersionHbr</meta>
+        <meta attribute="n4alias">mextmfv</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-entity-name">Modification Field</meta>
+        <meta attribute="n4-entity-name-plural">Modification Fields</meta>
+
+        <id name="mextmfvGkey" column="mextmfv_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="mextmfvColumnName" column="mextmfv_column_name" type="string" length="30"
+                  unique="true" not-null="true">
+            <meta attribute="field-description">Column name</meta>
+        </property>
+
+        <property name="mextmfvColumnLength" column="mextmfv_column_length" type="java.lang.Integer"></property>
+
+        <property name="mextmfvIsCurrentVersion" column="mextmfv_is_current" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Currently Edited Version</meta>
+        </property>
+
+        <property name="mextmfvVersion" column="mextmfv_version" not-null="true" type="java.lang.Long"></property>
+
+        <many-to-one name="mextmfvModificationField" column="mextmfv_version_gkey"
+                     class="com.navis.extension.model.business.modificationregistry.ModificationField"
+                     not-null="true"
+                     cascade="all"
+                     index="mextmfv_parent_f_gkey_fki"/>
+
+        <many-to-one name="mextmfvSnapshot" column="mextmfv_snapshot_gkey" class="com.navis.extension.model.business.ModelExtensionSnapshot"
+                     not-null="false"
+                     index="mextmfv_parent_sn_gkey_fki"/>
+
+        <property name="mextmfvEnabled" column="mextmfv_enabled" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Enabled</meta>
+        </property>
+
+        <property name="mextmfvDesc" column="mextmfv_desc" type="string" length="255">
+        </property>
+
+        <property name="mextmfvCreated" column="mextmfv_created" type="timestamp"/>
+        <property name="mextmfvCreator" column="mextmfv_creator" type="string" length="30"/>
+        <property name="mextmfvChanged" column="mextmfv_updated" type="timestamp"/>
+        <property name="mextmfvChanger" column="mextmfv_updater" type="string" length="30"/>
+    </class>
+</hibernate-mapping>

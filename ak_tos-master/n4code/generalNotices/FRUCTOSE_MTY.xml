@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<notice-request action="GROOVY" business-entity="UNIT" event-type="FRUCTOSE_MTY" description="MTY Fructose test">
+  <filter />
+  <message-template>//print( "MTY FRUCTOSE TEST")
+def unit = event.getEntity();
+
+//def unitGoods = unit.getUnitGoods();
+//def bl_nbr = unit.getFieldValue("unitGoods.gdsBlNbr");
+//def unitNotes = unit.getFieldValue("unitRemark");
+//def obCvId = unit.getFieldValue("unitRouting.rtgDeclaredCv.cvId");
+
+def mtyFructoseGvy = api.getGroovyClassInstance( "MtyFructoseStripUnit");
+def ret = mtyFructoseGvy.mtyFrucroseProc( unit);
+
+//def ret="ERR_GVY_MTY_Test";
+def writer = new StringWriter();
+def builder = new groovy.xml.MarkupBuilder(writer);
+def container = builder.GroovyMsg(msgType:'GVY_INJ_RET',gvyReturn:ret);
+def xml = writer.toString();
+// send the XML to the jms queue
+api.sendXml(xml);</message-template>
+</notice-request>
+</argo:snx>
+

@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<jboss>
+
+
+	
+    <enterprise-beans>
+    
+        <message-driven>
+            <ejb-name>MdbGemsTos</ejb-name>
+            <destination-jndi-name>ak.gems.tos.n4.formatted</destination-jndi-name>
+            <resource-adapter-name>activemq-ra.rar</resource-adapter-name>
+        </message-driven>
+        
+        <message-driven>
+            <ejb-name>MdbSn4Out</ejb-name>
+            <destination-jndi-name>akjmsdistqueuetdpN4QueueOut</destination-jndi-name>
+            <resource-adapter-name>activemq-ra.rar</resource-adapter-name>
+        </message-driven>
+        
+        <message-driven>
+            <ejb-name>ManifestReport</ejb-name>
+            <destination-jndi-name>ak.jms.topic.tdp.newVesselHon</destination-jndi-name>
+            <resource-adapter-name>activemq-ra.rar</resource-adapter-name>
+        </message-driven>
+        
+        <message-driven>
+            <ejb-name>FSSPublish</ejb-name>
+            <destination-jndi-name>ak.jms.topic.fss</destination-jndi-name>
+            <resource-adapter-name>activemq-ra.rar</resource-adapter-name>
+        </message-driven>
+
+        <message-driven>
+            <ejb-name>MdbSn4OutKDK</ejb-name>
+            <destination-jndi-name>akjmsdistqueuetdpN4QueueOutKDK</destination-jndi-name>
+            <resource-adapter-name>activemq-ra.rar</resource-adapter-name>
+        </message-driven>
+
+        <message-driven>
+            <ejb-name>MdbSn4OutDUT</ejb-name>
+            <destination-jndi-name>akjmsdistqueuetdpN4QueueOutDUT</destination-jndi-name>
+            <resource-adapter-name>activemq-ra.rar</resource-adapter-name>
+        </message-driven>
+
+
+    </enterprise-beans>
+</jboss>

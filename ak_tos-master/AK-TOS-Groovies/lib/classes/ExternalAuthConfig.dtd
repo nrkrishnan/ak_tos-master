@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (c) 2009 Zebra Technologies Corp. All Rights Reserved.<br />
+$Id: $
+-->
+<!ELEMENT externalProviders  (ldapProvider)+>
+<!ELEMENT ldapProvider  (serverType?, context, userSearch) >
+<!-- AD | DEFAULT -->
+<!ELEMENT serverType (#PCDATA)>
+
+<!-- LDAP Context  -->
+<!ELEMENT context (serverURL, manager, referral)>
+
+<!-- Server URL
+    Valid LDAP Server URL. LDAP URL format:
+    [scheme]://[hostport] [/[dn]. It could also be a list of blank-separated URLs
+                but they must have the same DN.
+                scheme: ldap | ldaps
+ e.g. -->
+<!ELEMENT serverURL (#PCDATA)>
+<!-- LDAP server manager. dn is the distinguished name. -->
+<!ELEMENT manager (dn, password)>
+<!ELEMENT dn (#PCDATA)>
+<!ELEMENT password (#PCDATA)>
+<!-- Global Java SE JNDI javax.naming.Context.REFERRAL. Specifies how referrals encountered by the service are to be processed.  -->
+<!ELEMENT referral EMPTY>
+<!ATTLIST referral type (follow|ignore|throw) "follow">
+<!-- DNs used to search for a user.  -->
+<!ELEMENT userSearch (base, filter, subtree)>
+<!-- Global DN to base the user search on.  -->
+<!ELEMENT base (#PCDATA)>
+<!-- Global serach pattern to locate user. It must include the login attribute name.
+    E.g., (sAMAccountName={0})
+-->
+<!ELEMENT filter (#PCDATA)>
+
+<!--  Specifies whetehr to seearch the entire subtree as indicated by context.  -->
+<!ELEMENT subtree EMPTY>
+<!ATTLIST subtree required (true | false) "true">

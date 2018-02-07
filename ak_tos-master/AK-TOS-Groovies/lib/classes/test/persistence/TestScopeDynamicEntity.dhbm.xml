@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <class entity-name="com.navis.extension.test.CustomTestScope" name="com.navis.extension.model.persistence.DynamicHibernatingEntity"
+           table="CUSTOM_TEST__ENTITY" dynamic-update="true">
+        <meta attribute="n4alias">customscope</meta>
+        <meta attribute="n4-entity-name">TestScope</meta>
+
+        <id name="customEntityGkey" column="gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <dynamic-component name="customEntityFields">
+            <property name="customscopeName" column="customscope_name" type="string" length="255" not-null="true" unique="true"/>
+            <many-to-one name="customscopeOpr" class="com.navis.argo.business.model.Operator" column="customscope_opr" lazy="proxy"/>
+            <many-to-one name="customscopeCpx" class="com.navis.argo.business.model.Complex" column="customscope_cpx" lazy="proxy"/>
+            <many-to-one name="customscopeFcy" class="com.navis.argo.business.model.Facility" column="customscope_fcy" lazy="proxy"/>
+
+        </dynamic-component>
+    </class>
+ 
+</hibernate-mapping>

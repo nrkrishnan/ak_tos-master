@@ -1,0 +1,13 @@
+<!ELEMENT settings (property*, component*)>
+<!ATTLIST settings name CDATA "com.navis" >
+<!ELEMENT property EMPTY>
+<!ATTLIST property
+        name CDATA #REQUIRED
+        value CDATA #REQUIRED>
+<!ELEMENT component (property*, setting*, component*)>
+<!ATTLIST component
+        name CDATA #REQUIRED>
+<!ELEMENT setting EMPTY>
+<!ATTLIST setting
+        name CDATA #REQUIRED
+        value CDATA #REQUIRED>

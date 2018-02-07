@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Test beans which will be invoked under testing. Later we will have an alternative loader.
+  -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+    <bean id="hibernateModelExtensionLoader" class="com.navis.extension.model.persistence.loader.FileBasedHibernateModelExtensionLoader">
+        <property name="extensionFileLocations">
+            <list>
+                <!-- dynamic entity-->
+                <value>/test/persistence/FooCustomDynamicEntities.dhbm.xml</value>
+
+                <!-- dynamic flex field-->
+                <value>/test/persistence/ReferenceDynamicFields.dff.hbm.xml</value>
+                <value>/test/persistence/UnitDynamicFields.dff.hbm.xml</value>
+                <value>/test/persistence/VesselDynamicFields.dff.hbm.xml</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

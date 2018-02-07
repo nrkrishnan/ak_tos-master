@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2011 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+        default-lazy-init="true">
+
+    <bean id="SecurityMetafieldDictionaryLoader"
+          class="com.navis.framework.metafields.provider.MetafieldDictionaryXmlLoader" scope="singleton">
+        <property name="xmlFilePaths">
+            <list>
+                <value>/metafields/ReferenceBizMetafields.xml</value>
+                <value>/metafields/SecurityBizMetafields.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- composite loader for all IPrivilegeLoader. This bean should not be overridden -->
+    <bean id="loaderBasedPrivilegeManager" class="com.navis.security.business.privilege.LoaderBasedPrivilegeManager">
+    </bean>
+
+    <bean id="frameworkMetafieldPrivilegeLoader"
+          class="com.navis.framework.metafields.security.MetafieldDenyPrivilegeLoader"/>
+
+    <!-- composite loader for all privilege managers. This bean should not be overridden -->
+    <bean id="autoSpringEntityDynamicPrivilegeManager"
+          class="com.navis.security.business.privilege.AutoSpringEntityInstancePrivilegeManager"
+          init-method="init"/>
+
+   
+
+    <bean id="customUserActionLoader" class="com.navis.security.presentation.privilege.DynamicCustomUIPrivilegeLoader">
+    </bean>
+
+    <bean id="customLoaderPrivilegeManager" class="com.navis.security.business.privilege.CustomLoaderBasedPrivilegeManager">
+    </bean>
+
+    <bean id="privilegeManager" class="com.navis.security.business.privilege.CompositePrivilegeManager">
+        <property name="privilegeManagers">
+            <list>
+                <ref bean="loaderBasedPrivilegeManager"/>
+                <ref bean="autoSpringEntityDynamicPrivilegeManager"/>
+                <ref bean="customLoaderPrivilegeManager"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="securityAdminPrivilegeLoader"
+          class="com.navis.security.business.privilege.loader.PrivilegeXmlLoader" scope="singleton">
+        <property name="xmlFilePaths">
+            <list>
+                <value>/security/SecurityPrivs.xml</value> 
+                <!-- later we can load by usage-->
+                <value>/security/FrameworkUlcPrivs.xml</value>
+                <value>/performance/PerformancePrivs.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="securityUiPrivilegeLoader"
+          class="com.navis.security.business.privilege.loader.PrivilegeXmlLoader" scope="singleton">
+        <property name="xmlFilePaths">
+            <list>
+                <value>/security/FrameworkExtensionPrivs.xml</value>
+                <value>/security/FrameworkUiPrivs.xml</value>
+            </list>
+        </property>
+    </bean>
+    <!-- ===================SECURITY MODULE 1.0 BEANS  ========================================== -->
+
+    <bean id="securityDAO" class="com.navis.security.business.SecurityDAO">
+    </bean>
+
+    <!--
+           Pea Configuration: Security User Read-Only Facade
+                2004.06.08 HJK deproxied since setting singleton="false" on baseUserRoFacade causes class casting exceptions,
+                           and user must be prototype non-singleton
+      -->
+    <bean id="baseUserRoFacade" class="com.navis.security.business.user.BaseUserRoFacadeHbr" scope="prototype">
+        <property name="securityDAO">
+            <ref bean="securityDAO"/>
+        </property>
+    </bean>
+
+    <!--                                                                    a
+         Pea Configuration: SecurityFacade
+     -->
+    <bean id="securityFacade" class="com.navis.security.business.user.SecurityFacadePea">
+        <!-- casts to com.navis.security.api.SecurityFacade  -->
+        <property name="securityDAO">
+            <ref bean="securityDAO"/>
+        </property>
+    </bean>
+
+    <bean id="organizationFacade" class="com.navis.security.business.organization.OrganizationFacadePea">
+        <!-- returns <value>com.navis.security.api.OrganizationROApi</value> -->
+        <property name="securityDAO">
+            <ref bean="securityDAO"/>
+        </property>
+    </bean>
+
+    <bean id="securityEntityFactory" class="com.navis.security.business.entity.BaseSecurityEntityFactory"/>
+
+    <bean id="jndiClientConfigFactory" class="com.navis.framework.rest.RESTClientConfigFactory"/>
+
+    <!--  make sure that manager is accessible  -->
+    <bean id="symmetricCryptoManager" class="com.navis.security.crypto.ZESFwCryptoManager" scope="singleton" />
+
+    <!-- Custom menu Privilege Manager -->
+    <bean id="customNodePrivilegeManager" class="com.navis.framework.navigation.security.CustomNavigationPrivilegeManager" >
+        <property name="securedActions">
+            <list>
+                <value>CREATE</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- IP Whitelist security check manager  -->
+    <bean id="IPWhitelistManager" class="com.navis.security.business.whitelist.IPWhitelistManager"/>
+
+</beans>

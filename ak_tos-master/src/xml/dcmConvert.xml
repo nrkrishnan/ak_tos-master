@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="," newRecord="\n"></Format>
+	<Field sequence="1" name="vesvoy" dataType="String"></Field>
+	<Field sequence="2" name="ctrNo" dataType="String"></Field>
+	<Field sequence="3" name="cnSeq" dataType="String"></Field>
+	<Field sequence="4" name="blankData1" dataType="String"></Field>
+	<Field sequence="5" name="checkDigit" dataType="String"></Field>
+	<Field sequence="6" name="hazClass" dataType="String"></Field>
+	<Field sequence="7" name="hazClassDesc" dataType="String"></Field>
+	<Field sequence="8" name="hazSubClass" dataType="String"></Field>
+	<Field sequence="9" name="consignee" dataType="String"></Field>
+	<Field sequence="10" name="pack" dataType="String"></Field>
+	<Field sequence="11" name="blankData2" dataType="String"></Field>
+	<Field sequence="12" name="hazDesc1" dataType="String"></Field>
+	<Field sequence="13" name="emergencyContact" dataType="String"></Field>
+	<Field sequence="14" name="grossWeightUnit" dataType="String"></Field>
+	<Field sequence="15" name="cellLocation" dataType="String"></Field>
+	<Field sequence="16" name="destPort" dataType="String"></Field>
+	<Field sequence="17" name="yardLocation" dataType="String"></Field>
+	<Field sequence="18" name="carsFlag" dataType="String"></Field>
+	<Field sequence="19" name="shipment" dataType="String"></Field>
+	<Field sequence="20" name="hazCode" dataType="String"></Field>
+	<Field sequence="21" name="hazCodeType" dataType="String"></Field>
+	<Field sequence="22" name="hazRegQualifier" dataType="String"></Field>
+	<Field sequence="23" name="shippingName" dataType="String"></Field>
+	<Field sequence="24" name="techName" dataType="String"></Field>
+	<Field sequence="25" name="grossWeight" dataType="String"></Field>
+	<Field sequence="26" name="grossUnit" dataType="String"></Field>
+	<Field sequence="27" name="flashPoint" dataType="String"></Field>
+	<Field sequence="28" name="packagingGrpMarks" dataType="String"></Field>
+	<Field sequence="29" name="remarks" dataType="String"></Field>
+	<Field sequence="30" name="emergencyResponse" dataType="String"></Field>
+	<Field sequence="31" name="loadPort" dataType="String"></Field>
+	<Field sequence="32" name="consigneeName" dataType="String"></Field>
+</FileDesc>

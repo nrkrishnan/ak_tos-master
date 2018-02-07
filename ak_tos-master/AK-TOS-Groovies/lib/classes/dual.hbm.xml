@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <meta attribute="JavaClassPrefix">Dual</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.framework.persistence.CarinaDual" table="frm_carina_dual">
+        <meta attribute="generated-class">com.navis.framework.persistence.CarinaDualHbr</meta>
+        <meta attribute="n4alias">dual</meta>
+        <meta attribute="n4-entity-name">dual</meta>
+        <meta attribute="n4-entity-name-plural">duals</meta>
+        <meta attribute="n4-scope-description">global</meta>
+
+        <id name="dualGkey" column="dual_gkey" type="java.lang.Long" length="10">
+            <generator class="native"/>
+        </id>
+        <property name="dummy" column="dummy" type="string" length="1"/>
+
+    </class>
+
+</hibernate-mapping>

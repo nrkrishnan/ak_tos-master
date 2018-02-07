@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<flag-type id="AGN" applies-to="UNIT" type="HOLD" description="Agriculture Neighbor Island" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="AGN_HOLD" veto-event-id="AGN_RELEASE" life-cycle-state="ACT" />
+<flag-type id="AG_HOLD" applies-to="UNIT" type="HOLD" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="AG_HOLD" veto-event-id="AG_RELEASE" hold-perm-view-id="CUSTOMS_HOLDS" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="AG" applies-to="UNIT" type="HOLD" description="Agriculture" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="AG_HOLD" veto-event-id="AG_RELEASE" life-cycle-state="ACT" />
+<flag-type id="CAR" applies-to="UNIT" type="HOLD" description="Carrier Hold" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="CAR_HOLD" veto-event-id="CAR_RELEASE" life-cycle-state="ACT" />
+<flag-type id="CC" applies-to="UNIT" type="HOLD" description="Collect Cash" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="CC_HOLD" veto-event-id="CC_RELEASE" life-cycle-state="ACT" />
+<flag-type id="CG_DMG" applies-to="EQ" type="HOLD" description="Coast Guard Equipment Damage" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="CG_DMG_HOLD" veto-event-id="CG_DMG_RELEASE" life-cycle-state="ACT" />
+<flag-type id="CG_INSP" applies-to="UNIT" type="HOLD" description="Coast Guard Inspection" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="CG_INSP_HOLD" veto-event-id="CG_INSP_RELEASE" life-cycle-state="ACT" />
+<flag-type id="CL" applies-to="EQ" type="HOLD" description="Claims" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="CL_HOLD" veto-event-id="CL_RELEASE" life-cycle-state="ACT" />
+<flag-type id="CUS" applies-to="UNIT" type="HOLD" description="Customs" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="CUS_HOLD" veto-event-id="CUS_RELEASE" life-cycle-state="ACT" />
+<flag-type id="DOC" applies-to="UNIT" type="HOLD" description="Documentation" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="DOC_HOLD" veto-event-id="DOC_RELEASE" life-cycle-state="ACT" />
+<flag-type id="DVI" applies-to="EQ" type="HOLD" description="DVIR Chassis Hold" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="DVI_HOLD" veto-event-id="DVI_RELEASE" life-cycle-state="ACT" />
+<flag-type id="GX" applies-to="UNIT" type="HOLD" description="Gamma Ray Scanner" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="GX_HOLD" veto-event-id="GX_RELEASE" life-cycle-state="ACT" />
+<flag-type id="HP" applies-to="UNIT" type="HOLD" description="Hold for Payment" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="HP_HOLD" veto-event-id="HP_RELEASE" life-cycle-state="ACT" />
+<flag-type id="INB" applies-to="UNIT" type="HOLD" description="In Bond" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="INB_HOLD" veto-event-id="INB_RELEASE" life-cycle-state="ACT" />
+<flag-type id="INGATE" applies-to="EQ" type="HOLD" description="Ingate Hold" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="INGATE_HOLD" veto-event-id="INGATE_RELEASE" life-cycle-state="ACT" />
+<flag-type id="ITN BKG" applies-to="BKG" type="HOLD" description="BOB ITN Hold" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="ITN_BKG_HOLD" veto-event-id="ITN_BKG_RELEASE" life-cycle-state="ACT" />
+<flag-type id="ITN" applies-to="UNIT" type="HOLD" description="ITN Unit Hold" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="ITN_HOLD" veto-event-id="ITN_RELEASE" life-cycle-state="ACT" />
+<flag-type id="LTV" applies-to="EQ" type="HOLD" description="Prevents Load to Vessels" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="LTV_HOLD" veto-event-id="LTV_RELEASE" life-cycle-state="ACT" />
+<flag-type id="ON" applies-to="UNIT" type="HOLD" description="Order Notify" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="ON_HOLD" veto-event-id="ON_RELEASE" life-cycle-state="ACT" />
+<flag-type id="OUTGATE" applies-to="UNIT" type="HOLD" description="Outgate Unit Hold" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="OUTGATE_HOLD" veto-event-id="OUTGATE_RELEASE" life-cycle-state="ACT" />
+<flag-type id="PER" applies-to="UNIT" type="HOLD" description="Permit To Transfer Customs Hold" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="PER_ASSIGN" veto-event-id="PER_UNASSIGN" life-cycle-state="ACT" />
+<flag-type id="RD" applies-to="UNIT" type="HOLD" description="RD" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="RD_HOLD" veto-event-id="RD_RELEASE" is-billing-hold-required="N" life-cycle-state="ACT" />
+<flag-type id="RFR_OK" applies-to="EQ" type="PERMISSION" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="RFR_PERM_GRANTED" veto-event-id="RFR_PERM_REVOKED" is-billing-hold-required="N" life-cycle-state="ACT" />
+<flag-type id="RM" applies-to="UNIT" type="HOLD" description="RM Inspection" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="RM_HOLD" veto-event-id="RM_RELEASE" life-cycle-state="ACT" />
+<flag-type id="SHOP" applies-to="EQ" type="HOLD" description="Equipment at Shop" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="SHOP_HOLD" veto-event-id="SHOP_RELEASE" life-cycle-state="ACT" />
+<flag-type id="ST" applies-to="UNIT" type="HOLD" description="Storage" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="ST_HOLD" veto-event-id="ST_RELEASE" life-cycle-state="ACT" />
+<flag-type id="TS" applies-to="UNIT" type="HOLD" description="Tag Strip" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="TAG_STRIP_ASSIGN" veto-event-id="TAG_STRIP_UNASSIGN" life-cycle-state="ACT" />
+<flag-type id="TD" applies-to="UNIT" type="HOLD" description="Tag Documentation" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="TD_HOLD" veto-event-id="TD_RELEASE" life-cycle-state="ACT" />
+<flag-type id="CHS" applies-to="EQ" type="HOLD" description="Chassis hold for Ckc Digit, tags, labeling" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="TEST_CHS_HOLD" veto-event-id="TEST_CHS_RELEASE" life-cycle-state="ACT" />
+<flag-type id="TI" applies-to="UNIT" type="HOLD" description="Tag Inspection" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="TI_HOLD" veto-event-id="TI_RELEASE" life-cycle-state="ACT" />
+<flag-type id="ULK" applies-to="UNIT" type="HOLD" description="ULK from Booking Hold" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="ULK_HOLD" veto-event-id="ULK_RELEASE" life-cycle-state="ACT" />
+<flag-type id="USA" applies-to="UNIT" type="HOLD" description="USDA-Federal Ag Hold" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="USA_HOLD" veto-event-id="USA_RELEASE" life-cycle-state="ACT" />
+<flag-type id="XT" applies-to="UNIT" type="HOLD" description="Christmas Tree" is-ref-id-required="N" is-unique-by-ref-id="N" apply-event-id="XT_HOLD" veto-event-id="XT_RELEASE" life-cycle-state="ACT" />
+<flag-type id="SPECIALEQUIPMENT" applies-to="UNIT" type="PERMISSION" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="CD" applies-to="UNIT" type="HOLD" description="CAR DOC Hold" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="SHOW LTV" applies-to="UNIT" type="HOLD" description="Prevent SHOW EqOwner from LTV" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" life-cycle-state="ACT" />
+<flag-type id="SHOW_NORETURN" applies-to="EQ" type="HOLD" description="Shipper owned CTR cannot return as Empty" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="SHOW_OWNED_CTR" applies-to="UNIT" type="PERMISSION" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="ACC_EQUIPMENT_NOTALLOWED" applies-to="UNIT" type="PERMISSION" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="BOOKINGHAZCHECK" applies-to="BKG" type="PERMISSION" description="Booking Hazardous check needed" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="OOG_PENDING" applies-to="UNIT" type="HOLD" description="Pending to check OOG dims" is-ref-id-required="N" is-unique-by-ref-id="N" hold-perm-view-id="CUSTOMS_HOLDS" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="PODCHECKFORVESS" applies-to="UNIT" type="PERMISSION" description="PODCHECKFORVESS" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="HLD" applies-to="UNIT" type="HOLD" description="General Hold" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="O/H" applies-to="EQ" type="HOLD" description="Off hire hold" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="NEWVESS INCOMPLETE" applies-to="UNIT" type="HOLD" description="NEWVESS INCOMPLETE" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="HOLD FOR LNK" applies-to="UNIT" type="HOLD" description="Hold Equipment in Terminal for future booking" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" life-cycle-state="ACT" />
+<flag-type id="NIS" applies-to="UNIT" type="PERMISSION" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT" />
+<flag-type id="SHOW" applies-to="EQ" type="PERMISSION" description="OK to receive SHOW MTY" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT" />
+<flag-type id="NON-MAT EQ" applies-to="UNIT" type="PERMISSION" description="Non-Matson Equipment Operators" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT" />
+<flag-type id="MGOK" applies-to="UNIT" type="PERMISSION" description="MG allowed to OG with this container" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT" />
+<flag-type id="SCRAP_METAL" applies-to="UNIT" type="HOLD" description="SCRAP_METAL" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" life-cycle-state="ACT" />
+<flag-type id="CAR BL" applies-to="UNIT" type="HOLD" description="Carrier Hold Bill of Lading" is-ref-id-required="N" is-unique-by-ref-id="N" hold-perm-view-id="CUSTOMS_HOLDS" is-billing-hold-required="N" life-cycle-state="ACT" />
+<flag-type id="DRAY DONE" applies-to="UNIT" type="PERMISSION" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT" />
+<flag-type id="AUTOS CAN OG" applies-to="UNIT" type="PERMISSION" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT" />
+<flag-type id="CCA_OVERRIDE" applies-to="EQ" type="PERMISSION" description="Override CCA Agreement to move Client &lt;-&gt; Matson" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT" />
+<flag-type id="RTN_TO_STORAGE" applies-to="UNIT" type="PERMISSION" description="Return to Storage OK" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT" />
+<flag-type id="BKG" applies-to="UNIT" type="HOLD" description="Hold for Booking" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" life-cycle-state="ACT" />
+<flag-type id="COMMUNITY_REEFER" applies-to="UNIT" type="HOLD" description="COMMUNITY_REEFER" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" life-cycle-state="ACT" />
+<flag-type id="OK TO LOAD KD FR" applies-to="UNIT" type="PERMISSION" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT" />
+<flag-type id="C&amp;B" applies-to="UNIT" type="PERMISSION" description="Chains &amp; Binders Check" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT" />
+<flag-type id="OKTOLOAD" applies-to="EQ" type="PERMISSION" description="OK to LTV" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT" />
+<flag-type id="CUS BL" applies-to="UNIT" type="HOLD" description="CUS BL HOLD PREVENTS OG" is-ref-id-required="N" is-unique-by-ref-id="N" hold-perm-view-id="CUSTOMS_HOLDS" is-billing-hold-required="N" life-cycle-state="ACT" />
+<flag-type id="MONETARY_HOLD" applies-to="UNIT" type="HOLD" description="Monetary Hold" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="Y" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+<flag-type id="VGM VERIFICATION" applies-to="UNIT" type="PERMISSION" description="VGM VERIFICATION" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="Y" life-cycle-state="ACT" />
+<flag-type id="HAZ LTV LOAD" applies-to="UNIT" type="HOLD" description="Hold for load to check hazard" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="N" is-covert-hold-required="N" is-multiple-allowed="N" life-cycle-state="ACT" />
+</argo:snx>
+

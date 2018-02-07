@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2011 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+
+<!--
+    Standard framework beans which can be overridden at the application level context. These beans are associated with
+    Webservice.
+  -->
+
+    <!-- framework level beans associated with webservice lifecycle -->
+    <bean id="webserviceLifecycle"
+        class="com.navis.framework.webservice.lifecycle.axis.AxisWebserviceFrameworkLifecycleSupport" scope="singleton"/>
+</beans>

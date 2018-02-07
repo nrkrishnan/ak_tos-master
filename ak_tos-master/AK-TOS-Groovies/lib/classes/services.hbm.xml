@@ -1,0 +1,918 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Services</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- EventType -->
+    <class name="com.navis.services.business.rules.EventType" table="srv_event_types" dynamic-update="true">
+        <meta attribute="class-description">Domain entity for a System or user definable Event Type</meta>
+        <meta attribute="generated-class">com.navis.services.business.rules.EventTypeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4alias">evnttype</meta>
+        <meta attribute="n4-entity-name">Event Type</meta>
+        <meta attribute="n4-entity-name-plural">Event Types</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">evnttypeId</meta>
+
+        <id name="evnttypeGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="evnttypeScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="evnttypeId" column="id" type="string" length="50" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">The short id of the event type</meta>
+        </property>
+
+        <property name="evnttypeDescription" column="description" type="string" length="100">
+            <meta attribute="field-description">Full description of the event type</meta>
+        </property>
+
+        <property name="evnttypeIsBuiltInEvent" column="is_built_in" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if this is a built-in Event Type</meta>
+        </property>
+
+        <property name="evnttypeCanBulkUpdate" column="is_bulkable" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if this can be applied to multiple Serviceables at one time</meta>
+        </property>
+
+        <property name="evnttypeIsFacilityService" column="is_facility_service" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if this is a physical service performed by the facility</meta>
+        </property>
+
+        <property name="evnttypeIsBillable" column="is_billable" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if this is billable</meta>
+        </property>
+
+        <property name="evnttypeIsNotifiable" column="is_notifiable" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if an Email Notice can be requested for this event type</meta>
+        </property>
+
+        <property name="evnttypeIsAcknowledgeable" type="java.lang.Boolean">
+            <meta attribute="field-description">True if an Acknowledgement can be registered for this event type. Default is false.</meta>
+            <column name="is_acknowledgeable" default="0" not-null="true"/>
+        </property>
+
+        <property name="evnttypeFunctionalArea" column="functional_area" type="com.navis.argo.persistence.atoms.UserTypeFunctionalAreaEnum"
+                  not-null="false">
+            <meta attribute="field-description">Event may be belongs to another functional area such as Cargo.</meta>
+        </property>
+
+        <!-- 2006-03-16 lbarman v1.0.10 ARGO-3602: isRecordedEvent is flag for eventType; buildNbr=31
+            system internal value defaults to TRUE if value is null -->
+        <property name="evnttypeIsEventRecorded" column="is_event_recorded" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">True if an event is recorded in the history when this event type is applied to a target entity</meta>
+        </property>
+
+        <property name="evnttypeAppliesTo" column="applies_to" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum" not-null="true">
+            <meta attribute="field-description">The logical entity class to which this event is appplied</meta>
+        </property>
+
+        <many-to-one name="evnttypeFilter" class="com.navis.framework.query.business.SavedPredicate" column="filter_gkey" not-null="false"
+                     cascade="all">
+            <meta attribute="field-description">Filter defining entities to which this event can be applied, if null, applies to all</meta>
+        </many-to-one>
+
+        <set name="evnttypeEventEffects" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="event_type_gkey"/>
+            <one-to-many class="com.navis.services.business.rules.EventEffect"/>
+        </set>
+
+        <set name="evnttypeAutoUpdateRules" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="event_type_gkey"/>
+            <one-to-many class="com.navis.services.business.rules.AutoUpdateRule"/>
+        </set>
+        <!--2012.04.24 spabbala v2.4.H ARGO-37314 adding isPrePayEvent to support Auto Extract Billable Events.-->
+        <property name="evnttypeIsAutoExtractable" column="is_auto_extract" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If true billable event will be extracted to the chargeable event tables as soon as the event is recorded</meta>
+        </property>
+        <property name="evnttypeCreated" column="created" type="timestamp"/>
+        <property name="evnttypeCreator" column="creator" type="string" length="30"/>
+        <property name="evnttypeChanged" column="changed" type="timestamp"/>
+        <property name="evnttypeChanger" column="changer" type="string" length="30"/>
+
+        <property name="evnttypeLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!-- FlagType -->
+    <class name="com.navis.services.business.rules.FlagType" table="srv_flag_types" dynamic-update="true">
+        <meta attribute="class-description">Domain Entity for HoldType and PermissionType</meta>
+        <meta attribute="generated-class">com.navis.services.business.rules.FlagTypeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4alias">flgtyp</meta>
+        <meta attribute="n4-entity-name">Flag Type</meta>
+        <meta attribute="n4-entity-name-plural">Flag Types</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">flgtypId</meta>
+
+        <id name="flgtypGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="flgtypScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="flgtypId" column="id" type="string" length="50" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">The short id of the flag type</meta>
+        </property>
+
+        <property name="flgtypDescription" column="description" type="string" length="80">
+            <meta attribute="field-description">Full description of the flag type</meta>
+        </property>
+
+        <property name="flgtypPurpose" column="purpose" type="com.navis.argo.persistence.atoms.UserTypeFlagPurposeEnum" not-null="true">
+            <meta attribute="field-description">Purpose: HOLD or PERMISSION</meta>
+        </property>
+
+        <!--2006-02-08 lbarman v1.0.5 ARGO-2939 FlagType belongs to Serviceable: add applies to field to flagType-->
+        <property name="flgtypAppliesTo" column="applies_to" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum">
+            <meta attribute="field-description">The logical entity class to which this hold/permission type can be appplied</meta>
+        </property>
+
+        <property name="flgtypIsFlagReferenceIdUnique" column="is_flag_ref_id_unique" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if applied flag type is unique considering a reference id - while vetoeing such a flags, the veto reference id has to match</meta>
+        </property>
+
+        <!-- the following to fields have been precreated for issue ARGO-1671, but it seems that we only need one flag controlling both, therefore
+        an additional flag was added -->
+        <property name="flgtypIsAddFlagReferenceIdRequired" column="is_add_flag_ref_id_required" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if adding a flag type requires a reference id</meta>
+        </property>
+
+        <property name="flgtypIsVetoFlagReferenceIdRequired" column="is_veto_flag_ref_id_required" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if vetoing a flag type requires a reference id</meta>
+        </property>
+
+        <!-- 2006-04-24 lbarman v1.0.11.6 ARGO-1671: add flag to make sure a reference id is entered when adding/vetoing a flag -->
+        <property name="flgtypIsFlagReferenceIdRequired" column="is_flag_ref_id_required" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">True if adding and vetoing a flag type requires a not null/not empty String reference id</meta>
+        </property>
+
+        <!-- 2008-12-17 muraliR ARGO-16162 : add flag to manage payment hold -->
+        <property name="flgtypIsBillingHoldRequired" column="is_billing_hold_required" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">True if billing hold is required</meta>
+        </property>
+
+        <!-- 2011-10-21 mwiggins ARGO-33101 : add flag to manage covert hold -->
+        <property name="flgtypIsCovertHoldRequired" column="is_covert_hold_required" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">True if Covert hold is required</meta>
+        </property>
+
+        <many-to-one name="flgtypApplyEventType" column="apply_event_type_gkey" class="com.navis.services.business.rules.EventType" not-null="false">
+            <meta attribute="field-description">The Event recorded if this flag is applied (Hold is placed or permission granted)</meta>
+        </many-to-one>
+
+        <many-to-one name="flgtypVetoEventType" column="veto_event_type_gkey" class="com.navis.services.business.rules.EventType" not-null="false">
+            <meta attribute="field-description">The Event recorded if this flag is vetoed (Hold is released or permission revoked)</meta>
+        </many-to-one>
+
+        <!--2012.04.04 spabbala v2.4.G ARGO-36946 Introduce mechanism in N4 to create multiple holds with the same release identifier-->
+        <property name="flgtypIsMultipleAllowed" column="is_multiple_flags_allowed" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">True if adding a flag type can have same reference id as existing flag</meta>
+        </property>
+
+        <property name="flgtypCreated" column="created" type="timestamp"/>
+        <property name="flgtypCreator" column="creator" type="string" length="30"/>
+        <property name="flgtypChanged" column="changed" type="timestamp"/>
+        <property name="flgtypChanger" column="changer" type="string" length="30"/>
+
+        <property name="flgtypLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <!-- 2009-11-17 aprabhakar v2.1.B ARGO-21123 - Create a new entity for holds and permissions called Class [ DB, SNX and UI Changes] -->
+        <many-to-one name="flgtypHoldPermView" column="hold_perm_view_gkey" class="com.navis.services.business.rules.HoldPermissionView"
+                     not-null="false">
+            <meta attribute="field-description">The entity that is responsible for there being a prevented service</meta>
+        </many-to-one>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!-- Flag, superclass of Hold and Permission -->
+    <class name="com.navis.services.business.rules.Flag" table="srv_flags" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.services.business.rules.FlagHbr</meta>
+        <meta attribute="class-description">Domain entity for an applied FlagType</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">flag</meta>
+        <meta attribute="n4-entity-name">Flag</meta>
+        <meta attribute="n4-entity-name-plural">Flags</meta>
+        <meta attribute="carina-index">sflags_akey_aclass_cgkey_idx(applied_to_gkey,applied_to_class,complex_gkey,gkey)</meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE INDEX flg_appliedto_flgtype_gky_idx ON srv_flags(applied_to_gkey, flag_type_gkey);
+        </meta>
+
+        <id name="flagGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="flagFlagType" class="com.navis.services.business.rules.FlagType" column="flag_type_gkey" not-null="true">
+            <meta attribute="field-description">Flag Type</meta>
+        </many-to-one>
+
+        <property name="flagAppliedToClass" column="applied_to_class" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum"
+                  not-null="true">
+            <meta attribute="field-description">The logical entity class of the Serviceable to which this Hold/Permission is applied</meta>
+        </property>
+
+        <property name="flagAppliedToPrimaryKey" column="applied_to_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The primary key of the Serviceable to which this Hold/Permission is applied</meta>
+        </property>
+
+        <property name="flagAppliedToNaturalKey" column="applied_to_natural_key" type="string" length="30" not-null="true">
+            <meta attribute="field-description">The natural key of the Serviceable to which this Hold/Permission is applied</meta>
+        </property>
+
+        <property name="flagGuardianClass" column="guardian_class" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum" not-null="false">
+            <meta attribute="field-description">The logical entity class of the Guardian to which this Hold/Permission refers</meta>
+        </property>
+
+        <property name="flagGuardianPrimaryKey" column="guardian_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The primary key of the Guardian to which this Hold/Permission refers</meta>
+        </property>
+
+        <property name="flagGuardianNaturalKey" column="guardian_natural_key" type="string" length="30" not-null="false">
+            <meta attribute="field-description">The natural key of the Guardian to which this Hold/Permission refers</meta>
+        </property>
+
+        <property name="flagAppliedDate" column="placed_time" type="timestamp" index="flag_applied_idx">
+            <meta attribute="field-description">Time the Hold/Permission was placed</meta>
+        </property>
+
+        <property name="flagAppliedBy" column="placed_by" type="string" length="30">
+            <meta attribute="field-description">Name of the user who placed this Hold/Permission</meta>
+        </property>
+
+        <property name="flagReferenceId" column="reference_id" type="string" length="80">
+            <meta attribute="field-description">Reference information recorded with this Hold/Permission - depending on Flag Type this field contributes to uniqueness of Flag.</meta>
+        </property>
+
+        <property name="flagNote" column="note" type="string" length="200">
+            <meta attribute="field-description">Note recorded with this Hold/Permission</meta>
+        </property>
+
+        <!-- we do not scope below complex: we want flags to be valid in all different scopes, since they are attached to a entity
+        independently of the yard or facility! (lbarman 10172005) -->
+        <many-to-one name="flagOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator" not-null="false">
+            <meta attribute="field-description">The Operator to which this Flag belongs</meta>
+        </many-to-one>
+
+        <!-- we do not scope below complex: we want flags to be valid in all different scopes, since they are attached to a entity
+        independently of the yard or facility! (lbarman 10172005) -->
+        <many-to-one name="flagComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="false">
+            <meta attribute="field-description">The Complex to which this Flag belongs</meta>
+        </many-to-one>
+
+        <!-- 2008-12-17 muraliR ARGO-16162 : add flag to manage payment hold -->
+        <many-to-one name="flagAssociatedEventGkey" class="com.navis.services.business.event.Event" column="associated_event_gkey" not-null="false">
+            <meta attribute="field-description">Event</meta>
+        </many-to-one>
+
+        <set name="flagVetos" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="blocked_flag_gkey"/>
+            <one-to-many class="com.navis.services.business.rules.Veto"/>
+        </set>
+
+        <property name="flagCreated" column="created" type="timestamp"/>
+        <property name="flagCreator" column="creator" type="string" length="30"/>
+        <property name="flagChanged" column="changed" type="timestamp"/>
+        <property name="flagChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <!-- Veto: entity which cancels a permission, or frees a hold -->
+    <class name="com.navis.services.business.rules.Veto" table="srv_vetos" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.services.business.rules.VetoHbr</meta>
+        <meta attribute="class-description">Records the negation of an Flag (i.e. cancels a permission, frees a hold)</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">veto</meta>
+        <meta attribute="n4-entity-name">Veto</meta>
+        <meta attribute="n4-entity-name-plural">Vetos</meta>
+
+        <id name="vetoGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="vetoBlockedFlag" class="com.navis.services.business.rules.Flag" column="blocked_flag_gkey" not-null="true">
+            <meta attribute="field-description">Flag that is blocked by this Veto</meta>
+        </many-to-one>
+
+        <property name="vetoAppliedToClass" column="applied_to_class" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum"
+                  not-null="true">
+            <meta attribute="field-description">The logical entity class of the Entity for which the Flag has been negated</meta>
+        </property>
+
+        <property name="vetoAppliedToPrimaryKey" column="applied_to_gkey" type="java.lang.Long" not-null="true" index="sv_applied_to_gkey_idx">
+            <meta attribute="field-description">The primary key of Entity for which the Flag has been negated</meta>
+        </property>
+
+        <property name="vetoAppliedToNaturalKey" column="applied_to_natural_key" type="string" not-null="true" index="sv_applied_to_natural_key_idx">
+            <meta attribute="field-description">Natural key of Entity for which the Flag has been negated</meta>
+        </property>
+
+        <property name="vetoAppliedDate" column="placed_time" type="timestamp">
+            <meta attribute="field-description">Time Veto was placed</meta>
+        </property>
+
+        <property name="vetoAppliedBy" column="placed_by" type="string" length="30">
+            <meta attribute="field-description">Name of user who placed this Veto</meta>
+        </property>
+
+        <property name="vetoReferenceId" column="reference_id" type="string" length="80">
+            <meta attribute="field-description">Reference information recorded with this Veto - depending on Falg Type is_flag_reference_id_unique field it must match Flag reference id.</meta>
+        </property>
+
+        <property name="vetoNote" column="note" type="string" length="200">
+            <meta attribute="field-description">Note recorded with this Veto</meta>
+        </property>
+
+        <property name="vetoCreated" column="created" type="timestamp"/>
+        <property name="vetoCreator" column="creator" type="string" length="30"/>
+        <property name="vetoChanged" column="changed" type="timestamp"/>
+        <property name="vetoChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <!-- ServiceRule -->
+    <class name="com.navis.services.business.rules.ServiceRule" table="srv_rules" dynamic-update="true">
+        <meta attribute="class-description">Domain entity defining a rule for application of a service</meta>
+        <meta attribute="generated-class">com.navis.services.business.rules.ServiceRuleHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4alias">srvrul</meta>
+        <meta attribute="n4-entity-name">Service Business Rule</meta>
+        <meta attribute="n4-entity-name-plural">Service Business Rules</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">srvrulName</meta>
+
+        <id name="srvrulGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="srvrulScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="srvrulName" column="name" type="string" length="80" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">The rule id: a free-form text description of the rule, must be unique.</meta>
+        </property>
+
+        <property name="srvrulRuleType" column="rule_type" type="com.navis.services.persistence.atoms.UserTypeServiceRuleTypeEnum" not-null="true">
+            <meta attribute="field-description">The rule type</meta>
+        </property>
+
+        <!-- here name ServiceType is correct, since only services can be used in rules -->
+        <many-to-one name="srvrulServiceType" class="com.navis.services.business.rules.EventType" column="service_type_gkey" not-null="true">
+            <meta attribute="field-description">Type of Service (Eventtype where is_facility_service is true) to which this rule applies</meta>
+        </many-to-one>
+
+        <many-to-one name="srvrulPrereqServiceType" class="com.navis.services.business.rules.EventType" column="prereq_service_type_gkey"
+                     not-null="false">
+            <meta attribute="field-description">Other Service which must be applied for this Service to be allowed.</meta>
+        </many-to-one>
+
+        <many-to-one name="srvrulFilter" class="com.navis.framework.query.business.SavedPredicate" column="filter_gkey" not-null="false"
+                     cascade="all">
+            <meta attribute="field-description">Filter defining entities to which the rule applies, if null, applies to all</meta>
+        </many-to-one>
+
+        <property name="srvrulPathToGuardian" column="path_to_guardian" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Compound MetafieldId giving path from Serviceable to Guardian</meta>
+        </property>
+
+        <many-to-one name="srvrulFlagType" class="com.navis.services.business.rules.FlagType" column="flag_type_gkey" not-null="false" lazy="false">
+            <meta attribute="field-description">The type of Flag that must be on the Serviceable or Guardian required by the rule.</meta>
+        </many-to-one>
+
+        <property name="srvrulCreated" column="created" type="timestamp"/>
+        <property name="srvrulCreator" column="creator" type="string" length="30"/>
+        <property name="srvrulChanged" column="changed" type="timestamp"/>
+        <property name="srvrulChanger" column="changer" type="string" length="30"/>
+
+        <property name="srvrulLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!-- EventEffect Entity-->
+    <class name="com.navis.services.business.rules.EventEffect" table="srv_event_effect" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.services.business.rules.EventEffectHbr</meta>
+        <meta attribute="class-description">Rules for fields of Serviceable when applying a Service</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">evnteff</meta>
+        <meta attribute="n4-entity-name">Effect</meta>
+        <meta attribute="n4-entity-name-plural">Effects</meta>
+
+        <id name="evnteffGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- 2007-10-31 lbarman v1.4.P ARGO-8346: allow ordered effects -->
+        <property name="evnteffFieldOrder" column="field_order" type="java.lang.Long">
+            <meta attribute="field-description">The order in which the fields should appear on the event recording form.</meta>
+        </property>
+
+        <property name="evnteffFieldName" column="field_name" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Metafield id for the field traceable or updateable</meta>
+        </property>
+
+        <property name="evnteffIsUpdatable" column="is_updatable" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Determines whether the field shows up on the screen when the user applies a event manually.</meta>
+        </property>
+
+        <property name="evnteffIsRequired" column="is_required" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Determines whether the user must enter a value for this field upon recording of the event.</meta>
+        </property>
+
+        <property name="evnteffIsTraceable" column="is_traceable" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Determines whether the field changes for this field are recorded</meta>
+        </property>
+
+        <property name="evnteffIsAutoUpdated" column="is_auto_updated" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if this field is automactically updated when the event is applied</meta>
+        </property>
+
+        <property name="evnteffAutoValue" column="auto_value" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Default value to be assigned to the field upon execution of the event</meta>
+        </property>
+
+        <many-to-one name="evnteffEventType" class="com.navis.services.business.rules.EventType">
+            <meta attribute="field-description">Owner EventType for this EventEffect</meta>
+            <column name="event_type_gkey" not-null="true"/>
+        </many-to-one>
+    </class>
+
+    <!-- AutoUpdateRule -->
+    <class name="com.navis.services.business.rules.AutoUpdateRule" table="srv_auto_update_rules" dynamic-update="true">
+        <meta attribute="class-description">Domain entity defining a auto update rule when a event is applied</meta>
+        <meta attribute="generated-class">com.navis.services.business.rules.AutoUpdateRuleHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4alias">autorl</meta>
+        <meta attribute="n4-entity-name">Auto Update Rule</meta>
+        <meta attribute="n4-entity-name-plural">Auto Update Rules</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">autorlName</meta>
+
+        <id name="autorlGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="autorlScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="autorlName" column="name" type="string" length="80" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">The auto update rule id: a free-form text description of the auto update rule, must be unique.</meta>
+        </property>
+
+        <many-to-one name="autorlEventType" class="com.navis.services.business.rules.EventType" column="event_type_gkey" not-null="true">
+            <meta attribute="field-description">Type of event to which this rule applies</meta>
+        </many-to-one>
+
+        <many-to-one name="autorlFilter" class="com.navis.framework.query.business.SavedPredicate" column="filter_gkey" not-null="false"
+                     cascade="all">
+            <meta attribute="field-description">Filter defining entities to which the auto update rule applies, if null, applies to all</meta>
+        </many-to-one>
+
+        <set name="autorlAutoUpdateFields" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="autoupdate_rule_gkey"/>
+            <one-to-many class="com.navis.services.business.rules.AutoUpdateField"/>
+        </set>
+
+        <set name="autorlAutoUpdateFlags" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="autoupdate_rule_gkey"/>
+            <one-to-many class="com.navis.services.business.rules.AutoUpdateFlag"/>
+        </set>
+
+        <property name="autorlCreated" column="created" type="timestamp"/>
+        <property name="autorlCreator" column="creator" type="string" length="30"/>
+        <property name="autorlChanged" column="changed" type="timestamp"/>
+        <property name="autorlChanger" column="changer" type="string" length="30"/>
+
+        <property name="autorlLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!-- AutoUpdateField Entity-->
+    <class name="com.navis.services.business.rules.AutoUpdateField" table="srv_auto_update_field" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.services.business.rules.AutoUpdateFieldHbr</meta>
+        <meta attribute="class-description">Auto Update Fields for AutoUpdateRules</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">autofield</meta>
+        <meta attribute="n4-entity-name">Auto Update Field</meta>
+        <meta attribute="n4-entity-name-plural">Auto Update Fields</meta>
+
+        <id name="autofieldGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="autofieldFieldName" column="field_name" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Metafield id for the field to be auto updated</meta>
+        </property>
+
+        <property name="autofieldUpdateValue" column="update_value" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Update value to be assigned to the field when update rule is valid</meta>
+        </property>
+
+        <many-to-one name="autofieldAutoUpdateRule" class="com.navis.services.business.rules.AutoUpdateRule">
+            <meta attribute="field-description">Owner AutoUpdateRule for this AutoUpdateField</meta>
+            <column name="autoupdate_rule_gkey" not-null="true"/>
+        </many-to-one>
+
+        <property name="autofieldCreated" column="created" type="timestamp"/>
+        <property name="autofieldCreator" column="creator" type="string" length="30"/>
+        <property name="autofieldChanged" column="changed" type="timestamp"/>
+        <property name="autofieldChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <!-- AutoUpdateField Entity-->
+    <class name="com.navis.services.business.rules.AutoUpdateFlag" table="srv_auto_update_flags" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.services.business.rules.AutoUpdateFlagHbr</meta>
+        <meta attribute="class-description">Auto Update Flag for AutoUpdateRule</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">autoflag</meta>
+        <meta attribute="n4-entity-name">Auto Update Flag</meta>
+        <meta attribute="n4-entity-name-plural">Auto Update Flags</meta>
+
+        <id name="autoflagGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="autoflagIsRelease" column="is_release" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Is the hold released or placed</meta>
+        </property>
+
+        <property name="autoflagNotes" column="notes" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Notes or any other remarks</meta>
+        </property>
+
+        <many-to-one name="autoflagAutoUpdateRule" class="com.navis.services.business.rules.AutoUpdateRule">
+            <meta attribute="field-description">Owner AutoUpdateRule for this AutoUpdateFlag</meta>
+            <column name="autoupdate_rule_gkey" not-null="true"/>
+        </many-to-one>
+
+        <many-to-one name="autoflagFlagType" class="com.navis.services.business.rules.FlagType">
+            <meta attribute="field-description">Flag (hold/release) affected</meta>
+            <column name="flag_type_gkey" not-null="true"/>
+        </many-to-one>
+
+        <property name="autoflagCreated" column="created" type="timestamp"/>
+        <property name="autoflagCreator" column="creator" type="string" length="30"/>
+        <property name="autoflagChanged" column="changed" type="timestamp"/>
+        <property name="autoflagChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <!-- Service Event -->
+    <class name="com.navis.services.business.event.Event" table="srv_event" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.services.business.event.EventHbr</meta>
+        <meta attribute="class-description">Records the execution of an event</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">evnt</meta>
+        <meta attribute="n4-entity-name">Event</meta>
+        <meta attribute="n4-entity-name-plural">Events</meta>
+        <meta attribute="carina-index">(applied_to_class,applied_to_gkey);(applied_to_gkey,applied_to_class);(facility_gkey,placed_time,gkey)</meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE INDEX evnt_applied_g_c_plctime_idx ON srv_event (applied_to_gkey, applied_to_class, placed_time) include (complex_gkey, gkey);
+            CREATE INDEX srv_ev_crtcomp_typeappl_idx ON srv_event ( created ) include (complex_gkey, event_type_gkey, applied_to_class);
+            CREATE INDEX srv_event_type_class_gkey_idx ON srv_event (complex_gkey, event_type_gkey, applied_to_class, applied_to_gkey);
+        </meta>
+        <meta attribute="carina-oracle-index">
+            CREATE INDEX srv_event_type_class_gkey_idx ON srv_event (complex_gkey, event_type_gkey, applied_to_class, applied_to_gkey);
+        </meta>
+
+        <id name="evntGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="evntOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator" not-null="false">
+            <meta attribute="field-description">The Operator to which this Event belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="evntComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="false">
+            <meta attribute="field-description">The Complex to which this Event belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="evntFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility" not-null="false">
+            <meta attribute="field-description">The Facility to which this Event belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="evntYard" column="yard_gkey" class="com.navis.argo.business.model.Yard" not-null="false">
+            <meta attribute="field-description">The Yard to which this Event belongs</meta>
+        </many-to-one>
+
+        <property name="evntAppliedBy" column="placed_by" type="string" length="100" not-null="true">
+            <meta attribute="field-description">User or process that created the event</meta>
+        </property>
+
+        <property name="evntAppliedDate" column="placed_time" type="timestamp" index="evnt_applied_idx">
+            <meta attribute="field-description">Date and Time Event was executed</meta>
+        </property>
+
+        <many-to-one name="evntEventType" column="event_type_gkey" class="com.navis.services.business.rules.EventType">
+            <meta attribute="field-description">The type of event performed</meta>
+        </many-to-one>
+
+        <property name="evntAppliedToClass" column="applied_to_class" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum"
+                  not-null="true" index="srv_event_apptoclass_idx">
+            <meta attribute="field-description">Name of the business class of the servicable entity</meta>
+        </property>
+
+        <property name="evntAppliedToPrimaryKey" column="applied_to_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Primary key of the serviceable entity</meta>
+        </property>
+
+        <property name="evntAppliedToNaturalKey" column="applied_to_natural_key" type="string" not-null="true">
+            <meta attribute="field-description">Natural key of the serviceable entity</meta>
+        </property>
+
+        <property name="evntNote" column="note" type="string" not-null="false">
+            <meta attribute="field-description">Note registered when recording the event</meta>
+        </property>
+
+        <property name="evntBillingExtractBatchId" column="billing_extract_batch_id" type="java.lang.Long" index="bill_extract_batchid_idx">
+            <meta attribute="field-description">The batch Id used for billing extract</meta>
+        </property>
+
+        <!-- 2006-12-12 lbarman v1.2.K ARGO-5739: add quantity and quantityUnit to event -->
+        <property name="evntQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">The quantity for this event; measurement unit is defined in seperate field evntQuantityUnit.</meta>
+        </property>
+
+        <property name="evntQuantityUnit" column="quantity_unit" type="com.navis.argo.persistence.atoms.UserTypeServiceQuantityUnitEnum">
+            <meta attribute="field-description">The unit that defines the measurement of the quantity field.</meta>
+        </property>
+
+        <set name="evntFieldChanges" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="event_gkey"/>
+            <one-to-many class="com.navis.services.business.event.EventFieldChange"/>
+        </set>
+
+        <!-- 2008-12-17 muraliR ARGO-16162 : add flag to manage payment hold -->
+        <set name="evntSrvFlags" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="flag_gkey"/>
+            <one-to-many class="com.navis.services.business.rules.Flag"/>
+        </set>
+
+        <many-to-one name="evntResponsibleParty" column="responsible_party" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Customer who is responsible for this event</meta>
+        </many-to-one>
+        <!--2011-01-17 rkasindula ARGO-28894 v2.2.K, added rleated entity fields to archive event table-->
+        <property name="evntRelatedEntityGkey" column="related_entity_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Related entity gkey</meta>
+        </property>
+
+        <property name="evntRelatedEntityId" column="related_entity_id" type="string">
+            <meta attribute="field-description">Identifier of related entity i.e. unit ID, equipment ID, service order ID, etc.</meta>
+        </property>
+
+        <property name="evntRelatedEntityClass" column="related_entity_class" type="string">
+            <meta attribute="field-description">Type of entity i.e unit, equipment, unitEquipment, serviceOrderItem, etc.</meta>
+        </property>
+
+        <!-- 2013-06-10 ramupr ARGO-48024 Adding EDI Batch Nbr to the Unit Event History view -->
+        <property name="evntRelatedBatchNbr" column="related_batch_id" type="java.lang.Long">
+            <meta attribute="field-description">EDI Batch that triggered the event</meta>
+        </property>
+
+        <!-- 2013-10-30 mpadhye ARGO-50340 Adding columns to support acknowledgement of ServiceEvents -->
+        <property name="evntAcknowledged" column="acknowledged" type="timestamp" not-null="false">
+            <meta attribute="field-description">When the event was acknowledged</meta>
+        </property>
+
+        <property name="evntAcknowledgedBy" column="acknowledged_by" type="string" not-null="false">
+            <meta attribute="field-description">User acknowledging the event</meta>
+        </property>
+
+        <!-- Flex fields-->
+        <!--ARGO-53136 added by Murali R 11/20/2013-->
+        <property name="evntFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="evntFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="evntFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="evntFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="evntFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="evntFlexDate01" column="flex_date01" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+        <property name="evntFlexDate02" column="flex_date02" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+        <property name="evntFlexDate03" column="flex_date03" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+
+        <property name="evntFlexDouble01" column="flex_double01" type="double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+        <property name="evntFlexDouble02" column="flex_double02" type="double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+        <property name="evntFlexDouble03" column="flex_double03" type="double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+        <property name="evntFlexDouble04" column="flex_double04" type="double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+        <property name="evntFlexDouble05" column="flex_double05" type="double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+
+        <property name="evntCreated" column="created" type="timestamp" index="srv_event_created_idx"/>
+        <property name="evntCreator" column="creator" type="string" length="30"/>
+        <property name="evntChanged" column="changed" type="timestamp"/>
+        <property name="evntChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!-- Service Event Field Changes-->
+    <class name="com.navis.services.business.event.EventFieldChange" table="srv_event_field_changes" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.services.business.event.EventFieldChangeHbr</meta>
+        <meta attribute="class-description">Records field changes that occurred in a Event</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">evntfc</meta>
+        <meta attribute="n4-entity-name">Event Field Change</meta>
+        <meta attribute="n4-entity-name-plural">Event Field Changes</meta>
+
+        <id name="evntfcGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="evntfcMetafieldId" column="metafield_id" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Metafield Id of the field</meta>
+        </property>
+
+        <!-- 2007-10-06 lbarman v1.4.M ARGO-8540: make larger because updated field might be longer than 50 chars!-->
+        <!-- 2011-11-28 Ramakrishnan T  v2.3.F BILL-1348, increase 'prior_value' length from (255) to (1000) -->
+        <property name="evntfcPrevVal" column="prior_value" type="string" length="1000">
+            <meta attribute="field-description">Prior field value</meta>
+        </property>
+
+        <!-- 2007-10-06 lbarman v1.4.M ARGO-8540: make larger because updated field might be longer than 50 chars!-->
+        <!-- 2011-11-28 Ramakrishnan T  v2.3.F BILL-1348, increase 'new_value' length from (255) to (1000) -->
+        <property name="evntfcNewVal" column="new_value" type="string" length="1000">
+            <meta attribute="field-description">New field value</meta>
+        </property>
+
+        <many-to-one name="evntfcEvent" class="com.navis.services.business.event.Event" column="event_gkey" not-null="true">
+            <meta attribute="field-description">Event of the field change</meta>
+        </many-to-one>
+
+    </class>
+
+    <!-- Service Event Notice Request -->
+    <class name="com.navis.services.business.event.NoticeRequest" table="srv_notice_requests" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.services.business.event.NoticeRequestHbr</meta>
+        <meta attribute="class-description">Records a request to be notified if an event occurs</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">notice</meta>
+        <meta attribute="n4-entity-name">Notice Request</meta>
+        <meta attribute="n4-entity-name-plural">Notice Requests</meta>
+
+        <id name="noticeGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="noticeComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="false">
+            <meta attribute="field-description">The Complex to which this Notice Request belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="noticeEventType" column="event_type_gkey" class="com.navis.services.business.rules.EventType" not-null="true">
+            <meta attribute="field-description">The type of event performed</meta>
+        </many-to-one>
+
+        <property name="noticeAppliedToClass" column="applied_to_class" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum"
+                  not-null="false">
+            <meta attribute="field-description">Name of the business class of the servicable entity</meta>
+        </property>
+
+        <!-- Either a specific business intance is specified (Applied to Primary Key) or a filter is provided -->
+        <property name="noticeAppliedToNaturalId" column="applied_to_id" type="java.lang.String" length="20" not-null="false">
+            <meta attribute="field-description">Id of the serviceable entity (e.g. container number)</meta>
+        </property>
+
+        <property name="noticeAppliedToPrimaryKey" column="applied_to_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Primary key of the serviceable entity</meta>
+        </property>
+
+        <many-to-one name="noticeFilter" class="com.navis.framework.query.business.SavedPredicate" column="filter_gkey" not-null="false"
+                     cascade="all">
+            <meta attribute="field-description">Filter defining entities to which this Notice Request can be applied, if null the AppliedToPrimaryKey should be provided</meta>
+        </many-to-one>
+
+        <property name="noticeAction" column="action" type="com.navis.services.persistence.atoms.UserTypeNoticeActionEnum" not-null="false">
+            <meta attribute="field-description">Action to take (email, print, etc.)</meta>
+        </property>
+
+        <property name="noticePrinterHostAddress" column="printer_address" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">HostName or IP Address of the Printer</meta>
+        </property>
+
+        <property name="noticeSmsAddress" column="sms_address" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">SMS account ID or mobile phone number</meta>
+        </property>
+
+        <property name="noticeMsgTemplate" column="msg_template" type="java.lang.String" length="3000" not-null="false">
+            <meta attribute="field-description">Template of message to send. Can contain metafieldId's as substitution parms.</meta>
+        </property>
+
+        <!--  2007-Jan-10 svaitheas ARGO-5920 v1.2.0 v1.1.21 Long email address (over 35 chars) causes failure in notifications in CAP.Hence increase the email address column size to 255 chars -->
+        <!-- Either an email address and language is provided or a path to the party whose email address should be used is specified -->
+        <property name="noticeEmailAddress" column="email_address" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Email address to send notice</meta>
+        </property>
+
+        <property name="noticeEmailLanguage" column="email_language" type="java.lang.String" length="35" not-null="false">
+            <meta attribute="field-description">Language that should be used to send email</meta>
+        </property>
+
+        <property name="noticePathToEmailBizUnit" column="path_to_email_bizu" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Path to related business party to be emailed, if null then email address should be provided</meta>
+        </property>
+
+        <many-to-one name="noticeCodeExtension" column="code_extension_gkey" class="com.navis.extension.business.Extension"
+                     not-null="false"/>
+        <property name="noticeDescription" column="description" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Full description of the notice request</meta>
+        </property>
+
+        <property name="noticeSuspendedDate" column="suspended_date" type="timestamp">
+            <meta attribute="field-description">Notice Request was suspended on this date</meta>
+        </property>
+
+        <property name="noticeSentCount" column="sent_count" type="java.lang.Long">
+            <meta attribute="field-description">Count of notices emailed because of this request</meta>
+        </property>
+
+        <property name="noticeWorkflowAction" column="workflow_action"
+                  type="com.navis.services.persistence.atoms.UserTypeWorkflowActionEnum" not-null="false">
+            <meta attribute="field-description">Workflow action (create, signal, ignore)</meta>
+        </property>
+
+        <many-to-one name="noticeWorkflowResourceGroup" column="workflow_gkey" class="com.navis.workflow.business.model.ResourceGroup" not-null="false"/>
+
+        <property name="noticeCreated" column="created" type="timestamp"/>
+        <property name="noticeCreator" column="creator" type="string" length="30"/>
+        <property name="noticeChanged" column="changed" type="timestamp"/>
+        <property name="noticeChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!-- 2009-11-17 aprabhakar v2.1.B ARGO-21123 - Create a new entity for holds and permissions called Class [ DB, SNX and UI Changes] -->
+    <class name="com.navis.services.business.rules.HoldPermissionView" table="srv_hold_perm_view" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.services.business.rules.HoldPermissionViewHbr</meta>
+        <meta attribute="class-description">The entity that is responsible for there being a prevented service</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4alias">hpv</meta>
+        <meta attribute="n4-entity-name">HoldPermissionView</meta>
+        <meta attribute="n4-entity-name-plural">HoldPermissionView</meta>
+        <!--<meta attribute="carina-index">(applied_to_class,applied_to_gkey);(applied_to_gkey,applied_to_class)</meta>-->
+
+        <id name="hpvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="hpvId" column="id" type="string" length="30" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">Hold Permission view Identifier: Name of the Hold Permission view that is responsible for there being a prevented service</meta>
+        </property>
+
+        <property name="hpvDescription" column="description" type="string" length="100" not-null="false">
+            <meta attribute="field-description">Full description of the Hold Permission view</meta>
+        </property>
+
+        <property name="hpvCreated" column="created" type="timestamp"/>
+        <property name="hpvCreator" column="creator" type="string" length="30"/>
+        <property name="hpvChanged" column="changed" type="timestamp"/>
+        <property name="hpvChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+</hibernate-mapping>

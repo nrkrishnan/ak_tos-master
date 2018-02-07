@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false">
+
+    <meta attribute="JavaClassPrefix">ConfigSetting</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.framework.configuration.ConfigSetting" table="config_settings">
+        <meta attribute="n4alias">cnfig</meta>
+        <meta attribute="generated-class">com.navis.framework.configuration.ConfigSettingHbr</meta>
+        <meta attribute="n4-entity-name">Configuration Setting</meta>
+        <meta attribute="n4-entity-name-plural">Configuration Settings</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+
+        <id name="cnfigGkey" column="cnfig_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="cnfigId" column="cfg_id" type="string" length="50">
+            <meta attribute="field-description">Unique Id for this configuration, used for persistence only</meta>
+        </property>
+
+        <property name="cnfigScope" column="cnfig_scope" type="java.lang.Long">
+            <meta attribute="field-description">Scope: 0=broadest, 1=next broadest, etc.</meta>
+        </property>
+
+        <property name="cnfigScopeGkey" column="cnfig_scope_gkey" type="string" length="50">
+            <meta attribute="field-description">gkey of the complex, facility, or yard etc. for which this setting is defined, converted to a String</meta>
+        </property>
+
+        <property name="cnfigValue" column="cnfig_value" type="string" length="256">
+            <meta attribute="field-description">Config setting value, encoded into a String</meta>
+        </property>
+
+        <property name="cnfigLargeTextValue" column="cnfig_clob_value" type="text" length="65536">
+            <meta attribute="field-description">Config setting value for large strings</meta>
+            <meta attribute="scope-set">protected</meta>
+        </property>
+
+        <!--    Audit Data -->
+        <property name="cnfigCreated" column="cnfig_created" type="timestamp"/>
+        <property name="cnfigCreator" column="cnfig_creator" type="string" length="30"/>
+        <property name="cnfigChanged" column="cnfig_changed" type="timestamp"/>
+        <property name="cnfigChanger" column="cnfig_changer" type="string" length="30"/>
+
+    </class>
+
+    <!--Holds configuration on extensible custom fields on entities.-->
+
+    <class name="com.navis.framework.configuration.metafield.business.DbMetafield" table="config_metafield_override">
+        <meta attribute="n4alias">mfdo</meta>
+        <meta attribute="generated-class">com.navis.framework.configuration.metafield.DbMetafieldHbr</meta>
+        <meta attribute="class-description">Defines user overrides to domain model metadata (i.e. metafields)</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+        <meta attribute="n4-entity-name">Metafield Configuration</meta>
+        <meta attribute="n4-entity-name-plural">Metafield Configurations</meta>
+
+        <id name="mfdoGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <!-- Flexible scoping-->
+        <property name="mfdoScope" column="mfdo_scope" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Scope: 0=broadest, 1=next broadest, etc.</meta>
+        </property>
+
+        <property name="mfdoScopeGkey" column="mfdo_scope_gkey" type="string" length="50">
+            <meta attribute="field-description">gkey of the complex, facility, or yard etc. for which this setting is defined, converted to a String</meta>
+        </property>
+
+        <property name="mfdoId" type="string" length="100" not-null="true">
+            <meta attribute="field-description">field id</meta>
+            <column name="id" index="mfdo_id_index" length="100" not-null="true"/>
+        </property>
+
+        <property name="mfdoImportance" column="mfdo_importance" type="com.navis.framework.persistence.atoms.UserTypeFieldImportanceEnum"
+            not-null="true">
+            <meta attribute="field-description">Enum for not-used, optional, required</meta>
+        </property>
+
+        <property name="mfdoShortName" column="mfd_short_name" type="string" length="40">
+            <meta attribute="field-description">Short name for the field</meta>
+        </property>
+
+        <property name="mfdoLongName" column="mfd_long_name" type="string" length="100">
+            <meta attribute="field-description">Long name for the field</meta>
+        </property>
+
+        <property name="mfdoHelpLabel" column="mfd_help_label" type="string" length="255">
+            <meta attribute="field-description">Help label for the field</meta>
+        </property>
+
+        <property name="mfdoGroupId" column="mfd_group_id" type="string" length="40">
+            <meta attribute="field-description">Group Id</meta>
+        </property>
+
+           <!-- Applies only to Measurement types -->
+        <property name="mfdoMeasuredUserUnit" column="mfd_user_unit" type="com.navis.framework.persistence.util.UserTypeAnyUnit">
+            <meta attribute="field-description">Default entry unit for a measured field.</meta>
+        </property>
+        <!-- Applies only to STRING types -->
+        <property name="mfdoMaxChars" column="mfd_max_chars" type="java.lang.Long">
+            <meta attribute="field-description">Length of the field (in chars).</meta>
+        </property>
+
+        <property name="mfdoCaseValidation" column="mfd_case_validation" type="com.navis.framework.persistence.atoms.UserTypeLetterCaseValidationEnum">
+            <meta attribute="field-description">Letter case validation for a field.</meta>
+        </property>
+
+        <!--currently only allowed for custom fields -->
+        <property name="mfdoExtraXMLDefinition" column="mfdo_extra_xml" type="string" length="4000"/>
+
+
+        <property name="mfdoWidgetType" column="mfd_widget_type"
+            type="com.navis.framework.persistence.atoms.UserTypeConfigurableWidgetTypeEnum">
+            <meta attribute="field-description">Uses defined picklist.</meta>
+        </property>
+
+        <set name="mfdoChoiceList" lazy="true" inverse="true" order-by="mfdch_value" cascade="all-delete-orphan">
+            <meta attribute="scope-set">protected</meta>
+            <key column="mfdch_metafield"/>
+            <one-to-many class="com.navis.framework.configuration.metafield.business.DbMetafieldChoice"/>
+        </set>
+
+        <property name="mfdoComment" column="mfd_comment" type="string" length="255">
+            <meta attribute="field-description">Internal comment</meta>
+        </property>
+    </class>
+
+     <class name="com.navis.framework.configuration.metafield.business.DbMetafieldChoice" table="config_metafield_lov">
+         <meta attribute="n4alias">mfdch</meta>
+         <meta attribute="generated-class">com.navis.framework.configuration.metafield.business.DbMetafieldChoiceHbr</meta>
+         <meta attribute="class-description">Defines user defined selection values to metafields</meta>
+         <meta attribute="n4-scope-description">relational to DbMetafield</meta>
+         <id name="mfdchGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+             <generator class="native"/>
+         </id>
+
+         <many-to-one name="mfdchMetafield" class="com.navis.framework.configuration.metafield.business.DbMetafield"
+             column="mfdch_metafield" not-null="true" index="conf_mf_lov_mfdch_metaf_fki">
+         </many-to-one>
+         <property name="mfdchValue" column="mfdch_value" type="string" length="40"/>
+         <property name="mfdchDescription" column="mfdch_desc" type="string" length="255"/>
+     </class>
+
+    <!--
+      The framework strategy going forward will be to save any customizations as part of the entire variform xml even
+      if we provide strict and limited UI for customization.   Storing it as an end variform gives us more flexibility
+      to validate and keep up with any enhancements in the dtd.
+    -->
+    <class name="com.navis.framework.configuration.variform.DbVariformFileDefinition" table="config_variform" discriminator-value="null">
+        <meta attribute="n4alias">cfgvar</meta>
+        <meta attribute="generated-class">com.navis.framework.configuration.variform.DbVariformFileDefinitionHbr</meta>
+        <meta attribute="class-description">Defines user to add variforms in the database</meta>
+        <meta attribute="n4-entity-name">Variform File Definition</meta>
+        <meta attribute="n4-entity-name-plural">Variform Files</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <id name="cfgvarGkey" column="cfgvar_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <discriminator column="cfgvar_subclass" not-null="false" type="string" length="1"/>
+
+        <property name="cfgvarName" column="cfgvar_name" type="string" length="100" unique="true" not-null="true" >
+            <meta attribute="field-description">File name when it was uploaded</meta>
+        </property>
+        <property name="cfgvarDescription" column="cfgvar_desc" type="string" length="200">
+        </property>
+
+        <property name="cfgvarEnabled" type="java.lang.Boolean">
+            <meta attribute="field-description">Db-backed variform enabled (if not enabled, it will not be taken into account)</meta>
+            <!-- Note: Hibernate 3.2.2ga cannot generate appropriate default value for SQL Server when using default="false"  -->
+            <column name="cfgvar_enabled" default="1" not-null="true"/>
+        </property>
+
+        <property name="cfgvarVariformXml" column="cfgvar_variform_xml" type="text" not-null="true">
+            <meta attribute="field-description">Long name for the field</meta>
+        </property>
+
+        <property name="cfgvarVariformIds" column="cfgvar_variform_ids" type="text">
+            <meta attribute="field-description">VBar-separated list of variform IDs defined in this XML variform.</meta>
+        </property>
+
+        <!--  Scoping  -->
+        <property name="cfgvarScopeLevel" type="java.lang.Long">
+            <meta attribute="field-description">Variform Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+            <column name="cfgvar_scope_level" default="1" not-null="true"/>
+        </property>
+        <property name="cfgvarScopeGkey" column="cfgvar_scope_gkey" type="string" length="50">
+            <meta attribute="field-description">Variform Scope Gkey</meta>
+        </property>
+
+        <!--    Audit Data -->
+        <property name="cfgvarCreated" column="cfgvar_created" type="timestamp"/>
+        <property name="cfgvarCreator" column="cfgvar_creator" type="string" length="30"/>
+        <property name="cfgvarChanged" column="cfgvar_changed" type="timestamp"/>
+        <property name="cfgvarChanger" column="cfgvar_changer" type="string" length="30"/>
+    </class>
+
+    <class name="com.navis.framework.upgrade.ModuleVersion" table="frm_module_versions">
+        <meta attribute="n4alias">cfgvar</meta>
+        <meta attribute="generated-class">com.navis.framework.upgrade.ModuleVersionHbr</meta>
+        <meta attribute="class-description">Stores the list of module version numbers</meta>
+        <meta attribute="n4-entity-name">ModuleVersion</meta>
+        <meta attribute="n4-entity-name-plural">Module Versions</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <id name="modverGkey" column="modver_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="modverModuleName" column="modver_name" type="string" length="15" unique="true"/>
+        <property name="modverDbVersionNumber" column="modver_number" type="java.lang.Long" />
+        <property name="modverChanged" column="modver_changed" type="timestamp"/>
+
+        <list name="modverHistory" inverse="true" cascade="save-update">
+            <key column="upact_modver_gkey"/>
+            <index column="upact_modver_position"/>
+            <one-to-many class="com.navis.framework.upgrade.UpgradeActionHistory"/>
+        </list>
+    </class>
+
+    <class name="com.navis.framework.upgrade.UpgradeActionHistory" table="frm_upgrade_action_history">
+        <meta attribute="generated-class">com.navis.framework.upgrade.UpgradeActionHistoryHbr</meta>
+        <meta attribute="n4alias">cfgvar</meta>
+        <meta attribute="n4-entity-name">Upgrade Action History</meta>
+        <meta attribute="n4-entity-name-plural">Upgrade Action History</meta>
+        <meta attribute="class-description">Upgrade Actions that have been executed for a particular module.</meta>
+
+        <id name="upActGkey" column="upact_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="upgradeActionClassName" column="upact_class_name" type="string" length="200" not-null="true">
+            <meta attribute="field-description">Upgrade Action Class Name.</meta>
+        </property>
+
+        <property name="upgradeActionSucceded" column="upact_succeeded" type="boolean">
+            <meta attribute="field-description">Records true if the upgrade action was successful.</meta>
+        </property>
+
+        <many-to-one name="upgradeActionModuleVersion" column="upact_modver_gkey" class="com.navis.framework.upgrade.ModuleVersion" not-null="true"
+                     index="frm_upacthist_modver_gkey_fki">
+            <meta attribute="field-description">The Module to which the upgrade action belongs.</meta>
+        </many-to-one>
+
+        <!--many-to-one name="upgradeActionPosition" column="upact_modver_position" class="com.navis.framework.upgrade.ModuleVersion" >
+            <meta attribute="field-description">The Module to which the upgrade action belongs.</meta>
+        </many-to-one-->
+
+        <property name="upgradeActionPosition" column="upact_modver_position" type="long"/>
+        <property name="upgradeActionCreated" column="upact_created" type="timestamp"/>
+        <property name="upgradeActionDuration" column="upact_duration" type="long"/>
+        <property name="upgradeActionMessage" column="upact_message" type="string" length="4000"/>
+
+
+    </class>
+
+</hibernate-mapping>

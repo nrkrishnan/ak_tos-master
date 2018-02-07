@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<auto-update-rule name="BOOKINGHAZINSERT" event-type="BOOKING_HAZARDS_INSERT" life-cycle-state="ACT">
+  <filter />
+  <update-flags>
+    <flag type-id="BOOKINGHAZCHECK" is-released="N" notes="Haz check needed" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="BOOKING_HAZ_RELEASE" event-type="BOOKING_HAZ_VERIFIED" life-cycle-state="ACT">
+  <filter />
+  <update-flags>
+    <flag type-id="BOOKINGHAZCHECK" is-released="Y" notes="Released HAZ Check permission" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="CAR DOC RULE" event-type="CAR_DOC_HOLD" life-cycle-state="ACT">
+  <filter />
+  <update-flags>
+    <flag type-id="CD" is-released="N" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="RELEASE CG INSPECTION HOLD" event-type="CG_INSP_RELEASE" life-cycle-state="ACT">
+  <filter />
+</auto-update-rule>
+<auto-update-rule name="CLEAR CUS COMMODITY ON CUS_RELEASE" event-type="CUS_RELEASE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^CUS" ui-value="CUS (Customs Hold)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitGoods.gdsCommodity" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="HAZ LTV APPLY HOLD" event-type="HAZ LTV APPLY HOLD" life-cycle-state="ACT">
+  <filter />
+  <update-flags>
+    <flag type-id="HAZ LTV LOAD" is-released="N" notes="Apply Hold to prevent LTV" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="HAZ LTV RELEASE HOLD" event-type="HAZ LTV RELEASE HOLD" life-cycle-state="ACT">
+  <filter />
+  <update-flags>
+    <flag type-id="HAZ LTV LOAD" is-released="Y" notes="Release HAZ Hold for LTV" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="CHANGE DRAY STATUS TO DRAY OUT AND BACK FOR SIT AFTER OVER_ROAD_UNASSIGN" event-type="OVER_ROAD_UNASSIGN" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^SIT" ui-value="SIT (STOP IN TRANSIT)" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S10_ADVISED|S20_INBOUND|S30_ECIN|S40_YARD|S50_ECOUT|" ui-value="[Advised,Inbound,EC/In,Yard,EC/Out]" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitDrayStatus" value="OFFSITE" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="RELEASE MULTISTOP RULE" event-type="RELEASE MULTISTOP" life-cycle-state="ACT">
+  <filter />
+  <update-flags>
+    <flag type-id="DOC" is-released="Y" notes="Release the doc hold" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="SET MULTISTOP THROUGH" event-type="SET MULTISTOP THROUGH" life-cycle-state="ACT">
+  <filter />
+  <update-fields>
+    <field name="unitGoods.gdsCommodity" value="^MULTISTOP" />
+    <field name="unitCategory" value="IMPRT" />
+    <field name="unitRouting.rtgPOD1" value="^ANK" />
+    <field name="unitDrayStatus" value="OFFSITE" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="SIT DIRECT TO YB" event-type="SIT_DIRECT_TO_YB" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^SIT" ui-value="SIT (STOP IN TRANSIT)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitGoods.gdsCommodity" value="^SAT" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="SIT MTY_DIRECT TO YB" event-type="SIT_MTY_DIRECT_TO_YB" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^SIT" ui-value="SIT (STOP IN TRANSIT)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitGoods.gdsCommodity" value="^SAT" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="CHANGE DRAY STATUS FOR OTR AFTER SIT_UNASSIGN" event-type="SIT_UNASSIGN" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" value="^OTR" ui-value="OTR (Over the Road)" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitActiveUfv.ufvTransitState" value=":S10_ADVISED|S20_INBOUND|S30_ECIN|S40_YARD|S50_ECOUT|" ui-value="[Advised,Inbound,EC/In,Yard,EC/Out]" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitDrayStatus" value="FORWARD" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="CHANGE DRAY STATUS FOR YB AFTER SIT_UNASSIGN" event-type="SIT_UNASSIGN" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" value="^YB" ui-value="YB (Containers to move via YB)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitDrayStatus" value="TRANSFER" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="CHANGE DRAY STATUS FOR TRANSFER AFTER SIT_UNASSIGN" event-type="SIT_UNASSIGN" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitRouting.rtgGroup" ui-value="XFER-P2 (Transfer to P2)" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitRouting.rtgGroup" ui-value="XFER-SI (Transfer to SI)" order="1" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitRouting.rtgGroup" ui-value="XFER-WO (Transfer to WO)" order="2" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitDrayStatus" value="OFFSITE" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="CHANGE DRAY STATUS TO DRAY OUT AND BACK FOR SIT AFTER TAG_STRIP_UNASSIGN" event-type="TAG_STRIP_UNASSIGN" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^SIT" ui-value="SIT (STOP IN TRANSIT)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitDrayStatus" value="OFFSITE" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="CHANGE DRAY STATUS TO DRAY OUT AND BACK FOR SIT AFTER TRANSFER CANCEL" event-type="TRANSFER_CANCEL" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^SIT" ui-value="SIT (STOP IN TRANSIT)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitDrayStatus" value="OFFSITE" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="SET MAE CHASSIS TO MAT WHEN STRIPPED" event-type="UNIT_ACTIVATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="MATCHES" metafield="unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" value="C*" ui-value="C*" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="OR" order="1" negated="false" parm-type="NO_PARM">
+        <predicate verb="NE" metafield="unitLineOperator" value="^MAT/LINEOP" ui-value="MAT" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="NULL" metafield="unitLineOperator" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitLineOperator" value="^MAT/LINEOP" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="UPDATE MINOR YARD LOCATION DURING RECEIVE" event-type="UNIT_CREATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipmentState.eqsGradeID.eqgrdId" value="BN" ui-value="BN" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitFlexString12" value="GO" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="REMOVE ECC IN ANK NEWVESS DISCHARGE" event-type="UNIT_DISCH" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46597" ui-value="ANK" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvActualIbCv.cvCarrierMode" value="VESSEL" ui-value="Vessel" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitActiveUfv.ufvFlexString08" />
+    <field name="unitPrimaryUe.ueEquipmentState.eqsFlexString03" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="CHANGE LINE FHS BACK FOR DISCHARGE" event-type="UNIT_DISCH" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitLineOperator" value="^MAT/LINEOP" ui-value="MAT" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipmentState.eqsEqOwner" ui-value="FHS" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitLineOperator" value="^FHS/LINEOP" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="CHANGE LINE HSD BACK FOR DISCHARGE" event-type="UNIT_DISCH" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitLineOperator" value="^MAT/LINEOP" ui-value="MAT" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipmentState.eqsEqOwner" ui-value="HSD" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitLineOperator" value="^HSD/LINEOP" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="IMPORT MTY -&gt; STORAGE" event-type="UNIT_DISCH" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NULL" metafield="unitGoods.gdsBlNbr" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitCategory" value="STRGE" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="CHANGE LINE MAE BACK FOR DISCHARGE" event-type="UNIT_DISCH" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitLineOperator" value="^MAT/LINEOP" ui-value="MAT" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipmentState.eqsEqOwner" ui-value="MAE" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitLineOperator" value="^MAE/LINEOP" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="SET MAE AND NYK VGM VERIFIED" event-type="UNIT_DISCH" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitLineOperator" value="^MAE/LINEOP" ui-value="MAE" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitLineOperator" value="^NYK/LINEOP" ui-value="NYK" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+      <predicate verb="NE" metafield="unitActiveUfv.ufvActualIbCv.carrierVesselClassType" value="BARGE" ui-value="Barge" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitFlexString06" value="YES" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="UPDATEPOL_KDK" event-type="UNIT_IN_GATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46599" ui-value="KDK" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitCategory" value="STRGE" ui-value="Storage" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NULL" metafield="unitRouting.rtgPOL" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitRouting.rtgPOL" value="^KDK" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="UPDATEPOL_ANK" event-type="UNIT_IN_GATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46597" ui-value="ANK" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitCategory" value="STRGE" ui-value="Storage" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NULL" metafield="unitRouting.rtgPOL" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitRouting.rtgPOL" value="^ANK" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="IMPORT_CLEAR_DRAY_OUT_AND_BACK" event-type="UNIT_IN_GATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitDrayStatus" value="OFFSITE" ui-value="Dray Out and Back" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitCategory" value="IMPRT" ui-value="Import" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitDrayStatus" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="TEMP UNITS IN SPARCS BASED ON UNIT OF MEASURE" event-type="UNIT_IN_GATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipmentState.eqsFlexString01" value="MAT" ui-value="MAT" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</auto-update-rule>
+<auto-update-rule name="RELEASE TS GROUP AFTER UNIT_INGATE" event-type="UNIT_IN_GATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" ui-value="TS (TAG Strip)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitRouting.rtgGroup" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="CHANGE SIT TO SAT" event-type="UNIT_IN_GATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^SIT" ui-value="SIT (STOP IN TRANSIT)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitGoods.gdsCommodity" value="^SAT" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="INGATE MTY -- SET COMMODITY TO &quot;EMPTY&quot;" event-type="UNIT_IN_GATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="STRGE" ui-value="Storage" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NULL" metafield="unitPrimaryUe.ueDepartureOrderItem.eqboiOrder.eqboNbr" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitGoods.gdsCommodity" value="^MTY" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="SET MAE_NYK VGM VERIFIED ON INGATE" event-type="UNIT_IN_GATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitLineOperator" value="^MAE/LINEOP" ui-value="MAE" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitLineOperator" value="^NYK/LINEOP" ui-value="NYK" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+      <predicate verb="EQ" metafield="unitFreightKind" value="FCL" ui-value="FCL" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|EXPRT|TRSHP|" ui-value="[Import,Export,Transship]" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitFlexString06" value="NO" />
+  </update-fields>
+  <update-flags>
+    <flag type-id="VGM VERIFICATION" is-released="N" notes="VGM permission applied at Ingate" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="UPDATEPOL_DUT" event-type="UNIT_IN_GATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46601" ui-value="DUT" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitCategory" value="STRGE" ui-value="Storage" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NULL" metafield="unitRouting.rtgPOL" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitRouting.rtgPOL" value="^DUT" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="UNIT_SC_CLEAR_ON_LOAD" event-type="UNIT_LOAD" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitFlexString12" value="SC" ui-value="SC" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitFlexString12" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="ROUTE TO F&amp;M" event-type="UNIT_NOTICE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitSpecialStow" ui-value="CL (Claim Reefer)" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="MATCHES" metafield="unitRemark" value="*CG/EQUIP*" ui-value="*CG/EQUIP*" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitSpecialStow" value="^SHOP" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="HIDE PREADVISE" event-type="UNIT_PREADVISE" life-cycle-state="ACT">
+  <filter />
+</auto-update-rule>
+<auto-update-rule name="BLANK OUT COMMODITY IF REQUIRES POWER = TRUE" event-type="UNIT_PROPERTY_UPDATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="AND" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="MATCHES" metafield="unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" value="R*" ui-value="R*" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="1" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^MTY" ui-value="MTY (EMPTY)" order="2" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitGoods.gdsCommodity" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="SET VERIFIED POS = NO FOR RECEIVE" event-type="UNIT_RECEIVE" life-cycle-state="ACT">
+  <filter />
+  <update-fields>
+    <field name="unitActiveUfv.ufvVerifiedYardPosition" value="FALSE" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="SET MAE NYK VGM ON UNIT_ROLL" event-type="UNIT_ROLL" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitLineOperator" value="^MAE/LINEOP" ui-value="MAE" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitLineOperator" value="^NYK/LINEOP" ui-value="NYK" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitFlexString06" value="NO" />
+  </update-fields>
+  <update-flags>
+    <flag type-id="VGM VERIFICATION" is-released="N" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="VGM_GRANT_PERMISSION_SNX" event-type="UNIT_SNX_UPDATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|EXPRT|TRSHP|" ui-value="[Import,Export,Transship]" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFlexString06" value="YES" ui-value="YES" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="FCL" ui-value="FCL" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-flags>
+    <flag type-id="VGM VERIFICATION" is-released="Y" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="VGM_APPLY_PERMISSION_SNX" event-type="UNIT_SNX_UPDATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NE" metafield="unitFlexString06" value="YES" ui-value="YES" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|EXPRT|TRSHP|" ui-value="[Import,Export,Transship]" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="FCL" ui-value="FCL" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-flags>
+    <flag type-id="VGM VERIFICATION" is-released="N" notes="VGM through SNX" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="DCM UPDATE FOR AUTOS" event-type="UNIT_STUFF" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^AUTO" ui-value="AUTO (AUTO)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</auto-update-rule>
+<auto-update-rule name="STUFF REEFER W/TEMP, SET REQUIRES POWER" event-type="UNIT_STUFF" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="LE" metafield="unitGoods.gdsReeferRqmnts.rfreqTempRequiredC" value="-17.77777777777778" ui-value="0 F" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="GE" metafield="unitGoods.gdsReeferRqmnts.rfreqTempRequiredC" value="-17.77777777777778" ui-value="0 F" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitRequiresPower" value="TRUE" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="SET VERIFIED POS = NO FOR YARD MOVE" event-type="UNIT_YARD_MOVE" life-cycle-state="ACT">
+  <filter />
+  <update-fields>
+    <field name="unitActiveUfv.ufvVerifiedYardPosition" value="FALSE" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="SET VERIFIED POS = NO FOR YARD SHIFT" event-type="UNIT_YARD_SHIFT" life-cycle-state="ACT">
+  <filter />
+  <update-fields>
+    <field name="unitActiveUfv.ufvVerifiedYardPosition" value="FALSE" />
+  </update-fields>
+</auto-update-rule>
+<auto-update-rule name="VGM_HOLD" event-type="VGM HOLD" life-cycle-state="ACT">
+  <filter />
+  <update-flags>
+    <flag type-id="VGM VERIFICATION" is-released="N" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="VGM_GRANT_PERMISSION" event-type="VGM RELEASE" life-cycle-state="ACT">
+  <filter />
+  <update-fields>
+    <field name="unitFlexString06" value="YES" />
+  </update-fields>
+  <update-flags>
+    <flag type-id="VGM VERIFICATION" is-released="Y" notes="VGM HAS BEEN VERIFIED" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="VGM_MAE_VERIFICATION_REQ" event-type="VGM_UPDATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|EXPRT|TRSHP|" ui-value="[Import,Export,Transship]" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitLineOperator" value="^MAE/LINEOP" ui-value="MAE" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="FCL" ui-value="FCL" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitFlexString06" value="NO" />
+  </update-fields>
+  <update-flags>
+    <flag type-id="VGM VERIFICATION" is-released="N" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="VGM_APPLY_PERMISSION_UNIT_ROLL" event-type="VGM_UPDATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NE" metafield="unitFlexString06" value="YES" ui-value="YES" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|EXPRT|TRSHP|" ui-value="[Import,Export,Transship]" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="FCL" ui-value="FCL" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-flags>
+    <flag type-id="VGM VERIFICATION" is-released="N" notes="Applied from Unit Roll" />
+  </update-flags>
+</auto-update-rule>
+<auto-update-rule name="CHANGE DRAY STATUS TO DRAY OUT AND BACK FOR SIT AFTER YB UNASSIGN" event-type="YB_UNASSIGN" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^SIT" ui-value="SIT (STOP IN TRANSIT)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+  <update-fields>
+    <field name="unitDrayStatus" value="OFFSITE" />
+  </update-fields>
+</auto-update-rule>
+</argo:snx>
+

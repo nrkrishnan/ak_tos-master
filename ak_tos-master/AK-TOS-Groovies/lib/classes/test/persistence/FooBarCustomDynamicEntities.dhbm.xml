@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2011 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!--
+  Example of completely new entities- FOOS make it into Apex at last!!!
+  -->
+        
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true"> 
+
+    <class name="com.navis.extension.model.persistence.DynamicHibernatingEntity"
+           entity-name="com.navis.extension.sandbox.CustomBar" table="CUSTOM_BAR" dynamic-update="true">
+        <meta attribute="n4alias">custombar</meta>
+        <id name="customEntityGkey" column="gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <dynamic-component name="customEntityFields">
+            <property name="custombarDynamicBusinessName" column="custombar_name" type="string" length="255" not-null="true"
+                      unique="true"/>
+            <property name="custombarDynamicString1" column="custombar_string1" type="string" length="255"/>
+            <property name="custombarDynamicString2" column="custombar_string2" type="string" length="255"/>
+
+            <property name="custombarDynamicDateTime1" column="custombar_datetime1" type="timestamp"/>
+            <property name="custombarDynamicDateTime2" column="custombar_datetime2" type="timestamp"/>
+
+            <property name="custombarDynamicDate1" column="custombar_date1" type="date"/>
+
+            <property name="custombarDynamicLong1" column="custombar_long1" type="java.lang.Long"/>
+            <property name="custombarDynamicLong2" column="custombar_long2" type="java.lang.Long"/>
+
+            <property name="custombarDynamicDouble1" column="custombar_double1" type="java.lang.Double"/>
+            <property name="custombarDynamicDouble2" column="custombar_double2" type="java.lang.Double"/>
+
+            <property name="custombarDynamicEnum" column="custombar_enum_salutation"
+                      type="com.navis.framework.persistence.atoms.UserTypeSalutationEnum"/>
+
+            <many-to-one name="custombarEquipType" class="com.navis.argo.business.reference.EquipType" column="custombar_equip_type"/>
+            <!-- link back to foo-->
+            <many-to-one name="custombarDynamicFoo" entity-name="com.navis.extension.sandbox.CustomFoo" column="custombar_foo"/>
+
+        </dynamic-component>
+    </class>
+</hibernate-mapping>
+

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2013 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<!DOCTYPE features PUBLIC "" "Feature.dtd" >
+<!--  Currently used only for generated constants used in the test-->
+<features module="Apex" abbrev="APEX">
+
+    <feature id="CORE_FEAT">
+        <name lang="en">Core Feature</name>
+        <description lang="en">Core functionality.</description>
+    </feature>
+
+    <feature id="SYSTEM_OPTIONS">
+        <name lang="en">System options</name>
+        <description lang="en">Events,notices, and groovy</description>
+    </feature>
+
+    <feature id="EDI">
+        <name lang="en">EDI</name>
+        <description lang="en">EDI module</description>
+    </feature>
+
+    <feature id="VESSEL">
+        <name lang="en">Vessel</name>
+        <description lang="en">Vessel module</description>
+    </feature>
+
+    <feature id="RAIL">
+        <name lang="en">Rail</name>
+        <description lang="en">Rail module</description>
+    </feature>
+
+    <feature id="BOOKING">
+        <name lang="en">Booking</name>
+        <description lang="en">Booking module</description>
+    </feature>
+
+    <feature id="CARGO">
+        <name lang="en">Cargo</name>
+        <description lang="en">Cargo module</description>
+    </feature>
+
+    <feature id="GENERAL_CARGO">
+        <name lang="en">General Cargo</name>
+        <description lang="en">General Cargo</description>
+    </feature>
+
+    <feature id="CFS">
+        <name lang="en">CFS</name>
+        <description lang="en">CFS Cargo Strip and Stuff</description>
+    </feature>
+
+    <feature id="GATE">
+        <name lang="en">Gate</name>
+        <description lang="en">Gate module</description>
+    </feature>
+
+    <feature id="SERVICE_ORDER">
+        <name lang="en">Service Order</name>
+        <description lang="en">Service Order module</description>
+    </feature>
+
+    <feature id="INTERFACILITY_TRANSFER">
+        <name lang="en">Inter-facility Transfer</name>
+        <description lang="en">Inter-facility Transfer module</description>
+    </feature>
+
+    <feature id="LINE_LOAD_DISCHARGE_LIST">
+        <name lang="en">Line Load, Discharge list</name>
+        <description lang="en">Line Load and Discharge list discrepancies</description>
+    </feature>
+
+    <feature id="CAP">
+        <name lang="en">Cap</name>
+        <description lang="en">Cap module</description>
+    </feature>
+
+    <feature id="EXTENSIONS">
+        <name lang="en">Extensions</name>
+        <description lang="en">Extensions.</description>
+    </feature>
+
+    <feature id="EQUIPMENT_POOLS">
+        <name lang="en">Equipment Pools</name>
+        <description lang="en">Equipment Pools</description>
+    </feature>
+
+    <feature id="GUARANTEES">
+        <name lang="en">Guarantees</name>
+        <description lang="en">Guarantees</description>
+    </feature>
+
+    <feature id="LIVE_VIEW">
+        <name lang="en">Live View</name>
+        <description lang="en">Live view of Containers and CHEs</description>
+    </feature>
+
+    <feature id="AUTOMATION">
+        <name>Automation</name>
+        <description>Equipment Control for Automated CHEs</description>
+    </feature>
+
+    <feature id="CRANE_TEAM_UI">
+        <name>Crane Team UI</name>
+        <description>Crane Team User Interface</description>
+    </feature>
+
+    <feature id="CRANE_AUTOMATION_API">
+        <name>Crane Automation API</name>
+        <description>Crane Automation API</description>
+    </feature>
+
+</features>

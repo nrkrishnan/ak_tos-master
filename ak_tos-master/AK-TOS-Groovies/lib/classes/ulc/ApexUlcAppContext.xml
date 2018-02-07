@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+
+
+    <!-- location of help sets -->
+    <bean id="helpLocator"
+          class="com.navis.framework.ulc.server.application.help.HelpLocator"
+          scope="prototype">
+        <property name="helpSetLocation">
+            <value>javaHelp/apexHelp/apex.hs</value>
+        </property>
+    </bean>
+
+    <!-- ULC navigator, supports old and new Look & Feel  -->
+    <bean id="navigator"
+          factory-bean="navigatorFactory"
+          factory-method="createNavigator"
+          scope="prototype"/>
+
+    <bean id="navigatorFactory"
+          class="com.navis.framework.ulc.server.application.controller.navigation.NavigatorFactory"
+          scope="singleton">
+        <property name="defaultNavigator" value="navigatorDefault"/>
+        <property name="navisLnFNavigator" value="navigatorNavisLnF"/>
+    </bean>
+
+    <bean id="navigatorDefault"
+          class="com.navis.framework.ulc.server.application.controller.navigation.shields.TabbedNavigator"
+          scope="prototype">
+        <property name="backgroundController">
+            <ref bean="startupBannerController"/>
+        </property>
+        <property name="dashboardController">
+            <ref bean="argoDashboardController"/>
+        </property>
+        <property name="logoIconPath">
+            <value>/images/sparcs-n4_76x32.gif</value>
+        </property>
+    </bean>
+
+    <bean id="navigatorNavisLnF"
+          class="com.navis.framework.ulc.server.application.controller.navigation.shields.TabbedNavigatorNavisLookAndFeel"
+          scope="prototype"/>
+
+    <!-- custom background controller used in old Look & Feel -->
+    <bean id="startupBannerController" class="com.navis.argo.ulc.server.application.controller.StartupBannerController"
+          scope="prototype">
+        <constructor-arg index="0">
+            <value>/images/ship.xp.gif</value>
+        </constructor-arg>
+    </bean>
+
+    <!-- custom extra launch pad controller used in old Look & Feel -->
+    <bean id="argoDashboardController"
+          class="com.navis.inventory.ulc.server.application.controller.ArgoDashboardController"
+          scope="prototype"/>
+
+    <!-- ULC menu bar controller -->
+    <bean id="menuBarController"
+          factory-bean="menuBarControllerFactory"
+          factory-method="createMenuBarController"
+          scope="prototype"/>
+
+    <bean id="menuBarControllerFactory"
+          class="com.navis.framework.ulc.server.application.controller.navigation.MenubarControllerFactory"
+          scope="singleton">
+        <property name="defaultController" value="menuBarControllerDefault"/>
+        <property name="navisLnFController" value="menuBarControllerNavisLnF"/>
+    </bean>
+
+    <bean id="menuBarControllerDefault"
+          class="com.navis.framework.ulc.server.application.controller.MenuBarController"
+          scope="prototype"/>
+
+    <bean id="menuBarControllerNavisLnF"
+          class="com.navis.framework.ulc.server.application.controller.MenuBarControllerNavisLookAndFeel"
+          scope="prototype">
+        <property name="command" ref="globalSearchCommand"/>
+    </bean>
+
+    <!-- ULC global search command, used by new Look & Feel -->
+    <bean id="globalSearchCommand"
+          class="com.navis.inventory.ulc.server.application.controller.ShowInspectorCommand"
+          scope="prototype"/>
+
+    <!-- session life cycle listeners -->
+    <bean id="sessionLifecycleListener"
+          class="com.navis.framework.ulc.server.application.controller.CompositeSessionLifecycleListener"
+          scope="prototype">
+        <property name="listeners">
+            <list>
+                <ref bean="frameworkSessionLifecycleListeners"/>
+                <ref bean="roadSessionLifecycleListeners"/>
+                <!-- 2009-12-23 v2.1.D v2.M.3 ARGO-21992 apply instance security to sub panels -->
+                <ref bean="inspSubPanelPrivLifeCycleListener"/>
+            </list>
+        </property>
+    </bean>
+
+    <!-- entity command provider -->
+    <bean id="apexUiEntityCommandProvider"
+          class="com.navis.apex.ulc.server.application.controller.ApexUiEntityCommandProvider"
+          scope="singleton">
+        <!-- since a provider does not hold any session-specific state, it can be declared as a singleton -->
+    </bean>
+
+    <bean id="unitsInYardGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="invCalcStatisticUnitsInYardByCategory"/>
+    </bean>
+
+    <bean id="unitDwellGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="invCalcStatisticImportDwell"/>
+    </bean>
+
+    <bean id="facilityTEUsGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="invCalcStatisticFacilityTeus"/>
+    </bean>
+
+    <!--<bean id="truckTurnTimeGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="rodCalcStatisticTruckTurn"/>
+    </bean>-->
+
+    <!-- 2010-05-04 smani  ARGO-25682 emoveing the Refresh Option in Truck Turn Time Gadget  -->
+    <!--<bean id="truckTurnTimeGadget"
+          class="com.navis.mensa.ulc.server.application.controller.gadgets.TruckTurnGadgetPanelController"
+          scope="prototype">
+        <property name="gadgetDataSource">
+            <ref bean="truckTurnTimeGadgetDataSource"/>
+        </property>
+        <property name="gadgetName" value="GADGET_NAME_TRUCK_TURN_TIME"/>
+        <property name="gadgetDescription" value="GADGET_DESCRIPTION_TRUCK_TURN_TIME"/>
+        <property name="gadgetGroup" value="GADGET_GROUP_APPLICATION"/>
+        <property name="gadgetPersistedProperties">
+            <map>
+                &lt;!&ndash;        <entry key="gadgetRefreshPeriodInSeconds" value="120"/> &ndash;&gt;
+            </map>
+        </property>
+    </bean>-->
+
+    <!--2011-05-09 oviyak 2.2.U ARGO-31794 Moves per day gadget should populate data from Secondary statistics table-->
+    <!--bean id="movesPerDayGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="invCalcStatisticMovesPerDay"/>
+    </bean-->
+
+    <bean id="throughputGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="invCalcStatisticThroughput"/>
+    </bean>
+
+    <!--2008-12-12 oviyak 1.8.C ARGO-16088 Remove recent move gadget and Weekly throughput gadget from N4 UI-->
+    <!--Commented so that the gadget does not display in add gadget window-->
+    <!--bean id="throughputGadget"
+          class="com.navis.mensa.ulc.server.application.controller.gadgets.ThroughputGadgetPanelController"
+          scope="prototype">
+        <property name="gadgetDataSource">
+            <ref bean="throughputGadgetDataSource"/>
+        </property>
+        <property name="gadgetName" value="GADGET_NAME_THROUGHPUT"/>
+        <property name="gadgetDescription" value="GADGET_DESCRIPTION_THROUGHPUT"/>
+        <property name="gadgetGroup" value="GADGET_GROUP_APPLICATION"/>
+        <property name="gadgetPersistedProperties">
+            <map>
+                <entry key="gadgetRefreshPeriodInSeconds" value="60"/>
+            </map>
+        </property>
+    </bean-->
+
+    <bean id="vesselsOnBerthGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="mnsaGetVesselsAlongsideN4"/>
+    </bean>
+
+    <bean id="craneDetailsGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="mnsaGetCraneDetails"/>
+    </bean>
+
+    <bean id="craneMovesGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="mnsaGetCraneMoves"/>
+    </bean>
+
+    <bean id="craneRythmGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="mnsaGetCraneMovesLastHour"/>
+    </bean>
+
+    <bean id="vesselMetricsGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="mnsaGetVesselMetrics"/>
+    </bean>
+
+    <bean id="vesselKpiGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="mnsaGetVesselKpiTable"/>
+    </bean>
+
+    <bean id="movingYardCHEGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="mnsaGetMovingCheDetails"/>
+    </bean>
+
+    <!-- The following effectively disables gadgets defined in MensaUlcAppContext.xml -->
+    <bean id="unitDwellGadgetDummy" class="java.lang.Object"/>
+
+    <!--2009-02-25 oviyak 1.8.F ARGO-16978  Remove gadgets from Add Gadget form-->
+    <!--Disabling Moving and Fix che gadget in N4 application -->
+    <!--bean id="fixCheDetailsTableGadget" class="java.lang.Object"/-->
+
+    <!--2010-02-09 oviyak 2.1.H ARGO-13159  Implementation of "Yard Utilization" gadget-->
+    <!--bean id="yardUtilizationTableGadget" class="java.lang.Object"/-->
+
+    <!-- 2009-12-23 v2.1.D v2.M.3 ARGO-21992 apply instance security to sub panels -->
+    <bean id="inspSubPanelPrivLifeCycleListener"
+          class="com.navis.apex.ulc.server.application.controller.InspSubPanelPrivLifeCycleListener" scope="singleton"/>
+
+    <!-- ARGO-27846 sahmed DEC-06-2010 : Add Trucks In Yard Gadget -->
+    <!--<bean id="trucksInYardGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="rodGetTrucksInYardGadget"/>
+    </bean>
+
+    <bean id="trucksInYardGadget"
+          class="com.navis.mensa.ulc.server.application.controller.gadgets.TrucksInYardGadgetPanelController"
+          scope="prototype">
+        <property name="gadgetDataSource">
+            <ref bean="trucksInYardGadgetDataSource"/>
+        </property>
+        <property name="gadgetName" value="GADGET_NAME_TRUCKS_IN_YARD"/>
+        <property name="gadgetDescription" value="GADGET_DESCRIPTION_TRUCKS_IN_YARD"/>
+        <property name="gadgetGroup" value="GADGET_GROUP_APPLICATION"/>
+        <property name="gadgetPersistedProperties">
+            <map>
+                <entry key="gadgetTruckOneTransactionOkThreshold" value="20"/>
+                <entry key="gadgetTruckOneTransactionBadThreshold" value="30"/>
+                <entry key="gadgetTruckTwoTransactionOkThreshold" value="45"/>
+                <entry key="gadgetTruckTwoTransactionBadThreshold" value="60"/>
+                <entry key="gadgetTruckOtherOkThreshold" value="60"/>
+                <entry key="gadgetTruckOtherBadThreshold" value="75"/>
+            </map>
+        </property>
+    </bean>-->
+
+     <!-- ARGO-27847 sahmed JAN-18-2011 : Add Truck KPIs Gadget -->
+    <!--<bean id="trucksKpiGadgetDataSource" class="com.navis.mensa.business.gadgetdata.GadgetDSInternalApi">
+        <property name="apiName" value="mnsaGetTrucksKpiTable"/>
+    </bean>
+
+    <bean id="trucksKpiGadget"
+          class="com.navis.mensa.ulc.server.application.controller.gadgets.TrucksKPIGadgetPanelController"
+          scope="prototype">
+        <property name="gadgetDataSource">
+            <ref bean="trucksKpiGadgetDataSource"/>
+        </property>
+        <property name="gadgetName" value="GADGET_NAME_TRUCKS_KPI"/>
+        <property name="gadgetDescription" value="GADGET_DESCRIPTION_TRUCKS_KPI"/>
+        <property name="gadgetGroup" value="GADGET_GROUP_APPLICATION"/>
+        <property name="gadgetPersistedProperties">
+            <map>
+                &lt;!&ndash;2011-05-03 oviyak 2.2.U ARGO-31367 Re-ordered the truck KPI gadget properties&ndash;&gt;
+                <entry key="gadgetTruckKpiLookBackHours" value="4"/>
+
+                <entry key="gadgetTrucksKpiInYardMinThreshold" value="100"/>
+                <entry key="gadgetTrucksKpiInYardMaxThreshold" value="150"/>
+                <entry key="gadgetTrucksKpiInYardLowerBound" value="0"/>
+                <entry key="gadgetTrucksKpiInYardUpperBound" value="200"/>
+
+                <entry key="gadgetTrucksKpiLongStayMinThreshold" value="10"/>
+                <entry key="gadgetTrucksKpiLongStayMaxThreshold" value="25"/>
+                <entry key="gadgetTrucksKpiLongStayLowerBound" value="0"/>
+                <entry key="gadgetTrucksKpiLongStayUpperBound" value="40"/>
+
+                <entry key="gadgetTrucksKpiEnteredMinThreshold" value="200"/>
+                <entry key="gadgetTrucksKpiEnteredMaxThreshold" value="300"/>
+                <entry key="gadgetTrucksKpiEnteredLowerBound" value="0"/>
+                <entry key="gadgetTrucksKpiEnteredUpperBound" value="400"/>
+
+                <entry key="gadgetTrucksKpiTurnTimeMinThreshold" value="40"/>
+                <entry key="gadgetTrucksKpiTurnTimeMaxThreshold" value="60"/>
+                <entry key="gadgetTrucksKpiTurnTimeLowerBound" value="0"/>
+                <entry key="gadgetTrucksKpiTurnTimeUpperBound" value="90"/>
+
+                <entry key="gadgetTrucksKpiTroubleVisitMinThreshold" value="4"/>
+                <entry key="gadgetTrucksKpiTroubleVisitMaxThreshold" value="10"/>
+                <entry key="gadgetTrucksKpiTroubleVisitLowerBound" value="0"/>
+                <entry key="gadgetTrucksKpiTroubleVisitUpperBound" value="15"/>
+            </map>
+        </property>
+    </bean>-->
+
+    <bean id="clusterServicesTableViewController" class="com.navis.argo.ulc.server.application.controller.table.ClusterServicesTableViewController"
+          scope="prototype">
+    </bean>
+</beans>

@@ -1,0 +1,20 @@
+/* EP000220294 dkannadasan Feb 18 2015 - Code to prevent NewVes complete if any errors pending to be corrected */
+
+boolean canProceed = api.getGroovyClassInstance("MATFinalCheckNewVesComplete").execute(event,api);
+
+/* EP000220294 dkannadasan Feb 18 2015 Adding if condition, to proceed only if there are no errors pending on  NewVes process */
+
+if(canProceed) {
+println("//Start Event ---:"+event.event.eventTypeId+ " on Unit :"+event.entity.unitId+" ----//")
+api.getGroovyClassInstance("MATTriggerGroovyJob").triggerMatVesGroovyJob(event,api);
+api.getGroovyClassInstance("MATTriggerGroovyJob").triggerMatVesEventGroovyJob(event,api);
+
+
+//CMIS_DATA_REFRESH by VesVoy
+def unit = event.getEntity();
+def vesVoy =unit.getFieldValue("unitDeclaredIbCv.cvId")
+println("<<<<<Calling CMIS_DATA_REFRESH for >>>>>>"+vesVoy);
+event.getEvent().setEvntNote('NewVes Completed')
+api.getGroovyClassInstance("GvyCmisUnitDataRefresh").processCmisDataRefreshByVesVoyNV(api,event,vesVoy);
+println("<<<<<End CMIS_DATA_REFRESH for >>>>>>"+vesVoy);
+}

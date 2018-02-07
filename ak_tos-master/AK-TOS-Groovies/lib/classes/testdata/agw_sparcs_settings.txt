@@ -1,0 +1,1069 @@
+****************************************************************			
+******Source file for SPARCS Configuration**********************			
+******Lines beginning with stars are comment lines *************			
+****************************************************************			
+*** SPARCS Settings.txt file for DPWA-AGW (Dubai Port World - Antwerp Gateway)			
+****************************************************************			
+****************************************************************			
+*** Final cleanup needed: alpha sort and removing commented out settings. Refer to revision history.			
+****************************************************************			
+*** Revision History ***			
+****************************************************************			
+*** Date-----	Name---		Description-------------------------------------------------------------------------------------------------------------------------
+*** 01.28.08 	R.Patel 	Added settings ALLOCL ALLOCR changed from default. Added CPOS for delivery allocation for containers with CLCQ='Y' for yard.	
+*** 01.28.08 	R.Patel 	Added DRVRPL. DRVRPL added to allow CHE operator to create a plan for any MTY container by typing container number in CHE screen. 	
+*** 02.25.08 	R.Patel 	Added VS1LDQ. VS1LDQ added to create only one WQ for barge discharge/load	
+*** 02.25.08 	R.Patel 	Added CNFNDL CNFNDR CNRCHG Container Find Dialog Settings added to allow other searcg attributes to be added	
+*** 02.25.08 	R.Patel 	Settings file cleanup: Commented out settings that values cannot be adjusted for
+*** 02.25.08 	R.Patel	Settings file cleanup: Adjusted field lengths for #CLASS PREF and DSGP cannot be adjusted
+*** 02.25.08	R.Patel	Added Attributes DPRT and LPRT and set field length value to 5. Reference ARGO-9443
+*** 03.06.08	R.Patel	BRGLDL added and set to N for specific barge planning for load list
+*** 03.06.08	R.Patel	WQXLEN changed to N
+*** 03.13.08	R.Patel	Added ASCLRK from solo testing
+*** 03.13.08	R.Patel	Added CPLUSC 
+*** 03.13.08	R.Patel	Added CRANHC
+*** 03.13.08	R.Patel	Added CUBNDL CUDMDL CUDMGE CUGRPC CURFRD CURFRP CURFRS CURFRT CUSEAL
+*** 03.13.08	R.Patel	Added DRVRSA to allow putting aside of containers during rehandles by CHE
+*** 03.13.08	R.Patel	Added ECRFCN from solo testing. Description of this setting not found in SPARCS Settings Available extrace from 1.5.H. Requires attention
+*** 03.13.08	R.Patel	Added ECRTGS
+*** 03.13.08	R.Patel	Added F1LIFT F1PARK F1TRAN
+*** 03.13.08	R.Patel	Added FRKDEC
+*** 03.13.08	R.Patel	Added HCCRLN to allow discharge to crane lane
+*** 03.13.08	R.Patel	Added LODLST from solo testing
+*** 03.13.08	R.Patel	Added RDTVAL. RDT Login Validation set to LOOSE
+*** 03.13.08	R.Patel	Added REFINE to allow CHE driver to use F6 to request SPARCS to send a new cntr position. 
+*** 03.13.08	R.Patel	Added RHNDLV RHNDLY ROADV1 from solo testing.
+*** 03.13.08	R.Patel	Added SHRPRJ to allow for shared projections
+*** 03.14.08	R.Patel	Removed (Commented Out for now) SHRPRJ. Found SHRPRJ in the SPARCS Settings.txt settings file, but it's no longer supported.
+*** 03.14.08	R.Patel	Removed (Commented Out for now) CRANHC CUDMDL ECRFCN FRKDEC LODLST RDTVAL due to notices warnings. Access to setting restricted - default setting value remains in effect.
+*** 03.14.08	R.Patel	Settings file cleanup required for commented out settings at future date. Keeping settings now incase licensed features in settings.xml make the setting conficurable at a later date. 
+*** 03.19.08	R.Patel	Added ROADTL, set to 'Y' to allow Truck License to be used rather than BAT number in RDT screens and Sparcs for the From/To position of cntr for gate transactions
+*** 03.19.08	R.Patel	Adjusted icon id for logical block BR to 33 so it is visible in Sparcs Client.
+*** 05.06.08	R.Patel	Added GRAD attribute for Equipment Grade
+*** 05.06.08	R.Patel	Added JBSS attribute for Job step State
+*** 08.08.08	DKGupta	Added INBTRN for separate inbound and outbound rail visit.
+*** 08.26.08	Z.Pandjou	Remove INBOUND and OUTBOUND rail logical blocks
+*** 09.04.08	Z.Pandjou	Added SCRDIR setting
+*** 12.11.08   	Z.Pandjou	Added ISHZ to ALLOCR
+*** 12.11.08	Z.Pandjou	Added Park1 and Park2 logical block
+*** 01.16.09 	Z.Pandjou	Added RDACTV setting and set it to 8				
+*** 01.23.09	Z.Pandjou	Added GRAD attribute to Allocation filter window				
+*** 01.26.09	Z.Pandjou	Added PRGATE Setting and set RDACTV to 0				
+*** 02.06.09	J.Leholm	Added Logical block for interfacility transfers: ITRM	GCS	IFT_GCS	27	
+*** 02.11.09	D.K. Gupta	Modified the value of ACRR	 from 10 to 17			
+*** 02.17.09	Z.Pandjou	Added PLNSTL setting				
+*** 02.27.09	Z.Pandjou	Added CONSEQ setting and turned it to Y				
+*** 03.16.09	K.Willems	changed the fields of CNRCHG to DPRT SPCD COMD IMOC HPOS OVDM FGHT LNTH				
+*** 03.16.09	K.Willems	deleted the LOG BLOK lane park1				
+*** 03,18,09	K.Willems	created log blok lane park 1 again				
+*** 03.24.09	D.K. Gupta	Added DAMGYC to record damages				
+*** 04.14.09	J.Leholm	Modifed CNRCHG as per An K. request DPRT SPCD IMOC OVDM FHGT LNTH				
+*** 04.20.09	jleholm		Modified OBCR/DCRR from 10 to 17			
+*** 04.21.09	D.K.Gupta	Added flex field USRO	20	Y	UNNumbers	UNNos
+*** 04.21.09	jleholm		modified LOPR, PORT			
+*** 04.27.09	D.K.Gupta	Added flex field USRJ	8	Y	LLStatus	LLSts
+*** 04.27.09	jleholm		Added override settings.			
+*** 04.28.09	D.K. Gupta	Added UNLOAD/VERLOA		Y	N	
+*** 04.28.09	K.willems	added ISBD bij CNFNDR				
+*** 04.28.09	jleholm		LIFTSC set 876			
+*** 04.30.09	D.K.Gupta	Added USRO in CNFNDR				
+*** 06.02.09	D.K.Gupta 	Added STRMIX and set to Y 				
+*** 06.02.09	jleholm		removed SCRDIR (Jon Ranstrome's desire) and added flex field to allocation filter			
+*** 06.10.09	D.K.Gupta 	added UNNS in ALLOC and CNFNDR				
+*** 06.10.09	D.K.Gupta	added RLSE in CNRCHG 				
+*** 06.10.09	jleholm		replaced UNNS with FIRE			
+*** 06.17.09	D.K.Gupta	Added flex field USR2	8	Y	LLSource	LLSrs 
+*** 06.18.09	jleholm		added MULTYD to set to N and commented out PARK1			
+*** 06.19.09	jleholm		modify change flag to include IMOM and 			
+*** 06.22,09	jleholm		added DCRR to CNRCHG and BGWQNM	for background queue		
+*** 06.23.09	Wverdonck	Added SCTHCB, SCDPRT, SCARCC, SFSPCD, SFEQTP	
+*** 06.23.09	jleholm		Changed USR2 to USRB
+*** 06.23.09	jleholm		Activate VRFY 
+*** 06.23.09	jleholm		Added CONS to CNRCHG
+*** 06.25.09	wverdonck	Added SCEDTL and SCEDTR
+*** 06.26.09	jleholm		Make NOTE 20 characters long
+*** 06.26.09	jleholm		Add NOTE to CNRCHG
+*** 06.26.09	jleholm		Add NOTE to CNFNDR
+*** 06.27.09	jleholm		Add PRCRED and changed to Y
+*** 07.01.09	Christof	Changed Recap and Stow Plan Layout
+*** 07.01.09	jleholm		removed HPOS from CNRCHG and added UNNS
+*** 07.08.09	jleholm		increased Line operator length LOPR
+****************************************************************						
+#SETTINGS	Code	May Change	Value	Description
+	ACTVEC	Y	Y	Only ACTIVE (blue) queues work with EC.
+	ALLOCL	Y	EQID EQTP SPCD IMOC COMD LOPR DSGP DMOD AMOD STAT ACRR CLCQ CPOS GRAD	Fields to be put on left side of Allocation Filter Edit dialog.
+	ALLOCR	Y	ISRF ISHZ ISFL ISOG ISDM ISHC SRVC CTGY QWGT RLSE MXTR FLWA FIRE	Fields to be put on right side of Allocation Filter Edit dialog.
+	ARCLIC	Y	Y	AR Click in allocation window flows selected containers (DARs only). Admin-no-change
+	ASCLRK	Y	Y	May assign clerk to a POW
+	ATOSTK	Y	Y	"Enable ""AutoStack"" - automatically assign containers to slot specific positions. Admin-no-change"
+	BGWQNM	Y	Housekeeping	Name of Background Queue and Pow
+	BANOTE	Y	Y	Can attach bay notes. Admin-change-ok
+	BERTHI	Y	VAOP VLEN VSTB VETA VETD VSTW VBRZ VCLS VCOD VCUT VDRF VEBT VEMS VGNT VOYI VOYO	Berth Schedule Available Fields (Release 2.2k)
+	BLKNAM	Y	Y	Accepts block name as yard position from host (usually redundant). Admin-no-change
+	BRGLDL	Y	N	Include Container on Barge Load list if Discharge Port matches the Barge's Service
+***	CALCST	N	Y	Can calculate stability
+	CNRCHG	Y 	DPRT SPCD IMOM ODMA ODMF ODMH ODML ODMR FHGT LNTH DCRR RLSE CONS NOTE	Attributes that signal the change flag
+	CLFONT	N	TIMES	Client font for name. Admin-no-change
+	CLNAME	N	DPW Antwerp AGW	Client name. Admin-no-change
+	CLSTYL	N	italic	Client style for name. Admin-no-chang	
+	CNFNDL	Y	EQID EQTP CTGY DPRT ACRR DCRR LOPR SPCD COMD DSGP BKNG CLCQ YBLK USRB VRFY	Fields to be put on left side of Container Find Filter Edit dialog.	
+	CNFNDR	Y	ISPR ISHZ ISRF ISFL ISOG ISPL ISDM ISVR RLSE QWGT FLCQ GRAD FIRE ISBD NOTE	Fields to be put on right side of Container Find Filter Edit dialog.	
+	CNRCHG	Y	DPRT DCRR SPCD IMOM UNNS ODMA ODMF ODMH ODML ODMR FHGT LNTH RLSE NOTE	Fields SPARCS will check to determine if a container should be marked as changed.
+	CONNUM	N	N	Display sequence number for confirm. Admin-no-change	
+	CONSTO	N	N	For stow plan & sequence printing treat confirmed containers as completed. Admin-no-change	
+	CONSEQ	Y	Y	All containers in a work queue are sequenced continously regardless of length.	
+	CPLUSC	Y	Y	RDT displays container and chassis in chassis inventory pgrm	
+***	CRANHC	Y	Y	Crane activities allowed to be entered from hatch clerk	
+	CUBNDL	Y	Y	Host receives Container bundling events.	
+***	CUDMDL	Y	Y	Host receives Damage detail changes.	
+	CUDMGE	Y	Y	Host receives Damage code changes.	
+	CUGRPC	Y	Y	Host receives Group changes.	
+	CURFRD	Y	Y	Host receives Reefer Details changes.	
+	CURFRP	Y	Y	Host receives Reefer Plug changes.	
+	CURFRS	Y	Y	Host receives Reefer State changes.	
+	CURFRT	Y	Y	Host receives Reefer Temperature changes.
+	CUSEAL	Y	Y	Host receives Seal Number changes.
+	DAMGYC	Y	Y	Allow user to record damage from the inventory screen
+	DELREF	Y	Y	Can delete allocation ranges with active work instructions (NTL=N, others = Y). Admin-change-ok
+	DRVRPL	Y	Y	CHE Operator: may press F15 to generate plans for unplanned containers.
+	DRVRSA	Y	Y	Top-picks and Reachstackers can set aside rehandles while digging. (Requires DRV
+	DSPDCH	Y	BOTH	Truck Control dispatches discharge. NONE, CLERKS, VESSEL, RAIL or BOTH. No effec
+	DUPBIN	Y	Y	Host can send duplicate bins - use most detailed bin (Folow Yard Compiler recomm
+	ECOPMD	Y	Y	CHEs operating mode can be changed.
+***	ECRFCN	Y	Y	
+	ECRTGS	Y	Y	Set EC for RTGs. Admin-change-ok
+	F1LIFT	Y	Y	Truck may hit enter F1 to confirm cntr lift
+	F1PARK	Y	Y	Truck may hit F1 to confirm cntr park
+	F1TRAN	Y	Y	Truck may hit F1 to confirm load to train
+***	FRKDEC	Y	Y	Use fork decking logic (if block type is 'F' (from yard source file, then top lift can not drive over containers to fill available slots)). Admin-change-ok
+***	GTDFNL	N	TRNS EQID EQTP CTGY STAT DCRR BKNG DPRT DEST LOPR SHPR	
+***	GTDFNR	N	TRKL QWGT COMD IMOC TEMP SPCD ODMH ODMR ODML RMRK RFTP	
+***	GTRRCL	N	ACRR EQID EQTP CTGY STAT DCRR BKNG DPRT DEST LOPR SHPR	
+***	GTRRCR	N	RCID QWGT COMD IMOC TEMP SPCD ODMH ODMR ODML RMRK RFTP	
+***	GTPRAL	N	EQID EQTP CTGY STAT DCRR BKNG DPRT DEST LOPR SHPR	
+***	GTPRAR	N	QWGT COMD IMOC TEMP SPCD ODMH ODMR ODML RMRK RFTP	
+	HCCRLN	Y	Y	Hatch clerk may discharge cntr to crane lane
+	HCTWIN	Y	Y	Hatch clerk may record twin-lift operations.
+	INBTRN	Y	N	Has separate inbound and outbound rail visits.
+	ICON40	Y	Y	Show small 4 for 40 ft containers on small icon. Admin-change-ok
+	INCPHO	Y	Y	Include portholes in reefer work list.
+	KILLAG	N	N	Delelte Allocation Group when all Allocation Ranges are deleted. Admin-change-ok
+	KILLAR	N	N	Delete Allocation Range when all member containers are deleted. Admin-change-ok
+	LIFTSC	Y	876	SCs lift up to 876
+***	LODLST	Y	Y	Can modifiy the load list.
+***	LSHSLD	N	Y	Has lashing dialog.
+***	LSHTGL	N	Y	Turn on menu item if user turned off. Lashing toggle.
+	MOVLOK	Y	Y	Can reallocate locked moves to different slots in the same location (usually ship discharge). Admin-change-ok
+	MULTYD 	Y	N	Has multiple straddle exchange areas
+	OVRSTO	Y	Y	Do overstow checking.
+	OVRLEN	Y	Y	Planner may override alert when planning a container that does not match project
+	OVRRTE	Y	Y	Planner may override alert when planning container for vessel it is not routed f
+	OVRSTP	Y	Y	Planner may override stop sign.
+	OVRVST	Y	Y	Planner may override vessel yellow stop sign.
+	PLNSTL	Y	WAGON	Suitable for single tier single platform case
+	POWMOD	N	STOP MANU TRCK AUTO
+	PRCRED	Y	Y	PrimeRoute: Calculate the row entry directions (i.e.,'LOW' or 'HIGH') by logical	Admin
+	PRGATE	Y	Y	
+	PRNXBX	Y	Y	Print X instead of gray on container icons in stow, scan, and sequence reports.
+	PRRCOL	Y	Y	Print recap reports in color.
+	PRTEMP	Y	Y	Stow plans will print empty RoStow sections.
+	PRTSST	Y	Y	Print stack status.
+	RDACTV	Y	0	Number of seconds before you activate the job
+***	RDTVAL	Y	LOOSE	RDT Login Validation
+	REVNUM	Y	Y	Support for revision number on vessel sequence sheets
+	REFINE	Y	Y	CHE driver may hit F6 to request new position
+	RHNDLV	Y	Y	Rehandles calculated for vessel consolidation moves
+	RHNDLY	Y	Y	Rehandles calculated for yard consolidation moves
+	ROADTL	Y	Y	Background Road Queue activation: Use Truck License instead of BAT to gather dua
+	ROADV1	Y	Y	Receivals before deliveries for each truck
+	SASPCD	Y	E.T.R.	Include special stowage in AutoStow
+	SCNFRM	Y	Y	Straddle confirmation parameter.
+***	SCRDIR	Y	C:\NavisSparcsN4\xps	
+***	SHRPRJ	Y	Y	Makes shared projections available. May-not-change
+	SCTHCB	Y	E.T.R.	Base Section Factor: High Cube included
+	SCDPRT	Y	E.T.R.I.	Base Section Factor: Discharge Port included
+	SCARCC	Y	E.T.R.I.	Base Section Factor: Depart Visit included
+	SFSPCD	Y	E.R.T.	Base Stacking Factor: Stow Code included
+	SCEDTL	Y	CTGY ACRR SCEI
+	SCEDTR	Y	LOPR DCRR SRVC STAT
+	SFEQTP	Y		
+	SHDUMP	Y	Y	Allows dumping of containers into vessel
+	SOLOLG	Y	Y	Requires log in	
+	SRVCLT	Y	Y	Combined operation mode (for people with 1 machine). Admin-change-ok	
+	STRMIX	Y	Y	Does not mix 20's and 40's in the same row	
+	STOWOL	Y	Y	Outline to move containers. 	
+	TEMPAL	Y	Y	Can modify allocation groups to include a temperature range. Admin-no-change	
+	UNLOAD	Y	N	Must use Host to undo a load - cannot plan discharge for loaded container.	
+	WQXLEN	Y	N	Separate work queue by length	
+	VESPWP	Y	Y	Has pre-defined stowage patterns	
+	VS1LDQ	Y	Y	Create one Load Queue and one Discharge Queue for all Barge Moves	
+	VERLOA	Y	Y		
+**************************************************************					
+#CLASS	code	# chars	in use	long name	short name
+	COMD	4	Y		
+	EQTP		Y	ISO	ISO
+	CTGY	1	Y		
+	STAT		Y		
+	PREF		Y		
+	SPCD	3	Y		
+	LOPR	8	Y		
+	PORT	5	Y		
+	DSGP		Y		
+**************************************************************					
+#ATTRIBUTE	code	# chars	in use	long name	short name
+	ACHE		Y		
+	ACRR	17	Y	Inbound Carrier	I/B Carrier
+	ALFT	8	Y		
+	ALLB	17	Y		
+	ALLR	19	Y		
+	ALOG	23	Y		
+	AMOD	6	Y		
+	APOD		Y		
+	BDEC		Y		
+	BKNG		Y	Booking/Rlse	Book/Rlse
+	CCCN		Y		
+	CCAR		Y	Rail Car	Car
+	CCPN		Y		
+	CDES		Y		
+	CDIS		Y		
+	CGEO		Y		
+	CHEK		Y		
+	CHGT		N		
+	CHID	6	Y		
+	CHNG		Y		
+	CHSS	12	Y	Chassis	Chassis
+	CLQL		Y		
+	COMD	4	Y		
+	COMI		Y		
+	COUF	1	Y		
+	CRID		Y		
+	CSLO		Y		
+	CTRN		Y		
+	CTYP		Y		
+	CUID		Y		
+	DCRR	17	Y	Outbound Carrier	O/B Carrier
+	DECK		Y		
+	DMGE		Y		
+	DMOD	6	Y		
+	DHNT		Y		
+	DOOR	3	Y	Door Direction	Door
+	DSGP		Y	Group Code	Group
+	DSTA		Y		
+	DRV2	2	Y	Cur. Loc. Qualifier	Loc
+	DRV3	4	Y	Dray Qualifier	Dray
+	DRV4	4	Y	Empty Qualifier	EQUAL
+	DRV5	11	Y	Status/LineOp/Disch	Stat/Line/POD
+	DRV6	6	Y	Receival Time	Rcvd
+	DRV7	10	Y	Category Qualifier	Cat.Qual
+	DWTS		Y		
+	EQCL		Y		
+	EQID		Y	Equipment ID	Equip ID
+	FCHA		Y		
+	FHGT		Y		
+	FOLO		Y		
+	FTCH		Y		
+	GRAD		Y	Grade	Grade
+	HXID		Y		
+	HTEC	30	Y		
+	IMOC	4	Y		
+	IMOM		Y		
+	INDX		Y		
+	ISRV		Y		
+	JBSS	5	Y	JobStepState	JobStepSta
+	LEQT		Y	Equip Name	Equip Name
+	LICN		Y		
+	LNTH		Y	Length	Len
+	LOGN		Y		
+	LOPR	8	Y	Line operator	
+	LRTE		Y		
+	LRTI		Y		
+	LSTO		Y		
+	LTON		Y	Weight- LTon	Wt.LTn
+	LTRN		Y		
+	MDIR		Y		
+	NCDI		Y		
+	NCH*				
+	NCZ1		Y		
+	NCZ2		Y		
+	NCZ3		Y		
+	NMBR		Y
+	NOTE	21	Y	Notes		
+	OBCR	17	Y	Outbound Carrier	I/B Carrier
+	OCTR		Y		
+	OLTR		Y		
+	OTRN		Y		
+	OWNR		Y		
+	OVDA		Y		
+	OVDF		Y		
+	OVDH		Y		
+	OVDL		Y		
+	OVDR		Y		
+	OPOL		N	Op. Port of Load	
+	OPOS		Y		
+	PDDS		Y		
+	PDPL		Y		
+	PLFF	14	Y	Move From	Move From
+	PLTF	14	Y	Move To	Move To
+	PLQL		Y		
+	PPIP		Y		
+	PPSW		Y		
+	PPTL		Y		
+	PRFX		Y		
+	PRMT	12	Y		
+	PTCH		Y		
+	PTPT		Y		
+	QPOW		Y		
+	QTOT		Y		
+	QTYP		Y		
+	QUEU		Y		
+	QWGT		Y	Weight-Metric	Wgt-MTn
+	RCID	12	Y		
+	RDTS	6	Y	R/D Time	R/D
+	RFST		Y		
+	RFLG		Y		
+	RLSE		Y		
+	RMRK	20	Y	Remark	Remark
+	RODR		Y		
+	RPWR		Y	On Power	Plg
+	RSTE		Y		
+	SCAL		N		
+	SCRX		Y		
+	SCRY		Y		
+	SLOT		Y		
+	SORT		Y		
+	SNGW		Y		
+	SPCD		Y		
+	SRVC		Y		
+	STCD		Y		
+	STFC		Y		
+	TEMP		Y		
+	TMPF		N		
+	TRNS	6	Y	Gate Ticket	Tckt No
+	TPOS		Y		
+	TRCK		Y		
+	TRKL	7	Y		
+	UNDK		Y		
+	UNDR		Y		
+	UNNO		Y		
+	USR1		Y	Optional POD	Opt POD
+	USR3	7	Y	Truck ID	Trk ID
+	USR4	1	Y	Release type	Rlse
+	USR5		Y	Truck Position	Pos	
+	USR6		N	Reefer Record	Rfr Rec	
+	USR7		Y	Rail Priority	PRI	Not used, spare Field
+	USRB	8	Y	LLSource	
+	USRJ	8	Y	LLStatus	LLSts	
+	USRO	20	Y	FlexField	FlexF	
+	VACT		Y			
+	VBAY		Y			
+	VCUT		Y			
+	VDRF		Y
+	VFYL		Y		
+	VGNT		Y			
+	VPHS		Y			
+	VPRT		Y			
+	VRFY		Y			
+	VSTB		Y			
+	VSTW		Y			
+	WIMK		Y			
+	XPOL		Y											
+	YBLK		Y											
+	YPLN		Y											
+	YPOS		Y											
+	YROW		Y											
+*** ARGO 9443 Testing for 5 char port code ***														
+ 	DPRT	5	Y	Dischare Port	Discharge Port									
+	LPRT	5	Y	Load Port	Load Port									
+**************************************************************														
+#LOG BLOCK	code	code name	name	icon ID	xloc	yloc	code char	ingress vtx	egress vtx	ingr lane	egr lane	grid width	2way (T/F)	grid access delay
+	EQPC	EC	E.C.	1										
+	COMM	COM	Cmnty	2										
+	FDEC	FLD	Fail!!	31										
+	TIPC	TIP	TIP	28	653	126								
+	TQCD	TQ	TQ	29	653	126								
+	GOUT	OUT	Went Out	6										
+	GRND	GRND	Ground	5									
+	APRN	BR	BR	33									
+***	LANE	PARK1	PARK1	32			   A	PR108	PR108	1	7	180	T
+ 	LANE	PARK2	PARK2	32			   B	PR568	PR568	1	33	250	T
+	ITRM	GCS	IFT_GCS	27									
+**************************************************************													
+#LOAD SEQ	categories	title	# chars	style									
+	LOPR	Line											
+	EQID	Container											
+	EQTP	Type											
+	STAT	Des											
+	CTCD	Cat											
+	DPRT	Dest											
+	UNDR	Seal											
+	SBIP	Remarks											
+	CSLT	Yard Loc.											
+**************************************************************						
+#DISCH SEQ	categories	title	# chars	style		
+	LOPR	Line				
+	EQID	Container				
+	EQTP	Type				
+	STAT	Des				
+	DEST	Dest				
+	UNDR	Seal				
+	SBIP	Remarks				
+	YPLN	Plan				
+**************************************************************						
+#STOW FINAL	height (mm)	width (mm)				
+	19	22				
+#OPTIONS	inc. moments	english	sep. lengths	comb.Decks	labels	met. Tonnes
+	N	N	N	Y	Y	N
+#FONT SET	set number	font	size			
+	1	Courier	12			
+	2	Arial Black	13			
+#FIELDS	categories	just	vert. offset	font set		
+	DPRT	L	19	1		
+	LPRT	R	19	1		
+	EQID	L	41	2		
+	LOPR	L	60	1		
+	CON2	C	60	1		
+	QWGT	R	60	1		
+	LNTH	C	19	1		
+	IMOC	R	78	1		
+	TEMP	L	78	1		
+	FHGT	L	96	1		
+	SLOT	R	96	1		
+**************************************************************				
+#STOW DISCH	height (mm)	width (mm)				
+	22	22				
+#OPTIONS	inc. moments	english	sep. lengths	comb.Decks	labels	met. Tonnes
+	N	N	N	N	Y	
+#FONT SET	set number	font	size		
+	1	Courier	12			
+	2	Arial Black	13			
+#FIELDS	categories	just	vert. offset	font set		
+	SLOT	L	17	1		
+	EQID	L	37	2		
+	QWGT	L	57	1		
+	LNTH	R	57	2		
+	SBIC	L	95	1		
+	CON2	L	75	2		
+	ALLR	L	95	2		
+**************************************************************						
+#STOW LOAD	height (mm)	width (mm)				
+	20	20				
+#OPTIONS	inc. moments	english	sep. lengths	comb.Decks	labels	met. Tonnes
+	N	N	N	N	Y	Y
+#FONT SET	set number	font	size			
+	1	Courier	12			
+	2	Arial Black	13			
+#FIELDS	categories	just	vert. offset	font set		
+	SLOT	L	17	1		
+	EQID	L	37	2		
+	QWGT	L	57	1		
+	LNTH	R	57	2		
+	DPLO	L	76	2		
+	CON2	R	95	2		
+	SBIC	C	57	1		
+	CSLT	L	95	1		
+	FHGT	R	76	1		
+**************************************************************						
+#STOW CUST	height (mm)	width (mm)	lineOP code	line operator		
+	16	22	YE	Elma Lines		
+#OPTIONS	inc. moments	english	sep. lengths	comb.Decks	labels	met. Tonnes
+	N	N	N	N	Y	Y
+#FONT SET	set number	font	size			
+	1	Helvetica	12			
+	2	Courier	13			
+#FIELDS	categories	just	vert. offset	font set		
+	SLOT	L	17	2		
+	LPRT	L	37	2		
+	PDDS	R	57	2		
+	EQID	L	76	1		
+**************************************************************						
+#STOW CUST	height (mm)	width (mm)	lineOP code	line operator		
+	16	22	A	ACL		
+#OPTIONS	inc. moments	english	sep. lengths	comb.Decks	labels	met. Tonnes
+	N	N	Y	N	Y	Y
+#FONT SET	set number	font	size			
+	1	Helvetica	12			
+	2	Courier	13			
+#FIELDS	categories	just	vert. offset	font set		
+	EQID	L	37	1		
+	QWGT	L	57	2		
+	EQTP	R	57	2		
+	PDPL	L	76	2		
+	SBIC	R	76	2		
+	PPOS	L	95	1		
+**************************************************************						
+#STOW CUST	height (mm)	width (mm)	lineOP code	line operator		
+	16	22	VAL	VAL		
+#OPTIONS	inc. moments	english	sep. lengths	comb.Decks	labels	met. Tonnes
+	N	N	Y	N	Y	Y
+#FONT SET	set number	font	size			
+	1	Helvetica	12			
+	2	Courier	13			
+#FIELDS	categories	just	vert. offset	font set		
+	PDDS	L	17	2		
+	EQID	L	37	1		
+	EQTP	R	57	2		
+**************************************************************						
+#STOW CUST	height (mm)	width (mm)	lineOP code	line operator		
+	16	22	E	Evergreen		
+#OPTIONS	inc. moments	english	sep. lengths	comb.Decks	labels	met. Tonnes
+	N	N	N	N	Y	Y
+#FONT SET	set number	font	size			
+	1	Helvetica	12			
+	2	Courier	13			
+#FIELDS	categories	just	vert. offset	font set		
+	SLOT	L	17	2		
+	QWGT	R	17	2		
+	LPRT	L	37	2		
+	PDDS	R	37	2		
+	EQID	L	57	1		
+	EQTP	L	76	2		
+	HGHT	R	76	2		
+	TEMP	L	95	2		
+	IMOC	R	95	2		
+**************************************************************						
+#STOW CUST	height (mm)	width (mm)	line operator			
+	15	22	I	Ivaran		
+#OPTIONS	inc. moments	english	sep. lengths	comb.Decks	labels	met. Tonnes
+	N	N	N	N	N	N
+#FONT SET	set number	font	size			
+	1	Helvetica	12			
+	2	Courier	13			
+#FIELDS	categories	just	vert. offset	font set		
+	PPOS	L	17	1		
+	QWGT	R	17	2		
+	LPRT	L	37	1		
+	PDDS	R	37	1		
+	EQID	L	57	1		
+	EQTP	L	76	1		
+	HGHT	R	76	1		
+	TEMP	L	95	1		
+	IMOC	R	95	1		
+**************************************************************						
+#STOW CUST	height (mm)	width (mm)	line operator			
+	14	22	L	Lykes Lines		
+#OPTIONS	inc. moments	english	sep. lengths	comb.Decks	labels	met. Tonnes
+	Y	N	Y	Y	N	N
+#FONT SET	set number	font	size				
+	1	Helvetica	12				
+	2	Courier	13				
+#FIELDS	categories	just	vert. offset	font set			
+	SLOT	L	90	2			
+	EQID	L	42	1			
+	QWGT	R	70	2			
+	EQTP	L	70	2			
+	PDPL	L	19	2			
+**************************************************************							
+* BEGIN CUSTOM ICON SIZES FOR SPECIAL VESSELS							
+**************************************************************							
+#ICON SIZE	vessel class	W. height	W. width	W. com. decks	Final height	Final width	Final com. decks
+	EV-G	14	17	Y	16	19	N
+	EVGX	15	18	N	16	19	N
+**************************************************************							
+* BEGIN ATTRIBUTE REDEFINITIONS FOR SPECIAL LINE OPERATORS				
+**************************************************************				
+#LINEOP	lineOp code	line operator		
+	YE	Elma Lines		
+#REDEFINE	attribute	standard code	new code	NAME
+	PORT	ALE	ALEX	Alexandria
+	PORT	PMT	VPMT	Portsmouth
+***************Equipment types for Elma Lines ****************************				
+***************NONE*********************				
+**************************************************************				
+#LINEOP	lineOp code	line operator		
+	E	Evergreen		
+#REDEFINE	attribute	standard code	new code	NAME
+	PORT	AA	AAR	Aarhus
+	PORT	AN	ANW	Antwerp
+	PORT	BB	BOM	Bombay
+	PORT	BE	BST	Belfast
+	PORT	BG	BKK	Bangkok
+	PORT	BH	BNV	Bremerhaven
+	PORT	BR	BRE	Bremen
+	PORT	CB	???	Cristobal
+	PORT	CE	CEB	Cebu
+	PORT	CF	CRK	Cork
+	PORT	CL	CMB	Colombo
+	PORT	CO	CPH	Copenhagen
+	PORT	CQ	CUR	Curraco
+	PORT	DJ	DKT	Jakarta
+	PORT	DL	DBL	Dublin
+	PORT	ES	???	Thamesport
+	PORT	FE	FLX	Felixstowe
+	PORT	GB	GOT	Gothenburg
+	PORT	HE	HSB	Helsingboro
+	PORT	HK	HKG	Hong Kong
+	PORT	HL	HEL	Helsinki
+	PORT	HM	HBG	Hamburg
+	PORT	HT	HKT	Hakata
+	PORT	IN	ICH	Inchon
+	PORT	KA	KSG	Kaohsung
+	PORT	KE	???	Kelang
+	PORT	KL	KLG	Keelung
+	PORT	KO	KBE	Kobe
+	PORT	KS	KSN	Kingston
+	PORT	LH	LHV	Le Havre
+	PORT	LI	LVR	Liverpool
+	PORT	MM	MAL	Malmo
+	PORT	MN	MNL	Manila
+	PORT	MO	MJI	Moji
+	PORT	NA	NGY	Nagoya
+	PORT	NY	NYC	New York
+	PORT	OL	OSL	Oslo
+	PORT	OS	OSK	Osaka
+	PORT	PL	PLM	Port Limon
+	PORT	PU	PUS	Pusan 
+	PORT	RO	RDM	Rotterdam
+	PORT	SD	STD	Santo Domingo
+	PORT	SH	SMZ	Shimizu
+	PORT	SI	SGP	Singapore
+	PORT	SO	SOU	Southhampton
+	PORT	ST	SKH	Stockholm
+	PORT	TA	TCG	Taichung
+	PORT	TO	TYO	Tokyo
+	PORT	VA	VLC	Valencia
+	PORT	WA	WED	Waterford
+	PORT	YO	YKH	Yokohama
+***************Equipment types for Evergreen ****************************				
+***************NONE*********************				
+#LINEOP	lineOp code	line operator		
+	VAL	Test one	  	
+#REDEFINE	attribute	standard code	new code	
+	PORT	BOM	JON	Bombay
+***************NONE*********************				
+#LINEOP	lineOp code	line operator		
+	L	Lykes Lines	  	
+#REDEFINE	attribute	standard code	new code	
+	PORT	AB	ADE?	Adelaide
+	PORT	AE	ALEX	Alexandria
+	PORT	AH	ARIC	Arica
+	PORT	??	BUEN	Benaventura
+	PORT	BF	BALB	Balboa
+	PORT	BM	BALT	Baltimore
+	PORT	BR	BREM	Bremen
+	PORT	CJ	CALL	Callao
+	PORT	CR	CHAR	Charleston
+	PORT	CW	CART	Cartagena
+	PORT	GU	GUAY	Guayaquil
+	PORT	GS	GALV	Galveston
+	PORT	HA	HAIF	Haifa
+	PORT	IZ	IZMR	Izmir
+	PORT	LE	LEGH	Leghorn
+	PORT	MJ	MIAM	Miami
+	PORT	NF	NORF	Norfolk
+	PORT	NP	NAPL	Naples
+	PORT	NS	NOLA	New Orleans
+	PORT	NY	NYNY	New York
+	PORT	VL	VALP	Valpariso
+**************************************************************				
+* BEGIN RECAP REPORT DEFINITIONS							
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	W/B Recap	Y	Y	N	N	None	5
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+			Westbound Recap	5			
+	ShipNameAndVoyNum	5	By  Load/Disch Ports	5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	DISCHARGE  PORT		LOAD  PORT		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	LPRT	LPRT	Bold	3		
+	Col	LNTH	LNTH	Solid	4		
+	Col	CON2	CON2	Dashed	4		
+	Row	DPRT	DPRT	Bold	3		
+	Row	DEST	DEST	Solid	4		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	LineOp &  Count	Y	Y	N	N	None	5
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+			Line Operator	5			
+	ShipNameAndVoyNum	5	Destination Port	5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	DISCHARGE  PORT		LINE OP		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	LOPR	LOPR	Bold	3		
+	Col	LNTH	LNTH	Solid	4		
+	Col	CON2	CON2	Bold	4		
+	Row	DPRT	DPRT	Solid	4		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Outbound List	Y	Y	N	N	None	5
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+			Line Operator	5			
+		5	Destination Port	5		5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	LINE OP		DISCHARGE PORT		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	DCRR	DCRR	Solid	4		
+	Col	DPRT	DPRT	Solid	4		
+	Row	LOPR	LOPR	Bold	3		
+	Row	LNTH	LNTH	Solid	4		
+	Row	CON2	CON2	Bold	4		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Inbound List	Y	Y	N	N	None	5
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10			
+	2	Times	10			
+	3	Helvetica	12			
+	4	Times	9			
+	5	Times	15			
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set
+			Line Operator	5		
+		5	Transship Port	5		5
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set	
+	LINE OP		DISCHARGE PORT		1	
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set	
+	Row	LOPR	LOPR	Bold	3	
+	Row	LNTH	LNTH	Solid	4	
+	Row	CON2	CON2	Bold	4	
+	Col	ACRR	ACRR	Solid	4	
+	Col	DPRT	DPRT	Solid	4	
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Disch Ports By Bay	Y	Y	N	N	None	4
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+			On Board Container Recap	5			
+	ShipNameAndVoyNum	5	By Bay and Disch Ports	5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	BAY  NUMBER		DISCHARGE  PORT		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Row	BNAM	BNAM	Bold	3		
+	Row	LOPR	LOPR	Solid	4		
+	Col	DPRT	DPRT	Bold	3		
+	Col	LNTH	LNTH	Solid	4		
+	Col	CON2	CON2	Dashed	4		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Bay/Deck Recap	Y	Y	N	N	None	4
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+			On Board Container Recap	5			
+	ShipNameAndVoyNum	5	By Bay and Deck	5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	BAY  NUMBER		DISCHARGE  PORT		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Row	BDEC	BDEC	Bold	3		
+	Col	DPRT	DPRT	Bold	3		
+	Col	LNTH	LNTH	Solid	4		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Disch Port Bay Count	Y	Y	N	N	None	7
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+			On Board Container Recap	5			
+	ShipNameAndVoyNum	5	Disch Port Count By Bay	5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	BAY  NUMBER		DISCHARGE  PORT		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	DPRT	DPRT	Solid	3		
+	Row	BNAM	BNAM	Solid	3		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Equipment Recap	Y	Y	N	N	None	6
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+			Containers on Board	5			
+	ShipNameAndVoyNum	5	Equipment Recap	5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	BAY  NUMBER		EQUIPMENT  TYPE		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	EQTP	EQTP	Solid	3		
+	Col	CON2	CON2	Solid	4		
+	Row	BNAM	BNAM	Solid	3		
+	Row	LOPR	LOPR	Solid	4		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Disc Seq Rcp	Y	Y	N	N	None	6
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+				5			
+	ShipNameAndVoyNum	5	Discharge Sequence Sheet	5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	DESTINATION		COUNT		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	LNTH	LNTH	Solid	3		
+	Row	DEST	DEST	Solid	3		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Disc Stat Recap	Y	Y	N	N	None	6
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+				5			
+	ShipNameAndVoyNum	5	Discharge Status Recap	5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	DESTINATION		COUNT		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	LNTH	LNTH	Solid	3		
+	Col	CON2	CON2	Solid	3		
+	Row	DEST	DEST	Solid	3		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Load Status Recap	Y	Y	N	N	None	6
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells		
+	1	Helvetica	10			
+	2	Times	10			
+	3	Helvetica	12			
+	4	Times	9			
+	5	Times	15			
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set
+				5		
+	ShipNameAndVoyNum	5	Load Status Recap	5	ShipCode	5
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set	
+	DESTINATION		COUNT		1	
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set	
+	Col	LNTH	LNTH	Solid	3	
+	Col	CON2	CON2	Solid	3	
+	Row	DROT	DEST	Solid	3	
+**************************************************************						
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Yard Block Recap	Y	Y	N	N	None	5
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+				5			
+	UserBlock	5	List Block Recap	5		5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	YARD BLOCK		DISCHARGE PORT		3		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Row	BDEC	BDEC	Bold	3		
+	Row	DCRR	DCRR	Solid	4		
+	Row	EQTP	EQTP	Solid	4		
+	Col	DPRT	DPRT	Bold	3		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Equip in Block	Y	Y	N	N	None	5
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+				5			
+	UserBlock	5	List Equipment Recap	5		5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	EQUIPMENT		BLOCK		3		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	BDEC	BDEC	Bold	3		
+	Col	DPRT	DPRT	Solid	4		
+	Row	EQTP	EQTP	Bold	3		
+	Row	CON2	CON2	Solid	4		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Vessel Inbound Recap	Y	Y	N	N	None	3
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+				5			
+	UserBlock	5	List Equipment Recap	5		5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	LINE & DEST		CNTR TYPE		2		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	CTCD	CTCD	Bold	1		
+	Col	STAT	STAT	Solid	1		
+	Col	LNTH	LNTH	Dashed	1		
+	Col	CON2	CON2	Dashed	1		
+	Row	LOPR	LOPR	Bold	1		
+	Row	DPRT	DPRT	Solid	1		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Load List Yard Recap	Y	Y	N	N	None	5
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+				5			
+	ShipNameAndVoyNum	5		5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	YARD BLOCK		DISCHARGE PORT		3		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Row	BDEC	BDEC	Bold	3		
+	Row	EQTP	EQTP	Solid	4		
+	Col	DPRT	DPRT	Bold	3		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Allocation Filters	Y	Y	N	N	None	4
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+			Filter vs. Service/Port	5			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	FILTER		SERVICE & PORT		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Row	ALFT	ALFT	Bold	1		
+	Col	SRVC	SRVC	Solid	1		
+	Col	DPRT	DPRT	Bold	1		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Allocation Groups	N	Y	N	N	None	4
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Courier	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+			Filter vs. Service/Port	5			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	ALLOCATION GROUP		cntrs per group		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Row	ALOG	ALOG	Bold	1		
+	Col	ALLC	ALLC	Solid	1		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	finalStow Recap	Y	Y	N	N	None	7
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+				5			
+	ShipNameAndVoyNum	5	Stow Recap	5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	ROW		TYPE		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	EQTP	EQTP	Solid	3		
+	Row	YROW	YROW	Solid	3		
+**************************************************************							
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Mini Recap	Y	Y	N	N	None	7
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+				5			
+	ShipNameAndVoyNum	5	Scan Recap	5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	PORT		SIZE		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	LNTH	LNTH	Solid	3		
+	Row	DPRT	DPRT	Solid	3		
+**************************************************************
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Recap Overzicht Lossing	Y	Y	N	N	None	5
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells		
+	1	Helvetica	20			
+	2	Times	10			
+	3	Helvetica	12			
+	4	Times	9			
+	5	Times	16			
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set
+	Recap Overzicht Lossing	5	ShipName	5	ShipNameAndVoyNum	5
+		5		5		5
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set	
+	CATEGORY & BAY / DECK		CONDITION & LENGTH		5	
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set	
+	Col	CON2	CON2	Dashed	1	
+	Col	LNTH	LNTH	Dashed	1	
+	Row	CTCD	CTCD	Bold	1	
+	Row	VBAY	VBAY	Solid	5	
+	Row	DECK	DECK	Solid	5			
+**************************************************************
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Recap Overzicht Lading	Y	Y	N	N	None	5
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	20				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	16				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+	Recap Overzicht Lading	5	ShipName	5	ShipNameAndVoyNum	5	
+		5		5		5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	CATEGORY & BAY / DECK		CONDITION & LENGTH		5		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	CON2	CON2	Dashed	1		
+	Col	LNTH	LNTH	Dashed	1		
+	Row	CTCD	CTCD	Bold	1		
+	Row	VBAY	VBAY	Solid	5		
+	Row	DECK	DECK	Solid	5		
+**************************************************************						
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell
+	Category Recap	Y	Y	N	N	None	7
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells			
+	1	Helvetica	10				
+	2	Times	10				
+	3	Helvetica	12				
+	4	Times	9				
+	5	Times	15				
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set	
+				5			
+	ShipNameAndVoyNum	5	Category Recap	5	ShipCode	5	
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set		
+	PORT		SIZE		1		
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set		
+	Col	CTGY	CTGY	Solid	3		
+	Col	LNTH	LNTH	Solid	3		
+	Row	DROT	DEST	Solid	3
+**************************************************************					
+#END	#END				
+**************************************************************					

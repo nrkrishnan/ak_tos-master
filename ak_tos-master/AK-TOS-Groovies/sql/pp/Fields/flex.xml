@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<db-metafield id="eqStrengthCode" scope-level="2" importance="OPTIONAL" short-name="Strength" long-name="Strength Code" help-label="Equipment Strength Code" widget-type="DEFAULT" max-chars="2" />
+<db-metafield id="tranFlexString05" scope-level="2" importance="OPTIONAL" short-name="Purpose (Receive)" long-name="Purpose (Receive)" help-label="Purpose of work order in gate transaction&#x9;" group-id="transaction" widget-type="LOV_POPUP" scope-id="MATSON">
+  <metafield-lov value="Charity Event" />
+  <metafield-lov value="Customer Request" />
+  <metafield-lov value="Line Equipment" />
+  <metafield-lov value="MultiStop Move" description="Split" />
+  <metafield-lov value="Other" />
+</db-metafield>
+<db-metafield id="tranFlexString02" scope-level="2" importance="OPTIONAL" short-name="UCC" long-name="UCC" group-id="trancontainer" widget-type="LOV_POPUP" scope-id="MATSON">
+  <metafield-lov value="AC" description="Shipper Sold" />
+  <metafield-lov value="AF" description="American Fast Freight Load" />
+  <metafield-lov value="AP" description="APL Pool" />
+  <metafield-lov value="CP" description="Customer Pool" />
+  <metafield-lov value="DL" description="Deadline" />
+  <metafield-lov value="DN" description="DUNNAGE LOAD/ FOR TRANSLOAD" />
+  <metafield-lov value="FB" description="Off Hire TAL Container/To Be Sold" />
+  <metafield-lov value="FS" description="FIX STRAPS" />
+  <metafield-lov value="GH" description="HOLD FOR GATEHOUSE" />
+  <metafield-lov value="HK" description="HONG KONG" />
+  <metafield-lov value="HO" description="Honolulu" />
+  <metafield-lov value="KF" description="KFF" />
+  <metafield-lov value="L1" description="Los Angeles" />
+  <metafield-lov value="LH" description="Line-Haul" />
+  <metafield-lov value="MA" description="Manila" />
+  <metafield-lov value="MK" description="Maersk Pool" />
+  <metafield-lov value="NP" description="Needs Pre-trip" />
+  <metafield-lov value="OK" description="Oakland" />
+  <metafield-lov value="ON" description="ONION VAN/DOOR OFF" />
+  <metafield-lov value="PA" description="POS Candidate" />
+  <metafield-lov value="PO" description="POS Container" />
+  <metafield-lov value="PS" description="POSTAL SERVICE LOAD" />
+  <metafield-lov value="PT" description="Pre Trip" />
+  <metafield-lov value="RF" description="NEEDS RFID TAGGED" />
+  <metafield-lov value="SC" description="SUPER CHASSIS" />
+  <metafield-lov value="SF" description="SFW REEFER" />
+  <metafield-lov value="SH" description="HOLD FOR SHOP" />
+  <metafield-lov value="SM" description="SAMSON TUG AND BARGE" />
+  <metafield-lov value="SN" description="SNOW BUILDUP ON ROOF" />
+  <metafield-lov value="SP" description="SAMS POOL" />
+  <metafield-lov value="SW" description="NEEDS TO BE SWEPT" />
+  <metafield-lov value="TC" description="Tacoma" />
+  <metafield-lov value="TG" description="DEDICATED TARGET INSUL" />
+  <metafield-lov value="TO" description="MAERSK CHASSIS/TOTE" />
+  <metafield-lov value="UCC1" description="ucc code 1 description" />
+  <metafield-lov value="UN" description="UNCHECKED EMPTY" />
+  <metafield-lov value="UN" description="UNCHECKED EMPTY" />
+  <metafield-lov value="YQ" description="Yantian" />
+  <metafield-lov />
+</db-metafield>
+<db-metafield id="ufvFlexDate01" scope-level="3" importance="OPTIONAL" short-name="PMD" long-name="Premount Date" help-label="Date &amp; Time ** needs to be between 00:01 and 23:58" group-id="equipment" scope-id="ALASKA" />
+<db-metafield id="ufvFlexDate02" scope-level="3" importance="OPTIONAL" short-name="Avail Date" long-name="Available Date" help-label="Date available for pickup from yard" group-id="unit" />
+<db-metafield id="unitGoodsAndCtrWtKgAdvised" scope-level="3" importance="OPTIONAL" user-unit="lb" />
+<db-metafield id="ufvFlexString02" scope-level="3" importance="OPTIONAL" short-name="Chas Type" long-name="Chassis Type Required" help-label="Speciality Chassis required for Discharge" group-id="unitRouting" widget-type="LOV_POPUP" max-chars="5">
+  <metafield-lov value="MG" description="With Motor Generator" />
+  <metafield-lov value="MG4" description="440v MG Chassis" />
+  <metafield-lov value="TX" description="Tri Axle" />
+</db-metafield>
+<db-metafield id="ufvFlexString06" scope-level="3" importance="OPTIONAL" short-name="Deck" long-name="Position of Container Above or Below Deck" help-label="Position of Container Above or Below Deck" group-id="unitRouting" widget-type="LOV_POPUP">
+  <metafield-lov value="BD" description="Below Deck" />
+  <metafield-lov value="OD" description="Above Deck" />
+  <metafield-lov value="RO" description="RORO" />
+  <metafield-lov value="UNK" description="Unknown Position" />
+</db-metafield>
+<db-metafield id="ufvFlexString06" scope-level="3" importance="OPTIONAL" short-name="Deck" long-name="Position of Container Above or Below Deck" help-label="Position of Container Above or Below Deck" group-id="unitRouting" widget-type="LOV_POPUP" scope-id="ALASKA">
+  <metafield-lov value="BD" description="Below Deck" />
+  <metafield-lov value="OD" description="Above Deck" />
+  <metafield-lov value="RO" description="RORO" />
+  <metafield-lov value="UNK" description="Unknown Position" />
+</db-metafield>
+<db-metafield id="unitFlexString01" scope-level="3" importance="OPTIONAL" short-name="Consignee PO" long-name="Consignee PO #" help-label="Consignee PO #" group-id="contents" widget-type="DEFAULT" max-chars="27" scope-id="ALASKA" />
+<db-metafield id="unitFlexString01" scope-level="3" importance="OPTIONAL" short-name="Consignee PO" long-name="Consignee PO #" help-label="Consignee PO #" group-id="contents" widget-type="DEFAULT" max-chars="27" />
+<db-metafield id="unitFlexString06" scope-level="3" importance="OPTIONAL" short-name="VGM Verified" long-name="VGM Verified" help-label="VGM Verified" group-id="contents" widget-type="DEFAULT" max-chars="20" scope-id="ALASKA" />
+<db-metafield id="unitFlexString08" scope-level="3" importance="OPTIONAL" short-name="PS" long-name="Priority Stow" group-id="unitRouting" widget-type="DEFAULT" max-chars="5" scope-id="ALASKA" />
+<db-metafield id="ufvFlexString10" scope-level="5" importance="OPTIONAL" short-name="Minor Destination" long-name="Minor Destination" group-id="unitRouting" widget-type="DEFAULT" scope-id="ANK" />
+<db-metafield id="unitGoodsAndCtrWtKgYardMeasured" scope-level="3" importance="OPTIONAL" user-unit="lb" scope-id="ALASKA" />
+<db-metafield id="ufvFlexString10" scope-level="4" importance="OPTIONAL" short-name="Minor Destination" long-name="Minor Destination" group-id="unitRouting" widget-type="DEFAULT" scope-id="ANK" />
+<db-metafield id="unitGoodsAndCtrWtKgGateMeasured" scope-level="3" importance="OPTIONAL" user-unit="lb" scope-id="ALASKA" />
+<db-metafield id="eqsFlexString01" scope-level="3" importance="OPTIONAL" short-name="Ctr Srvc" long-name="Container Service" help-label="Notes how this equipment moved to Hawaii:  Matson or Client vessel" group-id="unitRouting" widget-type="DEFAULT" max-chars="6" scope-id="ALASKA" />
+<db-metafield id="eqsFlexString01" scope-level="3" importance="REQUIRED" short-name="Ctr Srvc" long-name="Container Service" help-label="Notes how this equipment moved to Hawaii:  Matson or Client vessel" group-id="unitRouting" widget-type="DEFAULT" max-chars="6" />
+<db-metafield id="eqStrengthCode" scope-level="3" importance="OPTIONAL" short-name="Strength" long-name="Strength Code" widget-type="DEFAULT" max-chars="2" scope-id="ALASKA" />
+<db-metafield id="tvdtlsFlexString01" scope-level="4" importance="REQUIRED" short-name="tagID" long-name="tagID" widget-type="DEFAULT" />
+<db-metafield id="ufvFlexDate04" scope-level="3" importance="OPTIONAL" short-name="Reported Date Time" long-name="Reported Date Time" group-id="none" />
+<db-metafield id="ufvFlexDate05" scope-level="3" importance="OPTIONAL" short-name="AvailDate" long-name="AvailDate" help-label="NIS codeing to Temporarly set begin deliver date in the vessel visit." group-id="unitOther" scope-id="ALASKA" />
+<db-metafield id="ufvFlexString01" scope-level="3" importance="OPTIONAL" short-name="RFS" long-name="RFS Notes" help-label="Enter Notes on RFS" group-id="unitRouting" widget-type="DEFAULT" max-chars="25" scope-id="ALASKA" />
+<db-metafield id="ufvFlexString03" scope-level="3" importance="OPTIONAL" short-name="Yard Location" long-name="Yard Location" group-id="none" widget-type="DEFAULT" max-chars="20" />
+<db-metafield id="ufvFlexString04" scope-level="3" importance="OPTIONAL" short-name="Cntr Number" long-name="Cntr Number" help-label="Comment used when a CMC notification is issued or on events&#xA;06/01/2010 - Renaming Field from Notice Comment and Resuing field for Kulana" group-id="unit" widget-type="DEFAULT" max-chars="20" scope-id="ALASKA" />
+<db-metafield id="ufvFlexString05" scope-level="3" importance="OPTIONAL" short-name="Chas Type" long-name="Chassis Type Required" help-label="Speciality Chassis required for Discharge" group-id="unitRouting" widget-type="LOV_POPUP" max-chars="5">
+  <metafield-lov value="MG" description="With Motor Generator" />
+  <metafield-lov value="MG4" description="440v MG Chassis" />
+  <metafield-lov value="TX" description="Tri Axle" />
+</db-metafield>
+<db-metafield id="ufvFlexString08" scope-level="5" importance="OPTIONAL" short-name="ShipCnee Notes" long-name="Shipper &amp; Consignee Notes" group-id="unitOther" widget-type="DEFAULT" max-chars="255" />
+<db-metafield id="ufvFlexString09" scope-level="3" importance="OPTIONAL" short-name="Do Not BackLoad" long-name="Do Not BackLoad" group-id="unitRouting" widget-type="LOV_POPUP" scope-id="ALASKA">
+  <metafield-lov value="N" description="No" />
+  <metafield-lov value="Y" description="Yes" />
+</db-metafield>
+<db-metafield id="unitFlexString03" scope-level="3" importance="OPTIONAL" short-name="CSR ID" long-name="CSR ID" help-label="Contact CSR in PHX" group-id="contents" widget-type="DEFAULT" max-chars="8" />
+<db-metafield id="unitFlexString04" scope-level="3" importance="OPTIONAL" short-name="Advanced VVD" long-name="Advanced VVD" help-label="Booked Vessel used for Detention Purposes" group-id="equipment" widget-type="DEFAULT" max-chars="6" />
+<db-metafield id="unitFlexString05" scope-level="3" importance="OPTIONAL" short-name="SD Codes" long-name="Stg / Det Code" help-label="Special Codes used for Storage / Detention Calcs" group-id="none" widget-type="DEFAULT" max-chars="5" scope-id="ALASKA" />
+<db-metafield id="unitFlexString09" scope-level="5" importance="OPTIONAL" short-name="Booking Num" long-name="Booking Num" group-id="none" widget-type="DEFAULT" max-chars="20" scope-id="ANK" />
+<db-metafield id="unitFlexString10" scope-level="3" importance="OPTIONAL" short-name="VesVoy" long-name="VesVoy" help-label="Outbound Vessel Voyage" group-id="unitOther" widget-type="DEFAULT" max-chars="7" />
+<db-metafield id="unitFlexString11" scope-level="3" importance="OPTIONAL" short-name="Assigned To" long-name="Assigned To" group-id="none" widget-type="LOV_POPUP" max-chars="10" scope-id="ALASKA">
+  <metafield-lov value="CFS" description="CFS" />
+  <metafield-lov value="CLERK" description="CLERK" />
+  <metafield-lov value="CVS" description="CVS" />
+  <metafield-lov value="CY" description="CY" />
+  <metafield-lov value="FM" description="FM" />
+  <metafield-lov value="NONE" description="NONE" />
+  <metafield-lov value="NOW" description="NOW" />
+  <metafield-lov value="P2" description="P2" />
+  <metafield-lov value="PT" description="PT" />
+  <metafield-lov value="SECURITY" description="SECURITY" />
+  <metafield-lov value="SHOP" description="SHOP" />
+</db-metafield>
+<db-metafield id="unitFlexString13" scope-level="3" importance="OPTIONAL" short-name="Owner" long-name="Container Owner" group-id="none" widget-type="LOV_POPUP" scope-id="ALASKA">
+  <metafield-lov value="ANLC" />
+  <metafield-lov value="ANZU" />
+  <metafield-lov value="APLU" />
+  <metafield-lov value="CCLU" />
+  <metafield-lov value="CPSU" />
+  <metafield-lov value="CSXU" />
+  <metafield-lov value="DOLU" />
+  <metafield-lov value="FHSU" />
+  <metafield-lov value="FSCU" />
+  <metafield-lov value="HLCU" />
+  <metafield-lov value="HSDU" />
+  <metafield-lov value="MAEU" />
+  <metafield-lov value="MSGU" />
+  <metafield-lov value="MSLU" />
+  <metafield-lov value="NYKU" />
+  <metafield-lov value="POLU" />
+  <metafield-lov value="PONU" />
+  <metafield-lov value="SHOW" />
+  <metafield-lov value="ZCSU" />
+</db-metafield>
+<db-metafield id="unitFlexString14" scope-level="2" importance="OPTIONAL" short-name="YB_Trucker" long-name="YB_Trucker" help-label="Using field for ASSIGN_YB_TRUCKER event" group-id="unitRouting" widget-type="DEFAULT" scope-id="MATSON" />
+<db-metafield id="unitFlexString15" scope-level="5" importance="OPTIONAL" short-name="tagId" long-name="WNET tag id" group-id="equipment" widget-type="DEFAULT" max-chars="20" />
+<db-metafield id="eqStrengthCode" scope-level="5" importance="OPTIONAL" short-name="Strength" long-name="Strength Code" widget-type="DEFAULT" />
+<db-metafield id="eqStrengthCode" scope-level="3" importance="OPTIONAL" short-name="Strength" long-name="Strength Code" widget-type="DEFAULT" max-chars="2" />
+<db-metafield id="tranFlexString04" scope-level="2" importance="OPTIONAL" short-name="Purpose (Deliver)" long-name="Purpose (Deliver)" help-label="Purpose of work order out gate transaction&#x9;" group-id="transaction" widget-type="LOV_POPUP" scope-id="MATSON">
+  <metafield-lov value="Charity Event" />
+  <metafield-lov value="Customer Re-Handling" />
+  <metafield-lov value="Customer Request" />
+</db-metafield>
+<db-metafield id="ufvFlexDate01" scope-level="3" importance="OPTIONAL" short-name="PMD" long-name="Premount Date" help-label="Date &amp; Time ** needs to be between 00:01 and 23:58" group-id="equipment" />
+<db-metafield id="ufvFlexDate06" scope-level="3" importance="OPTIONAL" short-name="KHI AvailDate" long-name="KHI AvailDate" group-id="unitOther" scope-id="ALASKA" />
+<db-metafield id="ufvFlexString01" scope-level="3" importance="OPTIONAL" short-name="RFS" long-name="RFS Notes" help-label="Enter Notes on RFS" group-id="unitRouting" widget-type="DEFAULT" max-chars="25" />
+<db-metafield id="ufvFlexString05" scope-level="3" importance="OPTIONAL" short-name="Chas Type" long-name="Chassis Type Required" help-label="Speciality Chassis required for Discharge" group-id="unitRouting" widget-type="LOV_POPUP" max-chars="5" scope-id="ALASKA">
+  <metafield-lov value="AFFSC" />
+  <metafield-lov value="AKWDD" />
+  <metafield-lov value="APLSC" />
+  <metafield-lov value="BELLY" />
+  <metafield-lov value="BJW" />
+  <metafield-lov value="L" />
+  <metafield-lov value="MAT20" />
+  <metafield-lov value="MG" description="With Motor Generator" />
+  <metafield-lov value="MG4" description="440v MG Chassis" />
+  <metafield-lov value="PL" />
+  <metafield-lov value="PT" />
+  <metafield-lov value="TX" description="Tri Axle" />
+</db-metafield>
+<db-metafield id="unitFlexString05" scope-level="3" importance="OPTIONAL" short-name="SD Codes" long-name="Stg / Det Code" help-label="Special Codes used for Storage / Detention Calcs" group-id="none" widget-type="DEFAULT" max-chars="5" />
+<db-metafield id="unitFlexString06" scope-level="3" importance="OPTIONAL" short-name="STIF Shpr" long-name="STIF Shipper" help-label="STIF Shipper" group-id="unitRouting" widget-type="DEFAULT" max-chars="20" />
+<db-metafield id="unitFlexString11" scope-level="3" importance="OPTIONAL" short-name="Assigned To" long-name="Assigned To" group-id="none" widget-type="LOV_POPUP" max-chars="10">
+  <metafield-lov value="CFS" description="CFS" />
+  <metafield-lov value="CLERK" description="CLERK" />
+  <metafield-lov value="CVS" description="CVS" />
+  <metafield-lov value="CY" description="CY" />
+  <metafield-lov value="FM" description="FM" />
+  <metafield-lov value="NONE" description="NONE" />
+  <metafield-lov value="NOW" description="NOW" />
+  <metafield-lov value="P2" description="P2" />
+  <metafield-lov value="PT" description="PT" />
+  <metafield-lov value="SECURITY" description="SECURITY" />
+  <metafield-lov value="SHOP" description="SHOP" />
+</db-metafield>
+<db-metafield id="unitFlexString15" scope-level="2" importance="OPTIONAL" short-name="UCC" long-name="UCC" group-id="unitRouting" widget-type="DEFAULT" scope-id="MATSON" />
+<db-metafield id="tvdtlsFlexString01" scope-level="5" importance="OPTIONAL" short-name="Tran Commodity" long-name="Tran Commodity" group-id="transaction" widget-type="DEFAULT" scope-id="ANK" />
+<db-metafield id="tranFlexString03" scope-level="2" importance="OPTIONAL" short-name="Yard Row" long-name="Yard Row" widget-type="DEFAULT" scope-id="MATSON" />
+<db-metafield id="ufvFlexString02" scope-level="3" importance="OPTIONAL" short-name="Chas Type" long-name="Chassis Type Required" help-label="Speciality Chassis required for Discharge" group-id="unitRouting" widget-type="LOV_POPUP" max-chars="5" scope-id="ALASKA">
+  <metafield-lov value="MG" description="With Motor Generator" />
+  <metafield-lov value="MG4" description="440v MG Chassis" />
+  <metafield-lov value="TX" description="Tri Axle" />
+</db-metafield>
+<db-metafield id="unitFlexString08" scope-level="3" importance="OPTIONAL" short-name="PS" long-name="Priority Stow" group-id="unitRouting" widget-type="DEFAULT" max-chars="5" />
+<db-metafield id="tranFlexString01" scope-level="2" importance="OPTIONAL" short-name="ECC" long-name="ECC" group-id="trancontainer" widget-type="LOV_POPUP" scope-id="MATSON">
+  <metafield-lov value="AT" description="Advance Transportation" />
+  <metafield-lov value="BT" description="Beyond Transportation" />
+  <metafield-lov value="CO" description="Company Business" />
+  <metafield-lov value="CP" description="Customer notified, not released" />
+  <metafield-lov value="CT" description="Clean Tank" />
+  <metafield-lov value="CW" description="Cargo Worthy" />
+  <metafield-lov value="DE" description="NEW DOWNLOAD - UNKNOWN DESCRIPTION" />
+  <metafield-lov value="DG" description="Deadline and Grounded" />
+  <metafield-lov value="DL" description="Deadline" />
+  <metafield-lov value="DT" description="Dirty Tank" />
+  <metafield-lov value="DY" description="Reefer available for dry loading" />
+  <metafield-lov value="EA" description="Department of Agriculture hold" />
+  <metafield-lov value="EB" description="Origin ramp to dest door domestic service" />
+  <metafield-lov value="ED" description="Door to Door domestic service" />
+  <metafield-lov value="EF" description="NEW DOWNLOAD - UNKNOWN DESCRIPTION" />
+  <metafield-lov value="EI" description="Equipment reposition, incentive charges due SHP" />
+  <metafield-lov value="EN" description="Equipment reposition, no charges collected or due" />
+  <metafield-lov value="EP" description="Empty paid positioning" />
+  <metafield-lov value="EQ" description="Equipment reposition, incentive changes due SHP" />
+  <metafield-lov value="ER" description="Ramp to Ramp non-unit train service" />
+  <metafield-lov value="EU" description="Ramp to Ramp Domestic unit train service" />
+  <metafield-lov value="FC" description="Found Container" />
+  <metafield-lov value="GR" description="Grounded" />
+  <metafield-lov value="IC" description="Inbound local CFS" />
+  <metafield-lov value="IO" description="Inbound overland common point (OCP)" />
+  <metafield-lov value="LA" description="Inland rail dispatch" />
+  <metafield-lov value="LB" description="Inland Rail Dispatch" />
+  <metafield-lov value="LC" description="Inland rail dispatch" />
+  <metafield-lov value="LD" description="Inland rail dispatch" />
+  <metafield-lov value="LE" description="Inland Rail Dispatch" />
+  <metafield-lov value="LF" description="Inland Rail Dispatch" />
+  <metafield-lov value="LG" description="Inland Rail Dispatch" />
+  <metafield-lov value="LH" description="Inland rail dispatch" />
+  <metafield-lov value="LI" description="Inland Rail Dispatch" />
+  <metafield-lov value="LJ" description="Inland Rail Dispatch" />
+  <metafield-lov value="LK" description="Inland Rail Dispatch" />
+  <metafield-lov value="LL" description="Inland rail dispatch" />
+  <metafield-lov value="LM" description="Inland rail dispatch" />
+  <metafield-lov value="LN" description="Inland rail dispatch" />
+  <metafield-lov value="LO" description="NULL" />
+  <metafield-lov value="LP" description="Inland rail dispatch" />
+  <metafield-lov value="LQ" description="Inland Rail Dispatch" />
+  <metafield-lov value="LR" description="Inland rail dispatch" />
+  <metafield-lov value="LS" description="Inland rail dispatch" />
+  <metafield-lov value="LT" description="Inland rail dispatch" />
+  <metafield-lov value="LU" description="Inland Rail Dispatch" />
+  <metafield-lov value="LV" description="Inland Rail Dispatch" />
+  <metafield-lov value="LW" description="Inland Rail Dispatch" />
+  <metafield-lov value="LX" description="Inland rail dispatch" />
+  <metafield-lov value="LY" description="Inland Rail Dispatch" />
+  <metafield-lov value="LZ" description="Inland Rail Dispatch" />
+  <metafield-lov value="MS" description="Staged for military loading" />
+  <metafield-lov value="OF" description="Off-Hire eligible" />
+  <metafield-lov value="P" description="NULL" />
+  <metafield-lov value="PA" description="Awaiting POS" />
+  <metafield-lov value="PB" description="Pool, Box" />
+  <metafield-lov value="PC" description="Pool, Consignee" />
+  <metafield-lov value="PH" description="Priority Load (HOT)" />
+  <metafield-lov value="PL" description="Partial Load" />
+  <metafield-lov value="PO" description="Permanently out of service (POS)" />
+  <metafield-lov value="PT" description="Pre-tripped reefer" />
+  <metafield-lov value="RB" description="Reserved for booking" />
+  <metafield-lov value="RD" description="Reserved deadline" />
+  <metafield-lov value="RI" description="Reserved by ITS" />
+  <metafield-lov value="RM" description="Requires maintenance" />
+  <metafield-lov value="RV" description="Reserved for vessel" />
+  <metafield-lov value="RW" description="Reserved for warehouse" />
+  <metafield-lov value="RY" description="Reserved for yard" />
+  <metafield-lov value="ST" description="Stored container" />
+  <metafield-lov value="SV" description="Serviced Reefer" />
+  <metafield-lov value="UG" description="Unchecked and grounded" />
+  <metafield-lov value="WA" description="Washed reefer" />
+  <metafield-lov value="XX" description="NULL" />
+  <metafield-lov value="ZZ" description="NEW DOWNLOAD - UNKNOWN DESCRIPTION" />
+  <metafield-lov />
+</db-metafield>
+<db-metafield id="unitFlexString02" scope-level="3" importance="OPTIONAL" short-name="Release To" long-name="Release To Party" help-label="Release To Party" group-id="unitRouting" widget-type="DEFAULT" max-chars="50" scope-id="ALASKA" />
+<db-metafield id="unitFlexString09" scope-level="3" importance="OPTIONAL" short-name="Booking Num" long-name="Booking Num" help-label="Export Booking #" group-id="none" widget-type="DEFAULT" max-chars="20" scope-id="ALASKA" />
+<db-metafield id="ufvFlexString08" scope-level="2" importance="OPTIONAL" short-name="ECC" long-name="ECC" group-id="unitRouting" widget-type="LOV_POPUP" scope-id="MATSON">
+  <metafield-lov value="AT" description="Advance Transportation" />
+  <metafield-lov value="BT" description="Beyond Transportation" />
+  <metafield-lov value="CO" description="Company Business" />
+  <metafield-lov value="CP" description="Customer notified, not released" />
+  <metafield-lov value="CT" description="Clean Tank" />
+  <metafield-lov value="CW" description="Cargo Worthy" />
+  <metafield-lov value="DE" description="NEW DOWNLOAD - UNKNOWN DESCRIPTION" />
+  <metafield-lov value="DG" description="Deadline and Grounded" />
+  <metafield-lov value="DL" description="Deadline" />
+  <metafield-lov value="DT" description="Dirty Tank" />
+  <metafield-lov value="DY" description="Reefer available for dry loading" />
+  <metafield-lov value="EA" description="Department of Agriculture hold" />
+  <metafield-lov value="EB" description="Origin ramp to dest door domestic service" />
+  <metafield-lov value="ED" description="Door to Door domestic service" />
+  <metafield-lov value="EF" description="NEW DOWNLOAD - UNKNOWN DESCRIPTION" />
+  <metafield-lov value="EI" description="Equipment reposition, incentive charges due SHP" />
+  <metafield-lov value="EN" description="Equipment reposition, no charges collected or due" />
+  <metafield-lov value="EP" description="Empty paid positioning" />
+  <metafield-lov value="EQ" description="Equipment reposition, incentive changes due SHP" />
+  <metafield-lov value="ER" description="Ramp to Ramp non-unit train service" />
+  <metafield-lov value="EU" description="Ramp to Ramp Domestic unit train service" />
+  <metafield-lov value="FC" description="Found Container" />
+  <metafield-lov value="GR" description="Grounded" />
+  <metafield-lov value="IC" description="Inbound local CFS" />
+  <metafield-lov value="IO" description="Inbound overland common point (OCP)" />
+  <metafield-lov value="LA" description="Inland rail dispatch" />
+  <metafield-lov value="LB" description="Inland Rail Dispatch" />
+  <metafield-lov value="LC" description="Inland rail dispatch" />
+  <metafield-lov value="LD" description="Inland rail dispatch" />
+  <metafield-lov value="LE" description="Inland Rail Dispatch" />
+  <metafield-lov value="LF" description="Inland Rail Dispatch" />
+  <metafield-lov value="LG" description="Inland Rail Dispatch" />
+  <metafield-lov value="LH" description="Inland rail dispatch" />
+  <metafield-lov value="LI" description="Inland Rail Dispatch" />
+  <metafield-lov value="LJ" description="Inland Rail Dispatch" />
+  <metafield-lov value="LK" description="Inland Rail Dispatch" />
+  <metafield-lov value="LL" description="Inland rail dispatch" />
+  <metafield-lov value="LM" description="Inland rail dispatch" />
+  <metafield-lov value="LN" description="Inland rail dispatch" />
+  <metafield-lov value="LO" description="NULL" />
+  <metafield-lov value="LP" description="Inland rail dispatch" />
+  <metafield-lov value="LQ" description="Inland Rail Dispatch" />
+  <metafield-lov value="LR" description="Inland rail dispatch" />
+  <metafield-lov value="LS" description="Inland rail dispatch" />
+  <metafield-lov value="LT" description="Inland rail dispatch" />
+  <metafield-lov value="LU" description="Inland Rail Dispatch" />
+  <metafield-lov value="LV" description="Inland Rail Dispatch" />
+  <metafield-lov value="LW" description="Inland Rail Dispatch" />
+  <metafield-lov value="LX" description="Inland rail dispatch" />
+  <metafield-lov value="LY" description="Inland Rail Dispatch" />
+  <metafield-lov value="LZ" description="Inland Rail Dispatch" />
+  <metafield-lov value="MS" description="Staged for military loading" />
+  <metafield-lov value="OF" description="Off-Hire eligible" />
+  <metafield-lov value="P" description="NULL" />
+  <metafield-lov value="PA" description="Awaiting POS" />
+  <metafield-lov value="PB" description="Pool, Box" />
+  <metafield-lov value="PC" description="Pool, Consignee" />
+  <metafield-lov value="PH" description="Priority Load (HOT)" />
+  <metafield-lov value="PL" description="Partial Load" />
+  <metafield-lov value="PO" description="Permanently out of service (POS)" />
+  <metafield-lov value="PT" description="Pre-tripped reefer" />
+  <metafield-lov value="RB" description="Reserved for booking" />
+  <metafield-lov value="RD" description="Reserved deadline" />
+  <metafield-lov value="RI" description="Reserved by ITS" />
+  <metafield-lov value="RM" description="Requires maintenance" />
+  <metafield-lov value="RV" description="Reserved for vessel" />
+  <metafield-lov value="RW" description="Reserved for warehouse" />
+  <metafield-lov value="RY" description="Reserved for yard" />
+  <metafield-lov value="ST" description="Stored container" />
+  <metafield-lov value="SV" description="Serviced Reefer" />
+  <metafield-lov value="UG" description="Unchecked and grounded" />
+  <metafield-lov value="WA" description="Washed reefer" />
+  <metafield-lov value="XX" description="NULL" />
+  <metafield-lov value="ZZ" description="NEW DOWNLOAD - UNKNOWN DESCRIPTION" />
+  <metafield-lov />
+</db-metafield>
+<db-metafield id="unitFlexString13" scope-level="3" importance="OPTIONAL" short-name="Owner" long-name="Container Owner" group-id="none" widget-type="LOV_POPUP">
+  <metafield-lov value="ANLC" />
+  <metafield-lov value="ANZU" />
+  <metafield-lov value="APLU" />
+  <metafield-lov value="CCLU" />
+  <metafield-lov value="CPSU" />
+  <metafield-lov value="CSXU" />
+  <metafield-lov value="DOLU" />
+  <metafield-lov value="FHSU" />
+  <metafield-lov value="FSCU" />
+  <metafield-lov value="HLCU" />
+  <metafield-lov value="HSDU" />
+  <metafield-lov value="MAEU" />
+  <metafield-lov value="MSGU" />
+  <metafield-lov value="MSLU" />
+  <metafield-lov value="NYKU" />
+  <metafield-lov value="POLU" />
+  <metafield-lov value="PONU" />
+  <metafield-lov value="SHOW" />
+  <metafield-lov value="ZCSU" />
+</db-metafield>
+<db-metafield id="tranFlexString08" scope-level="3" importance="OPTIONAL" short-name="Gate Notes" long-name="Gate Notes" group-id="transaction" widget-type="DEFAULT" scope-id="ALASKA" />
+<db-metafield id="ufvFlexString03" scope-level="3" importance="OPTIONAL" short-name="Yard Location" long-name="Yard Location" group-id="none" widget-type="DEFAULT" max-chars="20" scope-id="ALASKA" />
+<db-metafield id="ufvFlexString09" scope-level="5" importance="OPTIONAL" short-name="Do Not BackLoad" long-name="Do Not BackLoad" group-id="unitRouting" widget-type="LOV_POPUP" scope-id="ANK">
+  <metafield-lov value="N" description="No" />
+  <metafield-lov value="Y" description="Yes" />
+</db-metafield>
+<db-metafield id="ufvFlexString09" scope-level="4" importance="OPTIONAL" short-name="Do Not BackLoad" long-name="Do Not BackLoad" group-id="unitRouting" widget-type="LOV_POPUP" scope-id="ANK">
+  <metafield-lov value="N" description="No" />
+  <metafield-lov value="Y" description="Yes" />
+</db-metafield>
+<db-metafield id="lineopDOTHazCarrierCertNbr" scope-level="2" importance="OPTIONAL" short-name="HAZ CCN" long-name="DOT Haz Mat CCN" widget-type="DEFAULT" scope-id="MATSON" />
+<db-metafield id="ufvFlexDate05" scope-level="3" importance="OPTIONAL" short-name="AvailDate" long-name="AvailDate" help-label="NIS codeing to Temporarly set begin deliver date in the vessel visit." group-id="unitOther" />
+<db-metafield id="unitFlexString03" scope-level="3" importance="OPTIONAL" short-name="CSR ID" long-name="CSR ID" help-label="Contact CSR in PHX" group-id="contents" widget-type="DEFAULT" max-chars="8" scope-id="ALASKA" />
+<db-metafield id="ufvFlexString07" scope-level="3" importance="OPTIONAL" short-name="BkgTemp" long-name="Bkg Temp Reqd" help-label="Temperature Required per Booking. Can be a single temperature, a dual temperature, AMB for Ambient, or KFF for Keep From Freezing. For example: AMB; KFF; -10; -15/-5. Numeric values are assumed in Fahrenheit." group-id="unitReefer" widget-type="DEFAULT" scope-id="ALASKA" />
+<db-metafield id="ufvFlexDate02" scope-level="3" importance="OPTIONAL" short-name="Avail Date" long-name="Available Date" help-label="Date available for pickup from yard" group-id="unit" scope-id="ALASKA" />
+<db-metafield id="tvdtlsFlexString01" scope-level="5" importance="OPTIONAL" short-name="WNETtag" long-name="WNET ctr and tag" group-id="truckvisit" widget-type="DEFAULT" max-chars="50" />
+<db-metafield id="cvNextFacility" scope-level="2" importance="OPTIONAL" short-name="Next Facility" long-name="Next Facility" scope-id="MATSON" />
+<db-metafield id="eqsFlexString01" scope-level="5" importance="OPTIONAL" short-name="Ctr Srvc" long-name="Container Service" help-label="Notes how this equipment moved to Hawaii:  Matson or Client vessel.  " group-id="unitRouting" widget-type="DEFAULT" max-chars="6" />
+<db-metafield id="unitGoodsAndCtrWtKgYardMeasured" scope-level="3" importance="OPTIONAL" user-unit="lb" />
+<db-metafield id="ufvFlexString07" scope-level="3" importance="OPTIONAL" short-name="Temp. Setting" long-name="Temp. Setting" group-id="contents" widget-type="DEFAULT" />
+<db-metafield id="unitFlexString02" scope-level="3" importance="OPTIONAL" short-name="Release To" long-name="Release To Party" help-label="Release To Party" group-id="unitRouting" widget-type="DEFAULT" max-chars="50" />
+<db-metafield id="unitFlexString07" scope-level="3" importance="OPTIONAL" short-name="NIS_TRUCKER" long-name="NIS_TRUCKER" group-id="unitRouting" widget-type="DEFAULT" />
+<db-metafield id="ufvFlexDate04" scope-level="3" importance="OPTIONAL" short-name="Reported Date Time" long-name="Reported Date Time" group-id="none" scope-id="ALASKA" />
+<db-metafield id="unitFlexString07" scope-level="3" importance="OPTIONAL" short-name="Dray Out Purpose" long-name="Dray Out Purpose" help-label="To capture the reason for doing Dray out." group-id="unitRouting" widget-type="LOV_POPUP" scope-id="ALASKA">
+  <metafield-lov value="Charity Event" />
+  <metafield-lov value="Customer Re-handling" />
+  <metafield-lov value="Customer Request" />
+</db-metafield>
+<db-metafield id="unitFlexString04" scope-level="3" importance="OPTIONAL" short-name="Advanced VVD" long-name="Advanced VVD" help-label="Booked Vessel used for Detention Purposes" group-id="equipment" widget-type="DEFAULT" max-chars="6" scope-id="ALASKA" />
+<db-metafield id="unitFlexString08" scope-level="5" importance="OPTIONAL" short-name="Priority Stow" long-name="Priority Stow" group-id="position" widget-type="DEFAULT" scope-id="ANK" />
+<db-metafield id="unitFlexString10" scope-level="3" importance="OPTIONAL" short-name="VesVoy" long-name="VesVoy" help-label="Outbound Vessel Voyage" group-id="unitOther" widget-type="DEFAULT" max-chars="7" scope-id="ALASKA" />
+<db-metafield id="ufvFlexDate06" scope-level="3" importance="OPTIONAL" short-name="KHI AvailDate" long-name="KHI AvailDate" group-id="unitOther" />
+<db-metafield id="unitFlexString14" scope-level="3" importance="OPTIONAL" short-name="Dray In Purpose" long-name="Dray In Purpose" help-label="To capture reason for doing Dray In" group-id="unitRouting" widget-type="LOV_POPUP" scope-id="ALASKA">
+  <metafield-lov value="Charity Event" />
+  <metafield-lov value="Customer Request" />
+  <metafield-lov value="Line Equipment" />
+  <metafield-lov value="Others" />
+  <metafield-lov value="Split Move" />
+</db-metafield>
+<db-metafield id="unitFlexString09" scope-level="3" importance="OPTIONAL" short-name="Booking Num" long-name="Booking Num" help-label="Export Booking #" group-id="none" widget-type="DEFAULT" max-chars="20" />
+<db-metafield id="ufvFlexString04" scope-level="3" importance="OPTIONAL" short-name="Cntr Number" long-name="Cntr Number" help-label="Comment used when a CMC notification is issued or on events&#xA;06/01/2010 - Renaming Field from Notice Comment and Resuing field for Kulana" group-id="unit" widget-type="DEFAULT" max-chars="20" />
+<db-metafield id="ufvFlexString07" scope-level="4" importance="OPTIONAL" short-name="Temp. Setting" long-name="Temp. Setting" group-id="unitReefer" widget-type="DEFAULT" scope-id="ANK" />
+<db-metafield id="unitFlexString12" scope-level="3" importance="OPTIONAL" short-name="MIL_TCN" long-name="Military TCN" help-label="Military TCN (Transportation Control Number)" group-id="none" widget-type="DEFAULT" max-chars="20" />
+<db-metafield id="unitFlexString12" scope-level="3" importance="OPTIONAL" short-name="Blips" long-name="Blips" help-label="Blips" group-id="unitRouting" widget-type="DEFAULT" max-chars="50" scope-id="ALASKA" />
+<db-metafield id="ufvFlexDate03" scope-level="3" importance="OPTIONAL" short-name="Det Last Free Day" long-name="Detention Last Free Day" help-label="Detention Last Free Day" group-id="unit" />
+<db-metafield id="ufvFlexDate03" scope-level="3" importance="OPTIONAL" short-name="Det Last Free Day" long-name="Detention Last Free Day" help-label="Detention Last Free Day" group-id="unit" scope-id="ALASKA" />
+<db-metafield id="tranFlexString06" scope-level="5" importance="OPTIONAL" short-name="Tran Commodity" long-name="Tran Commodity" group-id="transaction" widget-type="DEFAULT" scope-id="ANK" />
+<db-metafield id="ufvFlexString10" scope-level="3" importance="OPTIONAL" short-name="Minor Location" long-name="Minor Location" group-id="unitRouting" widget-type="DEFAULT" max-chars="7" scope-id="ALASKA" />
+<db-metafield id="unitGoodsAndCtrWtKgAdvised" scope-level="3" importance="OPTIONAL" user-unit="lb" scope-id="ALASKA" />
+<db-metafield id="unitGoodsAndCtrWtKgGateMeasured" scope-level="3" importance="OPTIONAL" user-unit="lb" />
+</argo:snx>
+

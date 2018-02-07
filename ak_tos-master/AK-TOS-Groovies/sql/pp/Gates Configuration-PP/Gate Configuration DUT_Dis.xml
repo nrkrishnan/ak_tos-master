@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gateConfiguration name="DUT_Dis" description="Gate Config. for DUT Dispatcher">
+  <gateStages>
+    <inStage id="ingate" leg="in" menuId="In Gate" order="10" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" autoStage="false" isTruckVisitRequired="false" pollNextTruck="false" pollTruckInterval="" extraTime="" timeAllowed="" allowAnyStage="false" exchangeLaneAssignmentBooth="false" allowTransactionEdit="false" includeAppointmentTab="" appointmentsTabFilterId="" includeGroupsTab="" cargoLotsFilterId="" supportsCallup="false" isExcluded="false">
+      <stagesAllowed />
+    </inStage>
+    <outStage id="outgate" leg="out" menuId="Out Gate" order="50" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" autoStage="false" isTruckVisitRequired="false" pollNextTruck="false" pollTruckInterval="" extraTime="" timeAllowed="" allowAnyStage="false" exchangeLaneAssignmentBooth="false" allowTransactionEdit="false" includeAppointmentTab="" appointmentsTabFilterId="" includeGroupsTab="" cargoLotsFilterId="" supportsCallup="false" isExcluded="false">
+      <stagesAllowed>
+        <stageAllowed id="ingate" />
+      </stagesAllowed>
+    </outStage>
+  </gateStages>
+  <gateStageSubTypes>
+    <gateStagesDM>
+      <outStage id="outgate" leg="out" addAllowed="false" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectOrderNotFound" include="true" />
+          <bizTask name="RejectOrderItemTallyExceeded" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectOrderHold" include="true" />
+          <bizTask name="RejectContainerNotAtFacility" include="true" />
+          <bizTask name="RejectContainerNotInYard" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectContainerNotEmpty" include="true" />
+          <bizTask name="IncrementOrderItemTally" include="true" />
+          <bizTask name="RejectContainerReserved" include="true" />
+          <bizTask name="CreateUnitDeparting" customCode="MATSetGateCarrierVisitNoTruck" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="true" />
+          </bizTask>
+          <bizTask name="ApplyContainerNotes" include="true" />
+          <bizTask name="PlaceUnitOnTruck" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranEqoNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="HIDDEN" fieldRequired="false" />
+          <uiField fieldId="unitFlexString12" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDM>
+    <gateStagesDE>
+      <outStage id="outgate" leg="out" addAllowed="false" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadReleaseNbr-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadDischargePoint1-->
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerNotInYard" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectContainerNotExport" include="true" />
+          <bizTask name="RejectContainerNotDrayOff" include="true" />
+          <bizTask name="ApplyContainerSeals" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" include="true" />
+          <bizTask name="CreateUnitDeparting" customCode="MATSetGateCarrierVisitNoTruck" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="true" />
+          </bizTask>
+          <bizTask name="PlaceUnitOnTruck" include="true" />
+          <bizTask name="LogHazardMission" include="true" />
+          <bizTask name="LogOverDimensionMission" include="true" />
+          <bizTask name="LogReeferMission" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranEqoNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranConsignee" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrGrossWeight" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="HIDDEN" fieldRequired="false" />
+          <uiField fieldId="unitFlexString12" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDE>
+    <gateStagesRM>
+      <inStage id="ingate" leg="in" addAllowed="false" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadUnitPreadvised-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectContainerNotFound" customCode="MATSetCtrAndLineOperator" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerInYard" include="true" />
+          <bizTask name="CreateContainerVisit" customCode="MATSetGateCarrierVisitNoTruck" include="true" />
+          <bizTask name="ApplyPhysicalDetails" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="MATSetUnitFlex" include="true" />
+          <bizTask name="ApplyContainerNotes" include="true" />
+          <bizTask name="ApplyReeferDetails" include="true" />
+          <bizTask name="PlaceContainerOnTruck" include="true" />
+          <bizTask name="PlaceUnitIntoYard" customCode="MATPlaceUnitInYardHeap" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="unitFlexString15" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="HIDDEN" fieldRequired="false" />
+          <uiField fieldId="unitFlexString12" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </inStage>
+    </gateStagesRM>
+    <gateStagesDI>
+      <outStage id="outgate" leg="out" addAllowed="false" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadReleaseNbr-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerNotAtFacility" include="true" />
+          <bizTask name="RejectContainerNotInYard" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectImportContainerDepartingByVessel" include="true" />
+          <bizTask name="RejectContainerNotImport" include="true" />
+          <bizTask name="RejectContainerNotImportAndNotDrayOff" include="true" />
+          <bizTask name="RejectConditionTrue" include="true">
+            <parameter id="andComparisonOperator" value="" />
+            <parameter id="andFieldId" value="" />
+            <parameter id="andValue" value="" />
+            <parameter id="comparisonOperator" value="&lt;&gt;" />
+            <parameter id="fieldId" value="tranDischargePoint1.pointId" />
+            <parameter id="messageLevel" value="ERROR" />
+            <parameter id="userMessageNbr" value="4" />
+            <parameter id="value" value="DUT" />
+          </bizTask>
+          <bizTask name="CreateUnitDeparting" customCode="MATSetGateCarrierVisitNoTruck" include="true" />
+          <!--System Task ReadAccessory-->
+          <bizTask name="ApplyContainerNotes" include="true" />
+          <bizTask name="ApplyContainerSeals" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="true" />
+          </bizTask>
+          <bizTask name="PlaceUnitOnTruck" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrGrossWeight" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="HIDDEN" fieldRequired="false" />
+          <uiField fieldId="tranDischargePoint1" fieldDisplayMode="HIDDEN" fieldRequired="false" />
+          <uiField fieldId="unitFlexString12" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDI>
+  </gateStageSubTypes>
+  <gateStageTruckVisit>
+    <inStage id="ingate" leg="in" autoStage="false" isTruckVisitRequired="false" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" pollNextTruck="false" pollTruckInterval="" allowAnyStage="false" supportsCallup="false" isExcluded="false">
+      <bizTasks>
+        <!--System Task ReadTruckVisitAppointment-->
+        <!--System Task ReadTruck-->
+        <!--System Task ReadDriver-->
+        <!--System Task ReadTruckVisitAppointment-->
+        <!--System Task ReadTruck-->
+        <!--System Task ReadDriver-->
+        <!--System Task SelectChassisProfile-->
+      </bizTasks>
+      <uiForm>
+        <uiField fieldId="tvdtlsDriverName" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tTranCtrNumber" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+      </uiForm>
+    </inStage>
+    <outStage id="outgate" leg="out" autoStage="false" isTruckVisitRequired="false" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" pollNextTruck="false" pollTruckInterval="" allowAnyStage="false" supportsCallup="false" isExcluded="false">
+      <bizTasks>
+        <bizTask name="CheckTruckOKAtStage" include="true" />
+        <!--System Task ReadTruck-->
+        <!--System Task ReadTruck-->
+        <bizTask name="DepartUnit" include="true" />
+        <bizTask name="DepartTruckVisit" include="true" />
+      </bizTasks>
+      <uiForm>
+        <uiField fieldId="tvdtlsDriverName" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tTranCtrNumber" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+      </uiForm>
+    </outStage>
+  </gateStageTruckVisit>
+</gateConfiguration>
+

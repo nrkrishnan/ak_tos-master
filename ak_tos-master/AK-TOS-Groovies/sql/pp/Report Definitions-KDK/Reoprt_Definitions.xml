@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<report-definition name="WHEEL TICKETS" report-design="WHEEL_TICKETS" output-type="PDF" reporting-entity="Unit" display-title="WHEEL TICKETS REPORT" report-type="SQL">
+  <roles>
+    <role name="ak_filter" />
+    <role name="ak_marine" />
+    <role name="ak_unit_view" />
+    <role name="ak_report_role" />
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="WHARFAGE - INBOUND - KODIAK" report-design="WHARFAGE - INBOUND - KODIAK" output-type="PDF" reporting-entity="Unit" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_marine" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvUnit.unitRouting.rtgPOD1.pointId" order="ASCENDING" />
+    <sort-field-2 field-id="ufvUnit.unitGoods.gdsDestination" order="ASCENDING" />
+    <sort-field-3 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="MAERSK DUT INVENTORY REPORT NON EMPTIES" report-design="DUT INVENTORY REPORT NON EMPTIES" output-type="XLS" reporting-entity="Unit" description="Non-empties MAE containers in yard" display-title="Maersk Non-Empty Containers in Yard at DUT" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_dut_gate_supervisor" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="ufvUnit.unitLineOperator" value="^MAE/LINEOP" ui-value="MAE" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="OVERSIZE CARGO - INBOUND - KODIAK" report-design="OVERSIZE CARGO - INBOUND - KODIAK" output-type="PDF" reporting-entity="Unit" report-type="N4HQL">
+  <roles>
+    <role name="ak_kdk_marine" />
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="REEFER CARGO - OUTBOUND - KODIAK" report-design="REEFER CARGO - OUTBOUND - KODIAK" output-type="PDF" reporting-entity="Unit" report-type="N4HQL">
+  <roles>
+    <role name="ak_marine" />
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="KODIAK COMMUNITY REPORT" report-design="KODIAK COMMUNITY REPORT" output-type="XLS" reporting-entity="Unit" description="KODIAK COMMUNITY REPORT" display-title="KODIAK COMMUNITY REPORT" report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_report_role" />
+    <role name="DevTeam ReadOnly" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="ANK WT LOADS (27.5 TONNES)" report-design="ANK WT (27.5 TONNES)" output-type="PDF" reporting-entity="Unit" description="ANK WT LOADS (27.5 TONNES)" display-title="WT" report-type="SQL">
+  <roles>
+    <role name="DevTeam ReadOnly" />
+    <role name="DevTeam" />
+    <role name="ak_unit_view" />
+    <role name="ak_report_role" />
+    <role name="ak_filter" />
+    <role name="ak_marine" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="ALASKA HOT LOADS" report-design="ALASKA HOT (PRIORITY STOW)" output-type="PDF" reporting-entity="Unit" description="ALASKA HOT LOADS (STOW FACTOR AS HOT)" report-type="SQL">
+  <roles>
+    <role name="ak_filter" />
+    <role name="DevTeam ReadOnly" />
+    <role name="ak_unit_view" />
+    <role name="DevTeam" />
+    <role name="ak_marine" />
+    <role name="ak_report_role" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="ALASKA INBOUND EMPTY" report-design="ALASKA INBOUND EMPTY ON VESSEL" output-type="PDF" reporting-entity="Unit" description="EMPTY CONTAINERS INBOUND ON VESSEL" report-type="SQL">
+  <roles>
+    <role name="ak_report_role" />
+    <role name="ak_filter" />
+    <role name="ak_marine" />
+    <role name="DevTeam" />
+    <role name="ak_unit_view" />
+    <role name="DevTeam ReadOnly" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="KDK  INVENTORY REPORT NON EMPTIES FOR MAE" report-design="KDK  INVENTORY REPORT NON EMPTIES FOR MAE" output-type="XLS" reporting-entity="Unit" description="KDK INVENTORY REPORT NON EMPTIES FOR MAE" display-title="KDK  INVENTORY REPORT NON EMPTIES FOR MAE" report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_kdk_marine" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="SDP COMMUNITY REPORT - DO NOT USE - UNDER REVIEW" report-design="SDP COMMUNITY REPORT - DO NOT USE - UNDER REVIEW" output-type="XLS" reporting-entity="Unit" description="SDP COMMUNITY REPORT - DO NOT USE - UNDER REVIEW" display-title="SANDPOINT COMMUNITY REPORT " report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="NYK KDK COMMUNITY REPORT" report-design="KDK NYK  COMMUNITY REPORT" output-type="XLS" reporting-entity="UnitComplexVisit" description="NYK KDK COMMUNITY REPORT" display-title="NYK KDK COMMUNITY REPORT" report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="WHARFAGE - OUTBOUND - KODIAK" report-design="WHARFAGE - OUTBOUND - KODIAK" output-type="PDF" reporting-entity="Unit" report-type="N4HQL">
+  <roles>
+    <role name="ak_marine" />
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvUnit.unitRouting.rtgPOD1.pointId" order="ASCENDING" />
+    <sort-field-2 field-id="ufvUnit.unitGoods.gdsDestination" order="ASCENDING" />
+    <sort-field-3 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="MAERSK KDK EMPTIES REPORT" report-design="MAERSK KDK EMPTIES REPORT" output-type="XLS" reporting-entity="Unit" description="MAERSK KDK EMPTIES REPORT" display-title="Maersk Non-Empty Containers in Yard at KDK" report-type="N4HQL">
+  <roles>
+    <role name="ak_kdk_gate" />
+    <role name="DevTeam" />
+    <role name="ak_kdk_general_user" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvLastKnownPosition.posLocId" order="ASCENDING" />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="MAERSK KDK REEFER REPORT" report-design="MAERSK KDK REEFER REPORT" output-type="XLS" reporting-entity="Unit" description="MAERSK KDK REEFER REPORT" display-title="MAERSK KDK REEFER REPORT" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_kdk_gate" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="REEFER CARGO - INBOUND - KODIAK" report-design="REEFER CARGO - INBOUND - KODIAK" output-type="PDF" reporting-entity="Unit" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_marine" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="OUTBOUND DCM - KODIAK" report-design="OUTBOUND DCM - KODIAK" output-type="PDF" reporting-entity="UnitHazard" report-type="N4HQL">
+  <roles>
+    <role name="ak_marine" />
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+    <sort-field-2 field-id="ufvLastKnownPosition.posLocId" order="ASCENDING" />
+    <sort-field-3 />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="TRUE" metafield="ufvUnit.unitGoods.gdsIsHazardous" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="ALASKA WT LOADS (CONTAINERS &gt;27.5 TONNES)" report-design="ALASKA OVERWEIGHT CONTAINERS (&gt;27.5 TONNES)" output-type="PDF" reporting-entity="Unit" description="ALASKA OVERWEIGHT LOADS (WEIGHT &gt;27.5 TONNES)" display-title="WT" report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_unit_view" />
+    <role name="ak_filter" />
+    <role name="ak_report_role" />
+    <role name="ak_marine" />
+    <role name="DevTeam ReadOnly" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="SANDPOINT COMMUNITY REPORT" report-design="SANDPOINT COMMUNITY REPORT" output-type="XLS" reporting-entity="Unit" description="SANDPOINT COMMUNITY REPORT" display-title="SANDPOINT COMMUNITY REPORT" report-type="SQL">
+  <roles>
+    <role name="ak_dut_general_user" />
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="ANK HOT LOADS" report-design="ANK HOT" output-type="PDF" reporting-entity="Unit" report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="DevTeam ReadOnly" />
+    <role name="ak_unit_view" />
+    <role name="ak_report_role" />
+    <role name="ak_marine" />
+    <role name="ak_filter" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="INBOUND DCM - ANCHORAGE" report-design="INBOUND DCM - ANCHORAGE" output-type="PDF" reporting-entity="UnitHazard" report-type="N4HQL">
+  <roles>
+    <role name="ak_filter" />
+    <role name="DevTeam" />
+    <role name="ak_marine" />
+    <role name="ak_report_role" />
+    <role name="ak_unit_view" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+    <sort-field-2 field-id="ufvLastKnownPosition.posLocId" order="ASCENDING" />
+    <sort-field-3 />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="TRUE" metafield="ufvUnit.unitGoods.gdsIsHazardous" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="OVERSIZE CARGO - OUTBOUND - KODIAK" report-design="OVERSIZE CARGO - OUTBOUND - KODIAK" output-type="PDF" reporting-entity="Unit" report-type="N4HQL">
+  <roles>
+    <role name="ak_kdk_marine" />
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="INBOUND DCM - KODIAK" report-design="INBOUND DCM - KODIAK" output-type="PDF" reporting-entity="UnitHazard" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_marine" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+    <sort-field-2 field-id="ufvLastKnownPosition.posLocId" order="ASCENDING" />
+    <sort-field-3 />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="TRUE" metafield="ufvUnit.unitGoods.gdsIsHazardous" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="KODIAK SPOT REPORT" report-design="KODIAK SPOT REPORT" output-type="XLS" reporting-entity="Unit" description="KODIAK SPOT REPORT" display-title="KODIAK SPOT REPORT" report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="DevTeam ReadOnly" />
+    <role name="ak_report_role" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="DUTCH MAE EMPTIES" report-design="MAE DUTCH EMPTIES" output-type="XLS" reporting-entity="Unit" description="MAE empties for the dutch harbor" report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_dut_gate_supervisor" />
+    <role name="ak_dut_gate_dispatch" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="WHARFAGE - OUTBOUND - KODIAK - BY - OWNER" report-design="WHARFAGE - OUTBOUND - KODIAK - OWNER -WITH_BOOKING" output-type="XLS" reporting-entity="Unit" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_marine" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvUnit.unitRouting.rtgPOD1.pointId" order="ASCENDING" />
+    <sort-field-2 field-id="ufvUnit.unitGoods.gdsDestination" order="ASCENDING" />
+    <sort-field-3 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="WHARFAGE-OUTBOUND-TEST" report-design="WHARFAGE-OUTBOUND-TEST" output-type="XLS" reporting-entity="Unit" description="WHARFAGE-OUTBOUND-TEST" display-title="WHARFAGE-OUTBOUND-TEST" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvUnit.unitRouting.rtgPOD1.pointId" order="ASCENDING" />
+    <sort-field-2 field-id="ufvUnit.unitGoods.gdsDestination" order="ASCENDING" />
+    <sort-field-3 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="ufvActualObCv" order="0" negated="false" parm-type="REQUIRED_PARM" parm-label="Vessel Visit" parm-internal-name="7913567844451277847" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="MATSON CHASSIS OUT BOUND REPORT" report-design="MATSON CHASSIS OUT BOUND REPORT" output-type="PDF" reporting-entity="Unit" description="MATSON CHASSIS OUT BOUND REPORT" display-title="MATSON CHASSIS OUT BOUND REPORT" report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="DCM INBOUND - KODIAK" report-design="DCM INBOUND - KODIAK" output-type="PDF" reporting-entity="UnitHazard" description="Dangerous Cargo manifest for Inbound Vessel" display-title="DCM Inbound" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="Cargo Ops" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+    <sort-field-2 field-id="ufvFlexString06" order="ASCENDING" />
+    <sort-field-3 />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NE" metafield="ufvLastKnownPosition.posLocType" value="YARD" ui-value="Yard" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="ufvLastKnownPosition.posLocType" value="VESSEL" ui-value="Vessel" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="ufvActualIbCv.cvFacility.fcyId" value="KDK" ui-value="KDK" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="WHARFAGE - INBOUND - KODIAK - BY - OWNER" report-design="WHARFAGE - INBOUND - KODIAK - BY - OWNER" output-type="XLS" reporting-entity="Unit" report-type="N4HQL">
+  <roles>
+    <role name="ak_marine" />
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvUnit.unitRouting.rtgPOD1.pointId" order="ASCENDING" />
+    <sort-field-2 field-id="ufvUnit.unitGoods.gdsDestination" order="ASCENDING" />
+    <sort-field-3 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="NYK KDK EMPTIES REPORT" report-design="KDK NYK EMPTIES REPORT" output-type="PDF" reporting-entity="Unit" description="NYK KDK EMPTIES REPORT" display-title="NYK KDK EMPTIES REPORT" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="ufvUnit.unitLineOperator" value="^NYK/LINEOP" ui-value="NYK" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="NYK KDK INVENTORY REPORT NON EMPTIES" report-design="KDK NYK INVENTORY REPORT NON EMPTIES" output-type="PDF" reporting-entity="Unit" description="NYK KDK INVENTORY REPORT NON EMPTIES" display-title="NYK KDK INVENTORY REPORT NON EMPTIES" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="ufvUnit.unitLineOperator" value="^NYK/LINEOP" ui-value="NYK" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="NYK KDK REEFER REPORT" report-design="NYK KDK REEFER REPORT" output-type="XLS" reporting-entity="Unit" description="NYK KDK REEFER REPORT" display-title="NYK KDK REEFER REPORT" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="MAERSK KDK NON-EMPTY INVENTORY REPORT" report-design="MAERSK KDK INVENTORY REPORT NON EMPTIES" output-type="PDF" reporting-entity="Unit" description="MAERSK KDK NON-EMPTY INVENTORY REPORT" display-title="MAERSK KDK NON-EMPTY INVENTORY REPORT" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="MAERSK KDK INVENTORY FULL UNITS REPORT" report-design="MAERSK KDK INVENTORY REPORT NON EMPTIES" output-type="XLS" reporting-entity="Unit" description="Non-empties MAE containers in yard" display-title="Maersk Non-Empty Containers in Yard at KDK" report-type="N4HQL">
+  <roles>
+    <role name="ak_kdk_gate" />
+    <role name="DevTeam" />
+    <role name="ak_dut_gate_supervisor" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="OUTBOUND DCM SUMMARY SIGNATURE PAGE" report-design="OUTBOUND DCM SUMMARY SIGNATURE PAGE" output-type="PDF" reporting-entity="UnitHazard" description="OUTBOUND DCM SUMMARY SIGNATURE PAGE" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_report_role" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="hzrdiImdgClass" order="ASCENDING" />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+</argo:snx>
+

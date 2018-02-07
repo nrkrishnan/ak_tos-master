@@ -1,0 +1,1742 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <meta attribute="JavaClassPrefix">Mensa</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!--  MoveRecordSet  -->
+    <class name="com.navis.mensa.business.mensa.MoveRecordSet" table="mns_move_record_set" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.MoveRecordSetHbr</meta>
+        <meta attribute="n4alias">mvrs</meta>
+        <meta attribute="class-description">Master Record for the set of Moves recorded in a specific time interval</meta>
+        <meta attribute="n4-entity-name">Move Record Set</meta>
+        <meta attribute="n4-entity-name-plural">Move Record Sets</meta>
+
+        <meta attribute="carina-fk-index-disable">
+            (operator_gkey);(complex_gkey);(facility_gkey);(yard_gkey)
+        </meta>
+
+        <id name="mvrsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="mvrsRecordSetStatus" type="com.navis.mensa.persistence.atoms.UserTypeRecordSetStatusEnum">
+            <meta attribute="field-description">Status (VIRGIN/PARTIAL/COMPLETE).</meta>
+            <column name="status" not-null="true" index="mvrs_record_set_status_idx"/>
+        </property>
+
+        <property name="mvrsTimeIntervalStart" type="timestamp">
+            <meta attribute="field-description">Time at which the interval starts</meta>
+            <column name="time_start" not-null="true" index="mvrs_time_interval_start_idx"/>
+        </property>
+
+        <property name="mvrsTimeIntervalEnd" type="timestamp">
+            <meta attribute="field-description">Time at which the next interval starts</meta>
+            <column name="time_end" not-null="true" index="mvrs_time_interval_end_idx"/>
+        </property>
+
+        <property name="mvrsTimeExtracted" column="t_extracted" type="timestamp">
+            <meta attribute="field-description">Time at which this record set was extracted</meta>
+        </property>
+
+        <many-to-one name="mvrsOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator" not-null="true">
+            <meta attribute="field-description">The Operator to which this MoveRecordSet belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="mvrsComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which this MoveRecordSet belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="mvrsFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility" not-null="true">
+            <meta attribute="field-description">The Facility to which this MoveRecordSet belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="mvrsYard" column="yard_gkey" class="com.navis.argo.business.model.Yard" not-null="true">
+            <meta attribute="field-description">The Yard to which this MoveRecordSet belongs</meta>
+        </many-to-one>
+
+        <bag name="mvrsMoveRecords" lazy="true" inverse="true" table="mns_move_record" cascade="all-delete-orphan">
+            <key column="set_gkey"/>
+            <one-to-many class="com.navis.mensa.business.mensa.MoveRecord"/>
+        </bag>
+
+    </class>
+
+    <!--  MoveRecord  -->
+    <!--  JJS: Using dynamic update "FALSE" due to the fact that these entities are rarely, if ever, modified once created.  -->
+    <class name="com.navis.mensa.business.mensa.MoveRecord" table="mns_move_record" dynamic-update="false">
+
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.MoveRecordHbr</meta>
+        <meta attribute="n4alias">mvrc</meta>
+        <meta attribute="class-description">Records one Unit (container) move</meta>
+        <meta attribute="n4-entity-name">Move Record</meta>
+        <meta attribute="n4-entity-name-plural">Move Records</meta>
+        <meta attribute="carina-index">
+            mvrc_fetch_put_time_idx(t_fetch,t_put);mvrc_tput_lineop_idx(t_put, line_op);mvrc_carrier_tput_idx(carrier_gkey,t_put);
+            mvrc_cheqc_tput_idx(che_qc,t_put);mvrc_chefetch_tput_idx(che_fetch,t_put);mvrc_checarry_tput_idx(che_carry,t_put);
+            mvrc_cheput_tput_idx(che_put,t_put);mvrc_carrier_unit_idx(carrier_gkey,unit_id);
+            mvrc_tcarrycomp_checarry_idx(t_carry_complete,che_carry);mvrc_tput_movekind_idx(t_put,move_kind);mvrc_wirefid_unitid_idx(wi_unique_ref_id,unit_id)
+        </meta>
+        <meta attribute="carina-oracle-index">
+            create index mvrc_to_pos_anchor_idx on mns_move_record(to_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            create index mvrc_fm_pos_anchor_idx on mns_move_record(fm_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index mvrc_to_pos_anchor_idx on mns_move_record(to_pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+            create spatial index mvrc_fm_pos_anchor_idx on mns_move_record(fm_pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <meta attribute="carina-fk-index-disable">
+            (pol_gkey);(pod_gkey);(fpod_gkey);(line_op);(che_fetch);(che_carry);(che_put);(che_qc)
+        </meta>
+
+        <id name="mvrcGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="mvrcMoveRecordSet" column="set_gkey" class="com.navis.mensa.business.mensa.MoveRecordSet" not-null="true"
+                     index="mvrc_set_idx">
+            <meta attribute="field-description">MoveRecordSet to which this move belongs</meta>
+        </many-to-one>
+
+        <property name="mvrcMoveKind" type="com.navis.argo.persistence.atoms.UserTypeWiMoveKindEnum">
+            <meta attribute="field-description">Move Kind (load/disch/receive, etc.).</meta>
+            <column name="move_kind" not-null="true"/>
+        </property>
+
+        <property name="mvrcMoveStage" type="com.navis.argo.persistence.atoms.UserTypeWiMoveStageEnum">
+            <meta attribute="field-description">Last move stage completed.</meta>
+            <column name="move_stage" not-null="true"/>
+        </property>
+
+        <property name="mvrcUnitId" type="string">
+            <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+            <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            <column name="unit_id" not-null="true"/>
+        </property>
+
+        <property name="mvrcUnitCategory" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum">
+            <meta attribute="field-description">Unit category (IMPORT/EXPORT/...)</meta>
+            <column name="unit_category" not-null="true" index="mvrc_unit_category_idx"/>
+        </property>
+
+        <property name="mvrcCtrBasicLength" type="com.navis.xpscache.persistence.atoms.UserTypeEquipBasicLengthEnum">
+            <meta attribute="field-description">Basic length of the Contaner (20/40)</meta>
+            <column name="basic_length" not-null="true"/>
+        </property>
+
+        <property name="mvrcCtrNominalLength" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalLengthEnum">
+            <meta attribute="field-description">Nominal length of the Contaner (20/40/45/53/etc)</meta>
+            <column name="nominal_length" not-null="true"/>
+        </property>
+
+        <many-to-one name="mvrcLineOperator" column="line_op" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Line Operator of the Unit at the time of the move</meta>
+        </many-to-one>
+
+        <many-to-one name="mvrcPOL" column="pol_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">Port of Loading</meta>
+        </many-to-one>
+
+        <many-to-one name="mvrcPOD" column="pod_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">Port of Discharge</meta>
+        </many-to-one>
+
+        <many-to-one name="mvrcFPOD" column="fpod_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">Final Port of Discharge</meta>
+        </many-to-one>
+
+        <many-to-one name="mvrcCarrier" class="com.navis.argo.business.model.CarrierVisit">
+            <meta attribute="field-description">The CarrierVisit, if the move was to or from a CarrierVisit, else null</meta>
+            <column name="carrier_gkey" not-null="false"/>
+        </many-to-one>
+
+        <property name="mvrcExclude" column="exclude" type="java.lang.Boolean">
+            <meta attribute="field-description">If TRUE, this record should be excluded from reporting.</meta>
+        </property>
+
+        <component name="mvrcFromPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The 'from' position</meta>
+
+            <property name="posLocType" column="fm_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="true">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="fm_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="fm_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="fm_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="fm_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="fm_pos_name" type="string" length="42">
+                <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="fm_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                 <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="fm_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="fm_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="fm_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <component name="mvrcToPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The 'to' position</meta>
+
+            <property name="posLocType" column="to_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="true">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="to_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="to_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="to_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="to_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="to_pos_name" type="string" length="42">
+                <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="to_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                 <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="to_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="to_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="to_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <many-to-one name="mvrcCheFetch" column="che_fetch" class="com.navis.argo.business.xps.model.Che" not-null="false">
+            <meta attribute="field-description">Che that executed the 'fetch' phase of the move</meta>
+        </many-to-one>
+
+        <many-to-one name="mvrcCheCarry" column="che_carry" class="com.navis.argo.business.xps.model.Che" not-null="false">
+            <meta attribute="field-description">Che that executed the 'carry' phase of the move</meta>
+        </many-to-one>
+
+        <many-to-one name="mvrcChePut" column="che_put" class="com.navis.argo.business.xps.model.Che" not-null="false">
+            <meta attribute="field-description">Che that executed the 'put' phase of the move</meta>
+        </many-to-one>
+
+        <many-to-one name="mvrcCheQuayCrane" column="che_qc" class="com.navis.argo.business.xps.model.Che"
+                     not-null="false">
+            <meta attribute="field-description">The quay crane that did the move (will be also be the fetch or put che, denormalized for query convenience)</meta>
+        </many-to-one>
+
+        <property name="mvrcDistToStart" column="dist_start" type="java.lang.Long">
+            <meta attribute="field-description">Distance prime mover travelled in fetch phase, meters. SPARCS getHistoryDistToStart()</meta>
+        </property>
+
+        <property name="mvrcDistOfCarry" column="dist_carry" type="java.lang.Long">
+            <meta attribute="field-description">Distance prime mover travelled in carry phase, meters. SPARCS getHistoryDistOfCarry()</meta>
+        </property>
+
+        <property name="mvrcTimeCarryComplete" column="t_carry_complete" type="timestamp">
+            <meta attribute="field-description">Time at which carry phase was completed. SPARCS getHistoryCarryCompl()</meta>
+        </property>
+
+        <property name="mvrcTimeDispatch" column="t_dispatch" type="timestamp">
+            <meta attribute="field-description">Time at which move was dispatched. SPARCS getHistoryDispatchTime()</meta>
+        </property>
+
+        <property name="mvrcTimeFetch" column="t_fetch" type="timestamp">
+            <meta attribute="field-description">Time at which fetch phase was completed. SPARCS getHistoryFetchTime()</meta>
+        </property>
+
+        <property name="mvrcTimeDischarge" column="t_discharge" type="timestamp" index="mvrc_t_discharge_idx">
+            <meta attribute="field-description">Time at which discharge phase was completed</meta>
+        </property>
+
+        <property name="mvrcTimePut" column="t_put" type="timestamp">
+            <meta attribute="field-description">Time at which put phase was completed. SPARCS getHistoryPutTime()</meta>
+        </property>
+
+        <property name="mvrcTimeCarryCheStart" column="t_carry_start" type="timestamp">
+            <meta attribute="field-description">Time at which carry phase is started.</meta>
+        </property>
+
+        <property name="mvrcTimeCarryCheFetchReady" column="t_carry_fetch_ready" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was ready to fetch. SPARCS 3.4: kWITagHistoryCarryCheFetchReadyTime</meta>
+        </property>
+
+        <property name="mvrcTimeCarryChePutReady" column="t_carry_put_ready" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was ready to put. SPARCS 3.4: kWITagHistoryCarryChePutReadyTime</meta>
+        </property>
+
+        <property name="mvrcTimeCarryCheDispatch" column="t_carry_dispatch" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was dispatched. SPARCS 3.4: kWITagHistoryCarryCheDispatchTime</meta>
+        </property>
+
+        <property name="mvrcRehandleCount" column="rehandle_count" type="java.lang.Long">
+            <meta attribute="field-description">Number of rehandles required to perform the move. SPARCS getHistoryRhndlCount()</meta>
+        </property>
+
+        <property name="mvrcTwinFetch" column="twin_fetch" type="java.lang.Boolean">
+            <meta attribute="field-description">True if we the Fetch phase was a twin move</meta>
+        </property>
+
+        <!--<property name="mvrcTwinCarry" column="twin_carry" type="java.lang.Boolean">-->
+        <!--<meta attribute="field-description">True if the Carry phase was a twin move</meta>-->
+        <!--</property>-->
+
+        <property name="mvrcTwinPut" column="twin_put" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the Put phase was a twin move</meta>
+        </property>
+
+        <property name="mvrcRestowAccount" column="restow_account" type="string" length="20">
+            <meta attribute="field-description">Account to charge restow cost against. SPARCS getRestowAccount()</meta>
+        </property>
+
+        <property name="mvrcRestowFlag" type="com.navis.argo.persistence.atoms.UserTypeRestowTypeEnum">
+            <meta attribute="field-description">Type of Restow action.</meta>
+            <column name="restow_flag" not-null="false"/>
+        </property>
+
+        <property name="mvrcServiceOrder" column="service_order" type="string" length="20">
+            <meta attribute="field-description">The service order against which this move is to be charged</meta>
+        </property>
+
+        <property name="mvrcRestowReason" column="restow_reason" type="string" length="20">
+            <meta attribute="field-description">Reason for restow. SPARCS getRestowReason()</meta>
+        </property>
+
+        <property name="mvrcFreightKind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum">
+            <meta attribute="field-description">Freight Kind (MTY/FCL/.. etc).</meta>
+            <column name="freight_kind" not-null="false"/>
+        </property>
+
+        <property name="mvrcIsLiveReefer" column="is_live_reefer" type="java.lang.Boolean">
+            <meta attribute="field-description">A flag that specifies if the container is a live refrigerated container or not.</meta>
+        </property>
+
+        <!-- 2009-08-18 oviyak BIST-264 Remove is_egear_move from Move record table-->
+        <!--property name="mvrcIsEgearMove" type="java.lang.Boolean">
+            <meta attribute="field-description">A flag that specifies if the move is egear or not.</meta>
+            <column name="is_egear_move" not-null="false"/>
+        </property-->
+
+        <property name="mvrcPow" column="pow" type="string" length="20">
+            <meta attribute="field-description">TODO : Get this clarified.</meta>
+        </property>
+
+        <property name="mvrcTripId" column="trip_id" type="string" length="50" not-null="false">
+            <meta attribute="field-description">Unique Id for the trip to which this move belongs.</meta>
+        </property>
+
+        <property name="mvrcTripDistLaden" column="trip_dist_laden" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Total laden distance for the trip to which this move belongs.</meta>
+        </property>
+
+        <property name="mvrcTripDistUnladen" column="trip_dist_unladen" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Total unladen distance for the trip to which this move belongs.</meta>
+        </property>
+
+        <property name="mvrcUpdateTime" column="t_update_time" type="timestamp">
+            <meta attribute="field-description">UTC timestamp at which this record was updated.</meta>
+        </property>
+
+        <property name="mvrcGrossWeightLbs" column="gross_weight_lbs" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Gross weight in pounds</meta>
+        </property>
+
+        <property name="mvrcTareWeightLbs" column="tare_weight_lbs" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Tare weight in pounds</meta>
+        </property>
+
+        <property name="mvrcPayloadWeightLbs" column="payload_weight_lbs" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Payload weight in pounds</meta>
+        </property>
+
+        <property name="mvrcRoundedWeightLbs" column="rounded_weight_lbs" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Rounded weight in pounds</meta>
+        </property>
+
+        <property name="mvrcNetWeightLbs" column="net_weight_lbs" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Net weight in pounds</meta>
+        </property>
+
+        <property name="mvrcProcessed" column="processed" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the che metrics are calculated for this move otherwise false</meta>
+        </property>
+
+        <!--2009-11-25 1.9.2 oviyak BIST-367
+        Add new field or column to store unique identifier from SPARCS  in dbo.mns_move_record and dbo.mns_ar_move_record tables -->
+        <property name="mvrcDBUniqueRefID" column="wi_unique_ref_id" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">WI unique ID from SPARCS</meta>
+        </property>
+
+        <!--2010-07-16 oviyak BIST-409
+        Expose new SPARCS fields in table, reportable entity, gadget, and data mart  -->
+        <property name="mvrcBooking" column="booking_nbr" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Booking of the WI from SPARCS</meta>
+        </property>
+
+        <property name="mvrcChassis" column="chassis_id" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Chassis of the WI from SPARCS</meta>
+        </property>
+
+        <property name="mvrcCntrGrade" column="cntr_grade" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Container grade from SPARCS</meta>
+        </property>
+
+        <property name="mvrcDamaged" column="is_damaged" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Indicates whether the container is damaged or not</meta>
+        </property>
+
+        <many-to-one name="mvrcDamageCodes" column="damage_codes" class="com.navis.argo.business.reference.EquipDamageType" not-null="false">
+            <meta attribute="field-description">Damage type of the container from SPARCS</meta>
+        </many-to-one>
+
+        <property name="mvrcUnitEquipType" column="unit_eq_type" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Container type from SPARCS</meta>
+        </property>
+
+        <property name="mvrcUnitClass" column="unit_eq_class" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Equipment class from SPARCS</meta>
+        </property>
+
+        <property name="mvrcUnitHeightFeet" column="unit_ht_ft" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Equipment height in feet from SPARCS</meta>
+        </property>
+
+        <property name="mvrcOOGFlag" column="is_oog" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Indicates whether the container is OOG (over dimensional) or not</meta>
+        </property>
+
+        <property name="mvrcChassisFlag" column="is_chassis" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Indicates whether the unit is container or chassis</meta>
+        </property>
+
+        <property name="mvrcTrailerFlag" column="is_trailer" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Indicates whether the unit is container or trailer</meta>
+        </property>
+
+        <property name="mvrcISOCode" column="iso_code" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">ISO code for the unit or equipment</meta>
+        </property>
+
+        <many-to-one name="mvrcYardTerminal" column="yard" class="com.navis.argo.business.model.Yard" not-null="false">
+            <meta attribute="field-description">The Yard to which this equipment or unit belongs</meta>
+        </many-to-one>
+
+        <property name="mvrcDestination" column="destination_gkey" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">The container's ultimate destination from SPARCS</meta>
+        </property>
+
+        <many-to-one name="mvrcGroup" column="group_gkey" class="com.navis.argo.business.reference.Group" not-null="false">
+            <meta attribute="field-description">Container group from SPARCS</meta>
+        </many-to-one>
+
+        <many-to-one name="mvrcArriveVisit" column="ib_carrier_gkey" class="com.navis.argo.business.model.CarrierVisit" not-null="false">
+            <meta attribute="field-description">Inbound carrier for the move from SPARCS</meta>
+        </many-to-one>
+
+        <property name="mvrcArriveVisitFull" column="ib_carrier_name" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Carrier name from SPARCS</meta>
+        </property>
+
+        <property name="mvrcIntendedTerm" column="intended_term" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Intended terminal for the move</meta>
+        </property>
+
+        <many-to-one name="mvrcDepartVisit" column="ob_carrier_gkey" class="com.navis.argo.business.model.CarrierVisit" not-null="false">
+            <meta attribute="field-description">Outbound carrier for the move from SPARCS</meta>
+        </many-to-one>
+
+        <property name="mvrcDepartVisitFull" column="ob_carrier_name" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Carrier name from SPARCS</meta>
+        </property>
+
+        <property name="mvrcOrigin" column="origin_gkey" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">The point from where the container first started its journey</meta>
+        </property>
+
+        <many-to-one name="mvrcOperationalLoadPort" column="opl_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="false">
+            <meta attribute="field-description">Container's Operational Load Port from SPARCS</meta>
+        </many-to-one>
+
+        <property name="mvrcService" column="service" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Service of the depart carrier</meta>
+        </property>
+
+        <property name="mvrcAppointmentTime" column="appt_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">Time of Appointment </meta>
+        </property>
+
+        <property name="mvrcYardInTime" column="yard_in" type="timestamp" not-null="false">
+            <meta attribute="field-description">Yard in time of the container</meta>
+        </property>
+
+        <property name="mvrcYardOutTime" column="yard_out" type="timestamp" not-null="false">
+            <meta attribute="field-description">Yard out time of the container </meta>
+        </property>
+
+        <property name="mvrcRailCarID" column="rail_id" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Rail car Id </meta>
+        </property>
+
+        <many-to-one name="mvrcYardBlock" column="yb_gkey" class="com.navis.mensa.business.mensa.YardBlock" not-null="false">
+            <meta attribute="field-description">Yard Block</meta>
+        </many-to-one>
+
+        <property name="mvrcCommodity" column="commodity" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Commodity</meta>
+        </property>
+
+        <property name="mvrcIMOCode" column="imo_code" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">IMO Code specified for the container</meta>
+        </property>
+
+        <property name="mvrcIMOCodeAll" column="imo_code_all" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Multiple IMO Codes that are specified for the container</meta>
+        </property>
+
+        <property name="mvrcOverdimHeightCM" column="oog_ht_cm" type="java.lang.Short" not-null="false">
+            <meta attribute="field-description">Height in centi meters</meta>
+        </property>
+
+        <property name="mvrcUNNumber" column="un_num" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">UN Number for the container</meta>
+        </property>
+
+        <property name="mvrcUNNumbers" column="un_nums" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Multiple UN Numbers for the container</meta>
+        </property>
+
+        <property name="mvrcWeightClass" column="wt_cls" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Weight class</meta>
+        </property>
+
+        <property name="mvrcHazardousFlag" column="is_hazard" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Is the container hazardous</meta>
+        </property>
+
+        <property name="mvrcStopped" column="stopped" type="com.navis.mensa.persistence.atoms.UserTypeContainerStopEnum" not-null="false">
+            <meta attribute="field-description">Is the container has any stop flag</meta>
+        </property>
+
+        <property name="mvrcTruckCompany" column="truck_company" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">The company of the truck that picks up or drops off the container</meta>
+        </property>
+
+        <property name="mvrcTransactionID" column="truck_tran_id" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">BAT number</meta>
+        </property>
+
+        <property name="mvrcTruckLicense" column="truck_license" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">The License plate of the truck that picks up or drops off the container</meta>
+        </property>
+
+        <property name="mvrcLiftType" column="lift_type" type="com.navis.mensa.persistence.atoms.UserTypeCraneLiftModeEnum" not-null="false">
+            <meta attribute="field-description">Crane lift type</meta>
+        </property>
+        
+        <property name="mvrcUserVal1" column="user_val1" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User Validated1</meta>
+        </property>
+
+        <property name="mvrcUserVal2" column="user_val2" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User Validated2</meta>
+        </property>
+
+        <property name="mvrcUserVal3" column="user_val3" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User Validated3</meta>
+        </property>
+
+        <property name="mvrcUser1" column="mvrc_user1" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User 1</meta>
+        </property>
+
+        <property name="mvrcUser2" column="mvrc_user2" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User 2</meta>
+        </property>
+
+        <property name="mvrcUser3" column="mvrc_user3" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User 3</meta>
+        </property>
+
+        <property name="mvrcUser4" column="mvrc_user4" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User 4</meta>
+        </property>
+
+        <property name="mvrcUser5" column="mvrc_user5" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User 5</meta>
+        </property>
+
+        <property name="mvrcUser6" column="mvrc_user6" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User 6</meta>
+        </property>
+
+        <property name="mvrcUser7" column="mvrc_user7" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User 7</meta>
+        </property>
+
+        <property name="mvrcUser8" column="mvrc_user8" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User 8</meta>
+        </property>
+
+        <property name="mvrcUser9" column="mvrc_user9" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User 9</meta>
+        </property>
+
+        <property name="mvrcUserA" column="mvrc_userA" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User A</meta>
+        </property>
+
+        <property name="mvrcUserB" column="mvrc_userB" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User B</meta>
+        </property>
+
+        <property name="mvrcUserC" column="mvrc_userC" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User C</meta>
+        </property>
+
+        <property name="mvrcUserD" column="mvrc_userD" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User D</meta>
+        </property>
+
+        <property name="mvrcUserE" column="mvrc_userE" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User E</meta>
+        </property>
+
+        <property name="mvrcUserF" column="mvrc_userF" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User F</meta>
+        </property>
+
+        <property name="mvrcUserG" column="mvrc_userG" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User G</meta>
+        </property>
+
+        <property name="mvrcUserH" column="mvrc_userH" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User H</meta>
+        </property>
+
+        <property name="mvrcUserI" column="mvrc_userI" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User I</meta>
+        </property>
+
+        <property name="mvrcUserJ" column="mvrc_userJ" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User J</meta>
+        </property>
+
+        <property name="mvrcUserK" column="mvrc_userK" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User K</meta>
+        </property>
+
+        <property name="mvrcUserL" column="mvrc_userL" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">User L</meta>
+        </property>
+
+        <!-- 12-01-2010 : SAB : BIST-527 -->
+         <property name="mvrcCheCarryLoginName" column="che_carry_login_name" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Carry CHE Operator Login Name</meta>
+        </property>
+
+        <property name="mvrcChePutLoginName" column="che_put_login_name" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Put CHE Operator Login Name</meta>
+        </property>
+        <property name="mvrcCheFetchLoginName" column="che_fetch_login_name" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Fetch CHE Operator Login Name</meta>
+        </property>
+
+    </class>
+
+    <!-- VesselCraneStatistics -->
+    <class name="com.navis.mensa.business.mensa.VesselCraneStatistics" table="mns_vessel_crane_statistics" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.VesselCraneStatisticsHbr</meta>
+        <meta attribute="n4alias">vcs</meta>
+        <meta attribute="class-description">Records a snapshot of the current state of crane's operation for the vessel visit</meta>
+        <meta attribute="n4-entity-name">Vessel Crane Statistics</meta>
+        <meta attribute="n4-entity-name-plural">Vessel Crane Statistics</meta>
+
+        <id name="vcsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="vcsCarrier" column="carrier_gkey" class="com.navis.argo.business.model.CarrierVisit" index="vcs_carrier_idx"
+                     not-null="true">
+            <meta attribute="field-description">Reference to the Carrier visit</meta>
+        </many-to-one>
+
+        <many-to-one name="vcsCrane" column="crane" class="com.navis.argo.business.xps.model.Che" index="vcs_crane_idx" not-null="true">
+            <meta attribute="field-description">Reference to the crane</meta>
+        </many-to-one>
+
+        <property name="vcsPlannedCompletion" column="t_planned_completion" type="timestamp">
+            <meta attribute="field-description">Latest Planned completion for this crane.</meta>
+        </property>
+
+        <property name="vcsEstimatedCompletion" column="t_estimated_completion" type="timestamp">
+            <meta attribute="field-description">Latest Estimated completion for this crane.</meta>
+        </property>
+
+        <property name="vcsMovesToGo" column="moves_to_go" type="java.lang.Long">
+            <meta attribute="field-description">Number of moves to go for this crane.</meta>
+        </property>
+
+        <property name="vcsBaysWorked" column="bays_worked" type="java.lang.Long">
+            <meta attribute="field-description">Count of bays worked by this crane.</meta>
+        </property>
+
+        <property name="vcsSequence" column="sequence" type="java.lang.Long">
+            <meta attribute="field-description">Sequence in which this crane is scheduled for the given Vessel.</meta>
+        </property>
+
+        <property name="vcsUpdateTime" column="t_update_time" type="timestamp">
+            <meta attribute="field-description">UTC timestamp at which this record was updated.</meta>
+        </property>
+
+        <property name="vcsIsValid" type="java.lang.Boolean">
+            <meta attribute="field-description">A flag that specifies if this object is currently valid or not.</meta>
+            <column name="is_valid" not-null="false" index="vcs_is_valid_idx"/>
+        </property>
+
+        <property name="vcsMultiSegment" column="multi_segment" type="java.lang.Boolean">
+            <meta attribute="field-description">A flag that specifies if this ocrane has multiple segments or not.</meta>
+        </property>
+
+        <property name="vcsMovesCompleted" column="moves_completed" type="java.lang.Long">
+            <meta attribute="field-description">Number of moves completed by this crane on this vessel.</meta>
+        </property>
+
+        <property name="vcsMovesLastHour" column="moves_last_hour" type="java.lang.Long">
+            <meta attribute="field-description">Number of moves completed by this crane on this vessel in last 60 minutes.</meta>
+        </property>
+
+        <property name="vcsFirstMoveTime" column="t_first_move" type="timestamp">
+            <meta attribute="field-description">First move time for the crane.</meta>
+        </property>
+
+        <property name="vcsLastMoveTime" column="t_last_move" type="timestamp">
+            <meta attribute="field-description">Last move time for the crane.</meta>
+        </property>
+
+        <property name="vcsFirstActivityTime" column="t_first_activity" type="timestamp">
+            <meta attribute="field-description">First activity time for the crane.</meta>
+        </property>
+
+        <property name="vcsLastActivityTime" column="t_last_activity" type="timestamp">
+            <meta attribute="field-description">Last activity time for the crane.</meta>
+        </property>
+
+        <property name="vcsFinalMovesToGo" column="final_moves_to_go" type="java.lang.Long">
+            <meta attribute="field-description">Final moves to go for the crane.</meta>
+        </property>
+
+        <property name="vcsFinalETC" column="t_final_etc" type="timestamp">
+            <meta attribute="field-description">Final etc for the crane.</meta>
+        </property>
+
+        <property name="vcsFinalMovesCompleted" column="final_moves_completed" type="java.lang.Long">
+            <meta attribute="field-description">Final moves completed for the crane.</meta>
+        </property>
+
+        <property name="vcsTerminalDelay" column="terminal_delay" type="java.lang.Long">
+            <meta attribute="field-description">Terminal delay for the crane.</meta>
+        </property>
+
+        <property name="vcsNonTerminalDelay" column="non_terminal_delay" type="java.lang.Long">
+            <meta attribute="field-description">Non terminal delay for the crane.</meta>
+        </property>
+
+        <property name="vcsForceMajeureDelay" column="force_majeure_delay" type="java.lang.Long">
+            <meta attribute="field-description">Force Majeure delay for the crane.</meta>
+        </property>
+
+        <property name="vcsTotalDelay" column="total_delay" type="java.lang.Long">
+            <meta attribute="field-description">Total delay for the crane.</meta>
+        </property>
+
+        <property name="vcsEffectiveGrossGangHour" column="effective_ggh" type="java.lang.Long">
+            <meta attribute="field-description">Effective gross gang hour for the crane.</meta>
+        </property>
+
+        <property name="vcsSingleLoadCount" column="single_loads" type="java.lang.Long">
+            <meta attribute="field-description">Total number of single loads done by this crane.</meta>
+        </property>
+
+        <property name="vcsSingleDischargeCount" column="single_discharges" type="java.lang.Long">
+            <meta attribute="field-description">Total number of single discharges done by this crane.</meta>
+        </property>
+
+        <property name="vcsSingleShobCount" column="single_shob" type="java.lang.Long">
+            <meta attribute="field-description">Total number of single SHOB moves done by this crane.</meta>
+        </property>
+
+        <property name="vcsTwinLoadCount" column="twin_loads" type="java.lang.Long">
+            <meta attribute="field-description">Total number of twin loads done by this crane.</meta>
+        </property>
+
+        <property name="vcsTwinDischargeCount" column="twin_discharges" type="java.lang.Long">
+            <meta attribute="field-description">Total number of twin discharges done by this crane.</meta>
+        </property>
+
+        <property name="vcsTwinShobCount" column="twin_shob" type="java.lang.Long">
+            <meta attribute="field-description">Total number of twin SHOB moves done by this crane.</meta>
+        </property>
+
+        <property name="vcsBreakBulkMoves" column="break_bulks" type="java.lang.Long">
+            <meta attribute="field-description">Total number of break bulk moves done by this crane.</meta>
+        </property>
+
+        <property name="vcsHatchLidMoves" column="hatch_lids" type="java.lang.Long">
+            <meta attribute="field-description">Total number of hatch lid moves done by this crane.</meta>
+        </property>
+
+        <property name="vcsTwistLockMoves" column="twist_lock" type="java.lang.Long">
+            <meta attribute="field-description">Total number of twist lock moves done by this crane.</meta>
+        </property>
+
+        <property name="vcsEgearMoves" column="egear_moveslids" type="java.lang.Long">
+            <meta attribute="field-description">Total number of egear moves done by this crane.</meta>
+        </property>
+
+    </class>
+
+    <!-- VesselCraneStatistics -->
+    <class name="com.navis.mensa.business.mensa.CarrierStatistics" table="mns_carrier_statistics" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.CarrierStatisticsHbr</meta>
+        <meta attribute="n4alias">cs</meta>
+        <meta attribute="class-description">Records a snapshot of the current state of carrier visit operation</meta>
+        <meta attribute="n4-entity-name">Carrier Statistics</meta>
+        <meta attribute="n4-entity-name-plural">Carrier Statistics</meta>
+
+        <id name="csGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="csCarrier" column="carrier_gkey" class="com.navis.argo.business.model.CarrierVisit" index="cs_carrier_idx"
+                     not-null="true">
+            <meta attribute="field-description">Reference to the Carrier visit</meta>
+        </many-to-one>
+
+        <property name="csVisitPhase" column="phase" type="com.navis.argo.persistence.atoms.UserTypeCarrierVisitPhaseEnum" not-null="true">
+            <meta attribute="field-description">Visit phase (CREATED, INBOUND ARRIVED, ...)</meta>
+        </property>
+
+        <property name="csCarrierName" type="string">
+            <meta attribute="field-description">A String that represents the name of the carrier e.g. "President Madison".</meta>
+            <column name="carrier_name" not-null="false"/>
+        </property>
+
+        <property name="csCarrierRef" type="string">
+            <meta attribute="field-description">Unique reference id for this carrier</meta>
+            <column name="carrier_ref" not-null="false"/>
+        </property>
+
+        <many-to-one name="csLineOperator" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Line operator</meta>
+            <column name="line_operator" not-null="false" index="cs_line_operator_idx"/>
+        </many-to-one>
+
+        <property name="csServiceCode" type="string">
+            <meta attribute="field-description">Service code for the carrier, e.g. "PSX".</meta>
+            <column name="service_code" not-null="false"/>
+        </property>
+
+        <property name="csETA" column="t_eta" type="timestamp">
+            <meta attribute="field-description">Estimated Time of Arrival for this carrier.</meta>
+        </property>
+
+        <property name="csETD" column="t_etd" type="timestamp">
+            <meta attribute="field-description">Estimated time of departure for this carrier.</meta>
+        </property>
+
+        <property name="csATA" column="t_ata" type="timestamp">
+            <meta attribute="field-description">Actual Time of Arrival for this carrier.</meta>
+        </property>
+
+        <property name="csATD" column="t_atd" type="timestamp">
+            <meta attribute="field-description">Actual time of departure for this carrier.</meta>
+        </property>
+
+        <property name="csEstimatedCompletionTime" column="t_etc" type="timestamp">
+            <meta attribute="field-description">Estimated time of completion for the carrier.</meta>
+        </property>
+
+        <property name="csPlannedCompletionTime" column="t_ptc" type="timestamp">
+            <meta attribute="field-description">Planned time of completion for the carrier.</meta>
+        </property>
+
+        <property name="csMovesToGo" column="moves_to_go" type="java.lang.Long">
+            <meta attribute="field-description">Number of moves to go for this carrier.</meta>
+        </property>
+
+        <property name="csCraneCount" column="crane_count" type="java.lang.Long">
+            <meta attribute="field-description">Number of cranes working for this carrier.</meta>
+        </property>
+
+        <property name="csUpdateTime" column="t_update_time" type="timestamp">
+            <meta attribute="field-description">UTC timestamp at which this record was updated.</meta>
+        </property>
+
+        <property name="csMovesCompleted" column="moves_completed" type="java.lang.Long">
+            <meta attribute="field-description">Number of moves completed for this carrier</meta>
+        </property>
+
+        <property name="csFirstMoveTime" column="t_first_move" type="timestamp">
+            <meta attribute="field-description">First move time for the carrier.</meta>
+        </property>
+
+        <property name="csLastMoveTime" column="t_last_move" type="timestamp">
+            <meta attribute="field-description">Last move time for the carrier.</meta>
+        </property>
+
+        <property name="csFirstActivityTime" column="t_first_activity" type="timestamp">
+            <meta attribute="field-description">First activity time for the carrier.</meta>
+        </property>
+
+        <property name="csLastActivityTime" column="t_last_activity" type="timestamp">
+            <meta attribute="field-description">Last activity time for the carrier.</meta>
+        </property>
+
+        <property name="csTerminalDelay" column="terminal_delay" type="java.lang.Long">
+            <meta attribute="field-description">Terminal delay for the carrier.</meta>
+        </property>
+
+        <property name="csNonTerminalDelay" column="non_terminal_delay" type="java.lang.Long">
+            <meta attribute="field-description">Non terminal delay for the carrier.</meta>
+        </property>
+
+        <property name="csForceMajeureDelay" column="force_majeure_delay" type="java.lang.Long">
+            <meta attribute="field-description">Force Majeure delay for the carrier.</meta>
+        </property>
+
+        <property name="csTotalDelay" column="total_delay" type="java.lang.Long">
+            <meta attribute="field-description">Total delay for the carrier.</meta>
+        </property>
+
+        <property name="csGrossGangHour" column="ggh" type="java.lang.Long">
+            <meta attribute="field-description">Gross gang hour for the carrier.</meta>
+        </property>
+
+        <property name="csNetGangHour" column="ngh" type="java.lang.Long">
+            <meta attribute="field-description">Net gang hour for the carrier.</meta>
+        </property>
+
+        <property name="csAllMovesProductivity" column="moves_productivity" type="java.lang.Double">
+            <meta attribute="field-description">All Moves Productivity for the carrier.</meta>
+        </property>
+
+        <property name="csCraneDensity" column="crane_density" type="java.lang.Double">
+            <meta attribute="field-description">Crane Density for the carrier.</meta>
+        </property>
+
+        <property name="csCraneSplit" column="crane_split" type="java.lang.Double">
+            <meta attribute="field-description">Crane Split for the carrier.</meta>
+        </property>
+
+        <property name="csMovesLastHour" column="moves_last_hour" type="java.lang.Long">
+            <meta attribute="field-description">Moves last hour for the carrier.</meta>
+        </property>
+
+        <property name="csEffectiveGrossGangHour" column="effective_ggh" type="java.lang.Long">
+            <meta attribute="field-description">Effective gross gang hour for the carrier.</meta>
+        </property>
+
+        <property name="csEffectiveNetGangHour" column="effective_ngh" type="java.lang.Long">
+            <meta attribute="field-description">Effective net gang hour for the carrier.</meta>
+        </property>
+
+        <property name="csTotalContainerMoves" column="cntr_moves" type="java.lang.Long">
+            <meta attribute="field-description">Total container moves for the carrier.</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.mensa.business.mensa.SecondaryStatistics" table="mns_secondary_statistics">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.SecondaryStatisticsHbr</meta>
+        <meta attribute="n4alias">secs</meta>
+        <meta attribute="class-description">Secondary statistics table for all mensalytics entity.</meta>
+        <meta attribute="n4-entity-name">Secondary Statistics</meta>
+        <meta attribute="n4-entity-name-plural">Secondary Statistics</meta>
+        <meta attribute="carina-index">secs_textract_statname_idx(t_extracted,statistics_name);secs_ownerentity_textract_idx(owner_entity,t_extracted)</meta>
+
+        <id name="secsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="secsStatisticsName" column="statistics_name" type="string" length="50">
+            <meta attribute="field-description">Name of the statistics.</meta>
+        </property>
+
+        <property name="secsOwnerEntity" column="owner_entity" type="string" length="50" not-null="true">
+            <meta attribute="field-description">Unique reference to the owner entity.</meta>
+        </property>
+
+        <property name="secsTimestamp" column="t_extracted" type="timestamp" not-null="true">
+            <meta attribute="field-description">Time at which this statistics was extracted.</meta>
+        </property>
+
+        <property name="secsValue" column="value" type="java.lang.Double" not-null="true">
+            <meta attribute="field-description">Value of the statistics.</meta>
+        </property>
+
+    </class>
+
+    <!--  YardBlock  -->
+    <class name="com.navis.mensa.business.mensa.YardBlock" table="mns_yard_block" dynamic-update="false">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.YardBlockHbr</meta>
+        <meta attribute="n4alias">yb</meta>
+        <meta attribute="class-description">Holds information about yard block</meta>
+        <meta attribute="n4-entity-name">Yard Block</meta>
+        <meta attribute="n4-entity-name-plural">Yard Blocks</meta>
+
+        <meta attribute="carina-fk-index-disable">
+            (yard_area_code_gkey);(operator_gkey);(complex_gkey);(facility_gkey);(yard_gkey)
+        </meta>
+
+        <id name="ybGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="ybOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator" not-null="true">
+            <meta attribute="field-description">The Operator to which this YardBlock belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="ybComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which this YardBlock belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="ybFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility" not-null="true">
+            <meta attribute="field-description">The Facility to which this YardBlock belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="ybYard" column="yard_gkey" class="com.navis.argo.business.model.Yard" not-null="true">
+            <meta attribute="field-description">The Yard to which this YardBlock belongs</meta>
+        </many-to-one>
+
+        <many-to-one name="ybAreaCode" column="yard_area_code_gkey" class="com.navis.mensa.business.mensa.YardAreaCode">
+            <meta attribute="field-description">The yard area code to which this YardBlock belongs</meta>
+        </many-to-one>
+
+        <property name="ybUpdateTime" column="t_update" type="timestamp">
+            <meta attribute="field-description">Time at which this yard block was updated</meta>
+        </property>
+
+        <property name="ybBlockId" column="block_id" type="string" length="50" not-null="true">
+            <meta attribute="field-description">Unique id for the block in the yard.</meta>
+        </property>
+
+        <property name="ybBlockType" type="com.navis.mensa.persistence.atoms.UserTypeBlockTypeEnum">
+            <meta attribute="field-description">BlockType (STACK/LIST).</meta>
+            <column name="block_type" not-null="true" index="yb_block_type_idx"/>
+        </property>
+
+        <bag name="ybYardBlockStatistics" lazy="true" inverse="true" table="mns_yard_block_statistics" cascade="all-delete-orphan">
+            <key column="yb_gkey"/>
+            <one-to-many class="com.navis.mensa.business.mensa.YardBlockStatistics"/>
+        </bag>
+
+        <bag name="ybYardTierStatistics" lazy="true" inverse="true" table="mns_yard_tier_statistics" cascade="all-delete-orphan">
+            <key column="yb_gkey"/>
+            <one-to-many class="com.navis.mensa.business.mensa.YardTierStatistics"/>
+        </bag>
+
+    </class>
+
+    <!--  YardBlockStatistics  -->
+    <class name="com.navis.mensa.business.mensa.YardBlockStatistics" table="mns_yard_block_statistics" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.YardBlockStatisticsHbr</meta>
+        <meta attribute="n4alias">ybs</meta>
+        <meta attribute="class-description">Holds statistical information about yard block</meta>
+        <meta attribute="n4-entity-name">Yard Block Statistics</meta>
+        <meta attribute="n4-entity-name-plural">Yard Block Statistics</meta>
+
+        <meta attribute="carina-fk-index-disable">
+            (yb_gkey)
+        </meta>
+
+        <id name="ybsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="ybsYardBlock" column="yb_gkey" class="com.navis.mensa.business.mensa.YardBlock" not-null="true">
+            <meta attribute="field-description">Yard Block to which this block statistics belong</meta>
+        </many-to-one>
+
+        <property name="ybsTimeExtracted" column="t_extracted" type="timestamp" index="mns_textr_idx">
+            <meta attribute="field-description">Time at which statistics about this yard block was extracted.</meta>
+        </property>
+
+        <!--2010-02-12 oviyak 2.1.H ARGO-23686
+        Introduce a new field to calculate utilization based on snapshot time for Average daily yard report-->
+        <property name="ybsTime" column="ybs_time" type="java.lang.String" not-null="false">
+            <!--formula="(select convert(varchar(5), t_extracted, 108))">-->
+            <meta attribute="field-description">Time extracted in HH:mm format</meta>
+        </property>
+
+        <property name="ybsTotalSlots" column="total_slots" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Total number of slots in the block.</meta>
+        </property>
+
+        <property name="ybsUsedSlots" column="used_slots" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Number of used slots in the block.</meta>
+        </property>
+
+        <property name="ybsUsableSlots" column="usable_slots" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Number of usable slots in the block.</meta>
+        </property>
+
+        <property name="ybsTotalReeferSlots" column="total_reefer_slots" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Total number of reefer plugs in the block.</meta>
+        </property>
+
+        <property name="ybsUsableReeferSlots" column="usable_reefer_slots" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Number of usable reefer plugs in the block.</meta>
+        </property>
+
+        <property name="ybsUsedReeferSlots" column="used_reefer_slots" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Number of used reefer plugs in the block.</meta>
+        </property>
+
+        <property name="ybsCurrentUnits" column="current_units" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Current units for a heap block.</meta>
+        </property>
+
+        <property name="ybsCurrentSlots" column="current_slots" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Current TEUs for a heap block.</meta>
+        </property>
+
+        <property name="ybsPlannedUnits" column="planned_units" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Planned units for a heap block.</meta>
+        </property>
+
+        <property name="ybsPlannedSlots" column="planned_slots" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Planned teus for a heap block.</meta>
+        </property>
+
+        <property name="ybsAreaCode" column="area_code" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Area Code for the block when the block statistics was extracted.</meta>
+        </property>
+    </class>
+
+    <!--  YardTierStatistics  -->
+    <class name="com.navis.mensa.business.mensa.YardTierStatistics" table="mns_yard_tier_statistics" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.YardTierStatisticsHbr</meta>
+        <meta attribute="n4alias">yts</meta>
+        <meta attribute="class-description">Holds statistical information about tiers for a block.</meta>
+        <meta attribute="n4-entity-name">Yard Tier Statistics</meta>
+        <meta attribute="n4-entity-name-plural">Yard Tier Statistics</meta>
+
+        <meta attribute="carina-fk-index-disable">
+            (yb_gkey)
+        </meta>
+
+        <id name="ytsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="ytsYardBlock" column="yb_gkey" class="com.navis.mensa.business.mensa.YardBlock" not-null="true">
+            <meta attribute="field-description">Yard block to which this yard tier statistics belong</meta>
+        </many-to-one>
+
+        <property name="ytsTimeExtracted" column="t_extracted" type="timestamp">
+            <meta attribute="field-description">Time at which statistics about this yard block tier was extracted.</meta>
+        </property>
+
+        <property name="ytsTierId" column="tier_id" type="string" length="50" not-null="false">
+            <meta attribute="field-description">Unique id for the tier in a block.</meta>
+        </property>
+
+        <property name="ytsTotalSlots" column="total_slots" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Total number of slots in the tier.</meta>
+        </property>
+
+        <property name="ytsUsedSlots" column="used_slots" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Number of used slots in the tier.</meta>
+        </property>
+
+        <property name="ytsUsableSlots" column="usable_slots" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Number of usable slots in the tier.</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.mensa.business.mensa.YardAreaCode" table="mns_yard_area_code" dynamic-update="true">
+        <meta attribute="n4alias">yac</meta>
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.YardAreaCodeHbr</meta>
+        <meta attribute="class-description">Domain entity representing Yard Area Code</meta>
+        <meta attribute="n4-entity-name">YardAreaCode</meta>
+        <meta attribute="n4-entity-name-plural">YardAreaCodes</meta>
+
+        <meta attribute="carina-fk-index-disable">
+            (yard_gkey);(reference_set)
+        </meta>
+
+        <id name="yacGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <!-- 2010-04-07 oviyak 2.1.L ARGO-24682 Application does not allow the user to create same area code for different facilities -->
+        <property name="yacId" unique="true" type="string">
+            <meta attribute="field-description">Area Code Identity</meta>
+            <column name="id" index="yac_id_idx" not-null="true" length="9"/>
+        </property>
+
+        <property name="yacDescription" column="description" type="string">
+            <meta attribute="field-description">Yard Area Code Description</meta>
+        </property>
+
+        <many-to-one name="yacYard" column="yard_gkey" class="com.navis.argo.business.model.Yard" not-null="true">
+            <meta attribute="field-description">The Yard to which this Yard Area Code belongs</meta>
+        </many-to-one>
+
+        <!-- 2010-04-07 oviyak 2.1.L ARGO-24682 Application does not allow the user to create same area code for different facilities -->
+        <many-to-one name="yacScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true"/>
+        </many-to-one>
+
+        <property name="yacCreated" column="created" type="timestamp"/>
+        <property name="yacCreator" column="creator" type="string" length="30"/>
+        <property name="yacChanged" column="changed" type="timestamp"/>
+        <property name="yacChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <class name="com.navis.mensa.business.mensa.CheTripStatistics" table="mns_che_trip_statistics" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.CheTripStatisticsHbr</meta>
+        <meta attribute="n4alias">cts</meta>
+        <meta attribute="class-description">Holds statistical information about CHE trip</meta>
+        <meta attribute="n4-entity-name">Che Trip Statistics</meta>
+        <meta attribute="n4-entity-name-plural">Che Trip Statistics</meta>
+
+        <id name="ctsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="ctsYard" column="yard_gkey" class="com.navis.argo.business.model.Yard" not-null="true">
+            <meta attribute="field-description">The Yard to which this che trip belongs</meta>
+        </many-to-one>
+
+        <property name="ctsId" unique="true" type="string">
+            <meta attribute="field-description">Unique Identifier for che trip</meta>
+            <column name="id" not-null="true" unique-key="unique_key" length="50"/>
+        </property>
+
+        <many-to-one name="ctsChe" class="com.navis.argo.business.xps.model.Che">
+            <meta attribute="field-description">Che involved in this trip</meta>
+            <column name="che" not-null="true" index="cts_che_idx"/>
+        </many-to-one>
+
+        <property name="ctsCheType" column="che_type" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Type of the che</meta>
+        </property>
+
+        <property name="ctsMoveKind" type="com.navis.argo.persistence.atoms.UserTypeWiMoveKindEnum">
+            <meta attribute="field-description">Move Kind (load/disch/receive, etc.).</meta>
+            <column name="move_kind" not-null="true" index="cts_move_kind_idx"/>
+        </property>
+
+        <property name="ctsChePhase" type="com.navis.mensa.persistence.atoms.UserTypeChePhaseEnum">
+            <meta attribute="field-description">che phase (fetch/carry/put, etc.).</meta>
+            <column name="che_phase" not-null="true"/>
+        </property>
+
+        <many-to-one name="ctsCheOperator" class="com.navis.argo.business.xps.model.XpeEcUser">
+            <meta attribute="field-description">Operator of this che</meta>
+            <column name="che_operator" not-null="false" index="cts_che_operator_idx"/>
+        </many-to-one>
+
+        <property name="ctsDistLaden" column="dist_laden" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Total laden distance for the che trip</meta>
+        </property>
+
+        <property name="ctsDistUnladen" column="dist_unladen" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Total unladen distance for the che trip</meta>
+        </property>
+
+        <property name="ctsFistContainerOnTime" column="t_first_cntr_on" type="timestamp">
+            <meta attribute="field-description">Time at which first container is picked up by che involved in this trip</meta>
+        </property>
+
+        <property name="ctsLastContainerOffTime" column="t_last_cntr_off" type="timestamp">
+            <meta attribute="field-description">Time at which last container is dropped by che involved in this trip</meta>
+        </property>
+
+        <property name="ctsFirstDispatchTime" column="t_first_dispatch" type="timestamp">
+            <meta attribute="field-description">Time at which dispatch request is sent to pick up first container by che involved in this trip</meta>
+        </property>
+
+        <!-- 2012-12-17 oviyak 2.5.K ARGO-43698
+        Add new fields in mns_che table for computing unladen and laden travel time-->
+        <property name="ctsUnladenTravelTime" column="t_unladen_travel" type="java.lang.Long">
+            <meta attribute="field-description">Unladen Travel time for the trip</meta>
+        </property>
+
+        <property name="ctsLadenTravelTime" column="t_laden_travel" type="java.lang.Long">
+            <meta attribute="field-description">Laden Travel Time for the trip</meta>
+        </property>
+
+        <bag name="cheMoves" inverse="true" cascade="all-delete-orphan" lazy="true">
+            <key column="che_trip_gkey"/>
+            <one-to-many class="com.navis.mensa.business.mensa.CheMoveStatistics"/>
+        </bag>
+    </class>
+
+    <class name="com.navis.mensa.business.mensa.CheMoveStatistics" table="mns_che_move_statistics" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.CheMoveStatisticsHbr</meta>
+        <meta attribute="n4alias">cms</meta>
+        <meta attribute="class-description">Holds statistical information about individual CHE move</meta>
+        <meta attribute="n4-entity-name">Che Move Statistics</meta>
+        <meta attribute="n4-entity-name-plural">Che Move Statistics</meta>
+        <meta attribute="carina-oracle-index">
+            create index cms_to_pos_anchor_idx on mns_che_move_statistics(to_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            create index cms_fm_pos_anchor_idx on mns_che_move_statistics(fm_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index cms_to_pos_anchor_idx on mns_che_move_statistics(to_pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+            create spatial index cms_fm_pos_anchor_idx on mns_che_move_statistics(fm_pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <id name="cmsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="cmsCheTrip" class="com.navis.mensa.business.mensa.CheTripStatistics">
+            <meta attribute="field-description">Che trip for this che move</meta>
+            <column name="che_trip_gkey" not-null="true" index="cms_che_trip_idx"/>
+        </many-to-one>
+
+        <many-to-one name="cmsCheSessionPeriod" class="com.navis.mensa.business.mensa.CheSessionPeriod">
+            <meta attribute="field-description">Che session period for this move</meta>
+            <column name="che_session_period_gkey"  index="cms_che_session_period_idx"/>
+        </many-to-one>
+
+        <many-to-one name="cmsMoveEvent" class="com.navis.inventory.business.moves.MoveEvent">
+            <meta attribute="field-description">The move event (inv_move_event) record corresponding to this che move</meta>
+            <column name="move_event_gkey" not-null="false"/>
+        </many-to-one>
+
+        <many-to-one name="cmsMove" class="com.navis.mensa.business.mensa.MoveRecord">
+            <meta attribute="field-description">The move record corresponding to this che move</meta>
+            <column name="move_gkey" not-null="false"/>
+        </many-to-one>
+
+        <many-to-one name="cmsCarrier" class="com.navis.argo.business.model.CarrierVisit">
+            <meta attribute="field-description">The CarrierVisit, if the che move was to or from a CarrierVisit, else null</meta>
+            <column name="carrier_gkey" index="cms_carrier_idx" not-null="false"/>
+        </many-to-one>
+
+        <!-- 2010-06-08 bbakthavachalam ARGO-26414 v2.1.S - Added new columns declrd_ib_cv_gkey and declrd_ob_cv_gkey -->
+        <many-to-one name="cmsDeclrdIbCv" class="com.navis.argo.business.model.CarrierVisit">
+            <meta attribute="field-description">The declared/documented inbound carrier to the Complex, which may differ from the actual</meta>
+            <column name="declrd_ib_cv_gkey" index="cms_declared_ib_cv_idx"/>
+        </many-to-one>
+
+        <many-to-one name="cmsDeclrdObCv" class="com.navis.argo.business.model.CarrierVisit">
+            <meta attribute="field-description">The declared/documented outbound carrier from the Complex, which may differ from the actual</meta>
+            <column name="declrd_ob_cv_gkey" index="cms_declared_ob_cv_idx"/>
+        </many-to-one>
+
+        <many-to-one name="cmsCheQuayCrane" class="com.navis.argo.business.xps.model.Che">
+            <meta attribute="field-description">Quay Crane who served or is served by this che</meta>
+            <column name="che_qc" not-null="false" index="cms_che_idx"/>
+        </many-to-one>
+
+        <property name="cmsUnitId" unique="true" type="string">
+            <meta attribute="field-description">Unit Id for the CHE move</meta>
+            <column name="unit_id" index="cms_unit_id_idx" not-null="true" length="30"/>
+        </property>
+
+        <property name="cmsUnitCategory" column="category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum" not-null="true">
+            <meta attribute="field-description">The Category of the Unit (Import, Export, ...).</meta>
+        </property>
+
+        <property name="cmsUnitFreightKind" column="freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum" not-null="true">
+            <meta attribute="field-description">Freight Kind of Unit: MTY,FCL,LCL,BBK</meta>
+        </property>
+
+        <property name="cmsIsLiveReefer" column="is_live_reefer" type="java.lang.Boolean">
+            <meta attribute="field-description">A flag that specifies if the container is a live refrigerated container or not.</meta>
+        </property>
+
+        <property name="cmsCtrBasicLength" type="com.navis.xpscache.persistence.atoms.UserTypeEquipBasicLengthEnum">
+            <meta attribute="field-description">Basic length of the Contaner (20/40)</meta>
+            <column name="basic_length" not-null="true"/>
+        </property>
+
+        <property name="cmsEqTypIso" type="string">
+            <meta attribute="field-description">equipment type code (ISO or other). Must be unique within reference set.</meta>
+            <column name="eq_type_iso" length="6" not-null="false"/>
+        </property>
+
+        <property name="cmsCtrNominalLength" column="nominal_length" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalLengthEnum"
+                  not-null="true">
+            <meta attribute="field-description">nominal length: 20, 24, 30, 40, 45, 53</meta>
+        </property>
+
+        <property name="cmsWorkQueue" column="work_queue" type="string" not-null="false">
+            <meta attribute="field-description">SPARCS's reference to the owner work queue</meta>
+        </property>
+
+        <property name="cmsPow" column="pow" type="string">
+            <meta attribute="field-description">Sparcs reference to the point of work</meta>
+        </property>
+
+        <property name="cmsPool" column="pool" type="string">
+            <meta attribute="field-description">Sparcs reference to the Pool</meta>
+        </property>
+
+        <component name="cmsFromPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The 'from' position</meta>
+
+            <property name="posLocType" column="fm_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="true" index="mve_fm_pos_loctype_idx">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="fm_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="fm_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="fm_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="fm_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="fm_pos_name" type="string" length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="fm_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                 <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="fm_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="fm_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="fm_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <component name="cmsToPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The 'to' position</meta>
+
+            <property name="posLocType" column="to_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="true" index="mve_to_pos_loctype_idx">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="to_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="to_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="to_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="to_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="to_pos_name" type="string" length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="to_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                 <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="to_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="to_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="to_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <property name="cmsPickDispatchTime" column="t_pick_dispatch" type="timestamp">
+            <meta attribute="field-description">Time at which request was dispatched to pick the unit for this che move</meta>
+        </property>
+
+        <property name="cmsPickArriveTime" column="t_pick_arrive" type="timestamp">
+            <meta attribute="field-description">Time at which che arrives to pick the unit for this che move</meta>
+        </property>
+
+        <property name="cmsLiftDispatchTime" column="t_lift_dispatch" type="timestamp">
+            <meta attribute="field-description">Time at which straddle is dispatched to lift a container, applicable for PR</meta>
+        </property>
+
+        <property name="cmsContainerOnTime" column="t_cntr_on" type="timestamp">
+            <meta attribute="field-description">Time at which container is put on the che</meta>
+        </property>
+
+        <property name="cmsDropDispatchTime" column="t_drop_dispatch" type="timestamp">
+            <meta attribute="field-description">Time at which request to drop the container is dispatched for the given che</meta>
+        </property>
+
+        <property name="cmsDropArriveTime" column="t_drop_arrive" type="timestamp">
+            <meta attribute="field-description">Time at which che arrives to drop the container</meta>
+        </property>
+
+        <property name="cmsContainerOffTime" column="t_cntr_off" type="timestamp">
+            <meta attribute="field-description">Time at which container is taken off from the che</meta>
+        </property>
+
+        <property name="cmsPickIdleTime" column="pick_idle_time" type="java.lang.Long">
+            <meta attribute="field-description">Time elapsed for a che until it received the dispatch request to pick a container</meta>
+        </property>
+
+        <property name="cmsPickWaitTime" column="pick_wait_time" type="java.lang.Long">
+            <meta attribute="field-description">Time diff between the time the che arrives to pick the cntr and the time when the cntr is on the che</meta>
+        </property>
+
+        <property name="cmsDropIdleTime" column="drop_idle_time" type="java.lang.Long">
+            <meta attribute="field-description">Time diff between the time the che arrives to pick the cntr and the time when the cntr is on the che</meta>
+        </property>
+
+        <property name="cmsDropWaitTime" column="drop_wait_time" type="java.lang.Long">
+            <meta attribute="field-description">Time diff between the time the che arrives to drop the cntr and the time when it drops the cntr from the che</meta>
+        </property>
+
+        <property name="cmsRehandleCount" column="rehandle_count" type="java.lang.Long">
+            <meta attribute="field-description">Number of rehandles required to perform the che move.</meta>
+        </property>
+
+        <property name="cmsTwinMove" column="twin_move" type="java.lang.Boolean">
+            <meta attribute="field-description">True if this was a twin move</meta>
+        </property>
+
+        <property name="cmsLaneChange" column="lane_change" type="java.lang.Boolean">
+            <meta attribute="field-description">True if RTG changed lanes in order to perform this move</meta>
+        </property>
+
+        <property name="cmsPickDistance" column="pick_distance" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Total distance travelled by CHE to pick up the container associated with this che move.</meta>
+        </property>
+
+        <property name="cmsDropDistance" column="drop_distance" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Total distance travelled by CHE to drop the container associated with this che move.</meta>
+        </property>
+
+         <property name="cmsMoveDirection" column="move_direction" type="com.navis.mensa.persistence.atoms.UserTypeMoveDirectionEnum" not-null="false">
+            <meta attribute="field-description">Direction of the move (from TZ, to TZ etc).</meta>
+        </property>
+
+         <property name="cmsMoveCategory" column="move_category" type="com.navis.mensa.persistence.atoms.UserTypeMoveCategoryEnum" not-null="false">
+            <meta attribute="field-description">Category of the move (WS In, Preposition etc). Not used, Refer to cmsMovePurpose (move_purpose)</meta>
+        </property>
+
+        <many-to-one name="cmsFromBlock" column="from_block" class="com.navis.mensa.business.mensa.YardBlock" not-null="false">
+            <meta attribute="field-description">Yard block from which the move is made</meta>
+        </many-to-one>
+
+        <property name="cmsFromBlockType" column="from_block_type" type="com.navis.mensa.persistence.atoms.UserTypeBlockTypeEnum" not-null="false">
+            <meta attribute="field-description">Yard block type from which the move is made</meta>
+        </property>
+
+         <many-to-one name="cmsToBlock" column="to_block" class="com.navis.mensa.business.mensa.YardBlock" not-null="false">
+            <meta attribute="field-description">Yard block to which the move is made</meta>
+        </many-to-one>
+
+        <property name="cmsToBlockType" column="to_block_type" type="com.navis.mensa.persistence.atoms.UserTypeBlockTypeEnum" not-null="false">
+            <meta attribute="field-description">Yard block type to which the move is made</meta>
+        </property>
+
+        <property name="cmsWaitTimeAtQC" column="wait_time_qc" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Wait time at QC (in ms)</meta>
+        </property>
+
+        <property name="cmsWaitTimeAtBlock" column="wait_time_block" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Wait time at block (in ms)</meta>
+        </property>
+
+        <property name="cmsMovePurpose" column="move_purpose" type="com.navis.mensa.persistence.atoms.UserTypeMovePurposeEnum" not-null="false">
+            <meta attribute="field-description">Category of the move (Transfer In, Transfer Out, Preposition etc).</meta>
+        </property>
+
+        <!-- 2012-11-26 ARGO-36087 manise The Che Statistics Job records should be removed when coresponding -->
+        <!--  Unit is deleted in the System.-->
+        <bag name="EquipBlkRecords" inverse="true" cascade="all-delete-orphan" lazy="true">
+            <key column="cms_gkey"/>
+            <one-to-many class="com.navis.mensa.business.mensa.EquipmentBlockVisit"/>
+        </bag>
+
+    </class>
+
+    <class name="com.navis.mensa.business.mensa.CheOperatorStatistics" table="mns_che_operator_statistics" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.CheOperatorStatisticsHbr</meta>
+        <meta attribute="n4alias">cos</meta>
+        <meta attribute="class-description">Holds statistical information about individual CHE operator</meta>
+        <meta attribute="n4-entity-name">Che Operator Statistics</meta>
+        <meta attribute="n4-entity-name-plural">Che Operator Statistics</meta>
+
+        <id name="cosGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="cosCheOperator" class="com.navis.argo.business.xps.model.XpeEcUser">
+            <meta attribute="field-description">Che Operator</meta>
+            <column name="che_operator" not-null="true" index="cos_che_operator_idx"/>
+        </many-to-one>
+
+        <many-to-one name="cosChe" class="com.navis.argo.business.xps.model.Che">
+            <meta attribute="field-description">Che on which the operator is working</meta>
+            <column name="che" not-null="true" index="cos_che_idx"/>
+        </many-to-one>
+
+        <property name="cosOperatorAction" type="com.navis.mensa.persistence.atoms.UserTypeCheOperatorActionEnum">
+            <meta attribute="field-description">che operator action (login/logout/available.. etc.).</meta>
+            <column name="che_op_action" not-null="true"/>
+        </property>
+
+        <property name="cosActionTime" column="t_action_time" type="timestamp">
+            <meta attribute="field-description">Time at which operator action takes place</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.mensa.business.mensa.CheSession" table="mns_che_session" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.CheSessionHbr</meta>
+        <meta attribute="n4alias">cses</meta>
+        <meta attribute="class-description">Holds information about individual CHE sessions for a CHE operator</meta>
+        <meta attribute="n4-entity-name">Che Session</meta>
+        <meta attribute="n4-entity-name-plural">Che Session</meta>
+
+        <id name="csesGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="csesCheOperator" class="com.navis.argo.business.xps.model.XpeEcUser">
+            <meta attribute="field-description">Che Operator</meta>
+            <column name="che_operator" not-null="true" index="cses_che_operator_idx"/>
+        </many-to-one>
+
+        <many-to-one name="csesChe" class="com.navis.argo.business.xps.model.Che">
+            <meta attribute="field-description">Che on which the operator is working</meta>
+            <column name="che" not-null="true" index="cses_che_idx"/>
+        </many-to-one>
+
+        <property name="csesLoginTime" column="t_login" type="timestamp">
+            <meta attribute="field-description">Time at which operator logins to the corresponding CHE</meta>
+        </property>
+
+        <property name="csesLogoutTime" column="t_logout" type="timestamp">
+            <meta attribute="field-description">Time at which operator logs out from the corresponding CHE</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.mensa.business.mensa.CheSessionPeriod" table="mns_che_session_period" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.CheSessionPeriodHbr</meta>
+        <meta attribute="n4alias">csp</meta>
+        <meta attribute="class-description">Holds information about periods within the CHE session such as AVAILABILITY, BREAK etc.</meta>
+        <meta attribute="n4-entity-name">Che Session Period</meta>
+        <meta attribute="n4-entity-name-plural">Che Session Period</meta>
+
+        <id name="cspGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="cspCheSession" class="com.navis.mensa.business.mensa.CheSession">
+            <meta attribute="field-description">Che Session for this session period</meta>
+            <column name="che_session_gkey" not-null="true" index="csp_che_session_idx"/>
+        </many-to-one>
+
+        <property name="cspStartTime" column="t_start" type="timestamp">
+            <meta attribute="field-description">Time at which period started</meta>
+        </property>
+
+        <property name="cspEndTime" column="t_end" type="timestamp">
+            <meta attribute="field-description">Time at which period ended</meta>
+        </property>
+
+        <property name="cspDuration" column="duration" type="java.lang.Long">
+            <meta attribute="field-description">Time duration for this period.</meta>
+        </property>
+
+        <property name="cspPeriodType" type="com.navis.mensa.persistence.atoms.UserTypeCheSessionPeriodTypeEnum">
+            <meta attribute="field-description">Che Session Periods (AVAILABILITY/BREAK/ etc..).</meta>
+            <column name="csp_period_type" not-null="true"/>
+        </property>
+
+        <!-- 2014-04-29 Marimuthu M ARGO 56095 - purge/archive failed regarding CheSessionPeriod  -->
+        <bag name="CheMoveStatistics" inverse="true" cascade="all-delete-orphan" lazy="true">
+            <key column="che_session_period_gkey"/>
+            <one-to-many class="com.navis.mensa.business.mensa.CheMoveStatistics"/>
+        </bag>
+
+    </class>
+
+    <class name="com.navis.mensa.business.mensa.EquipmentBlockVisit" table="mns_equipment_block_visit" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensa.EquipmentBlockVisitHbr</meta>
+        <meta attribute="n4alias">ebv</meta>
+        <meta attribute="class-description">Holds information about equipment block visit details</meta>
+        <meta attribute="n4-entity-name">Equipment Block Visit</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Block Visit</meta>
+
+         <id name="ebvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+       <many-to-one name="ebvYard" column="yard" class="com.navis.argo.business.model.Yard" not-null="true">
+            <meta attribute="field-description">The Yard to which this equipment  belongs</meta>
+        </many-to-one>
+
+          <many-to-one name="ebvBlock" column="ebv_block" class="com.navis.mensa.business.mensa.YardBlock">
+            <meta attribute="field-description">Block ID</meta>
+        </many-to-one>
+
+        <many-to-one name="ebvCms" column="cms_gkey" class="com.navis.mensa.business.mensa.CheMoveStatistics">
+            <meta attribute="field-description">Reference to CheMoveStatistics</meta>
+        </many-to-one>
+
+        <property name="ebvEquipment" column="ebv_eqp" type="java.lang.String">
+            <meta attribute="field-description">Equipment ID</meta>
+        </property>
+
+         <property name="ebvTimeIn" column="time_in" type="timestamp">
+            <meta attribute="field-description">Time at which equipment enters block</meta>
+        </property>
+
+         <property name="ebvTimeOut" column="time_out" type="timestamp">
+            <meta attribute="field-description">Time at which equipment exits block</meta>
+        </property>
+
+         <property name="ebvMoveCount" column="move_count" type="java.lang.Long">
+            <meta attribute="field-description">No. of moves done between the time the equipment enters and exits the block</meta>
+        </property>
+
+         <property name="ebvCheMoveDirection" column="move_direction" type="com.navis.mensa.persistence.atoms.UserTypeMoveDirectionEnum">
+            <meta attribute="field-description">Time at which equipment exits block</meta>
+        </property>
+
+    </class>
+
+</hibernate-mapping>

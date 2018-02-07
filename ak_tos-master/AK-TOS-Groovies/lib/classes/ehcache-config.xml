@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+<ehcache dynamicConfig="true" monitoring="autodetect" updateCheck="true" xsi:schemaLocation="http://www.ehcache.org/ehcache.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <diskStore path="java.io.tmpdir"></diskStore>
+    <terracottaConfig url="${terracotta.server.url}"></terracottaConfig>
+    <defaultCache eternal="false" maxElementsInMemory="500" memoryStoreEvictionPolicy="LRU" overflowToDisk="false" timeToIdleSeconds="1200" timeToLiveSeconds="1200">
+        <terracotta clustered="true"></terracotta>
+    </defaultCache>
+    <cache eternal="true" maxElementsInMemory="100" memoryStoreEvictionPolicy="LRU" name="cloneable-distributed-cache" overflowToDisk="false">
+        <terracotta clustered="true"></terracotta>
+    </cache>
+    <cache eternal="true" maxElementsInMemory="100" memoryStoreEvictionPolicy="LRU" name="cloneable-replicated-cache" overflowToDisk="false">
+        <cacheEventListenerFactory class="net.sf.ehcache.event.TerracottaCacheEventReplicationFactory"></cacheEventListenerFactory>
+        <terracotta clustered="true"></terracotta>
+    </cache>
+    <cache eternal="true" maxElementsInMemory="500" memoryStoreEvictionPolicy="LRU" name="configSettings-Cache" overflowToDisk="false">
+        <terracotta clustered="true"></terracotta>
+    </cache>
+    <cache eternal="true" maxElementsInMemory="100" memoryStoreEvictionPolicy="LRU" name="clusteredEventMessage-Cache" overflowToDisk="false">
+        <cacheEventListenerFactory class="net.sf.ehcache.event.TerracottaCacheEventReplicationFactory"></cacheEventListenerFactory>
+        <terracotta clustered="true"></terracotta>
+    </cache>
+    <cache eternal="true" maxElementsInMemory="500" name="com.navis.framework.query.business.SavedPredicate" overflowToDisk="false">
+        <terracotta clustered="true"></terracotta>
+    </cache>
+    <cache eternal="true" maxElementsInMemory="500" name="com.navis.argo.business.reference.EquipType" overflowToDisk="false">
+        <terracotta clustered="true"></terracotta>
+    </cache>
+</ehcache>
+

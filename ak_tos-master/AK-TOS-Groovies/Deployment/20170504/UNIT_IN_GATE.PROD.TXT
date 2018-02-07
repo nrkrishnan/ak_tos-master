@@ -1,0 +1,62 @@
+println("//Start Event ---:"+event.event.eventTypeId+ " on Unit :"+event.entity.unitId+" ----//")
+def u = event.getEntity()
+def obCarrier = u.getFieldValue( "unitActiveUfv.ufvActualObCv.cvId");
+println("TestingobCarrier::::::::"+obCarrier);
+def expGateBkgNbr = u.getFieldValue("unitPrimaryUe.ueDepartureOrderItem.eqboiOrder.eqboNbr")
+def bkgNotes = u.getFieldValue("unitPrimaryUe.ueDepartureOrderItem.eqboiOrder.eqoNotes")
+def commodity = bkgNotes != null && bkgNotes.indexOf(":") != -1 ? bkgNotes.substring(0,bkgNotes.indexOf(":")) : ""
+commodity = commodity.trim().length() > 0 ? commodity : null
+   if(expGateBkgNbr != null){
+          u.setFieldValue("unitGoods.gdsBlNbr",expGateBkgNbr)
+          if(commodity != null){  u.setFieldValue("unitRemark",commodity) }
+    }
+def equiType=u.getFieldValue("unitPrimaryUe.ueEquipment.eqEquipType.eqtypId")
+if(equiType != null && equiType.startsWith('R'))
+{
+    def unitDetails = api.getGroovyClassInstance("GvyUnitInGateTempCheck")
+    unitDetails.doIt(u,event)
+
+   def tempSetting = u.getFieldValue("unitFlexString07");
+   if(tempSetting != null && tempSetting.equals('AMB') && u.getUnitRequiresPower()){
+       u.setUnitRequiresPower(Boolean.FALSE)
+   }
+}
+//3. Set EquiContainerService if NULL
+def gvyEquiObj = api.getGroovyClassInstance("GvyCmisEquiDetail");
+gvyEquiObj.setEqCntrSvr(event)
+//3.1 Flip Mty Cli Cntr oper from MAT to Cli Oper
+gvyEquiObj.flipMtyCliCntrOperator(u)
+//4. Cmis Feed
+ def gvyUtilObj = api.getGroovyClassInstance("GvyEventUtil")
+ boolean processCmisFeed  = gvyUtilObj.verfiyCmisFeedProcessing(event)
+ def unitReceiveObj = api.getGroovyClassInstance("GvyCmisEventUnitReceive");
+ if(processCmisFeed)
+ {
+    def unitDetails = api.getGroovyClassInstance("GvyCmisDataProcessor")
+    def unitDtl = unitDetails.doIt(event)
+    api.log(unitDtl)
+
+    def gvySrvObj = api.getGroovyClassInstance("GvyCmisSrvMsgProcessor");
+    gvySrvObj.processServiceMessage(unitDtl,event,api)
+
+   def unit = event.getEntity()
+   def gvyCmisUtil = api.getGroovyClassInstance("GvyCmisUtil")
+   def unitReceiveXml = unitReceiveObj.processUnitRecieve(unitDtl,unit,api)
+   unitReceiveXml = api.getGroovyClassInstance("GvyCmisEventSIT").ybSatProc(gvyCmisUtil,unit, unitReceiveXml)
+
+   api.sendXml(unitReceiveXml);
+   unitReceiveObj.postMsgHazOvd(unitReceiveXml,unit,api)
+   unitReceiveObj.setWOAFlag(event, unit, api)
+ }
+//5. Set Evnt Note with batNbr
+def gvyCmisGateData = api.getGroovyClassInstance("GvyCmisGateData")
+def carrierVisitGkey = u.getFieldValue("unitActiveUfv.ufvActualIbCv.cvdGkey")
+def batNbr = gvyCmisGateData.getTruckBatNbr(carrierVisitGkey)
+def note = event.event.evntNote
+note = note != null ? note : ''
+if(batNbr != null){ event.getEvent().setEvntNote('EIT-'+batNbr+'  '+note); }
+//6. Checks Transfer
+//gvyCmisGateData.setTransferComplete(u,api);
+//7.Check SIT unit in-gate empty
+api.getGroovyClassInstance("GvyCheckSITIgtEmpty").check(event);
+api.getGroovyClassInstance("MatUpdateTagId").execute(event.entity.unitId);

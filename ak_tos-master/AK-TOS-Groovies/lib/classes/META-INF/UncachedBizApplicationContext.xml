@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2011 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+        default-lazy-init="true">
+        
+<!--  Include this file in your application conf/context/beanRefFactory.xml
+      right after FrameworkBizApplicationContext.xml and before application level bean files
+      if you want uncached implementations.
+-->
+
+    <bean id="configProvider" class="com.navis.framework.configuration.provider.UncachedConfigProvider" scope="singleton">
+        <property name="hibernateApi">
+            <ref bean="hibernateApi"/>
+        </property>
+        <!-- use the built-in cache provider, which means caches will not be Coherence Caches, but PrivateCache instances -->
+        <property name="cacheProvider">
+            <value>NONE</value>
+        </property>
+    </bean>
+</beans>

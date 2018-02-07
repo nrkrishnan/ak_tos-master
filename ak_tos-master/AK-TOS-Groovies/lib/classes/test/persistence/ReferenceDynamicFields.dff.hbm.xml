@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+ For testing N4 extension integration
+-->
+
+<hibernate-mapping>
+
+    <class name="com.navis.argo.business.reference.ScopedBizUnit">
+        <id/>
+        <dynamic-component name="customFlexFields">
+            <property name="bzuCustomDFFString1" column="custdff_bzu_string1" type="string" length="255"/>
+            <property name="bzuCustomDFFString2" column="custdff_bzu_string2" type="string" length="255"/>
+
+            <property name="bzuCustomDFFDateTime1" column="custdff_bzu_datetime1" type="timestamp"/>
+            <property name="bzuCustomDFFDateTime2" column="custdff_bzu_datetime2" type="timestamp"/>
+
+            <property name="bzuCustomDFFLong1" column="custdff_bzu_long1" type="java.lang.Long"/>
+            <property name="bzuCustomDFFLong2" column="custdff_bzu_long2" type="java.lang.Long"/>
+
+            <property name="bzuCustomDFFDouble1" column="custdff_bzu_double1" type="java.lang.Double"/>
+            <property name="bzuCustomDFFDouble2" column="custdff_bzu_double2" type="java.lang.Double"/>
+
+            <many-to-one name="bzuCustomDFFAnotherAgent" class="com.navis.argo.business.reference.ScopedBizUnit" column="custdff_bzu_another_agent"/>
+        </dynamic-component>
+    </class>
+
+</hibernate-mapping>

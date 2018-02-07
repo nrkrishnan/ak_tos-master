@@ -1,0 +1,28 @@
+<edi:stowplanTransactions xmlns:edi="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                          xsi:schemaLocation="">
+    <edi:stowplanTransaction edi:msgClass="STOWPLAN" edi:msgReferenceNbr="V2OD7NLS5409POE"
+                             edi:stowageCellPosition="0010280">
+        <edi:Interchange edi:AgreementId="MAT" edi:Date="2005-03-13" edi:InterchangeNumber="1"
+                         edi:InterchangeReceipient="MAT" edi:InterchangeSender="FERGUSSON" edi:Time="12:57:00"/>
+        <edi:ediVesselVisit edi:actualTimeArrival="2005-03-12 10:55:00" edi:actualTimeDeparture="2005-03-13 11:56:00.0"
+                            edi:estimatedTimeArrival="2005-03-12 10:55:00.0"
+                            edi:estimatedTimeDeparture="2005-03-13 10:55:00.0" edi:inVoyageNbr="IBVYG"
+                            edi:outVoyageNbr="OBVYG" edi:vesselCountryCode="" edi:vesselId="VESSEL_ID"
+                            edi:vesselIdConvention="VESID">
+            <edi:shippingLine edi:shippingLineCode="172" edi:shippingLineCodeAgency="ZZZ" edi:shippingLineName="MAT"/>
+            <edi:loadPort edi:portId="LAX" edi:portIdConvention="UN"/>
+            <edi:nextPortOfCall edi:portId="OAK" edi:portIdConvention="UN"/>
+        </edi:ediVesselVisit>
+
+        <edi:ediContainer edi:containerBuiltDate="" edi:containerBuiltMaterial="" edi:containerCategory="CATEGORY"
+                          edi:containerGrossWt="1900" edi:containerGrossWtUnit="KG" edi:containerHeight=""
+                          edi:containerISOcode="2200" edi:containerLeaseExpiration="" edi:containerMaterial=""
+                          edi:containerNbr="CONTAINER_ID" edi:containerSafeWt="" edi:containerSafeWtUnit=""
+                          edi:containerStatus="MTY" edi:containerTareWt="" edi:containerTareWtUnit="">
+            <edi:loadPort edi:portId="LAX" edi:portIdConvention="UN"/>
+            <edi:dischargePort1 edi:portId="OAK" edi:portIdConvention="UN"/>
+            <edi:containerOperator edi:operator="MAT" edi:operatorCodeAgency="" edi:operatorInVoyageNbr=""
+                                   edi:operatorOutVoyageNbr=""/>
+        </edi:ediContainer>
+    </edi:stowplanTransaction>
+</edi:stowplanTransactions>

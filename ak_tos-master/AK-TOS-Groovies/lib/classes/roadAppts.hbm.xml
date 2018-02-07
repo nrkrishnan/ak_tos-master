@@ -1,0 +1,1019 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- hbm file for all entities involved in the appointment system (lbarman 01082007) -->
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">RoadAppts</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <class name="com.navis.road.business.appointment.model.GateAppointment" table="road_gate_appointment">
+        <meta attribute="n4alias">gappt</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.model.GateAppointmentHbr</meta>
+        <meta attribute="class-description">Represents the appointment a trucker can make for a visit</meta>
+        <meta attribute="n4-entity-name">Appointment</meta>
+        <meta attribute="n4-entity-name-plural">Appointments</meta>
+
+        <id name="gapptGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- 2007-04-12 v1.3.0 ARGO-6781: appointment has state to verify if it has been used or not -->
+        <property name="gapptState" column="state" type="com.navis.road.persistence.atoms.UserTypeAppointmentStateEnum">
+            <meta attribute="field-description">The state of this appointment (Created, Used)</meta>
+        </property>
+
+        <!--  Note uniqueness constraint (unique-key="appt_id") is less restrictive than actual id generation, which is per complex -->
+        <property name="gapptNbr" column="id" type="java.lang.Long" not-null="true" unique-key="appt_id">
+            <meta attribute="field-description">The operator unique appointment id</meta>
+        </property>
+
+        <many-to-one name="gapptGate" column="gate_gkey" class="com.navis.road.business.model.Gate" not-null="true" unique-key="appt_id">
+            <meta attribute="field-description">Appointment Gate Gkey</meta>
+        </many-to-one>
+
+        <!-- Even though the transaction type is part of the time slot, we still need the truckerFriendly Transaction Type here, since the slot
+        only deals with general Transaction Types (e.g. instead of Deliver Export and Import, we have Deliver Full), which can not be mapped back to the
+        more restrictive trucker friendly TransType -->
+        <property name="gapptTranType" type="com.navis.road.persistence.atoms.UserTypeTruckerFriendlyTranSubTypeEnum" column="trans_type"
+                  not-null="true" length="3"/>
+
+        <many-to-one name="gapptTruckingCompany" column="trkco_gkey" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Appointment Trucking Company Gkey</meta>
+        </many-to-one>
+
+        <!--
+            todo: will be needed in a second implementation phase (lbarman 20070129)
+        <many-to-one name="apptTruckVisitAppointment" column="truck_visit_appt_gkey"
+                     class="com.navis.road.business.model.appointments.TruckVisitAppointment" not-null="true">
+            <meta attribute="field-description">Truck Visit Appointment Gkey</meta>
+        </many-to-one>-->
+
+        <property name="gapptFreightKind" column="freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum">
+            <meta attribute="field-description">Freight Kind of Unit: MTY,FCL,LCL,BBK</meta>
+        </property>
+
+        <many-to-one name="gapptLineOperator" column="line_op_gkey" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Line Operator of the ctr, order or bill of lading for this appointment</meta>
+        </many-to-one>
+
+        <property name="gapptCtrId" column="ctr_id" type="string" length="30" index="gappt_ctr_id">
+            <meta attribute="field-description">The container Id</meta>
+        </property>
+
+        <many-to-one name="gapptUnit" column="unit_gkey" class="com.navis.inventory.business.units.Unit">
+            <meta attribute="field-description">The existing Unit for defined container and TT</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptCtrEquipType" column="ctr_eqtyp_gkey" class="com.navis.argo.business.reference.EquipType">
+            <meta attribute="field-description">The container equipment type code.</meta>
+        </many-to-one>
+
+        <property name="gapptCtrAccessoryId" column="ctr_accessory_id" type="string" length="30">
+            <meta attribute="field-description">The container accessory Id</meta>
+        </property>
+
+        <property name="gapptCtrGrossWeight" column="gross_weight" type="java.lang.Double">
+            <meta attribute="field-description">The gross weight of container and goods</meta>
+        </property>
+
+        <property name="gapptCtrSealNbr1" column="ctr_seal_nbr1" type="string" length="15">
+            <meta attribute="field-description">Seal Nbr 1</meta>
+        </property>
+
+        <property name="gapptCtrSealNbr2" column="ctr_seal_nbr2" type="string" length="15">
+            <meta attribute="field-description">Seal Nbr 2</meta>
+        </property>
+
+        <property name="gapptCtrSealNbr3" column="ctr_seal_nbr3" type="string" length="15">
+            <meta attribute="field-description">Seal Nbr 3</meta>
+        </property>
+
+        <property name="gapptCtrSealNbr4" column="ctr_seal_nbr4" type="string" length="15">
+            <meta attribute="field-description">Seal Nbr 4</meta>
+        </property>
+
+        <property name="gapptCtrTruckPosition" type="java.lang.Integer" column="ctr_truck_position"/>
+
+        <property name="gapptCtrDoorDirection" type="com.navis.inventory.persistence.atoms.UserTypeDoorDirectionEnum"
+                  column="ctr_door_direction" length="8"/>
+
+        <property name="gapptChassisId" column="chassis_id" type="string" length="30" index="gappt_chs_id">
+            <meta attribute="field-description">The chassis Id</meta>
+        </property>
+
+        <property name="gapptChsIsOwners" type="java.lang.Boolean">
+            <column name="chs_is_owners" default="0"/>
+        </property>
+
+        <many-to-one name="gapptChassisEquipType" column="chassis_eqtyp_gkey" class="com.navis.argo.business.reference.EquipType">
+            <meta attribute="field-description">The chassis equipment type code.</meta>
+        </many-to-one>
+
+        <property name="gapptChassisAccessoryId" column="chassis_accessory_id" type="string" length="30">
+            <meta attribute="field-description">The chassis accessory Id</meta>
+        </property>
+
+        <property name="gapptTruckLicenseNbr" column="truck_license_nbr" type="string" length="30" index="gappt_truck_license_nbr">
+            <meta attribute="field-description">The truck license number</meta>
+        </property>
+
+        <property name="gapptTruckId" column="truck_id" type="string" length="30" index="gappt_truck_id">
+            <meta attribute="field-description">The truck id</meta>
+        </property>
+
+        <many-to-one name="gapptOrder" column="order_gkey" class="com.navis.inventory.business.units.EqBaseOrder">
+            <meta attribute="field-description">The order for which the appointment is created</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptOrderItem" column="order_item_gkey" class="com.navis.inventory.business.units.EqBaseOrderItem">
+            <meta attribute="field-description">The order item for which the appointment is created</meta>
+        </many-to-one>
+
+        <!-- todo: include when gate deals with bls (lbarman 20070129)
+        <many-to-one name="gapptBl" column="bl_gkey" class="com.navis.cargo.business.model.BillOfLading">
+            <meta attribute="field-description">Appointment Bill of Lading Gkey</meta>
+        </many-to-one>-->
+
+        <!-- 2008-03-26 jku v1.5.M ARGO-10080 Added Import Release Number field to Gate Appointment -->
+        <!-- 2008-07-31 ARGO-13044 Increase the column length of import_release_nbr in road_gate_appointments and road_truck_transactions-->
+        <property name="gapptImportReleaseNbr" type="java.lang.String" column="import_release_nbr" length="30"/>
+
+        <property name="gapptIsXrayRequired" type="java.lang.Boolean" column="is_xray_required"/>
+
+        <property name="gapptReferenceNbr" type="java.lang.String" column="external_ref_nbr"/>
+
+        <!-- 2008-04-03 jku ARGO-10245 1.5.N Added TruckDriver to GateAppointment. -->
+        <many-to-one name="gapptTruckDriver" column="trkdr_gkey" class="com.navis.road.business.model.TruckDriver">
+            <meta attribute="field-description">The truck driver for this appointment.</meta>
+        </many-to-one>
+
+        <property name="gapptNotes" type="java.lang.String" column="notes" length="80"/>
+
+        <!-- General Cargo related fields -->
+        <many-to-one name="gapptBl" column="bl_gkey" class="com.navis.cargo.business.model.BillOfLading" cascade="none">
+            <meta attribute="field-description">Gate Appointment Bill of Lading Gkey</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptBlItem" column="bl_item_gkey" class="com.navis.cargo.business.model.BlItem" cascade="none">
+            <meta attribute="field-description">Gate Appointment Bill of Lading Item Gkey</meta>
+        </many-to-one>
+
+        <property name="gapptBlItemQty" type="java.lang.Double" column="bl_item_qty"/>
+
+        <many-to-one name="gapptCargoServiceOrder" column="cargo_service_order_gkey"
+                     class="com.navis.orders.business.serviceorders.CargoServiceOrder" cascade="none">
+            <meta attribute="field-description">Gate Appointment Cargo Service Order Gkey</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptCargoServiceOrderItem" column="cargo_service_order_item_gkey"
+                     class="com.navis.orders.business.serviceorders.CargoServiceOrderItem" cascade="none">
+            <meta attribute="field-description">Gate Appointment Cargo service Order Item Gkey</meta>
+        </many-to-one>
+
+        <!-- 2008-04-30 jku ARGO-11276 1.5.0 Added Flex Fields to GateAppointment. -->
+        <!-- These *must* be the same set as those in Unit.  -->
+        <property name="gapptUnitFlexString01" column="unit_flex_string01" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #01</meta>
+        </property>
+
+        <property name="gapptUnitFlexString02" column="unit_flex_string02" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #02</meta>
+        </property>
+
+        <property name="gapptUnitFlexString03" column="unit_flex_string03" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #03</meta>
+        </property>
+
+        <property name="gapptUnitFlexString04" column="unit_flex_string04" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #04</meta>
+        </property>
+
+        <property name="gapptUnitFlexString05" column="unit_flex_string05" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #05</meta>
+        </property>
+
+        <property name="gapptUnitFlexString06" column="unit_flex_string06" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #06</meta>
+        </property>
+
+        <property name="gapptUnitFlexString07" column="unit_flex_string07" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #07</meta>
+        </property>
+
+        <property name="gapptUnitFlexString08" column="unit_flex_string08" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #08</meta>
+        </property>
+
+        <property name="gapptUnitFlexString09" column="unit_flex_string09" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #09</meta>
+        </property>
+
+        <property name="gapptUnitFlexString10" column="unit_flex_string10" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #10</meta>
+        </property>
+
+        <property name="gapptUnitFlexString11" column="unit_flex_string11" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #11</meta>
+        </property>
+
+        <property name="gapptUnitFlexString12" column="unit_flex_string12" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #12</meta>
+        </property>
+
+        <property name="gapptUnitFlexString13" column="unit_flex_string13" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #13</meta>
+        </property>
+
+        <property name="gapptUnitFlexString14" column="unit_flex_string14" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #14</meta>
+        </property>
+
+        <property name="gapptUnitFlexString15" column="unit_flex_string15" type="string" length="255">
+            <meta attribute="field-description">String unit flex-field #15</meta>
+        </property>
+
+        <!-- These *must* be the same set as those in UnitFacilityVisit.  -->
+
+        <property name="gapptUfvFlexString01" column="ufv_flex_string01" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #01</meta>
+        </property>
+
+        <property name="gapptUfvFlexString02" column="ufv_flex_string02" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #02</meta>
+        </property>
+
+        <property name="gapptUfvFlexString03" column="ufv_flex_string03" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #03</meta>
+        </property>
+
+        <property name="gapptUfvFlexString04" column="ufv_flex_string04" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+
+        <property name="gapptUfvFlexString05" column="ufv_flex_string05" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #05</meta>
+        </property>
+
+        <property name="gapptUfvFlexString06" column="ufv_flex_string06" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #06</meta>
+        </property>
+
+        <property name="gapptUfvFlexString07" column="ufv_flex_string07" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #07</meta>
+        </property>
+
+        <property name="gapptUfvFlexString08" column="ufv_flex_string08" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #08</meta>
+        </property>
+
+        <property name="gapptUfvFlexString09" column="ufv_flex_string09" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #09</meta>
+        </property>
+
+        <property name="gapptUfvFlexString10" column="ufv_flex_string10" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #10</meta>
+        </property>
+
+        <property name="gapptUfvFlexDate01" column="ufv_flex_date01" type="timestamp">
+            <meta attribute="field-description">Date ufv flex-field #01</meta>
+        </property>
+
+        <property name="gapptUfvFlexDate02" column="ufv_flex_date02" type="timestamp">
+            <meta attribute="field-description">Date ufv flex-field #02</meta>
+        </property>
+
+        <property name="gapptRequestedDate" column="requested_time" type="timestamp" index="gappt_requested_date" not-null="false">
+            <meta attribute="field-description">The day of the appointment</meta>
+        </property>
+
+        <many-to-one name="gapptTimeSlot" column="time_slot_gkey" class="com.navis.road.business.appointment.model.AppointmentTimeSlot"
+                     not-null="false">
+            <meta attribute="field-description">The time slot for which this appointment has been created.</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptTruckVisitAppointment" column="truck_visit_appt_gkey"
+                     class="com.navis.road.business.appointment.model.TruckVisitAppointment" not-null="false">
+            <meta attribute="field-description">The associated TruckVisitAppointment Gkey.</meta>
+        </many-to-one>
+
+        <!--2009-12-23 spabbala v2.1.E ARGO-22642 Gate/Appointment Side Changes for NFRM-521 (Associating Agents with Units)
+        (Jan Delivery for Haifa)-->
+        <many-to-one name="gapptAgent1" column="agent1_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Agent of the existing Unit for defined container.</meta>
+        </many-to-one>
+        <many-to-one name="gapptAgent2" column="agent2_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false"
+                     cascade="none">
+            <meta attribute="field-description">Agent of the existing Unit for defined container.</meta>
+        </many-to-one>
+
+        <!--2010-03-08 spabbala v2.1.K ARGO-23625 Appointments - Add Peak Hours Billable Indicator-->
+        <property name="gapptIsPeakHour" column="is_peak_hour_reached" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Appointment time slot is considered peak hours, terminal may want to bill differently for these slots then a normal appointment slot.</meta>
+        </property>
+
+        <!--2010-03-15 vkotha v2.1.K ARGO-23632 Appointment - validations related to canceled appointments-->
+        <property name="gapptIsReused" column="is_reused" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Appointment is considered as reused.</meta>
+        </property>
+
+        <property name="gapptCancelDate" column="cancel_date" type="timestamp"/>
+
+        <!--2010-04-20 vkotha 2.1.M ARGO-25173 Add new fields in the appoitment schema for Carrier Visit, Routing etc.-->
+        <many-to-one name="gapptVesselVisit" column="vessel_visit_gkey" class="com.navis.argo.business.model.CarrierVisit" cascade="none">
+            <meta attribute="field-description">Vessel Visit for which the order was made</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptPol" column="pol_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">Port where eqo equipment should be loaded</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptPod1" column="pod1_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">Port where equipment is first discharged</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptPod2" column="pod2_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">Second port where equipment is discharged</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptPod1Optional" column="opt1_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">First optional point of discharge</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptPod2Optional" column="opt2_gkey" class="com.navis.argo.business.reference.RoutingPoint" cascade="none">
+            <meta attribute="field-description">Second optional point of discharge</meta>
+        </many-to-one>
+
+        <property name="gapptOrigin" column="origin" type="java.lang.String" length="30">
+            <meta attribute="field-description">Origination point of equipment</meta>
+        </property>
+
+        <property name="gapptDestination" column="destination" type="java.lang.String" length="30">
+            <meta attribute="field-description">Final destination of eqo equipment</meta>
+        </property>
+
+        <many-to-one name="gapptConsignee" column="consignee_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" cascade="none">
+            <meta attribute="field-description">Consignee ScopedBizUnit: Party that will recieve the cargo in the booking</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptShipper" column="shipper_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" cascade="none">
+            <meta attribute="field-description">Shipper ScopedBizUnit: Party that sent the cargo in the booking</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptOriginalTimeSlot" column="original_time_slot_gkey"
+                     class="com.navis.road.business.appointment.model.AppointmentTimeSlot"
+                     not-null="false">
+            <meta attribute="field-description">The time slot for which this appointment has been created before combining into a truck visit appointment.</meta>
+        </many-to-one>
+
+        <property name="gapptStartSlackOverride" column="start_slack_override" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The time cushion allowed before the start time for the appointment to still be valid</meta>
+        </property>
+
+        <property name="gapptEndSlackOverride" column="end_slack_override" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The time cushion allowed after the end time for the appointment to still be valid</meta>
+        </property>
+
+        <property name="gapptCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="gapptCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="gapptChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="gapptChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>
+
+    <!--
+    todo: will be needed in a second implementation phase (lbarman 20070129)
+    <class name="com.navis.road.business.appointment.TruckVisitAppointment" table="road_truck_visit_appt">
+        <meta attribute="n4alias">tvappt</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.TruckVisitAppointmentHbr</meta>
+        <meta attribute="class-description">Represents an appointment for a Truck Visit</meta>
+        <meta attribute="n4-entity-name">Tuck Visit Appointment</meta>
+        <meta attribute="n4-entity-name-plural">Tuck Visit Appointments</meta>
+
+        <id name="tvapptGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="tvapptDriver" column="driver" type="string" length="60">
+            <meta attribute="field-description">Driver Name for this truck visit appointment</meta>
+        </property>
+
+        <many-to-one name="tvapptTruckingCompany" column="trkco_gkey" class="com.navis.road.business.model.TruckingCompany"
+                     not-null="true">
+            <meta attribute="field-description">The trucking company for this truck visit appointment</meta>
+        </many-to-one>
+
+        <many-to-one name="tvapptTruck" column="truck_gkey" class="com.navis.road.business.model.Truck">
+            <meta attribute="field-description">The truck for this truck visit appointment</meta>
+        </many-to-one>
+
+        <property name="tvapptCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="tvapptCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="tvapptChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="tvapptChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>-->
+
+    <class name="com.navis.road.business.appointment.model.AppointmentTimeSlot" table="road_appt_time_slot">
+        <meta attribute="n4alias">atslot</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.model.AppointmentTimeSlotHbr</meta>
+        <meta attribute="class-description">Represents a time slot for a given day and quota rule</meta>
+        <meta attribute="n4-entity-name">Appointment Time Slot</meta>
+        <meta attribute="n4-entity-name-plural">Appointment Time Slots</meta>
+
+        <id name="atslotGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="atslotQuotaRule" column="quota_rule_gkey" class="com.navis.road.business.appointment.model.AppointmentQuotaRule"
+                     not-null="true">
+            <meta attribute="field-description">The quota rule with which this time slot is associated.</meta>
+        </many-to-one>
+
+        <property name="atslotDate" type="date" formula="start_date">
+            <meta attribute="field-description">Date slot starts</meta>
+        </property>
+
+        <property name="atslotStartDate" column="start_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">Start date and time</meta>
+        </property>
+
+        <property name="atslotEndDate" column="end_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">End date and time</meta>
+        </property>
+
+        <property name="atslotTransactionType" column="rule_type" type="com.navis.road.persistence.atoms.UserTypeGeneralTransactionTypeEnum"
+                  not-null="true">
+            <meta attribute="field-description">The transaction type of this time slot</meta>
+        </property>
+
+        <property name="atslotStartSlackTimeMin" column="start_slack_min" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The time cushion allowed before the start time for the appointment to still be valid</meta>
+        </property>
+
+        <property name="atslotEndSlackTimeMin" column="end_slack_min" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The time cushion allowed after the end time for the appointment to still be valid</meta>
+        </property>
+
+        <!-- formula to determine amount of appointments currently attached to this time slot -->
+        <!-- 2010-03-01 rsatish v2.1.J ARGO-23626 if state is either Canceled or Closed, appointment can be re-used -->
+        <property name="atslotAppointmentCount" type="java.lang.Long"
+                  formula="( SELECT Count(appt.gkey) FROM road_gate_appointment appt
+                  WHERE appt.time_slot_gkey = gkey and appt.state in('CREATED', 'USED', 'EXPIRED', 'USEDLATE', 'LATE'))">
+            <meta attribute="field-description">Amount of appointments made for this timeslot</meta>
+        </property>
+
+        <property name="atslotTvAppointmentCount" type="java.lang.Long"
+                  formula="( SELECT Count(appt.gkey) FROM road_truck_visit_appt appt
+                  WHERE appt.time_slot_gkey = gkey and appt.state in('CREATED', 'USED', 'EXPIRED', 'USEDLATE', 'LATE'))">
+            <meta attribute="field-description">Amount of visit appointments made for this timeslot</meta>
+        </property>
+
+        <property name="atslotTotalAppointmentCount" type="java.lang.Long"
+                  formula="
+                  ( SELECT Count(appt.gkey) FROM road_gate_appointment appt
+                        WHERE appt.time_slot_gkey = gkey and appt.state in('CREATED', 'USED', 'EXPIRED', 'USEDLATE', 'LATE'))
+                + ( SELECT Count(appt.gkey) FROM road_truck_visit_appt appt
+                        WHERE appt.time_slot_gkey = gkey and appt.state in('CREATED', 'USED', 'EXPIRED', 'USEDLATE', 'LATE'))
+                        ">
+            <meta attribute="field-description">Count of appointments made for this timeslot</meta>
+        </property>
+
+        <property name="atslotCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="atslotCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="atslotChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="atslotChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>
+
+    <!-- 2010-02-19  rsatish ARGO-23619 ne entity - truck visit appointment quota rule  -->
+    <class name="com.navis.road.business.appointment.model.AppointmentQuotaRule" table="road_appt_quota_rule" discriminator-value="null">
+        <meta attribute="n4alias">arule</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.model.AppointmentQuotaRuleHbr</meta>
+        <meta attribute="class-description">Represents a quota rule for appointments</meta>
+        <meta attribute="n4-entity-name">Appointment Quota Rule</meta>
+        <meta attribute="n4-entity-name-plural">Appointment Quota Rule</meta>
+
+        <id name="aruleGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <discriminator column="appt_type" type="string" length="3"/>
+        <property name="aruleId" column="id" type="string" length="80" not-null="true" unique-key="scoped_id">
+            <meta attribute="field-description">The unique name of this quota rule</meta>
+        </property>
+
+        <property name="aruleDescription" column="description" type="string" length="500">
+            <meta attribute="field-description">Description of this quota rule</meta>
+        </property>
+
+        <property name="aruleRuleType" column="rule_type" type="com.navis.road.persistence.atoms.UserTypeQuotaRuleTypeEnum" not-null="true">
+            <meta attribute="field-description">The type of this rule</meta>
+        </property>
+
+        <property name="aruleEffectStartDate" column="start_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The date this Rule starts to be active</meta>
+        </property>
+
+        <property name="aruleEffectEndDate" column="end_date" type="timestamp">
+            <meta attribute="field-description">The date this Rule ends to be active</meta>
+        </property>
+
+        <property name="aruleDailyStartTime" column="daily_start_time" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this Rule starts to take effect on the defined day or days</meta>
+        </property>
+
+        <property name="aruleDailyEndTime" column="daily_end_time" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this Rule stops to take effect on the defined day or days</meta>
+        </property>
+
+        <property name="aruleSlotDurationMin" column="slot_duration_min" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The duration of one slot in minutes</meta>
+        </property>
+
+        <property name="aruleStartSlackTimeMin" column="slack_min" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The time cushion allowed before the start time for the appointment to still be valid.</meta>
+        </property>
+
+        <property name="aruleEndSlackTimeMin" column="end_slack_min" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The time cushion allowed after the end time for the appointment to still be valid.</meta>
+        </property>
+
+        <!-- 2007-03-6 lbarman v1.3.C ARGO-6379: add appointment window open field -->
+        <property name="aruleApptWindowOpenHour" column="app_window_open_hour" type="java.lang.Long">
+            <meta attribute="field-description">The maximal time in hours before the appointment start time that is allowed to create an appointment.</meta>
+        </property>
+
+        <!-- 2007-02-21 lbarman v1.3.B ARGO-6261: add cutoff time -->
+        <property name="aruleApptWindowCloseHour" column="cutoff_hour" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The minimal time in hours before the appointment start time that is required to create an appointment.</meta>
+        </property>
+
+        <property name="aruleIncludesMonday" type="java.lang.Boolean" column="monday"/>
+        <property name="aruleIncludesTuesday" type="java.lang.Boolean" column="tuesday"/>
+        <property name="aruleIncludesWednesday" type="java.lang.Boolean" column="wednesday"/>
+        <property name="aruleIncludesThursday" type="java.lang.Boolean" column="thursday"/>
+        <property name="aruleIncludesFriday" type="java.lang.Boolean" column="friday"/>
+        <property name="aruleIncludesSaturday" type="java.lang.Boolean" column="saturday"/>
+        <property name="aruleIncludesSunday" type="java.lang.Boolean" column="sunday"/>
+
+        <property name="aruleDlvFullQuota" column="dlv_full_quota" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The amount of full deliveries per time slot</meta>
+        </property>
+
+        <property name="aruleDlvMtyQuota" column="dlv_mty_quota" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The amount of empty deliveries per time slot</meta>
+        </property>
+
+        <property name="aruleDlvChassisQuota" column="dlv_chassis_quota" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The amount of chassis deliveries per time slot</meta>
+        </property>
+
+        <property name="aruleDlvCargoQuota" column="dlv_cargo_quota" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The amount of cargo deliveries per time slot</meta>
+        </property>
+
+        <property name="aruleRcvFullQuota" column="rcv_full_quota" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The amount of full receivals per time slot</meta>
+        </property>
+
+        <property name="aruleRcvMtyQuota" column="rcv_mty_quota" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The amount of empty receivals per time slot</meta>
+        </property>
+
+        <property name="aruleRcvChassisQuota" column="rcv_chassis_quota" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The amount of chassis receivals per time slot</meta>
+        </property>
+
+        <property name="aruleRcvCargoQuota" column="rcv_cargo_quota" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The amount of cargo receivals per time slot</meta>
+        </property>
+
+        <property name="aruleThroughContainerQuota" column="through_container_quota" type="java.lang.Long">
+            <meta attribute="field-description">The max number of through containers in a time slot</meta>
+        </property>
+
+        <!--2010-03-29 vkotha v2.1.L ARGO-23623 Appointment Transaction Rule Update - Quota Rule-->
+        <property name="aruleTotalQuota" column="total_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of transaction appointments per time slot</meta>
+        </property>
+
+        <property name="aruleTotalRcvQuota" column="total_rcv_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of receival transaction appointments per time slot</meta>
+        </property>
+
+        <property name="aruleTotalDlvQuota" column="total_dlv_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of delivery transaction appointments per time slot</meta>
+        </property>
+
+        <property name="aruleRcv40Quota" column="rcv_40_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of 40 foot equipment receivals per time slot</meta>
+        </property>
+
+        <property name="aruleDlv40Quota" column="dlv_40_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of 40 foot equipment deliveries per time slot</meta>
+        </property>
+
+        <property name="aruleRcv20Quota" column="rcv_20_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of 20 foot equipment receivals per time slot</meta>
+        </property>
+
+        <property name="aruleDlv20Quota" column="dlv_20_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of 20 foot equipment deliveries per time slot</meta>
+        </property>
+
+        <property name="aruleRcvHazQuota" column="rcv_haz_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of hazardous equipment receivals per time slot</meta>
+        </property>
+
+        <property name="aruleDlvHazQuota" column="dlv_haz_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of hazardous equipment deliveries per time slot</meta>
+        </property>
+
+        <property name="aruleRcvOogQuota" column="rcv_oog_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of oog equipment receivals per time slot</meta>
+        </property>
+
+        <property name="aruleDlvOogQuota" column="dlv_oog_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of oog equipment deliveries per time slot</meta>
+        </property>
+
+        <property name="aruleRcvReeferQuota" column="rcv_reefer_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of reefer equipment receivals per time slot</meta>
+        </property>
+
+        <property name="aruleDlvReeferQuota" column="dlv_reefer_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of reefer equipment deliveries per time slot</meta>
+        </property>
+
+        <property name="aruleRcvCtrQuota" column="rcv_ctr_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of equipment receivals per time slot</meta>
+        </property>
+
+        <property name="aruleDlvCtrQuota" column="dlv_ctr_quota" type="java.lang.Long">
+            <meta attribute="field-description">The amount of equipment deliveries per time slot</meta>
+        </property>
+
+        <many-to-one name="aruleQuotaRuleSet" column="quota_rule_set_gkey" class="com.navis.road.business.appointment.model.AppointmentQuotaRuleSet"
+                     not-null="true" unique-key="scoped_id">
+            <meta attribute="field-description">The parent quota rule set for which this quota rule has been defined.</meta>
+        </many-to-one>
+
+        <!-- 2007-03-09 lbarman v1.3.C ARGO-6256: validate deleting - add cascading to slots when deleting rule -->
+        <set name="aruleTimeSlots" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="quota_rule_gkey"/>
+            <one-to-many class="com.navis.road.business.appointment.model.AppointmentTimeSlot"/>
+        </set>
+
+        <!--2010-03-08 spabbala v2.1.K ARGO-23625 Appointments - Add Peak Hours Billable Indicator-->
+        <property name="aruleIsPeakHour" column="is_peak_hour_reached" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Appointment time slot is considered peak hours, terminal may want to bill differently for these slots then a normal appointment slot.</meta>
+        </property>
+
+        <property name="aruleCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="aruleCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="aruleChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="aruleChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>
+
+    <!-- 2010-02-19  rsatish ARGO-23619 ne entity - truck visit appointment quota rule  -->
+    <subclass name="com.navis.road.business.appointment.model.GateAppointmentQuotaRule"
+              extends="com.navis.road.business.appointment.model.AppointmentQuotaRule" discriminator-value="GQR">
+        <meta attribute="n4alias">garule</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.model.GateAppointmentQuotaRuleHbr</meta>
+        <meta attribute="class-description">Represents a quota rule for Gate appointments</meta>
+        <meta attribute="n4-entity-name">Gate Appointment Quota Rule</meta>
+        <meta attribute="n4-entity-name-plural">Gate Appointment Quota Rule</meta>
+
+        <!--2010-03-08 spabbala v2.1.K ARGO-23624 Appointment Transaction Rule Update - New fields UseEntireDuration and Overage-->
+        <property name="garuleUseEntireDuration" column="use_entire_duration" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Will use start and end time of Transaction Rule as start and End time of Transaction Appointment instead of duration value.</meta>
+        </property>
+        <!--2010-04-28 vkotha v2.1.N ARGO-23551 Validations based on Priority Groups-->
+        <property name="garulePriorityGroupMaxValue" column="priority_group_max_value" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If true, use value in Total Quota to determine Priority Group number of guaranteed appointments.</meta>
+        </property>
+
+    </subclass>
+    <subclass name="com.navis.road.business.appointment.model.TruckVisitAppointmentQuotaRule"
+              extends="com.navis.road.business.appointment.model.AppointmentQuotaRule" discriminator-value="TQR">
+        <meta attribute="n4alias">tvarule</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.model.TruckVisitAppointmentQuotaRuleHbr</meta>
+        <meta attribute="class-description">Represents a quota rule for truck visit appointments</meta>
+        <meta attribute="n4-entity-name">Truck Visit Appointment Quota Rule</meta>
+        <meta attribute="n4-entity-name-plural">Truck Visit Appointment Quota Rule</meta>
+
+        <property name="tvaruleQuota" column="quota" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Number of truck visit appointments allowed for the rule duration.</meta>
+        </property>
+
+        <property name="tvaruleIsTimeEndGapptEndTime" column="is_time_end_gappt_end_time" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If true, the end time of the Truck Visit appointment will be based on the end time of the last gate appointment.</meta>
+        </property>
+
+        <property name="tvaruleUpdateGapptTimesRule" column="update_gappt_times_rule"
+                  type="com.navis.road.persistence.atoms.UserTypeUpdateGapptTimesRuleEnum" not-null="false">
+            <meta attribute="field-description">Will update transaction times to be in consecutive time slots based on the duration in the
+                corresponding gate appointment Rule. First gate appointment start time will be the start time of the Truck Visit.
+            </meta>
+        </property>
+
+        <property name="tvaruleOverage" column="overage" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The percent of visit appointments that can be made over the max quota amount.</meta>
+        </property>
+
+        <property name="tvaruleCombineGapptRule" column="combine_gappt_rule" type="com.navis.road.persistence.atoms.UserTypeCombineGapptRuleEnum"
+                  not-null="false">
+            <meta attribute="field-description">Rule that needs to be validated while combining gate appointments.</meta>
+        </property>
+
+        <!-- 2009-04-21 spabbala ARGO-18101 TruckVisitAppointment: Gate Configuration Changes and Validations for Truck Visit Appointments-->
+        <!-- 2010-02-24 v2.1.J rsatish ARGO-23623 used while combining transaction to a truck visit -->
+        <property name="tvaruleToleranceMin" column="combination_tolerance_mins" type="java.lang.Long">
+            <meta attribute="field-description">The Tolerance for combination field (minutes) to reject combination of appointments if they are too far.
+            </meta>
+        </property>
+        <!--2010-04-28 vkotha v2.1.N ARGO-23551 Validations based on Priority Groups-->
+        <property name="tvarulePriorityGroupMaxTrucks" column="priority_group_max_trucks" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If true, use value in Total Trucks to determine Priority Group number of guaranteed appointments.</meta>
+        </property>
+    </subclass>
+
+    <class name="com.navis.road.business.appointment.model.GateApptYardBlockQuota" table="road_appt_yard_block_quota">
+        <meta attribute="n4alias">gapptybq"</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.model.GateApptYardBlockQuotaHbr</meta>
+        <meta attribute="class-description">Represents gate appointment yard block quota</meta>
+        <meta attribute="n4-entity-name">Gate Appointment Yard Block Quota</meta>
+        <meta attribute="n4-entity-name-plural">Gate Appointment Yard Block Quota</meta>
+
+        <id name="gapptybqGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="gapptybqQuota" column="quota" type="java.lang.Long">
+            <meta attribute="field-description">Yard Block Quota for a Gate Appointment</meta>
+        </property>
+
+        <many-to-one name="gapptybqQuotaRule" column="quota_rule_gkey" class="com.navis.road.business.appointment.model.AppointmentQuotaRule"
+                     not-null="true">
+            <meta attribute="field-description">The quota rule with which this yard block quota is associated.</meta>
+        </many-to-one>
+
+        <many-to-one name="gapptybqYrdBlock" column="yard_block_gkey" class="com.navis.spatial.business.model.AbstractBin"
+                     not-null="true">
+            <meta attribute="field-description">The yard block with which this yard block quota is associated.</meta>
+        </many-to-one>
+        <!-- 2014-01-10 ramupr v2.6.W ARGO-51396 Introducing new column name to hold AbstractBin.abnName value-->
+        <property name="gapptybqYardBlockName" type="java.lang.String" column="quota_bin_name"/>
+        <property name="gapptybqCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="gapptybqCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="gapptybqChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="gapptybqChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>
+
+    <class name="com.navis.road.business.appointment.model.AppointmentQuotaRuleSet" table="road_appt_quota_rule_set">
+        <meta attribute="n4alias">aruleset</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.model.AppointmentQuotaRuleSetHbr</meta>
+        <meta attribute="class-description">Represents a set of quota rules for appointments</meta>
+        <meta attribute="n4-entity-name">Appointment Quota Rule Set</meta>
+        <meta attribute="n4-entity-name-plural">Appointment Quota Rule Set</meta>
+
+        <id name="arulesetGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arulesetId" column="id" type="string" length="50" not-null="true" unique-key="scoped_id">
+            <meta attribute="field-description">The unique name of this quota rule set</meta>
+        </property>
+
+        <property name="arulesetDescription" column="description" type="string" length="500">
+            <meta attribute="field-description">Description of this quota rule set</meta>
+        </property>
+
+        <many-to-one name="arulesetFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility" not-null="true" unique-key="scoped_id">
+            <meta attribute="field-description">The Facility of this quota rule set</meta>
+        </many-to-one>
+
+        <set name="arulesetQuotaRules" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="quota_rule_set_gkey"/>
+            <one-to-many class="com.navis.road.business.appointment.model.AppointmentQuotaRule"/>
+        </set>
+
+        <!-- this thing is obsoletable to allow removal from gate view without having to delete all rules and appointments -->
+        <property name="arulesetLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <!--2009-04-27 vkotha v1.9E ARGO-16577 TruckVisitAppointment-3: Handling of Truck Visit Appointments via API-->
+        <!-- Indicates the appointment scheme used - gate appointment scheme or the truck visit appointment scheme-->
+        <!--<property name="arulesetApptType" column="appt_type" type="com.navis.road.persistence.atoms.UserTypeAppointmentTypeEnum">-->
+        <!--<meta attribute="field-description">The type of appointment (truck visit appointment, container appointment)</meta>-->
+        <!--</property>-->
+
+        <property name="arulesetCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="arulesetCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="arulesetChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="arulesetChanger" type="java.lang.String" column="changer" length="30"/>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <subclass name="com.navis.road.business.appointment.model.GateConfigAppointmentStage" extends="com.navis.road.business.model.GateConfigStage"
+              discriminator-value="APT" dynamic-update="true">
+        <meta attribute="n4alias">apptstage</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.model.GateConfigAppointmentStageHbr</meta>
+        <meta attribute="class-description">The gate configuration for a appointment stage</meta>
+        <meta attribute="n4-entity-name">Gate Config Appointment Stage</meta>
+        <meta attribute="n4-entity-name-plural">Gate Config Appointment Stages</meta>
+
+        <!-- 2007-02-26 lbarman v1.3.B ARGO-6348: move refernce to appointmentRuleSet from AppointmentStage to gate
+       <many-to-one name="apptstageApptRuleSet" column="appt_quota_rule_set_gkey"
+                     class="com.navis.road.business.appointment.model.AppointmentQuotaRuleSet">
+            <meta attribute="field-description">The quota rule set this app stage uses</meta>
+        </many-to-one>-->
+
+        <!-- 2007-02-26 lbarman v1.3.B ARGO-6348: add discriminator which can be accessed through domain queries-->
+        <property name="apptstageDiscriminator" column="discriminator" type="string" length="50">
+            <meta attribute="field-description">Discriminator to allow query for this subtype</meta>
+        </property>
+    </subclass>
+
+    <!--2009-25-03 vkotha v1.9.C ARGO-16574 (NFRM-80) TruckVisitAppointment-2: Implementation of Truck Visit Appointments-->
+    <class name="com.navis.road.business.appointment.model.TruckVisitAppointment" table="road_truck_visit_appt">
+        <meta attribute="n4alias">tvappt</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.model.TruckVisitAppointmentHbr</meta>
+        <meta attribute="class-description">Represents an appointment for a Truck Visit</meta>
+        <meta attribute="n4-entity-name">Truck Visit Appointment</meta>
+        <meta attribute="n4-entity-name-plural">Truck Visit Appointments</meta>
+
+        <id name="tvapptGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="tvapptCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="tvapptCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="tvapptChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="tvapptChanger" type="java.lang.String" column="changer" length="30"/>
+
+        <property name="tvapptNbr" column="nbr" type="java.lang.Long" not-null="true" unique-key="tvappt_id"/>
+
+        <property name="tvapptReferenceNbr" type="java.lang.String" column="external_ref_nbr"/>
+
+        <property name="tvapptRunNbr" type="java.lang.Long" column="run_nbr"/>
+
+        <many-to-one name="tvapptGate" column="tvappt_gate_gkey" class="com.navis.road.business.model.Gate" not-null="true" unique-key="tvappt_id">
+            <meta attribute="field-description">Truck Visit Appointment Gate Gkey</meta>
+        </many-to-one>
+
+        <property name="tvapptState" column="state" type="com.navis.road.persistence.atoms.UserTypeAppointmentStateEnum">
+            <meta attribute="field-description">The state of this truck visit appointment (Created, Used)</meta>
+        </property>
+
+        <property name="tvapptRequestedDate" column="requested_time" type="timestamp"
+                  not-null="true" index="tvappt_requested_date">
+            <meta attribute="field-description">The time the trucker entered as his requested time</meta>
+        </property>
+
+        <many-to-one name="tvapptTimeSlot" column="time_slot_gkey" class="com.navis.road.business.appointment.model.AppointmentTimeSlot"
+                     not-null="true">
+            <meta attribute="field-description">The time slot for which this truck visit appointment has been created</meta>
+        </many-to-one>
+
+        <property name="tvapptTruckLicenseNbr" type="java.lang.String" column="truck_license_nbr" length="10"/>
+
+        <!--2009-04-17 spabbala v1.9.E ARGO-16574 TruckVisitAppointment-2: Implementation of Truck Visit Appointments
+            added missing driver_card_id-->
+        <!--2010-01-18 mkamalakannan ARGO-22803 v2.1.G, 2.0.2, 1.8.8 increased column length of driver card ID -->
+        <property name="tvapptDriverCardId" type="java.lang.String" column="driver_card_id" length="20"/>
+
+        <many-to-one name="tvapptTruckDriver" column="driver_gkey" class="com.navis.road.business.model.TruckDriver">
+            <meta attribute="field-description">The truck driver for this truck visit appointment.</meta>
+        </many-to-one>
+
+        <many-to-one name="tvapptTruckingCompany" column="trkco_gkey" class="com.navis.road.business.model.TruckingCompany">
+            <meta attribute="field-description">The trucking company for this truck visit appointment</meta>
+        </many-to-one>
+
+        <property name="tvapptTruckId" column="truck_id" type="string" length="30">
+            <meta attribute="field-description">The truck id</meta>
+        </property>
+
+        <property name="tvapptNotes" type="java.lang.String" column="notes" length="80"/>
+
+        <set name="tvapptGateApptSet" lazy="true" table="road_gate_appointment">
+            <key column="truck_visit_appt_gkey"/>
+            <one-to-many class="com.navis.road.business.appointment.model.GateAppointment"/>
+        </set>
+        <!--2010-03-08 spabbala v2.1.K ARGO-23625 Appointments - Add Peak Hours Billable Indicator-->
+        <property name="tvapptIsPeakHour" column="is_peak_hour_reached" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Appointment time slot is considered peak hours, terminal may want to bill differently for these slots then a normal appointment slot.</meta>
+        </property>
+
+        <!--2010-03-15 vkotha v2.1.K ARGO-23632 Appointment - validations related to canceled appointments-->
+        <property name="tvapptIsReused" column="is_reused" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Truck visit Appointment is considered as reused.</meta>
+        </property>
+
+        <property name="tvapptCancelDate" column="cancel_date" type="timestamp"/>
+
+        <property name="tvapptStartSlackOverride" column="start_slack_override" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The time cushion allowed before the start time for the appointment to still be valid</meta>
+        </property>
+
+        <property name="tvapptEndSlackOverride" column="end_slack_override" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The time cushion allowed after the end time for the appointment to still be valid</meta>
+        </property>
+
+        <many-to-one name="tvapptChassisProfile" column="chpro_gkey" class="com.navis.road.business.model.ChassisProfile">
+            <meta attribute="field-description">Chassis Profile</meta>
+            <meta attribute="scope-set">public</meta>
+        </many-to-one>
+
+        <property name="tvapptChassisTotalTeu" type="java.lang.Integer" column="chassis_total_teu" length="2">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+    </class>
+
+    <!--2010-04-16 vkotha v2.1.M ARGO-23550 Appointment Priority Groups-->
+    <class name="com.navis.road.business.appointment.model.AppointmentPriorityGroup" table="road_appt_priority_group">
+        <meta attribute="n4alias">apgrp</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.model.AppointmentPriorityGroupHbr</meta>
+        <meta attribute="class-description">Represents appointment priority group for Trucking Companies</meta>
+        <meta attribute="n4-entity-name">Appointment Priority Group</meta>
+        <meta attribute="n4-entity-name-plural">Appointment Priority Groups</meta>
+
+        <id name="apgrpGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="apgrpId" column="id" type="string" length="9" unique-key="apgrp_id" not-null="true">
+            <meta attribute="field-description">The unique name of this AppointmentPriorityGroup</meta>
+        </property>
+
+        <property name="apgrpLateTolerance" column="late_tolerance" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The time cushion allowed after the end time for the appointment priority group to still be valid.</meta>
+        </property>
+
+        <property name="apgrpEarlyTolerance" column="early_tolerance" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The time cushion allowed before the start time for the appointment priority group to still be valid.</meta>
+        </property>
+
+        <property name="apgrpApptWindowOpenHour" column="app_window_open_hour" type="java.lang.Long">
+            <meta attribute="field-description">The maximal time in hours before the appointment start time that is allowed to create an appointment priority group.</meta>
+        </property>
+
+        <property name="apgrpApptWindowCloseHour" column="app_window_close_hour" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The minimal time in hours before the appointment start time that is required to create an appointment priority group.</meta>
+        </property>
+
+        <property name="apgrpGuarantee" column="guarantee" type="java.lang.Long">
+            <meta attribute="field-description">Percentage of total available appointments reserved for the group.</meta>
+        </property>
+
+        <property name="apgrpGuaranteeExpiration" column="guarantee_expiration" type="java.lang.Long">
+            <meta attribute="field-description">The hours before the actual appointment time that the guarantee ends.</meta>
+        </property>
+
+        <property name="apgrpCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="apgrpCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="apgrpChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="apgrpChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>
+
+    <!--2010-04-16 vkotha v2.1.M ARGO-23550 Appointment Priority Groups-->
+    <class name="com.navis.road.business.appointment.model.TruckCoGatePriorityGroup" table="road_trkc_gate_priority_group">
+        <meta attribute="n4alias">tgpgrp</meta>
+        <meta attribute="generated-class">com.navis.road.business.appointment.model.TruckCoGatePriorityGroupHbr</meta>
+        <meta attribute="class-description">Represents trucking company's priority group</meta>
+        <meta attribute="n4-entity-name">TruckCo Gate Priority Group</meta>
+        <meta attribute="n4-entity-name-plural">TruckCo Gate Priority Groups</meta>
+
+        <id name="tgpgrpGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="tgpgrpPriorityGroup" column="priority_group_gkey"
+                     class="com.navis.road.business.appointment.model.AppointmentPriorityGroup" not-null="true">
+            <meta attribute="field-description">The priority group that the trucking company belongs to.</meta>
+        </many-to-one>
+
+        <many-to-one name="tgpgrpGate" column="gate_gkey" class="com.navis.road.business.model.Gate" not-null="true">
+            <meta attribute="field-description">The associated gate.</meta>
+        </many-to-one>
+
+        <many-to-one name="tgpgrpTruckingCompany" column="truck_co_gkey" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Designated Trucking Company.</meta>
+        </many-to-one>
+
+        <property name="tgpgrpCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="tgpgrpCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="tgpgrpChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="tgpgrpChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>
+
+</hibernate-mapping>

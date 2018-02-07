@@ -1,0 +1,403 @@
+<?xml version="1.0" ?> 
+<!-- create a jar file then compile and add the class files then create the directories then deploy then clean -->
+<project name="TosDataProcessor" default="build-branch_withTag" basedir=".">
+	
+	<property file="build.properties" />
+	<property file="tdp-online-build.properties" />
+    <property file="cvslogin.properties" />
+	
+	 <property file="C:\bea92\weblogic92\samples\server\examples\src\examples.properties"/>
+
+	<!-- dirs for dependent files -->
+	<property name="cas.ref.data" value="../TosRefData/lib" />
+	<property name="cas.ref.mapping" value="../TosRefData/package" />
+	<property name="cas.ref.war" value="democas.war" />
+	<property name="tdpUpload.war" value="tdpUpload.war" />
+	<property name="jatb.jar" value="jatb.jar" />
+	<property name="jatb.jar.dir" value="../JATB/build/dist" />
+	
+	<property name="lib" value="lib" />
+	<property name="build" value="build" />	
+	<property name="dist" value="dist" />
+	<property name="build.classes" value="${build}/classes" />
+    <property name="meta.inf" value="META-INF" /> 
+	<property name="tos.ear.dir" value="${dist}"/>
+	<property name="ear.dir" value="${meta.inf}" />
+	<property name="web.inf" value="WEB-INF" />
+	<property name="app.inf" value="APP-INF" />
+	<property name="tos.build" value="${build}" />
+	<property name="tos.build.classes" value="${TOS.BUILD}/classes" />
+	<property name="tos.java.src" value="src" />	
+	<property name="tos.name" value="tos" />	
+	<property name="tos.ear.name" value="${tos.name}.ear" />
+	<property name="tos.jar.name" value="${tos.name}Ejb.jar" />
+	
+
+	<property name="ws.build" value="wsbuild" />
+	<property name="ws.src" value="wssrc" />
+	<property name="ws.dir" value="WebServices" />
+	<property name="ws.lib" value="wslib" />
+	<!-- grab dependencies that are used for compiling only -->
+	<path id="base.path">	    
+		  <pathelement path="${java.class.path}"/>
+		   <pathelement path="${wl.home}/server/lib/weblogic.jar" />
+		   <pathelement path="${wl.home}/server/lib/jms510.jar" />
+		   <pathelement path="${wl.home}/server/lib/webserviceclient.jar" />
+			<pathelement path="lib/axis.jar"/>
+	    <fileset dir="${cas.ref.data}">
+	      <include name="**/*.jar"/>
+	    </fileset>	
+	<!-- <fileset dir="${cas.ref.mapping}">
+			      <include name="**/*.jar"/>
+		</fileset>	 -->
+	<fileset dir="wslib">
+						<include name="**/*.jar"/>
+		</fileset>	
+		<fileset dir="${PROJECT_DIR}/${lib}">
+			      <include name="**/*.jar"/>
+			      <include name="**/*.zip"/>
+		</fileset>
+		<pathelement location="${TOS.BUILD.classes}" />
+	</path>
+	
+	<path id="ws.path">
+		<fileset dir="wslib">
+						<include name="**/*.jar"/>
+		</fileset>	
+		
+		<fileset dir="${PROJECT_DIR}/${lib}">
+	      <include name="**/*.jar"/>
+	      <include name="**/*.zip"/>
+		</fileset>
+		<pathelement location="${tos.build.classes}" />
+	</path>
+	
+	<!-- clean directories -->
+	<target name="cleanDirs">
+		<delete dir="${TOS.BUILD}" />
+		<delete dir="${PROJECT_DIR}/${dist}" />
+		<delete dir="${PROJECT_DIR}/${ws.build}" />
+	</target>
+	<!-- make directories -->
+	<target name="makeDirs">
+		<mkdir dir="${PROJECT_DIR}/${build}" />
+		<mkdir dir="${TOS.BUILD}" />
+		<mkdir dir="${TOS.BUILD}/classes" />
+		<mkdir dir="${TOS.BUILD}/${meta.inf}" />
+		<mkdir dir="${TOS.BUILD}/${app.inf}" />
+		<mkdir dir="${PROJECT_DIR}/${dist}" />  
+		<mkdir dir="${PROJECT_DIR}/${ws.build}/WEB-INF/classes"/>  
+	</target>	
+	
+	<target name="compile" description="Compiles the java files" depends="cleanDirs,makeDirs">
+		<!--compile-->
+		
+		
+		<javac destdir="${tos.build.classes}" deprecation="true" debug="true" optimize="true" nowarn="true" encoding="iso-8859-1">
+					<classpath refid="base.path"/>
+					<src>
+						<pathelement location="${PROJECT_DIR}/${tos.java.src}" />
+					</src>			
+		</javac>
+		
+		<javac destdir="${PROJECT_DIR}/${ws.build}/WEB-INF/classes" deprecation="true" debug="true" optimize="true" nowarn="true" encoding="iso-8859-1">
+					<classpath refid="ws.path"/>
+					<src>
+						<pathelement location="${PROJECT_DIR}/${ws.src}" />
+					</src>	
+		</javac>
+		
+		<!--copy files -->
+		<copy todir="${TOS.BUILD}/classes">
+      		<fileset dir="${PROJECT_DIR}/${tos.java.src}">
+            <include name="**/*.properties" />
+            <include name="**/*.xml" />
+            <include name="**/xml/*.xml" />
+            </fileset>
+            <fileset file="tdp-online-build.properties"/>
+    	</copy>
+		<copy todir="${TOS.BUILD}/${meta.inf}">
+			<fileset dir="${PROJECT_DIR}/${meta.inf}">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+		<copy todir="${TOS.BUILD}/${app.inf}/lib">
+			<fileset dir="${PROJECT_DIR}/${lib}">
+				<include name="**/*.jar" />
+			</fileset>
+			<fileset dir="${cas.ref.data}">
+				<include name="**/*.jar"/>
+			</fileset>	
+			<!-- <fileset dir="${cas.ref.mapping}">
+				      <include name="**/mapping.jar"/>
+			</fileset> -->	
+
+		</copy>
+		
+		<copy todir="${PROJECT_DIR}/${ws.build}/WEB-INF/classes">
+			<fileset dir="${PROJECT_DIR}/${build}/classes">
+					<include name="**/newvesXml/*.*" />
+			</fileset>
+		</copy>
+		<!-- delete weblogic.jar -->
+		<delete file="${TOS.BUILD}/${app.inf}/lib/weblogic.jar" />
+		<!-- delete jars jboss will provide -->
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jboss-system.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jboss-system-jmx.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jboss-j2se.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jboss-jmx.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jboss-kernel.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jboss-system-jmx-client.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/webserviceclient.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/activation.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/classes12.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jaas.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jaxb-api.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jaxb-impl.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jaxrpc.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jsr173_1.0_api.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jstl.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jta.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/wsdl4j-1.6.2.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/Tidy.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/jdbc2_0-stdext.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/log4j-1.2.15.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/log4j.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/xerces.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/xerces-2.6.2.jar" />
+		<delete file="${TOS.BUILD}/${app.inf}/lib/mailapi.jar" />
+	</target>
+	
+	
+	<target name="set-build-version">
+	    <tstamp>
+	      <format property="tos.now" pattern="EEEE, MMMM dd, yyyy 'at' HH:mm:ss z" locale="en"/>
+	    </tstamp>
+	    <echo message="${tos.now}"/> 	    
+	</target>	
+
+	  <target name="clean">
+	    <!-- Delete the ${build} directory trees -->
+	  	<echo>Deleting all folder from ${BUILD.HOME} </echo>
+	    <delete dir="${BUILD.HOME}" /> 
+	  	<delete dir="${PROJECT_DIR}/${ear.dir}/${ws.file}" />
+	  	<delete dir="${PROJECT_DIR}/dist/toswsclient.jar" />
+	  </target>
+
+	
+	<target name="build-service">
+			<echo message="Hello, ${PROJECT_DIR}/${meta.inf}/${tdpUpload.war}"/>
+			<copy todir="${PROJECT_DIR}/${ws.build}/WEB-INF/classes/META-INF/xfire"  file="${PROJECT_DIR}/${ws.dir}/services.xml" />
+		    <copy todir="${PROJECT_DIR}/${ws.build}/WEB-INF/classes">
+		    	<fileset file="${PROJECT_DIR}/${tos.java.src}/xml/O*.xml"/>
+		    	<fileset file="${PROJECT_DIR}/${tos.java.src}/xml/RDS.xml"/>
+		    	<fileset file="${PROJECT_DIR}/${tos.java.src}/xml/*.jrxml"/>
+		    	<fileset file="${PROJECT_DIR}/${tos.java.src}/xml/*.jpg"/>
+		    </copy>
+		
+			<war destfile="${PROJECT_DIR}/${meta.inf}/${tdpUpload.war}" webxml="${PROJECT_DIR}/${ws.dir}/web.xml">
+
+				<!--
+			  <fileset file="${PROJECT_DIR}/${ws.dir}/upload.jsp"/>
+			  <fileset file="${PROJECT_DIR}/${ws.dir}/honNewVes.jsp"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/gumNewVes.jsp"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/NVFileUpload.jsp"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/MATSONBLUE_LO.JPG"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/light_grn.JPG"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/light_red.JPG"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/light_ylw.JPG"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/light_OFF.JPG"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/green_all.PNG"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/red_all.PNG"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/off_all.PNG"/>
+			  <fileset file="${PROJECT_DIR}/${ws.dir}/queryEnabler.jsp"/>
+			  <fileset file="${PROJECT_DIR}/${ws.dir}/newVesFileupload.jsp"/>
+			  <fileset file="${PROJECT_DIR}/${ws.dir}/shedularMaintenance.jsp"/>
+			    <fileset file="${PROJECT_DIR}/${ws.dir}/consigneeMaster.jsp"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/assignCodeForConsignee.jsp"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/GumAddCtr.jsp"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/ScheduleNewves.jsp"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/noFaxConsignee.jsp"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/NoFaxAddConsignee.jsp"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/LightManager.jsp"/>
+				<fileset file="${PROJECT_DIR}/${ws.dir}/LaneManager.jsp"/>
+                <fileset file="${PROJECT_DIR}/${ws.dir}/NascentWS.jsp"/>
+                <fileset file="${PROJECT_DIR}/${ws.dir}/NascentStoredProc.jsp"/>
+-->
+
+                <fileset file="${PROJECT_DIR}/${ws.dir}/*.jsp"/>
+                <fileset file="${PROJECT_DIR}/${ws.dir}/*.JPG"/>
+                <fileset file="${PROJECT_DIR}/${ws.dir}/*.PNG"/>
+
+                <fileset file="${PROJECT_DIR}/${ws.dir}/sounds/Ship_Bell.mp3"/>
+                <fileset file="${PROJECT_DIR}/${ws.dir}/sounds/Store_Door.mp3"/>
+                <fileset file="${PROJECT_DIR}/${ws.dir}/MATSONBLUE_LO.jpg"/>
+                <fileset file="${PROJECT_DIR}/${ws.dir}/overhead.css"/>
+
+			  <fileset file="${PROJECT_DIR}/${ws.dir}/upload.jar"/>
+			  <webinf file="${PROJECT_DIR}/${ws.dir}/weblogic.xml"/>	
+				 <lib dir="${PROJECT_DIR}/${ws.lib}" excludes="activation-1.1.jar,mail-1.4.jar">
+							  </lib>
+			  <classes dir="${PROJECT_DIR}/${ws.build}/WEB-INF/classes"/>
+			</war>
+
+		
+	  </target>
+	 <target name="echome">
+	 	<echoproperties></echoproperties>
+	</target>
+
+	<!-- Added cvs-checkout, cvs-update, cvs-tagging, checkout-branch-tag  and build-branch-tag targets-->
+
+
+    <target name="cvs-update"> <!--if="already.checked.out"-->
+		<mkdir dir="${SRC_HOME}"/>
+		<cvspass cvsroot="${cvsroot}"  password="${cvs.password}"/>
+		<cvs  cvsRoot="${cvsroot}" package="${cvs.module}"  dest="${SRC_HOME}"  command="update"/>
+	</target>
+    <macrodef name="MyTimestamp"> 
+        <sequential > 
+            <tstamp> 
+                <format property="current.time" pattern="MM/dd/yyyy hh:mm:ss aa"/> 
+            </tstamp> 
+            <echo message="RUN_TIME: ${current.time}"/> 
+        </sequential> 
+    </macrodef>
+	<target name="cvs-tagging">
+				<tstamp> 
+		            <format property="current.time" pattern="MMddyyyyHHmmss"/> 
+		        </tstamp>
+		<echo message="TAG: ${current.time}"/>
+			<cvspass cvsroot="${cvsroot}"  PASSWORD="${cvs.password}"/>
+        	<cvs  cvsroot="${cvsroot}" package="${cvs.module}"  dest="${SRC_HOME}" command="-q tag ${buildInitialNameToTag}${current.time}"/>
+	</target>
+
+    <target name="cvs-tagging_in_jenkins">
+        <tstamp>
+            <format property="current.time" pattern="MMddyyyyHHmmss"/>
+        </tstamp>
+        <echo message="TAG: ${current.time}"/>
+        <cvspass cvsroot="${cvsroot}"  PASSWORD="${cvs.password}"/>
+        <cvs  cvsroot="${cvsroot}" package="${cvs.module}"  dest="${jenkinsSourceHome}" command="-q tag ${buildInitialNameToTag}${current.time}"/>
+    </target>
+
+	<target name="tag" depends="build">
+    <echo message="tagging with build number ${project.build.number}" />
+    <java jar="lib/org-netbeans-lib-cvsclient.jar" fork="true">
+      <arg value="tag" />
+      <arg value="${project.build.number}" />
+    </java>
+	</target>
+
+		<!-- Added for checking out from branch instead of root --> 
+	<target name="checkout-branch">
+	    <echo message="step 1" />
+		<cvspass cvsroot="${cvsroot}" password="${cvs.password}"/>
+	    <echo message="step 2" />
+		<cvs cvsroot="${cvsroot}" package="${cvs.module}"  dest="${SRC_HOME}" command="checkout -r ${cvs.branch}"/>
+	    <echo message="step 3" />
+	</target>
+	
+	<!-- checck out code from tag -->
+	<target name="checkout-tag">
+			<cvspass cvsroot="${cvsroot}"  password="${cvs.password}"/>
+			<cvs  cvsroot="${cvsroot}" package="${cvs.module}"  dest="${SRC_HOME}" tag="${cvs.tag}" command="checkout"/>
+	</target>
+	
+	
+	<target name="clean-cvs">
+		<delete dir="${SRC_HOME}"/>
+	</target>
+
+	<target name="refresh-app">
+		<delete file="${DEPLOY.HOME}/${tos.name}.ear"/>
+		<copy tofile="${DEPLOY.HOME}/${tos.name}.ear" file="${EAR.HOME}/${tos.name}.ear"/>
+	</target>
+
+	<target name="un-deploy">
+		<wldeploy action="undeploy" name="${EAR_APPLICATION}" user="${admin.username}" password="${admin.password}" verbose="true" adminurl="t3://${dev.server.addr}:${dev.server.port}" debug="true" />
+	</target>
+
+	<target name="deploy-app-from-deploy-dir">
+		<wldeploy action="deploy" source="${DEPLOY.HOME}/${EAR_APPLICATION}.ear" name="${EAR_APPLICATION}" user="${admin.username}" password="${admin.password}" verbose="true" adminurl="t3://${dev.server.addr}:${dev.server.port}" debug="true" upload="false" targets="${dev.server.target}" />
+	</target>
+
+	<target name="copyStaticContent_resources">
+		<delete dir="${static.content.resources.target}"/>
+  		<echo>Copying resources folder from ${static.content.resources.src} to ${static.content.resources.target}</echo>
+  		<copy todir="${static.content.resources.target}">
+			<fileset dir="${static.content.resources.src}"/>
+		</copy>	   
+	</target>
+	
+	<target name="build" description="builds tos jar file" depends="set-build-version,compile,build-service">
+
+		<manifest file="${TOS.BUILD}/${meta.inf}/MANIFEST.MF">
+		        <attribute name="Built-By" value="${user.name}"/>
+		</manifest>
+
+		<jar destfile="${PROJECT_DIR}/${dist}/${tos.jar.name}" manifest="${TOS.BUILD}/${meta.inf}/MANIFEST.MF">
+			<fileset dir="${PROJECT_DIR}/${build}/classes">
+			  	<include name="**/*.*" />
+				<include name="**/xml/*.*" />
+				<include name="**/newvesXml/*.*" />
+			</fileset>	
+			
+			<fileset dir="${PROJECT_DIR}/${build}">
+				<!-- <include name="**/${meta.inf}/weblogic-application.xml" /> -->
+				<include name="**/${meta.inf}/ejb-jar.xml" />
+				<include name="**/${meta.inf}/weblogic-ejb-jar.xml" />
+				<include name="**/${meta.inf}/jboss.xml" />
+				<include name="**/${meta.inf}/jboss-service.xml" />
+				<include name="**/${meta.inf}/ear/jboss-classloading.xml" />
+			</fileset>
+			
+			<fileset file="${tos.java.src}/xml/*.jrxml"/>
+			<fileset file="${tos.java.src}/xml/*.jpg"/>
+			
+		</jar>
+	    		
+		<!-- <jar destfile="${dist}/xml.jar" manifest="${tos.build}/${meta.inf}/MANIFEST.MF">
+					<fileset dir="${tos.build}/classes">
+						<include name="**/xml/*.*" />
+					</fileset>
+		</jar> -->
+		
+		
+		<ear destfile="${EAR.HOME}/${tos.ear.name}" appxml="${meta.inf}/application.xml"
+			manifest="${TOS.BUILD}/${meta.inf}/MANIFEST.MF" >
+	      <fileset dir="${PROJECT_DIR}/${dist}">
+	        <include name="tosEjb.jar" />
+	      </fileset>	  
+			<fileset dir="${TOS.BUILD}">
+				<include name="**/${app.inf}/lib/*.jar" />
+			</fileset>
+			<fileset dir="${TOS.BUILD}">
+				<include name="**/${meta.inf}/application.xml" />
+				<include name="**/${meta.inf}/weblogic-application.xml" />
+				<include name="**/${meta.inf}/jboss-classloading.xml" />
+			</fileset>
+			<fileset dir="${PROJECT_DIR}/${meta.inf}">
+				<include name="**/${cas.ref.war}" />
+				<include name="**/${tdpUpload.war}" />
+				<include name="**/${tosws.war}" />
+			
+			</fileset>
+	    </ear>
+		
+<!--			<copy todir="C:\jboss\jboss-eap-5.1\jboss-as\server\tdp\deploy"
+			file="${EAR.HOME}/${tos.ear.name}" />-->
+
+	</target>
+
+    <target name="build-branch_NoTag" depends="clean, checkout-branch ,build,refresh-app"/>
+    <target name="build-branch_NoTag2" depends="clean, checkout-branch ,build,refresh-app"/>
+	<target name="build-branch_withTag" depends="clean, checkout-branch ,build,refresh-app,cvs-tagging"/>
+    <target name="create_tag_after_build" depends="cvs-tagging_in_jenkins"/>
+    <!-- For using build-tag, delete the value agaist cvs.branch and mention the tag against cvs.tag in tdp-online-build.properties file -->
+	<target name="build-tag" depends="clean, checkout-tag ,build,refresh-app"/>
+	<!--<target name="build-branch_NoTag" depends="clean, checkout-branch ,build,refresh-app"/>
+	-->
+	
+
+</project>

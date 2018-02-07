@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<service-rule name="AUTOS CANNOT OG" flag-type="AUTOS CAN OG" rule-type="SIMPLE_PERMISSION" service-type="UNIT_DELIVER" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^AUTO" ui-value="AUTO (AUTO)" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|RETURN|DRAYIN|OFFSITE|TRANSFER|" ui-value="[Forward to Loading Point,Dray In]" order="1" negated="true" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="BOOKING HAZARD CHECK" flag-type="BOOKINGHAZCHECK" rule-type="PERMISSION_ON_GUARDIAN" service-type="UNIT_IN_GATE" guardian="unitPrimaryUe.ueDepartureOrderItem.eqboiOrder" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="TRUE" metafield="unitGoods.gdsIsHazardous" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="BOOKING_HAZARD_CHECK_LTV" flag-type="BOOKINGHAZCHECK" rule-type="PERMISSION_ON_GUARDIAN" service-type="UNIT_LOAD" guardian="unitPrimaryUe.ueDepartureOrderItem.eqboiOrder" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="TRUE" metafield="unitGoods.gdsIsHazardous" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46597" ui-value="ANK" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="CAR BL HOLD" flag-type="CAR BL" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="CAR CANNOT OG" flag-type="CAR" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="CAR_DOC_HOLD RULE" flag-type="CD" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="CC CANNOT OG FOR NON-DRAY" flag-type="CC" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|RETURN|DRAYIN|OFFSITE|TRANSFER|" ui-value="[Forward to Loading Point,Dray In]" order="0" negated="true" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitRouting.rtgGroup" ui-value="XFER-WO (Transfer to WO)" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="CG DMG PRVENTS LTV" flag-type="CG_DMG" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_LOAD" guardian="unitEquipmentStates" life-cycle-state="ACT" />
+<service-rule name="CG HOLD PREVENTS LTV" flag-type="CG_INSP" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="CG HOLD PREVENTS OG" flag-type="CG_INSP" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="COMMUNITY REEFER HOLD PREVENTS LTV" flag-type="COMMUNITY_REEFER" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="CUS BL HOLD PREVENTS OG" flag-type="CUS BL" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="CUS HOLD PREVENTS LTV" flag-type="CUS" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="CUS HOLD PREVENTS OG" flag-type="CUS" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="DOC CANNOT OG FOR NON-DRAY" flag-type="DOC" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|RETURN|DRAYIN|OFFSITE|TRANSFER|" ui-value="[Forward to Loading Point,Dray In]" order="0" negated="true" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitRouting.rtgGroup" ui-value="XFER-WO (Transfer to WO)" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="DVI PREVENTS OUTGATE" flag-type="DVI" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_DELIVER" guardian="unitEquipmentStates" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqIsoGroup" value="CH" ui-value="CH - Standard Chassis" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqIsoGroup" value="HH" ui-value="HH - Heavy Hauler (Tri-axle) Chassis" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="GENERAL HOLD PREVENT INGATE" flag-type="HLD" rule-type="SIMPLE_HOLD" service-type="UNIT_RECEIVE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46597" ui-value="ANK" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="GENERAL HOLD PREVENT LOAD TO VESSEL" flag-type="HLD" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="GENERAL HOLD PREVENT OUTGATE" flag-type="HLD" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46597" ui-value="ANK" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="GX CANNOT LTV" flag-type="GX" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="GX CANNOT OG" flag-type="GX" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="HAZ CHECK HOLD LTV" flag-type="HAZ LTV LOAD" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="HOLD FOR BKG CANNOT LTV" flag-type="BKG" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="HOLD FOR LNK CANNOT OG" flag-type="HOLD FOR LNK" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="HP CANNOT OG FOR NON-DRAY" flag-type="HP" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|RETURN|DRAYIN|OFFSITE|TRANSFER|" ui-value="[Forward to Loading Point,Dray In]" order="0" negated="true" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitRouting.rtgGroup" ui-value="XFER-WO (Transfer to WO)" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="INB HOLD CANNOT OG UNLESS DRAY (EXCEPT TO WO)" flag-type="INB" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|RETURN|DRAYIN|OFFSITE|TRANSFER|" ui-value="[Forward to Loading Point,Dray In]" order="0" negated="true" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitRouting.rtgGroup" ui-value="XFER-WO (Transfer to WO)" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="INGATE HOLD CANNOT INGATE" flag-type="INGATE" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_RECEIVE" guardian="unitEquipmentStates" life-cycle-state="ACT" />
+<service-rule name="ITN BKG HOLD CANNOT BE RECEIVED" flag-type="ITN BKG" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_RECEIVE" guardian="unitPrimaryUe.ueDepartureOrderItem.eqboiOrder" life-cycle-state="ACT" />
+<service-rule name="ITN BKG HOLD CANNOT LTV" flag-type="ITN BKG" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_LOAD" guardian="unitPrimaryUe.ueDepartureOrderItem.eqboiOrder" life-cycle-state="ACT" />
+<service-rule name="ITN HOLD PREVENTS LTV" flag-type="ITN" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="ITN HOLD PREVENTS OG" flag-type="ITN" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="LTV HOLD CANNOT LTV" flag-type="LTV" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_LOAD" guardian="unitEquipmentStates" life-cycle-state="ACT" />
+<service-rule name="MONETARY HOLD" flag-type="MONETARY_HOLD" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="OFFHIRE UNIT PREVENT INGATE" flag-type="O/H" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_IN_GATE" guardian="unitCtrEquipmentStates" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46597" ui-value="ANK" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="ON CANNOT OG FOR NON-DRAY" flag-type="ON" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="IN" metafield="unitDrayStatus" value=":FORWARD|RETURN|DRAYIN|OFFSITE|TRANSFER|" ui-value="[Forward to Loading Point,Dray In]" order="0" negated="true" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitRouting.rtgGroup" ui-value="XFER-WO (Transfer to WO)" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="OOG_PENDING" flag-type="OOG_PENDING" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="FALSE" metafield="unitIsOog" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46789" ui-value="ANK" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="OUTGATE HOLD CANNOT OUTGATE" flag-type="OUTGATE" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="PER HOLD CANNOT LTV" flag-type="PER" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="PER HOLD CANNOT OG" flag-type="PER" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="POD CHECK VESS LOAD" flag-type="PODCHECKFORVESS" rule-type="SIMPLE_PERMISSION" service-type="UNIT_LOAD" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NULL" metafield="unitRouting.rtgPOD1" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="OR" order="1" negated="false" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitActiveUfv.ufvIntendedObCv.cvCarrierMode" value="VESSEL" ui-value="Vessel" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitRouting.rtgDeclaredCv.cvCarrierMode" value="VESSEL" ui-value="Vessel" order="1" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitActiveUfv.ufvActualObCv.cvCarrierMode" value="VESSEL" ui-value="Vessel" order="2" negated="false" parm-type="NO_PARM" />
+      </predicate>
+      <predicate verb="IN" metafield="unitCategory" value=":EXPRT|STRGE|" ui-value="[Export,Storage]" order="2" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="3" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="PREVENT DISCHARGE FROM VESSEL" flag-type="NEWVESS INCOMPLETE" rule-type="SIMPLE_HOLD" service-type="UNIT_DISCH" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|THRGH|" ui-value="[Import,Through]" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S20_INBOUND" ui-value="Inbound - Incoming and certain to arrive (ACTIVE)" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvActualIbCv.cvCarrierMode" value="VESSEL" ui-value="Vessel" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="PREVENT LOAD TO VESSEL" flag-type="NEWVESS INCOMPLETE" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="PREVENT UNIT PROPERT UPDATE" flag-type="NEWVESS INCOMPLETE" rule-type="SIMPLE_HOLD" service-type="UPDATE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|STRGE|" ui-value="[Import,Storage]" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="RD HOLD PREVENTS OG" flag-type="RD" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="RD HOLDS PREVENTS LTV" flag-type="RD" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="RPM INSPECTION HOLD CANNOT LTV" flag-type="RM" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="RPM INSPECTION HOLD CANNOT OG" flag-type="RM" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="SCRAP METAL HOLD PREVENTS LTV" flag-type="SCRAP_METAL" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="SHOP CANNOT LTV" flag-type="SHOP" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_LOAD" guardian="unitEquipmentStates" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="MATCHES" metafield="unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" value="C%" ui-value="C%" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="SHOP CANNOT LTV-UNIT" flag-type="SHOP" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_LOAD" guardian="unitCtrEquipmentStates" life-cycle-state="ACT" />
+<service-rule name="SHOP CANNOT OG" flag-type="SHOP" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_DELIVER" guardian="unitEquipmentStates" life-cycle-state="ACT" />
+<service-rule name="SHOW MTYS CANNOT LTV" flag-type="SHOW LTV" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipmentState.eqsEqOwner" value="^SHOW/LEASINGCO" ui-value="SHOW" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="MTY" ui-value="Empty" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NULL" metafield="unitPrimaryUe.ueDepartureOrderItem.eqboiOrder.eqboNbr" order="2" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="SHOW MTYS NEED PERMISSION TO INGATE" flag-type="SHOW" rule-type="PERMISSION_ON_GUARDIAN" service-type="UNIT_RECEIVE" guardian="unitEquipmentStates" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="STRGE" ui-value="Storage" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="OR" order="1" negated="true" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqIsoGroup" value="CH" ui-value="CH - Standard Chassis" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqIsoGroup" value="HH" ui-value="HH - Heavy Hauler (Tri-axle) Chassis" order="1" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqIsoGroup" value="GS" ui-value="GS - Genset, Nose Mount" order="2" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqIsoGroup" value="GU" ui-value="GU - Genset, Underslung" order="3" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipment.eqIsoGroup" value="CU" ui-value="CU - Cooling Unit" order="4" negated="false" parm-type="NO_PARM" />
+      </predicate>
+      <predicate verb="OR" order="2" negated="false" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipmentState.eqsEqOwner" ui-value="NYKU" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipmentState.eqsEqOwner" value="^CSXU/LEASINGCO" ui-value="CSXU" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="SHOW_NO_RETURN" flag-type="SHOW_NORETURN" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_RECEIVE" guardian="unitCtrEquipmentStates" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipmentState.eqsEqOwner" value="^SHOW/LEASINGCO" ui-value="SHOW" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="NE" metafield="unitActiveUfv.ufvFacility" value="46597" ui-value="ANK" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="SHOW_NO_RETURN_ANK" flag-type="SHOW_NORETURN" rule-type="HOLD_ON_GUARDIAN" service-type="UNIT_IN_GATE" guardian="unitCtrEquipmentStates" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitPrimaryUe.ueEquipmentState.eqsEqOwner" value="^SHOW/LEASINGCO" ui-value="SHOW" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvFacility" value="46597" ui-value="ANK" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="SITS CANNOT IG AS MTY" rule-type="PREREQUISITE_SERVICE" service-type="UNIT_RECEIVE" prereq-service-type="UNIT_CANCEL_PREADVISE" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitCategory" value="STRGE" ui-value="Storage" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitRouting.rtgGroup" value="1867716" ui-value="SIT (SIT Containers)" order="1" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="ST CANNOT LTV" flag-type="ST" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="ST CANNOT OG" flag-type="ST" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="TD CANNOT OG" flag-type="TD" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="TEST_CC_HOLD" flag-type="CC" rule-type="SIMPLE_HOLD" service-type="CC_HOLD" life-cycle-state="ACT" />
+<service-rule name="TI CANNOT LTV FOR SATS" flag-type="TI" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="unitGoods.gdsCommodity" value="^SAT" ui-value="SAT (SIT INGATED)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="TI HOLD PREVENTS OG" flag-type="TI" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="TS CANNOT LTV" flag-type="TS" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="ULK PREVENTS LTV" flag-type="ULK" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT" />
+<service-rule name="ULK PREVENTS OG" flag-type="ULK" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="USA HOLD PREVENTS LTV" flag-type="USA" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NE" metafield="unitCategory" value="EXPRT" ui-value="Export" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="USA HOLD PREVENTS OG" flag-type="USA" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="VESSEL STOP NULL POD" flag-type="VGM VERIFICATION" rule-type="SIMPLE_PERMISSION" service-type="UNIT_LOAD" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="AND" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="OR" order="0" negated="false" parm-type="NO_PARM">
+          <predicate verb="EQ" metafield="unitRouting.rtgDeclaredCv.cvCarrierMode" value="VESSEL" ui-value="Vessel" order="0" negated="false" parm-type="NO_PARM" />
+        </predicate>
+        <predicate verb="NULL" metafield="unitRouting.rtgPOD1" order="1" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="2" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="VGM NOT VERIFIED" flag-type="VGM VERIFICATION" rule-type="SIMPLE_PERMISSION" service-type="UNIT_LOAD" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NE" metafield="unitFlexString06" value="YES" ui-value="YES" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="unitCategory" value=":IMPRT|EXPRT|TRSHP|" ui-value="[Import,Export,Transship]" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitFreightKind" value="FCL" ui-value="FCL" order="2" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="unitActiveUfv.ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="3" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="XP CANNOT OG" flag-type="XT" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+<service-rule name="XT CANNOT LTV" flag-type="XT" rule-type="SIMPLE_HOLD" service-type="UNIT_LOAD" life-cycle-state="ACT">
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="NE" metafield="unitActiveUfv.ufvTransitState" value="S20_INBOUND" ui-value="Inbound - Incoming and certain to arrive (ACTIVE)" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</service-rule>
+<service-rule name="XT CANNOT OG" flag-type="XT" rule-type="SIMPLE_HOLD" service-type="UNIT_DELIVER" life-cycle-state="ACT" />
+</argo:snx>
+

@@ -1,0 +1,458 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">OrdersArchive</meta>
+    <meta attribute="scope-set">public</meta>
+
+    <subclass name="com.navis.orders.business.eqorders.ArchiveEquipmentOrder" extends="com.navis.inventory.business.units.ArchiveEqBaseOrder"
+              discriminator-value="EQO" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.ArchiveEquipmentOrderHbr</meta>
+        <meta attribute="n4alias">areqo</meta>
+        <meta attribute="class-description">Domain entity representing a generic Equipment Order</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Archived Equipment Order</meta>
+        <meta attribute="n4-entity-name-plural">Archived Equipment Orders</meta>
+
+        <!-- ATTRIBUTES COMMON TO ALL EQOs -->
+        <many-to-one name="arEqoComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The complex to which this eqo belongs</meta>
+        </many-to-one>
+
+        <!-- FKs to ScopedBizUnit -->
+        <property name="arEqoLineId" type="string" column="line_id" length="100" not-null="true">
+            <meta attribute="field-description">Line Operator that originated this equipment order</meta>
+        </property>
+
+        <property name="arEqoOrderPurposeId" type="string" column="order_purpose_id" length="50" not-null="false">
+            <meta attribute="field-description">A unique identifier for the order purpose</meta>
+        </property>
+
+        <!-- todo -->
+        <!--<many-to-one name="arEqoOrderPurpose" column="order_purpose_gkey" class="com.navis.argo.business.reference.OrderPurpose" not-null="false">-->
+        <!--<meta attribute="field-description">The Order Purpose</meta>-->
+        <!--</many-to-one>-->
+
+        <many-to-one name="arEqoNextFacility" column="next_facility_gkey" class="com.navis.argo.business.model.Facility" not-null="false">
+            <meta attribute="field-description">The Next Facility</meta>
+        </many-to-one>
+
+        <!-- 2009-12-09 dkannadasan ARGO-22245 Introduce facility column in EquipmentOrder entity -->
+        <many-to-one name="arEqoFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility" not-null="false">
+            <meta attribute="field-description">The facility to which this order belongs to</meta>
+        </many-to-one>
+
+        <property name="arEqoAgentId" type="string" column="agent_id" length="100">
+            <meta attribute="field-description">Freight Forwarder Agent for the eqo Line Operator</meta>
+        </property>
+
+        <property name="arEqoObsoleteConsignee" column="consignee_name" type="string" length='30'>
+            <meta attribute="field-description">Deprecated: Consignee Name - use eqoConsigneeBzu instead</meta>
+        </property>
+
+        <property name="arEqoObsoleteShipper" column="shipper_name" type="string" length='30'>
+            <meta attribute="field-description">Deprecated: Shipper Name - use eqoShipperBzu instead</meta>
+        </property>
+
+        <property name="arEqoConsigneeId" column="consignee_id" type="string" not-null="false" length="100">
+            <meta attribute="field-description">Consignee ScopedBizUnit: Party that will recieve the cargo in the booking</meta>
+        </property>
+
+        <property name="arEqoShipperId" column="shipper_id" type="string" not-null="false" length="100">
+            <meta attribute="field-description">Shipper ScopedBizUnit: Party that sent the cargo in the booking</meta>
+        </property>
+
+        <property name="arEqoTruckCoId" type="string" column="truck_co_id" length="100">
+            <meta attribute="field-description">Trucking Co that will send the driver to pickup equipment against the eqo</meta>
+        </property>
+
+        <!-- for bookings only -->
+        <property name="arEqoClientRefNo" column="client_ref_nbr" type="string" length="16" not-null="false">
+            <meta attribute="field-description">Client reference number for Booking details</meta>
+        </property>
+
+        <!-- Routing -->
+        <property name="arEqoVesselVisitGkey" column="vessel_visit_gkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of Vessel Visit for which the order was made</meta>
+        </property>
+        <property name="arEqoVesselVisitId" column="vessel_visit_id" type="string" length="30">
+            <meta attribute="field-description">cvId of Vessel Visit for which the order was made</meta>
+        </property>
+
+        <property name="arEqoPod1Id" column="pod1_id" type="string" length="6">
+            <meta attribute="field-description">Port where equipment is first discharged</meta>
+        </property>
+
+        <property name="arEqoPod2Id" column="pod2_id" type="string" length="6">
+            <meta attribute="field-description">Second port where equipment is discharged</meta>
+        </property>
+
+        <property name="arEqoPodOptionalId" column="pod_optional_id" type="string" length="6">
+            <meta attribute="field-description">Optional first port of discharge</meta>
+        </property>
+
+        <property name="arEqoPolId" column="pol_id" type="string" length="6">
+            <meta attribute="field-description">Port where eqo equipment should be loaded</meta>
+        </property>
+
+        <property name="arEqoOrigin" column="origin" type="string" length="30">
+            <meta attribute="field-description">Origination point of equipment</meta>
+        </property>
+        <property name="arEqoDestination" column="destination" type="string" length="30">
+            <meta attribute="field-description">Final destination of eqo equipment</meta>
+        </property>
+
+        <property name="arEqoEqStatus" column="eq_status" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum">
+            <meta attribute="field-description">Status of containers shipped under this order</meta>
+        </property>
+
+        <property name="arEqoPreventTypeSubst" column="prevent_type_subst" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">If true, equipment substitution is not allowed</meta>
+        </property>
+
+        <property name="arEqoNotes" column="notes" type="string" length="180">
+            <meta attribute="field-description">Notes</meta>
+        </property>
+
+        <!-- todo -->
+        <property name="arEqoHasReefers" column="has_reefers" type="java.lang.Boolean">
+            <meta attribute="field-description">Order is for live reefers.</meta>
+        </property>
+
+        <property name="arEqoIgnoreDamages" column="ignore_damages" type="java.lang.Boolean">
+            <meta attribute="field-description">If true then the order does not care if container is damaged.</meta>
+        </property>
+
+        <property name="arEqoIgnoreHolds" column="ignore_holds" type="java.lang.Boolean">
+            <meta attribute="field-description">If true then the order does not care if a container is on hold - currently used for delivery of empties (EDO).</meta>
+        </property>
+
+        <!-- Misc Flags -->
+        <!-- Book,EDO -->
+        <property name="arEqoDispatchReserved" column="dispatch_reserved"
+                  type="com.navis.orders.persistence.atoms.UserTypeEquipmentOrderDispatchReservedEnum">
+            <meta attribute="field-description">sets the rules for dispatching reserved equipment</meta>
+        </property>
+
+        <property name="arEqoOwnedOrLeased" column="eq_owned_leased" type="com.navis.orders.persistence.atoms.UserTypeOwnedLeasedEnum">
+            <meta attribute="field-description">Only use owned or only use leased equipment</meta>
+        </property>
+
+        <!-- ERO, EDO SPECIFIC ATTRIBUTES -->
+        <property name="arEqoServiceType" column="service_type" type="com.navis.argo.persistence.atoms.UserTypeEventEnum">
+            <meta attribute="field-description">Purpose of the equipment order</meta>
+        </property>
+        <property name="arEqoEstimatedDate" column="estimated_date" type="timestamp">
+            <meta attribute="field-description">Estimated date for equipment pickup</meta>
+        </property>
+
+        <property name="arEqoEarliestDate" column="earliest_date" type="timestamp">
+            <meta attribute="field-description">Earilest allowed date for equipment pickup</meta>
+        </property>
+        <property name="arEqoLatestDate" column="latest_date" type="timestamp" index="ar_eqo_latest_idx">
+            <meta attribute="field-description">Latest allowed date for equipment pickup</meta>
+        </property>
+        <!--2010-05-11 vkotha v2.1.P ARGO-25807 archived columns for eqoQuantity, eqoTally, and eqoTallyReceive to de-normalized fields-->
+        <property name="arEqoQuantity" column="quantity" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Number of empties to dispatch against the order (defined through all order item quantities)</meta>
+        </property>
+
+        <property name="arEqoTally" column="tally" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Tally for this order (defined through all order item tallies)</meta>
+        </property>
+
+        <property name="arEqoTallyReceive" column="tally_receive" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Number of empties dispatched against the order</meta>
+        </property>
+
+        <property name="arEqoUECount" type="java.lang.Long">
+            <meta attribute="field-description">Number of unit equipments that will/has departed the Complex via the order items in this order</meta>
+        </property>
+
+        <property name="arEqoIsCompleteDispatch" type="java.lang.Boolean">
+            <meta attribute="field-description">Computed field</meta>
+        </property>
+
+        <property name="arEqoIsCompleteReceive" type="java.lang.Boolean">
+            <meta attribute="field-description">Computed field</meta>
+        </property>
+
+    </subclass>
+
+    <subclass name="com.navis.orders.business.eqorders.AbstractArchiveBooking" extends="com.navis.orders.business.eqorders.ArchiveEquipmentOrder"
+              discriminator-value="BKG"
+              dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.AbstractArchiveBookingHbr</meta>
+        <meta attribute="n4-entity-name">Abstract Archived Booking</meta>
+        <meta attribute="n4-entity-name-plural">Abstract Archived Bookings</meta>
+
+        <property name="arEqoOod" column="ood" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If set to true, overdimentional ctrs are allowed</meta>
+        </property>
+        <property name="arEqoOverrideCutoff" column="override_cutoff" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If set to true, vessel schedule cutoffs are overridden</meta>
+        </property>
+        <property name="arEqoHoldPartials" column="hold_partials" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If set to true, received ctrs are put on hold untill all ctr are recieved against the booking</meta>
+        </property>
+        <property name="arEqoStowBlock" column="stow_block" type="string" length="4"/>
+        <property name="arEqoShippingMode" column="shipping_mode" type="com.navis.orders.persistence.atoms.UserTypeShippingModeEnum">
+            <meta attribute="field-description">Standard shipping industry code used to indicate if the marine terminal operator is responsible for stripping or stuffing the cargo</meta>
+        </property>
+        <many-to-one name="arEqoArHazards" column="eqo_hazards" class="com.navis.inventory.business.imdg.ArchiveHazards" cascade="all">
+            <meta attribute="field-description">The Hazards asscoiated with the booking. May be null.</meta>
+        </many-to-one>
+        <property name="arEqoSpecialStowId" column="special_stow_id" type="string">
+            <meta attribute="field-description">Special Stowage Instructions for this booking</meta>
+        </property>
+        <property name="arEqoSpecialStowId2" column="special_stow_id2" type="string">
+            <meta attribute="field-description">Special Stowage Instructions #2 for this booking</meta>
+        </property>
+        <property name="arEqoSpecialStowId3" column="special_stow_id3" type="string">
+            <meta attribute="field-description">Special Stowage Instructions #3 for this booking</meta>
+        </property>
+        <property name="arEqoDrayOff" column="dray_off" type="com.navis.argo.persistence.atoms.UserTypeDrayStatusEnum">
+            <meta attribute="field-description">Must be set to Forward/Return to let a full export ctr out of the complex</meta>
+        </property>
+        <property name="arEqoMilitaryTcn" column="military_tcn" type="string" length="10">
+            <meta attribute="field-description">Military booking TCN reference number</meta>
+        </property>
+        <property name="arEqoEmptyPickupLocation" column="empty_pickup_location" type="string" length="40">
+            <meta attribute="field-description">Empty pickup location</meta>
+        </property>
+        <property name="arEqoStuffingLocation" column="stuffing_location" type="string" length="40">
+            <meta attribute="field-description">Stuffing location</meta>
+        </property>
+        <property name="arEqoFullReturnLocation" column="full_return_location" type="string" length="40">
+            <meta attribute="field-description">Full return location</meta>
+        </property>
+        <!-- 2009-06-15 rsatish v2.0.c ARGO-15692 category field to store EXPORT or DOMESTIC -->
+        <property name="arEqoCategory" column="category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum">
+            <meta attribute="field-description">The Category of the Booking (Export or Domestic)</meta>
+        </property>
+    </subclass>
+
+    <subclass name="com.navis.orders.business.eqorders.ArchiveBooking" extends="com.navis.orders.business.eqorders.AbstractArchiveBooking"
+              discriminator-value="BOOK" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.ArchiveBookingHbr</meta>
+        <meta attribute="n4alias">arbkg</meta>
+        <meta attribute="n4-entity-name">Archived Booking</meta>
+        <meta attribute="n4-entity-name-plural">Archived Bookings</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">bookCustomFlexFields</meta>
+        <dynamic-component name="bookCustomFlexFields"/>
+
+    </subclass>
+
+    <subclass name="com.navis.orders.business.eqorders.ArchiveEquipmentDeliveryOrder"
+              extends="com.navis.orders.business.eqorders.ArchiveEquipmentOrder"
+              discriminator-value="EDO" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.ArchiveEquipmentDeliveryOrderHbr</meta>
+        <meta attribute="n4alias">aredo</meta>
+        <meta attribute="n4-entity-name">Equipment Delivery Order</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Delivery Orders</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">edoCustomFlexFields</meta>
+        <dynamic-component name="edoCustomFlexFields"/>
+
+    </subclass>
+
+    <subclass name="com.navis.orders.business.eqorders.ArchiveEquipmentLoadoutOrder"
+              extends="com.navis.orders.business.eqorders.ArchiveEquipmentOrder"
+              discriminator-value="ELO" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.ArchiveEquipmentLoadoutOrderHbr</meta>
+        <meta attribute="n4alias">arelo</meta>
+        <meta attribute="n4-entity-name">Equipment Loadout Order</meta>
+        <meta attribute="n4-entity-name-plural">Equipment Loadout Orders</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">eloCustomFlexFields</meta>
+        <dynamic-component name="eloCustomFlexFields"/>
+
+    </subclass>
+
+    <joined-subclass name="com.navis.orders.business.eqorders.ArchiveEquipmentOrderItem" table="ord_ar_equipment_order_items"
+                     extends="com.navis.inventory.business.units.ArchiveEqBaseOrderItem" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.orders.business.eqorders.ArchiveEquipmentOrderItemHbr</meta>
+        <meta attribute="n4alias">areqoi</meta>
+        <meta attribute="n4-entity-name">Archived Equipment Order Item</meta>
+        <meta attribute="n4-entity-name-plural">Archived Equipment Order Items</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">eqoiCustomFlexFields</meta>
+
+        <key column="gkey"/>
+
+        <!-- equivalent to Express sz/tp/ht  combo -->
+        <property name="arEqoiEqSize" column="eq_size" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalLengthEnum" not-null="true">
+            <meta attribute="field-description">eqoi equipment size</meta>
+        </property>
+        <property name="arEqoiEqIsoGroup" column="eq_iso_group" type="com.navis.argo.persistence.atoms.UserTypeEquipIsoGroupEnum" not-null="true">
+            <meta attribute="field-description">eqoi equipment iso group code</meta>
+        </property>
+
+        <property name="arEqoiEqHeight" column="eq_height" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalHeightEnum" not-null="true">
+            <meta attribute="field-description">eqoi equipment height</meta>
+        </property>
+
+        <property name="arEqoiQty" column="qty" type="java.lang.Long" not-null="true" length="3">
+            <meta attribute="field-description">Quantity of equipment required for the order</meta>
+        </property>
+
+        <property name="arEqoiTally" column="tally" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Number of empties dispatched against the order</meta>
+        </property>
+
+        <property name="arEqoiTallyLimit" column="tally_limit" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Maximum number of empties authorized for dispatch</meta>
+        </property>
+
+        <property name="arEqoiReceiveLimit" column="rcv_limit" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Maximum number of exports authorized to return</meta>
+        </property>
+
+        <property name="arEqoiEqGradeId" column="eq_grade_id" type="string" length="16">
+            <meta attribute="field-description">Required grade for equipment</meta>
+        </property>
+
+        <property name="arEqoiEqMaterial" column="material" type="com.navis.argo.persistence.atoms.UserTypeEquipMaterialEnum">
+            <meta attribute="field-description">Required material for equipment</meta>
+        </property>
+        <property name="arEqoiAccType" type="java.lang.String" column="acc_type" length="6">
+             <meta attribute="field-description">Required accessory type for equipment</meta>
+        </property>
+        <property name="arEqoiCommodityId" column="commodity_id" type="string">
+            <meta attribute="field-description">Code of the commodity to be transported in equipment</meta>
+        </property>
+
+        <property name="arEqoiCommodityDesc" column="commodity_desc" type="string" length="45">
+            <meta attribute="field-description">Description of the commodity to be transported in equipment</meta>
+        </property>
+
+        <property name="arEqoiCo2Required" type="java.lang.Double" column="CO2_required" length="4">
+            <meta attribute="field-description">Percentage of CO2 required</meta>
+        </property>
+        <property name="arEqoiO2Required" type="java.lang.Double" column="O2_required" length="4">
+            <meta attribute="field-description">Percentage of O2 required</meta>
+        </property>
+
+        <property name="arEqoiVentRequired" type="java.lang.Double" column="vent_required_pct">
+            <meta attribute="field-description">Vent setting required</meta>
+        </property>
+
+        <property name="arEqoiVentUnit" column="vent_unit" type="com.navis.argo.persistence.atoms.UserTypeVentUnitEnum" length="40">
+            <meta attribute="field-description">Unit (%,cubic feet per minute, etc.) that goes with the vent required field.</meta>
+        </property>
+
+        <property name="arEqoiGrossWeight" column="gross_weight" type="java.lang.Double">
+            <meta attribute="field-description">Full Container weight</meta>
+        </property>
+        <property name="arEqoiTempRequired" column="temp_required" type="java.lang.Double" length="10">
+            <meta attribute="field-description">Temperature Setting in Centigrade</meta>
+        </property>
+
+        <property name="arEqoiHumidityRequired" column="humidity_required" type="java.lang.Double" length="10">
+            <meta attribute="field-description">Humidity required, in Centigrade</meta>
+        </property>
+
+        <property name="arEqoiFtrId" column="feature_id" type="string" length="16">
+            <meta attribute="field-description">Equipment Feature</meta>
+        </property>
+
+        <property name="arEqoiSampleEquipTypeId" column="eqtyp_id" type="string" length="6" not-null="false">
+            <meta attribute="field-description">An example equipment type - for empty selection</meta>
+        </property>
+
+        <property name="arEqoiSerialRanges" column="serial_ranges" type="string" length="240">
+            <meta attribute="field-description">A list of acceptable serial number ranges, packed into a string</meta>
+        </property>
+
+        <property name="arEqoiTareWeightMin" column="tare_weight_min" type="java.lang.Double">
+            <meta attribute="field-description">Minimum tolerable Tare Weight</meta>
+        </property>
+
+        <property name="arEqoiTareWeightMax" column="tare_weight_max" type="java.lang.Double">
+            <meta attribute="field-description">Maximum tolerable Tare Weight</meta>
+        </property>
+
+        <property name="arEqoiCscExpirationMin" column="csc_expiration_min" type="timestamp">
+            <meta attribute="field-description">Earliest tolerable CSC Expiration Date</meta>
+        </property>
+
+        <property name="arEqoiCscExpiration" column="csc_expiration" type="string" length="5" not-null="false">
+            <meta attribute="field-description">Earliest tolerable CSC Expiration Date (values can be ACEP, NONE, MMYY)</meta>
+        </property>
+
+        <property name="arEqoiManufactureDateMin" column="mnfr_date_min" type="timestamp">
+            <meta attribute="field-description">Earliest tolerable manufacture date</meta>
+        </property>
+
+        <property name="arEqoiManufactureDateMax" column="mnfr_date_max" type="timestamp">
+            <meta attribute="field-description">Latest tolerable manufacture date</meta>
+        </property>
+
+        <property name="arEqoiIsOog" column="is_oog" type="java.lang.Boolean">
+            <meta attribute="field-description">Equipment Order Item is OOG</meta>
+        </property>
+
+        <property name="arEqoiOogBackCm" column="oog_back_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Back, in Centimeters</meta>
+        </property>
+
+        <property name="arEqoiOogFrontCm" column="oog_front_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Front, in Centimeters</meta>
+        </property>
+
+        <property name="arEqoiOogLeftCm" column="oog_left_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Left, in Centimeters</meta>
+        </property>
+
+        <property name="arEqoiOogRightCm" column="oog_right_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Right, in Centimeters</meta>
+        </property>
+
+        <property name="arEqoiOogTopCm" column="oog_top_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Top, in Centimeters</meta>
+        </property>
+
+        <property name="arEqoiSeqNbr" column="seq_nbr" type="java.lang.Long" length="5">
+            <meta attribute="field-description">Seq Nbr, to identify item</meta>
+        </property>
+
+        <many-to-one name="arEqoiArHazards" column="eqoi_hazards" class="com.navis.inventory.business.imdg.ArchiveHazards" cascade="all">
+            <meta attribute="field-description">The Hazards asscoiated with an Order Item,. May be null.</meta>
+        </many-to-one>
+
+        <property name="arEqoiSafeWeightMin" column="safe_weight_min" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Minimum Safe Weight</meta>
+        </property>
+
+        <property name="arEqoiRemarks" column="remarks" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Remarks</meta>
+        </property>
+
+        <property name="arEqoiDisambiguator" column="disambiguator" type="java.lang.String" length="20" not-null="false">
+            <meta attribute="field-description">Disambiguator</meta>
+        </property>
+
+        <property name="arEqoiIsPowered" column="is_powered" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">True if powered reefer is required</meta>
+        </property>
+
+        <property name="arEqoiEqConditionId" column="eq_condition_id" type="string" length="16" not-null="false">
+            <meta attribute="field-description">Required condition for equipment</meta>
+        </property>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="eqoiCustomFlexFields"/>
+
+    </joined-subclass>
+
+</hibernate-mapping>

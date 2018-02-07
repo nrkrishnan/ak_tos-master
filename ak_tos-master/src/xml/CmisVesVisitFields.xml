@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+    <File name="CmisVesVisitFields" padChar=" "/>
+    <Field sequence="0"  name="msgType"  size="40"></Field>    
+    <Field sequence="1"  name="unitClass" size="15"></Field>
+    <Field sequence="2"	 name="visit" size="7"></Field>
+    <Field sequence="3"	 name="facility"  size="4"></Field>
+    <Field sequence="4"	 name="nextFacility" size="4"></Field>
+    <Field sequence="5"	 name="line" size="3"></Field>
+    <Field sequence="6"	 name="vesselVes" size="3"></Field>
+    <Field sequence="7"	 name="ibVoyage" size="4"></Field>
+    <Field sequence="8"	 name="obVoyage" size="4"></Field>
+    <Field sequence="9"	 name="phase"  size="10"></Field>
+    <Field sequence="10" name="etaDate"  size="10"></Field>
+    <Field sequence="11" name="etaTime" size="8"></Field>
+    <Field sequence="12" name="etdDate"  size="10"></Field>
+    <Field sequence="13" name="etdTime"  size="8"></Field>
+    <Field sequence="14" name="ataDate"  size="10"></Field>
+    <Field sequence="15" name="ataTime" size="8"></Field>
+    <Field sequence="16" name="atdDate" size="10"></Field>
+    <Field sequence="17" name="atdTime" size="8"></Field>
+    <Field sequence="18" name="action" size="5"></Field>
+    <Field sequence="19" name="aDate"  size="10"></Field>
+    <Field sequence="20" name="aTime" size="8"></Field>
+    <Field sequence="21" name="doer"  size="5"></Field>
+    <Field sequence="22" name="leg"  size="1"></Field>
+</FileDesc>

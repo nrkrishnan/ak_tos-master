@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<definitions  xmlns:tns="http://www.adventinc.com/tacts"
+  xmlns:wsr="http://www.openuri.org/2002/10/soap/reliability/"
+  xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+  xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+  xmlns:soap12enc="http://www.w3.org/2003/05/soap-encoding"
+  xmlns:conv="http://www.openuri.org/2002/04/wsdl/conversation/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:s="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  targetNamespace="http://www.adventinc.com/tacts">
+ <types   xmlns:tns="http://www.adventinc.com/tacts"
+   xmlns:wsr="http://www.openuri.org/2002/10/soap/reliability/"
+   xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+   xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+   xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+   xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+   xmlns:soap12enc="http://www.w3.org/2003/05/soap-encoding"
+   xmlns:conv="http://www.openuri.org/2002/04/wsdl/conversation/"
+   xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+   xmlns:s="http://www.w3.org/2001/XMLSchema"
+   xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <xsd:schema    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:stns="java:com.matson.cars.ws.to"
+    elementFormDefault="qualified"
+    attributeFormDefault="qualified"
+    targetNamespace="java:com.matson.cars.ws.to">
+   <xsd:import     namespace="http://schemas.xmlsoap.org/soap/encoding/">
+   </xsd:import>
+   <xsd:complexType     name="ArrayOfVINSightHDOACommodity">
+    <xsd:complexContent>
+     <xsd:restriction       xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+       base="soapenc:Array">
+      <xsd:attribute        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        ref="soapenc:arrayType"
+        wsdl:arrayType="stns:VINSightHDOACommodity[]">
+      </xsd:attribute>
+     </xsd:restriction>
+    </xsd:complexContent>
+   </xsd:complexType>
+   <xsd:complexType     name="VINSightHDOACommodity">
+    <xsd:sequence>
+     <xsd:element       type="xsd:string"
+       name="commodityShortDescription"
+       minOccurs="1"
+       nillable="true"
+       maxOccurs="1">
+     </xsd:element>
+     <xsd:element       type="xsd:int"
+       name="commodityType"
+       minOccurs="1"
+       maxOccurs="1">
+     </xsd:element>
+     <xsd:element       type="xsd:string"
+       name="consignee"
+       minOccurs="1"
+       nillable="true"
+       maxOccurs="1">
+     </xsd:element>
+     <xsd:element       type="xsd:boolean"
+       name="haz"
+       minOccurs="1"
+       maxOccurs="1">
+     </xsd:element>
+     <xsd:element       type="xsd:string"
+       name="make"
+       minOccurs="1"
+       nillable="true"
+       maxOccurs="1">
+     </xsd:element>
+     <xsd:element       type="xsd:string"
+       name="model"
+       minOccurs="1"
+       nillable="true"
+       maxOccurs="1">
+     </xsd:element>
+     <xsd:element       type="xsd:double"
+       name="netWeight"
+       minOccurs="1"
+       maxOccurs="1">
+     </xsd:element>
+     <xsd:element       type="xsd:string"
+       name="reasonForHoldFailure"
+       minOccurs="1"
+       nillable="true"
+       maxOccurs="1">
+     </xsd:element>
+     <xsd:element       type="xsd:string"
+       name="shipper"
+       minOccurs="1"
+       nillable="true"
+       maxOccurs="1">
+     </xsd:element>
+     <xsd:element       type="xsd:string"
+       name="vinNumber"
+       minOccurs="1"
+       nillable="true"
+       maxOccurs="1">
+     </xsd:element>
+     <xsd:element       type="xsd:int"
+       name="vinsightId"
+       minOccurs="1"
+       maxOccurs="1">
+     </xsd:element>
+     <xsd:element       type="xsd:int"
+       name="year"
+       minOccurs="1"
+       maxOccurs="1">
+     </xsd:element>
+    </xsd:sequence>
+   </xsd:complexType>
+  </xsd:schema>
+  <xsd:schema    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:stns="java:language_builtins"
+    elementFormDefault="qualified"
+    attributeFormDefault="qualified"
+    targetNamespace="java:language_builtins">
+   <xsd:import     namespace="http://schemas.xmlsoap.org/soap/encoding/">
+   </xsd:import>
+   <xsd:complexType     name="ArrayOfInt">
+    <xsd:complexContent>
+     <xsd:restriction       xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+       base="soapenc:Array">
+      <xsd:attribute        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        ref="soapenc:arrayType"
+        wsdl:arrayType="xsd:int[]">
+      </xsd:attribute>
+     </xsd:restriction>
+    </xsd:complexContent>
+   </xsd:complexType>
+  </xsd:schema>
+ </types>
+ <message   name="getHDOACommodities">
+  <part    xmlns:partns="http://www.w3.org/2001/XMLSchema"
+    type="partns:string"
+    name="string">
+  </part>
+ </message>
+ <message   name="getHDOACommoditiesResponse">
+  <part    xmlns:partns="java:com.matson.cars.ws.to"
+    type="partns:ArrayOfVINSightHDOACommodity"
+    name="result">
+  </part>
+ </message>
+ <message   name="putHDOACommoditiesOnHold">
+  <part    xmlns:partns="java:language_builtins"
+    type="partns:ArrayOfInt"
+    name="ints">
+  </part>
+ </message>
+ <message   name="putHDOACommoditiesOnHoldResponse">
+  <part    xmlns:partns="java:com.matson.cars.ws.to"
+    type="partns:ArrayOfVINSightHDOACommodity"
+    name="result">
+  </part>
+ </message>
+ <portType   name="VINSightHDOAWebServicePort">
+  <operation    name="getHDOACommodities">
+   <input     message="tns:getHDOACommodities">
+   </input>
+   <output     message="tns:getHDOACommoditiesResponse">
+   </output>
+  </operation>
+  <operation    name="putHDOACommoditiesOnHold">
+   <input     message="tns:putHDOACommoditiesOnHold">
+   </input>
+   <output     message="tns:putHDOACommoditiesOnHoldResponse">
+   </output>
+  </operation>
+ </portType>
+ <binding   type="tns:VINSightHDOAWebServicePort"
+   name="VINSightHDOAWebServicePort">
+   <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+  <operation    name="getHDOACommodities">
+    <soap:operation style="rpc" soapAction="" />
+   <input>
+     <soap:body namespace="http://www.adventinc.com/tacts" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="encoded" />
+   </input>
+   <output>
+     <soap:body namespace="http://www.adventinc.com/tacts" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="encoded" />
+   </output>
+  </operation>
+  <operation    name="putHDOACommoditiesOnHold">
+    <soap:operation style="rpc" soapAction="" />
+   <input>
+     <soap:body namespace="http://www.adventinc.com/tacts" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="encoded" />
+   </input>
+   <output>
+     <soap:body namespace="http://www.adventinc.com/tacts" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" use="encoded" />
+   </output>
+  </operation>
+ </binding>
+ <service   name="VINSightHDOAWebService">
+  <port    name="VINSightHDOAWebServicePort"
+    binding="tns:VINSightHDOAWebServicePort">
+    <soap:address location="http://10.8.7.145:9001/VINSightHDOAWebService/VINSightHDOAWebService" />
+  </port>
+ </service>
+</definitions>

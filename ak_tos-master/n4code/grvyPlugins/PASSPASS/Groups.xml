@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<group id="YB" description="Containers to move via YB">
+  <trucking-companies>
+    <trucking-company id="ALTR" />
+    <trucking-company id="EDYA" />
+    <trucking-company id="ISLM" />
+    <trucking-company id="BET" />
+    <trucking-company id="BHL" />
+    <trucking-company id="KFC" />
+    <trucking-company id="DONS" />
+    <trucking-company id="PACE" />
+    <trucking-company id="IMPT" />
+    <trucking-company id="RHIM" />
+    <trucking-company id="ASEZ" />
+    <trucking-company id="HWAI" />
+    <trucking-company id="HHH" />
+    <trucking-company id="INTE" />
+    <trucking-company id="APT" />
+    <trucking-company id="GER" />
+    <trucking-company id="MARW" />
+    <trucking-company id="AEC" />
+    <trucking-company id="CCT" />
+    <trucking-company id="GUAA" />
+    <trucking-company id="REL" />
+    <trucking-company id="WDS" />
+    <trucking-company id="WEPK" />
+    <trucking-company id="TTS" />
+    <trucking-company id="DSR" />
+    <trucking-company id="MKD" />
+    <trucking-company id="URT" />
+    <trucking-company id="OTAN" />
+    <trucking-company id="ETS" />
+    <trucking-company id="AKAN" />
+    <trucking-company id="KTD" />
+  </trucking-companies>
+</group>
+<group id="24" description="24'">
+  <trucking-companies />
+</group>
+<group id="20" description="20'">
+  <trucking-companies />
+</group>
+<group id="40" description="40'">
+  <trucking-companies>
+    <trucking-company id="1643" />
+    <trucking-company id="1AC" />
+  </trucking-companies>
+</group>
+<group id="TS" description="TAG Strip">
+  <trucking-companies>
+    <trucking-company id="ISLM" />
+  </trucking-companies>
+</group>
+<group id="45" description="45'">
+  <trucking-companies>
+    <trucking-company id="1ABC" />
+  </trucking-companies>
+</group>
+<group id="XFER-P2" description="Transfer to P2">
+  <trucking-companies>
+    <trucking-company id="BUD" />
+  </trucking-companies>
+</group>
+<group id="XFER-SI" description="Transfer to SI">
+  <trucking-companies />
+</group>
+<group id="XFER-WO" description="Transfer to WO">
+  <trucking-companies>
+    <trucking-company id="1ABC" />
+  </trucking-companies>
+</group>
+<group id="20R" description="20' RFR">
+  <trucking-companies />
+</group>
+<group id="40R" description="40' RFR">
+  <trucking-companies />
+</group>
+<group id="IC" description="ICE CREAM">
+  <trucking-companies />
+</group>
+<group id="K" description="KAH">
+  <trucking-companies />
+</group>
+<group id="H" description="HIL">
+  <trucking-companies />
+</group>
+<group id="KH" description="KHI">
+  <trucking-companies />
+</group>
+<group id="DX" description="DHX">
+  <trucking-companies />
+</group>
+<group id="HZ" description="HORIZON">
+  <trucking-companies />
+</group>
+<group id="GC" description="GCS CTR">
+  <trucking-companies />
+</group>
+<group id="1WAY" description="1WAY LEASE">
+  <trucking-companies />
+</group>
+<group id="SHOW" description="Return Shipper-Owned Equipment">
+  <trucking-companies />
+</group>
+<group id="OTR" description="Over the Road">
+  <trucking-companies />
+</group>
+<group id="MDA" description="MDA">
+  <trucking-companies />
+</group>
+<group id="COMSVC" description="Community Service">
+  <trucking-companies />
+</group>
+<group id="PASSPASS" description="pass_pass">
+  <trucking-companies>
+    <trucking-company id="INXE" />
+  </trucking-companies>
+</group>
+</argo:snx>
+

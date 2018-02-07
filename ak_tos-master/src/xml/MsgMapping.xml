@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<TDPMapping>
+<Message type="CmisActions" mappingFile="CmisActions.xml" />
+<Message type="CmisFields" mappingFile="CmisFields.xml" />
+<Message type="CmisChassisFields" mappingFile="CmisChassisFields.xml" />
+<Message type="CmisVesVisitFields" mappingFile="CmisVesVisitFields.xml" />
+<Message type="CmisAcryFields" mappingFile="CmisAcryFields.xml" />
+<Message type="CmisTruckVisitFields" mappingFile="CmisTruckVisitFields.xml" />
+<Message type="LegCode" mappingFile="Leg.xml" />
+</TDPMapping>

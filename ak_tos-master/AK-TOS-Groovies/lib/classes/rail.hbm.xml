@@ -1,0 +1,1103 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2011 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Rail</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- 2009-10-30 pji ARGO-21942 Created to support persistent bin model. -->
+    <subclass name="com.navis.rail.business.entity.RailcarBinModel" extends="com.navis.spatial.business.model.AbstractBin"
+              discriminator-value="RCM" dynamic-update="true">
+        <meta attribute="n4alias">rcm</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.RailcarBinModelHbr</meta>
+        <meta attribute="class-description">Railcar Bin Model</meta>
+        <meta attribute="n4-entity-name">Railcar Bin Model Entity</meta>
+        <meta attribute="n4-entity-name-plural">Railcar Bin Model Entities</meta>
+
+    </subclass>
+
+    <!-- 2009-10-30 pji ARGO-21942 Created to support persistent bin model. -->
+    <subclass name="com.navis.rail.business.entity.RailcarBlock" extends="com.navis.spatial.business.model.block.AbstractBlock"
+              discriminator-value="RBK" dynamic-update="true">
+        <meta attribute="n4alias">rbk</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.RailcarBlockHbr</meta>
+        <meta attribute="class-description">Railcar Block</meta>
+        <meta attribute="n4-entity-name">Railcar Block Entity</meta>
+        <meta attribute="n4-entity-name-plural">Railcar Block Entities</meta>
+
+
+
+    </subclass>
+
+    <!-- 2009-10-30 pji ARGO-21942 Created to support persistent bin model. -->
+    <subclass name="com.navis.rail.business.entity.RailcarSection" extends="com.navis.argo.business.model.AbstractCntrSection"
+              discriminator-value="RSN" dynamic-update="true">
+        <meta attribute="n4alias">rsn</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.RailcarSectionHbr</meta>
+        <meta attribute="class-description">Railcar Section</meta>
+        <meta attribute="n4-entity-name">Railcar Section Entity</meta>
+        <meta attribute="n4-entity-name-plural">Railcar Section Entities</meta>
+    </subclass>
+
+    <!-- 2009-10-30 pji ARGO-21942 Created to support persistent bin model. -->
+    <subclass name="com.navis.rail.business.entity.RailcarStack" extends="com.navis.spatial.business.model.block.AbstractStack"
+              discriminator-value="RST" dynamic-update="true">
+        <meta attribute="n4alias">rst</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.RailcarStackHbr</meta>
+        <meta attribute="class-description">Railcar Stack</meta>
+        <meta attribute="n4-entity-name">Railcar Stack Entity</meta>
+        <meta attribute="n4-entity-name-plural">Railcar Stack Entities</meta>
+
+    </subclass>
+
+    <class name="com.navis.rail.business.entity.RailcarType" table="rail_car_types" dynamic-update="true">
+        <meta attribute="n4alias">rcartyp</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.RailcarTypeHbr</meta>
+        <meta attribute="class-description">Domain entity representing the type of the rail car</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4-entity-name">Rail Car Type</meta>
+        <meta attribute="n4-entity-name-plural">Rail Car Types</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">rcartypId</meta>
+
+        <id name="rcartypGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="rcartypScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="rcartypId" column="id" type="string" length="10" unique-key="unique_key">
+            <meta attribute="field-description">Id of this car type</meta>
+        </property>
+
+        <property name="rcartypName" column="name" type="string" length="60">
+            <meta attribute="field-description">Name/description of this car type</meta>
+        </property>
+
+        <component name="rcartypRailcarDetails" class="com.navis.rail.business.entity.RailcarDetails">
+            <meta attribute="generated-class">com.navis.rail.business.entity.RailcarDetailsHbr</meta>
+            <meta attribute="field-description">Details of the railcar/railcartype</meta>
+            <meta attribute="scope-set">public</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="rcdIsHighSide" column="is_high_side" type="java.lang.Boolean">
+                <meta attribute="field-description">True if access to forklift available</meta>
+            </property>
+
+            <property name="rcdLengthCm" column="length_cm" type="java.lang.Double">
+                <meta attribute="field-description">Overall length of this car</meta>
+            </property>
+
+            <property name="rcdFloorHeightCm" column="floor_height_cm" type="java.lang.Double">
+                <meta attribute="field-description">Floor height of the railroad car</meta>
+            </property>
+
+            <property name="rcdTareWeightKg" column="tare_weight_kg" type="java.lang.Double">
+                <meta attribute="field-description">Empty weight of railroad car</meta>
+            </property>
+
+            <property name="rcdFlatCarType" column="flat_car_type" type="com.navis.rail.persistence.atoms.UserTypeFlatCarTypeEnum">
+                <meta attribute="field-description">Type of the flat car being used: TOFC, COFC, or convertible</meta>
+            </property>
+
+            <property name="rcdSafeWeightKg" column="safe_weight_kg" type="java.lang.Double">
+                <meta attribute="field-description">Maximum safe weight capacity of railroad cars of this type</meta>
+            </property>
+
+            <!-- following three are the geometry specific fields -->
+            <property name="rcdMaxTiersPerPlatform" column="max_tiers_per_platform" type="java.lang.Long">
+                <meta attribute="field-description">Maximum number of tiers that can be accomodated per platform</meta>
+            </property>
+
+            <property name="rcdMax20sPerPlatform" column="max_20s_per_platform" type="java.lang.Long">
+                <meta attribute="field-description">Maximum number of 20 foot containers that can be accomodated per platform</meta>
+            </property>
+
+        </component>
+
+        <!--<set name="rcartypRailcars" inverse="true" lazy="true">
+            <key column="rcartyp_gkey"/>
+            <one-to-many class="com.navis.rail.business.entity.Railcar"/>
+        </set>-->
+
+        <set name="rcartypPlatforms" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="cartyp_gkey"/>
+            <one-to-many class="com.navis.rail.business.entity.RailcarTypePlatform"/>
+        </set>
+
+        <property name="rcartypCreated" column="created" type="timestamp"/>
+        <property name="rcartypCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="rcartypChanged" column="changed" type="timestamp"/>
+        <property name="rcartypChanger" column="changer" type="java.lang.String" length="30"/>
+
+        <property name="rcartypLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <property name="rcartypIsDefault" column="is_default" type="java.lang.Boolean">
+            <meta attribute="field-description">True if this is the default railcar type</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.rail.business.entity.RailcarTypePlatform" table="rail_car_type_platforms" dynamic-update="true">
+        <meta attribute="n4alias">rcartyplf</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.RailcarTypePlatformHbr</meta>
+        <meta attribute="class-description"></meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Rail Car Type Platform</meta>
+        <meta attribute="n4-entity-name-plural">Rail Car Type Platforms</meta>
+
+        <id name="rcartyplfGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="rcartyplfRailcarType" column="cartyp_gkey" class="com.navis.rail.business.entity.RailcarType" not-null="true"/>
+
+        <component name="rcartyplfRailcarPlatformDetails" class="com.navis.rail.business.entity.RailcarPlatformDetails">
+            <meta attribute="generated-class">com.navis.rail.business.entity.RailcarPlatformDetailsHbr</meta>
+            <meta attribute="field-description">Details of the railcar/railcartype platform</meta>
+            <meta attribute="scope-set">public</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="plfdSequence" column="platform_seq" type="java.lang.Long">
+                <meta attribute="field description">The sequence number for this platform in the railcar</meta>
+            </property>
+
+            <!-- rename column since label is reserved word in mysql -->
+            <property name="plfdLabel" column="plf_label" type="string" length="2">
+                <meta attribute="field-description">Lable for this platform</meta>
+            </property>
+
+            <property name="plfdIsFwdTrailerDoorFwd" column="is_fwd_trailer_door_fwd" type="java.lang.Boolean">
+                <meta attribute="field-description">True if the platform-forward facing trailor has door direction forward</meta>
+            </property>
+
+            <property name="plfdIsAftTrailerDoorFwd" column="is_aft_trailer_door_fwd" type="java.lang.Boolean">
+                <meta attribute="field-description">True if the trailer after the platform-forward facing one has door direction forward</meta>
+            </property>
+
+            <property name="plfdFloorHeightCm" column="floor_height_cm" type="java.lang.Double">
+                <meta attribute="field-description">Floor height of the railroad car</meta>
+            </property>
+
+            <property name="plfdTareWeightKg" column="tare_weight_kg" type="java.lang.Double">
+                <meta attribute="field-description">Empty weight of the platform</meta>
+            </property>
+
+            <property name="plfdWeightMax20InKg" column="weight_max_20_kg" type="java.lang.Double">
+                <meta attribute="field-description">Maximum weight that a stack of 20 foot containers can hold</meta>
+            </property>
+
+            <property name="plfdWeightMax40InKg" column="weight_max_40_kg" type="java.lang.Double">
+                <meta attribute="field-description">Maximum weight that a stack of 40 foot containers can hold</meta>
+            </property>
+
+            <property name="plfdCenterWeightLimit20InKg" column="center_weight_limit_20_kg" type="java.lang.Double">
+                <meta attribute="field-description">Limit of the center weight that a stack of 20 foot containers can hold</meta>
+            </property>
+
+            <property name="plfdCenterWeightLimit40InKg" column="center_weight_limit_40_kg" type="java.lang.Double">
+                <meta attribute="field-description">Limit of the center weight that a stack of 40 foot containers can hold</meta>
+            </property>
+
+            <property name="plfdIsLower20" column="is_lower_20" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 20 footer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsLower40" column="is_lower_40" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 40 footer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsLower45" column="is_lower_45" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 45 footer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsLower48" column="is_lower_48" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 48 footer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsLower53" column="is_lower_53" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 48 footer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsUpper20" column="is_upper_20" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 20 footer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdIsUpper40" column="is_upper_40" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 40 footer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdIsUpper45" column="is_upper_45" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 45 footer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdIsUpper48" column="is_upper_48" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 48 footer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdIsUpper53" column="is_upper_53" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 53 footer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdIsLowerReefer" column="is_lower_reefer" type="java.lang.Boolean">
+                <meta attribute="field-description">True if Reefer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsUpperReefer" column="is_upper_reefer" type="java.lang.Boolean">
+                <meta attribute="field-description">True if Reefer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdPinGeometry" column="pin_geometry" type="com.navis.rail.persistence.atoms.UserTypeRailcarPinModelEnum"
+                      not-null="false" length="16">
+                <meta attribute="field-description">Rail car pin model - ADJ or FIX or UNK or NONE</meta>
+            </property>
+        </component>
+
+        <property name="rcartyplfCreated" column="created" type="timestamp"/>
+        <property name="rcartyplfCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="rcartyplfChanged" column="changed" type="timestamp"/>
+        <property name="rcartyplfChanger" column="changer" type="java.lang.String" length="30"/>
+
+    </class>
+
+    <class name="com.navis.rail.business.entity.Railcar" table="rail_cars" dynamic-update="true">
+        <meta attribute="n4alias">rcar</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.RailcarHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="class-description"></meta>
+        <meta attribute="n4-entity-name">Rail Car</meta>
+        <meta attribute="n4-entity-name-plural">Rail Cars</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">rcarId</meta>
+
+        <id name="rcarGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="rcarScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="rcarId" column="id" type="string" length="12" unique-key="unique_key">
+            <meta attribute="field-description">Railcar Identifier</meta>
+        </property>
+
+        <property name="rcarNotes" column="notes" type="string" length="80">
+            <meta attribute="field-description">Description for the railcar</meta>
+        </property>
+
+        <many-to-one name="rcarRailcarTemplateType" column="rlctyp_gkey" class="com.navis.rail.business.entity.RailcarType">
+            <meta attribute="field-description">railcarType used as template when setting up this railcar</meta>
+        </many-to-one>
+
+        <many-to-one name="rcarOwner" column="rr_gkey" class="com.navis.rail.business.entity.Railroad" not-null="true">
+            <meta attribute="field-description">Rail road that owns this railcar</meta>
+        </many-to-one>
+
+        <component name="rcarRailcarDetails" class="com.navis.rail.business.entity.RailcarDetails">
+            <meta attribute="generated-class">com.navis.rail.business.entity.RailcarDetailsHbr</meta>
+            <meta attribute="field-description">Details of the railcar/railcartype</meta>
+            <meta attribute="scope-set">public</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="rcdIsHighSide" column="is_high_side" type="java.lang.Boolean">
+                <meta attribute="field-description">True if access to forklift available</meta>
+            </property>
+
+            <property name="rcdLengthCm" column="length_cm" type="java.lang.Double">
+                <meta attribute="field-description">Overall length of this car</meta>
+            </property>
+
+            <property name="rcdFloorHeightCm" column="floor_height_cm" type="java.lang.Double">
+                <meta attribute="field-description">Floor height of the railroad car</meta>
+            </property>
+
+            <property name="rcdTareWeightKg" column="tare_weight_kg" type="java.lang.Double">
+                <meta attribute="field-description">Empty weight of railroad car</meta>
+            </property>
+
+            <property name="rcdFlatCarType" column="flat_car_type" type="com.navis.rail.persistence.atoms.UserTypeFlatCarTypeEnum">
+                <meta attribute="field-description">Type of the flat car being used: TOFC, COFC, or convertible</meta>
+            </property>
+
+            <property name="rcdSafeWeightKg" column="safe_weight_kg" type="java.lang.Double">
+                <meta attribute="field-description">Maximum safe weight capacity of railroad cars of this type</meta>
+            </property>
+
+            <!-- following three are the geometry specific fields -->
+            <property name="rcdMaxTiersPerPlatform" column="max_tiers_per_platform" type="java.lang.Long">
+                <meta attribute="field-description">Maximum number of tiers that can be accomodated per platform</meta>
+            </property>
+
+            <property name="rcdMax20sPerPlatform" column="max_20s_per_platform" type="java.lang.Long">
+                <meta attribute="field-description">Maximum number of 20 foot containers that can be accomodated per platform</meta>
+            </property>
+
+        </component>
+
+        <set name="rcarPlatforms" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="railcar_gkey"/>
+            <one-to-many class="com.navis.rail.business.entity.RailcarPlatform"/>
+        </set>
+
+        <property name="rcarCreated" column="created" type="timestamp"/>
+        <property name="rcarCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="rcarChanged" column="changed" type="timestamp"/>
+        <property name="rcarChanger" column="changer" type="java.lang.String" length="30"/>
+
+        <property name="rcarLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <many-to-one name="rcarRailcarSection" column="railcar_section_gkey" class="com.navis.rail.business.entity.RailcarSection">
+            <meta attribute="field-description">The Railcar Section which belongs to this Railcar.</meta>
+        </many-to-one>
+
+        <set name="rcarRailcarVisits" inverse="true" lazy="true">
+            <key column="rcar_gkey"/>
+            <one-to-many class="com.navis.rail.business.entity.RailcarVisit"/>
+        </set>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.rail.business.entity.RailcarPlatform" table="rail_car_platforms" dynamic-update="true">
+        <meta attribute="n4alias">rcarplf</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.RailcarPlatformHbr</meta>
+        <meta attribute="class-description"></meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Rail Car Platform</meta>
+        <meta attribute="n4-entity-name-plural">Rail Car Platforms</meta>
+
+        <id name="rcarplfGkey" column="gkey" type="java.lang.Long">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="rcarplfRailcar" column="railcar_gkey" class="com.navis.rail.business.entity.Railcar" not-null="true"/>
+
+        <component name="rcarplfRailcarPlatformDetails" class="com.navis.rail.business.entity.RailcarPlatformDetails">
+            <meta attribute="generated-class">com.navis.rail.business.entity.RailcarPlatformDetailsHbr</meta>
+            <meta attribute="field-description">Details of the railcar/railcartype platform</meta>
+            <meta attribute="scope-set">public</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="plfdSequence" column="platform_seq" type="java.lang.Long">
+                <meta attribute="field description">The sequence number for this platform in the railcar</meta>
+            </property>
+
+            <!-- rename column since label is reserved word in mysql -->
+            <property name="plfdLabel" column="plf_label" type="string" length="2">
+                <meta attribute="field-description">Lable for this platform</meta>
+            </property>
+
+            <property name="plfdIsFwdTrailerDoorFwd" column="is_fwd_trailer_door_fwd" type="java.lang.Boolean">
+                <meta attribute="field-description">True if the platform-forward facing trailor has door direction forward</meta>
+            </property>
+
+            <property name="plfdIsAftTrailerDoorFwd" column="is_aft_trailer_door_fwd" type="java.lang.Boolean">
+                <meta attribute="field-description">True if the trailer after the platform-forward facing one has door direction forward</meta>
+            </property>
+
+            <property name="plfdFloorHeightCm" column="floor_height_cm" type="java.lang.Double">
+                <meta attribute="field-description">Floor height of the railroad car</meta>
+            </property>
+
+            <property name="plfdTareWeightKg" column="tare_weight_kg" type="java.lang.Double">
+                <meta attribute="field-description">Empty weight of the platform</meta>
+            </property>
+
+            <property name="plfdWeightMax20InKg" column="weight_max_20_kg" type="java.lang.Double">
+                <meta attribute="field-description">Maximum weight that a stack of 20 foot containers can hold</meta>
+            </property>
+
+            <property name="plfdWeightMax40InKg" column="weight_max_40_kg" type="java.lang.Double">
+                <meta attribute="field-description">Maximum weight that a stack of 40 foot containers can hold</meta>
+            </property>
+
+            <property name="plfdCenterWeightLimit20InKg" column="center_weight_limit_20_kg" type="java.lang.Double">
+                <meta attribute="field-description">Limit of the center weight that a stack of 20 foot containers can hold</meta>
+            </property>
+
+            <property name="plfdCenterWeightLimit40InKg" column="center_weight_limit_40_kg" type="java.lang.Double">
+                <meta attribute="field-description">Limit of the center weight that a stack of 40 foot containers can hold</meta>
+            </property>
+
+            <property name="plfdIsLower20" column="is_lower_20" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 20 footer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsLower40" column="is_lower_40" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 40 footer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsLower45" column="is_lower_45" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 45 footer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsLower48" column="is_lower_48" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 48 footer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsLower53" column="is_lower_53" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 48 footer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsUpper20" column="is_upper_20" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 20 footer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdIsUpper40" column="is_upper_40" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 40 footer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdIsUpper45" column="is_upper_45" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 45 footer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdIsUpper48" column="is_upper_48" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 48 footer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdIsUpper53" column="is_upper_53" type="java.lang.Boolean">
+                <meta attribute="field-description">True if 53 footer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdIsLowerReefer" column="is_lower_reefer" type="java.lang.Boolean">
+                <meta attribute="field-description">True if Reefer allowed on lower tier</meta>
+            </property>
+
+            <property name="plfdIsUpperReefer" column="is_upper_reefer" type="java.lang.Boolean">
+                <meta attribute="field-description">True if Reefer allowed on upper tier</meta>
+            </property>
+
+            <property name="plfdPinGeometry" column="pin_geometry" type="com.navis.rail.persistence.atoms.UserTypeRailcarPinModelEnum"
+                      not-null="false" length="16">
+                <meta attribute="field-description">Rail car pin model - ADJ or FIX or UNK or NONE</meta>
+            </property>
+        </component>
+
+        <property name="rcarplfCreated" column="created" type="timestamp"/>
+        <property name="rcarplfCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="rcarplfChanged" column="changed" type="timestamp"/>
+        <property name="rcarplfChanger" column="changer" type="java.lang.String" length="30"/>
+
+    </class>
+
+    <class name="com.navis.rail.business.entity.RailcarState" table="rail_car_states" dynamic-update="true">
+        <meta attribute="n4alias">rcarstt</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.RailcarStateHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">The railcar state carries information on a railcar that is kept over different visits.</meta>
+        <meta attribute="n4-entity-name">Rail Car State</meta>
+        <meta attribute="n4-entity-name-plural">Rail Car States</meta>
+
+        <id name="rcarsttGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="rcarsttRailcar" column="railcar" class="com.navis.rail.business.entity.Railcar" not-null="true"/>
+
+        <property name="rcarsttLastDeparted" column="last_departure_date" type="timestamp">
+            <meta attribute="field-description">Date and time of last time the railcar left the terminal</meta>
+        </property>
+
+        <property name="rcarsttIsDamaged" column="damaged" type="java.lang.Boolean">
+            <meta attribute="field-description">If true, the railcar is defined to be damaged.</meta>
+        </property>
+
+        <property name="rcarsttConvertibleCarConfig" column="convertible_car_config" type="string" length="10">
+            <meta attribute="field-description">A String giving the platform configuration of a convertible car; each platform is represented by one letter (e.g. 'TTCCT')</meta>
+        </property>
+
+        <property name="rcarsttWagonPinConfig" column="wagon_pin_config" type="string" length="100">
+            <meta attribute="field-description">A String giving the pin configuration of a railcar; each platform has a configuration (currently only 2 platforms are supported)</meta>
+        </property>
+
+        <many-to-one name="rcarsttOperator" class="com.navis.argo.business.model.Operator">
+            <meta attribute="field-description">The (Topology) Operator whose perspective is being modeled</meta>
+            <column name="opr_gkey" not-null="true"/>
+        </many-to-one>
+
+        <property name="rcarsttWagonFuturePinConfig" column="wagon_future_pin_config" type="string" length="100">
+            <meta attribute="field-description">A String giving the future/planned pin configuration of a railcar</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.rail.business.entity.RailcarVisit" table="rail_car_visits" dynamic-update="true">
+        <meta attribute="n4alias">rcarv</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.RailcarVisitHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing visit of a railcar through a facility</meta>
+        <meta attribute="n4-entity-name">Rail Car Visit</meta>
+        <meta attribute="n4-entity-name-plural">Rail Car Visits</meta>
+        <meta attribute="carina-oracle-index">
+            create index rcarv_anchor_idx on rail_car_visits(anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index rcarv_anchor_idx on rail_car_visits(anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <id name="rcarvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="rcarvId" type="string">
+            <meta attribute="field-description">carrier visit id: carrier identifier (vessel/voyage, truck license, etc.)</meta>
+            <column name="id" index="rcarv_id_idx" length="30" not-null="true"/>
+        </property>
+
+        <property name="rcarvVisitNbr" column="visit_nbr" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">number to disambiguate the visit: 1=first visit, 2=second, etc.</meta>
+        </property>
+
+        <many-to-one name="rcarvFacility" class="com.navis.argo.business.model.Facility">
+            <meta attribute="field-description">The Facility at which this carrier will call</meta>
+            <column name="fcy_gkey" not-null="false"/>
+        </many-to-one>
+
+        <property name="rcarvIsActive" column="active" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If true, is in the facility now.</meta>
+        </property>
+
+        <many-to-one name="rcarvTrainVisitInbound" column="rv_inbound_gkey" class="com.navis.rail.business.entity.TrainVisitDetails">
+            <meta attribute="field-description">Inbound train visit</meta>
+        </many-to-one>
+
+        <many-to-one name="rcarvTrainVisitOutbound" column="rv_outbound_gkey" class="com.navis.rail.business.entity.TrainVisitDetails">
+            <meta attribute="field-description">Outbound train visit</meta>
+        </many-to-one>
+
+        <property name="rcarvInSeq" column="in_seq" type="java.lang.Long">
+            <meta attribute="field-description">Order of railcar in inbound train</meta>
+        </property>
+
+        <property name="rcarvOutSeq" column="out_seq" type="java.lang.Long">
+            <meta attribute="field-description">Order of railcar in outbound train</meta>
+        </property>
+
+        <many-to-one name="rcarvDischargePoint" column="pod_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="false">
+            <meta attribute="field-description">Discharge point for outbound railcar</meta>
+        </many-to-one>
+
+        <property name="rcarvOrigin" column="origin" type="string" length="30">
+            <meta attribute="field-description">Origin</meta>
+        </property>
+
+        <property name="rcarvDestination" column="destination" type="string" length="30">
+            <meta attribute="field-description">Final Destination</meta>
+        </property>
+
+        <property name="rcarvInspectionStatus" column="inspection_status" type="com.navis.rail.persistence.atoms.UserTypeInspectionStatusEnum">
+            <meta attribute="field-description">Inspection status - OK or BAD</meta>
+        </property>
+
+        <!-- todo: description? -->
+        <property name="rcarvIsDirFlipped" column="dir_flipped" type="java.lang.Boolean">
+            <meta attribute="field-description">If true, then direction is flipped.</meta>
+        </property>
+
+        <!-- todo: description? -->
+        <property name="rcarvRailTrackXCoord" column="track_x_coord" type="java.lang.Long">
+            <meta attribute="field-description"></meta>
+        </property>
+
+        <property name="rcarvConvertibleCarConfig" column="convertible_car_config" type="string" length="10">
+            <meta attribute="field-description">A String giving the platform configuration of a convertible car; each platform is represented by one letter (e.g. 'TTCCT')</meta>
+        </property>
+
+        <property name="rcarvWagonPinConfig" column="wagon_pin_config" type="string" length="100">
+            <meta attribute="field-description">A String giving the pin configuration of a railcar; each platform has a configuration (currently only 2 platforms are supported)</meta>
+        </property>
+        <!-- rcarvConnectorStatus is deprecated. Use rcarvDisconnectedAtLow instead -->
+        <property name="rcarvConnectorStatus" column="connector_status" type="com.navis.rail.persistence.atoms.UserTypeConnectorStatusEnum">
+            <meta attribute="field-description">Connector status</meta>
+        </property>
+
+        <property name="rcarvDisconnectedAtLow" column="disconnected_at_low" type="java.lang.Boolean">
+            <meta attribute="field-description">If true, then railcar is disconnected at low end with respect to RailTrack origin.</meta>
+        </property>
+
+        <property name="rcarvSpottingStatus" column="spotting_status" type="com.navis.rail.persistence.atoms.UserTypeSpottingStatusEnum">
+            <meta attribute="field-description">Spotting status</meta>
+        </property>
+
+        <property name="rcarvPlatTransferPoints" column="plat_transfer_points" type="string" length="50">
+            <meta attribute="field-description">A comma delimited string giving the tranfer point on each platform on the railcar; each platform has a configuration</meta>
+        </property>
+
+        <component name="rcarvPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The track and the slot position of the rail car</meta>
+            <meta attribute="extends">java.lang.Object</meta>
+
+            <property name="posLocType" column="loc_type" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16" not-null="true">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="loc_id" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <!-- 2013-10-07 kamblsh ARGO-51805 RailcarVisit RailTrack Operational Position. Length is in sync with UFV Operational Position. -->
+            <property name="posOperationalPosId" column="ops_pos_id" type="string" length="80">
+                <meta attribute="field-description">RailcarVisit operational position on Rail Track (Track-Spot-PlatformSeq-TzSlot-MeterMark:MeterMarkIndex)</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <property name="rcarvFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="rcarvFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="rcarvFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+
+        <property name="rcarvFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <property name="rcarvFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+
+        <property name="rcarvFlexString06" column="flex_string06" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+
+        <property name="rcarvFlexString07" column="flex_string07" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+
+        <property name="rcarvFlexString08" column="flex_string08" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+
+        <many-to-one name="rcarvRailcar" column="rcar_gkey" class="com.navis.rail.business.entity.Railcar" not-null="false">
+            <meta attribute="field-description">Associated railcar</meta>
+        </many-to-one>
+
+        <many-to-one name="rcarvRailcarState" column="railcar_state" class="com.navis.rail.business.entity.RailcarState"/>
+
+        <property name="rcarvVisibleInSparcs" column="visible_sparcs" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">If TRUE, this Railcar Visit is visible in SPARCS</meta>
+        </property>
+
+        <property name="rcarvCreated" column="created" type="timestamp"/>
+        <property name="rcarvCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="rcarvChanged" column="changed" type="timestamp"/>
+        <property name="rcarvChanger" column="changer" type="java.lang.String" length="30"/>
+
+        <property name="rcarvWagonFuturePinConfig" column="wagon_future_pin_config" type="string" length="100">
+            <meta attribute="field-description">A String giving the future/planned pin configuration of a railcar</meta>
+        </property>
+    </class>
+
+    <joined-subclass name="com.navis.rail.business.entity.TrainVisitDetails" table="rail_train_visit_details"
+                     extends="com.navis.argo.business.model.VisitDetails" dynamic-update="true">
+        <meta attribute="n4alias">rvdtls</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.TrainVisitDetailsHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing the visit of a train through a facility</meta>
+        <meta attribute="n4-entity-name">Train Visit Details</meta>
+        <meta attribute="n4-entity-name-plural">Train Visit Details</meta>
+        <meta attribute="subclassCustomComponent">rvdtlsCustomFlexFields</meta>
+
+        <key column="gkey"/>
+
+        <!--currently not used... -->
+        <many-to-one name="rvdtlsBizu" column="bizu_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Rail visit principal line operator</meta>
+        </many-to-one>
+
+        <property name="rvdtlsId" column="name" type="string" length="30">
+            <meta attribute="field-description">Identifier of the train</meta>
+        </property>
+
+        <property name="rvdtlsVisitPhaseComment" column="visit_phase_comment"
+                  type="com.navis.rail.persistence.atoms.UserTypeRailVisitPhaseCommentEnum" not-null="true">
+            <meta attribute="field-description">SPARCS notion of 'visit phase comment' (an enum)</meta>
+        </property>
+
+        <property name="rvdtlsdDirection" column="direction" type="com.navis.rail.persistence.atoms.UserTypeTrainDirectionEnum">
+            <meta attribute="field-description">Train is inbound only, outbound only or a through train</meta>
+        </property>
+
+        <property name="rvdtlsdDestination" column="destination" type="string" length="6">
+            <meta attribute="field-description">Train Destination</meta>
+        </property>
+
+        <many-to-one name="rvdtlsRR" column="rr_gkey" class="com.navis.rail.business.entity.Railroad" not-null="true">
+            <meta attribute="field-description">Rail road company operating the train</meta>
+        </many-to-one>
+
+        <property name="rvdtlsTrack" column="track" type="string" length="20">
+            <meta attribute="field-description">Track position where the train is at(optional)</meta>
+        </property>
+
+        <property name="rvdtlsTimeStartWork" column="start_work" type="timestamp">
+            <meta attribute="field-description">Work starting time</meta>
+        </property>
+
+        <property name="rvdtlsTimeEndWork" column="end_work" type="timestamp">
+            <meta attribute="field-description">Work ending time</meta>
+        </property>
+
+        <property name="rvdtlsNotes" column="notes" type="string" length="80">
+            <meta attribute="field-description">Notes about the visit</meta>
+        </property>
+
+        <!-- todo: hopefully these can be removed...-->
+        <property name="rvdtlsUser1" column="user1" type="string" length="9">
+            <meta attribute="field-description">Train User Field 1</meta>
+        </property>
+
+        <property name="rvdtlsUser2" column="user2" type="string" length="9">
+            <meta attribute="field-description">Train User Field 2</meta>
+        </property>
+
+        <property name="rvdtlsUser3" column="user3" type="string" length="9">
+            <meta attribute="field-description">Train User Field 3</meta>
+        </property>
+
+        <property name="rvdtlsUser4" column="user4" type="string" length="9">
+            <meta attribute="field-description">Train User Field 4</meta>
+        </property>
+
+        <property name="rvdtlsCus1" column="cus1" type="string" length="25">
+            <meta attribute="field-description">Train Cus Field 1</meta>
+        </property>
+
+        <property name="rvdtlsCus2" column="cus2" type="string" length="25">
+            <meta attribute="field-description">Train Cus Field 2</meta>
+        </property>
+
+        <property name="rvdtlsCus3" column="cus3" type="string" length="30">
+            <meta attribute="field-description">Train Cus Field 3</meta>
+        </property>
+
+        <property name="rvdtlsFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="rvdtlsFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="rvdtlsFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+
+        <property name="rvdtlsFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <property name="rvdtlsFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+
+        <property name="rvdtlsFlexString06" column="flex_string06" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+
+        <property name="rvdtlsFlexString07" column="flex_string07" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+
+        <property name="rvdtlsFlexString08" column="flex_string08" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+
+        <property name="rvdtlsIsDrayOff" column="is_dray_off" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Checked to forward all exports to another facility</meta>
+        </property>
+
+        <property name="rvdtlsMaxWeightKg" column="max_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Maximum weight allowed for the train</meta>
+        </property>
+
+        <property name="rvdtlsMaxLengthCm" column="max_length_cm" type="java.lang.Double">
+            <meta attribute="field-description">Maximum length allowed for the train</meta>
+        </property>
+
+        <property name="rvdtlsTimeBeginReceive" column="begin_receive" type="java.sql.Timestamp">
+            <meta attribute="field-description">begin receive time</meta>
+        </property>
+
+        <component name="rvdtlsEstMoveCount" class="com.navis.rail.business.schedule.MoveCount">
+
+            <meta attribute="generated-class">com.navis.rail.business.schedule.MoveCountHbr</meta>
+            <meta attribute="field-description">Estimate the move counts of the train</meta>
+            <meta attribute="scope-set">public</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="mcLoad" column="est_load" type="java.lang.Long">
+                <meta attribute="field-description">Loading moves</meta>
+            </property>
+
+            <property name="mcDischarge" column="est_discharge" type="java.lang.Long">
+                <meta attribute="field-description">Discharge moves</meta>
+            </property>
+
+            <property name="mcBbkLoad" column="est_bbk_load" type="java.lang.Long">
+                <meta attribute="field-description">BreakBulk load</meta>
+            </property>
+
+            <property name="mcBbkDischarge" column="est_bbk_discharge" type="java.lang.Long">
+                <meta attribute="field-description">BreakBulk discharge</meta>
+            </property>
+        </component>
+
+        <set name="rvdtlsInboundRailcarVisits" inverse="true" lazy="true">
+            <key column="rv_inbound_gkey"/>
+            <one-to-many class="com.navis.rail.business.entity.RailcarVisit"/>
+        </set>
+
+        <set name="rvdtlsOutboundRailcarVisits" inverse="true" lazy="true">
+            <key column="rv_outbound_gkey"/>
+            <one-to-many class="com.navis.rail.business.entity.RailcarVisit"/>
+        </set>
+
+        <property name="rvdtlsCreated" column="created" type="timestamp" index="rvdtls_created_idx"/>
+        <property name="rvdtlsCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="rvdtlsChanged" column="changed" type="timestamp"/>
+        <property name="rvdtlsChanger" column="changer" type="java.lang.String" length="30"/>
+
+        <dynamic-component name="rvdtlsCustomFlexFields"/>
+    </joined-subclass>
+
+    <joined-subclass name="com.navis.rail.business.entity.Railroad" table="rail_railroads" extends="com.navis.argo.business.reference.ScopedBizUnit"
+                     dynamic-update="true">
+        <meta attribute="generated-class">com.navis.rail.business.entity.RailroadHbr</meta>
+        <meta attribute="n4alias">rr</meta>
+        <meta attribute="n4-entity-name">Railroad</meta>
+        <meta attribute="n4-entity-name-plural">Railroads</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">bzuId</meta>
+
+        <key column="rrId"/>
+        <!--2009-11-18 rkasindula v2.1.B ARGO-21702 "notes" field is moved to scopedBizUnit entity.-->
+        <!--<property name="rrObsoleteNotes" type="java.lang.String" column="notes" length="60">-->
+        <!--<meta attribute="field-description">Notes describing the railroad</meta>-->
+        <!--</property>-->
+
+    </joined-subclass>
+
+    <class name="com.navis.rail.business.entity.RouteRestriction" table="rail_route_restrictions" dynamic-update="true">
+        <meta attribute="n4alias">routres</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.RouteRestrictionHbr</meta>
+        <meta attribute="class-description">Domain entity representing the route restriction</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="n4-entity-name">Route Restriction</meta>
+        <meta attribute="n4-entity-name-plural">Route Restrictions</meta>
+
+        <id name="routresGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="routresScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" unique-key="unique_key"/>
+        </many-to-one>
+
+        <many-to-one name="routresOwnerService" class="com.navis.argo.business.reference.CarrierService">
+            <meta attribute="field-description">Owner Service</meta>
+            <column name="owner_service" unique-key="unique_key"/>
+        </many-to-one>
+
+        <many-to-one name="routresHubA" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Start point of the restriction</meta>
+            <column name="hub_a" unique-key="unique_key"/>
+        </many-to-one>
+
+        <many-to-one name="routresHubB" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">End point of the restriction</meta>
+            <column name="hub_b" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="routresWeightLimit" column="weight_limit" type="java.lang.Double">
+            <meta attribute="field-description">Weight Limit</meta>
+        </property>
+
+        <property name="routresWidthLimit" column="width_limit" type="java.lang.Double">
+            <meta attribute="field-description">Width Limit</meta>
+        </property>
+
+        <property name="routresHeightLimit" column="height_limit" type="java.lang.Double">
+            <meta attribute="field-description">Height Limit</meta>
+        </property>
+
+        <property name="routresCarLengthLimit" column="car_length_limit" type="java.lang.Double">
+            <meta attribute="field-description">Car Length Limit</meta>
+        </property>
+
+        <property name="routresTofcCofcHub" column="tofc_cofc_hub" type="com.navis.rail.persistence.atoms.UserTypeFlatCarTypeEnum" length="4">
+            <meta attribute="field-description"></meta>
+        </property>
+
+        <property name="routresDoubleStackCarOk" column="double_stack_car_ok" type="java.lang.Boolean">
+            <meta attribute="field-description">Double stack cars are ok</meta>
+        </property>
+
+        <property name="routresCreated" column="created" type="timestamp"/>
+        <property name="routresCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="routresChanged" column="changed" type="timestamp"/>
+        <property name="routresChanger" column="changer" type="java.lang.String" length="30"/>
+
+        <property name="routresLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!--2011-01-14 aprabhakar v2.2.K ARGO-29716 Create a view joining RailcarVisit, Unit and UnitFacilityVisit tables based on last
+    known position location Gkey -->
+    <class name="com.navis.rail.business.entity.UfvOnRailcarVisit" table="rcarv_ufv" mutable="false">
+        <meta attribute="n4alias">rcarvufv</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.UfvOnRailcarVisitHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Faux View of UFVs on Rail car visits</meta>
+        <meta attribute="n4-entity-name">Ufv On RailcarVisit</meta>
+        <meta attribute="n4-entity-name-plural">Ufvs On RailcarVisits</meta>
+
+        <meta attribute="carina-fk-index-disable">
+            (rcv_gkey);(rcv_inbound_gkey);(rcv_outbound_gkey);(ufv_gkey)
+        </meta>
+
+        <subselect>
+            SELECT
+
+            rcv.gkey as rcv_gkey,
+            rcv.gkey as gkey,
+            rv_inbound_gkey as rcv_inbound_gkey,
+            rv_outbound_gkey as rcv_outbound_gkey,
+            ufv.gkey as ufv_gkey
+
+            FROM
+
+            rail_car_visits rcv left outer join inv_unit_fcy_visit ufv on rcv.gkey = ufv.last_pos_loc_gkey
+        </subselect>
+
+        <synchronize table="rail_car_visits"/>
+
+        <id name="rcarvufvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="rcarvufvRailCarVisit" column="rcv_gkey" class="com.navis.rail.business.entity.RailcarVisit" not-null="false">
+            <meta attribute="field-description"></meta>
+        </many-to-one>
+
+        <many-to-one name="rcarvufvRailCarVisitTvInbound" column="rcv_inbound_gkey" class="com.navis.rail.business.entity.TrainVisitDetails"
+                     not-null="false">
+            <meta attribute="field-description"></meta>
+        </many-to-one>
+
+        <many-to-one name="rcarvufvRailCarVisitTvOutbound" column="rcv_outbound_gkey" class="com.navis.rail.business.entity.TrainVisitDetails"
+                     not-null="false">
+            <meta attribute="field-description"></meta>
+        </many-to-one>
+
+        <many-to-one name="rcarvufvUfv" column="ufv_gkey" class="com.navis.inventory.business.units.UnitFacilityVisit" not-null="false">
+            <meta attribute="field-description"></meta>
+        </many-to-one>
+    </class>
+
+    <!--2011-01-14 aprabhakar v2.2.K ARGO-29717 Create a view joining RailcarVisit, Unit and UnitFacilityVisit tables based on
+    arrival position location Gkey -->
+    <class name="com.navis.rail.business.entity.UfvArrivedOnRailcarVisit" table="rcarv_ufvArrived" mutable="false">
+        <meta attribute="n4alias">rcarvufvArr</meta>
+        <meta attribute="generated-class">com.navis.rail.business.entity.UfvArrivedOnRailcarVisitHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Faux View of UFVs Arrived on Rail car visits</meta>
+        <meta attribute="n4-entity-name">Ufv Arrived On RailcarVisit</meta>
+        <meta attribute="n4-entity-name-plural">Ufvs Arrived On RailcarVisits</meta>
+
+        <meta attribute="carina-fk-index-disable">
+            (rcv_gkey);(rcv_inbound_gkey);(rcv_outbound_gkey);(ufv_gkey)
+        </meta>
+
+        <subselect>
+            SELECT
+
+            rcv.gkey as rcv_gkey,
+            rcv.gkey as gkey,
+            rv_inbound_gkey as rcv_inbound_gkey,
+            rv_outbound_gkey as rcv_outbound_gkey,
+            ufv.gkey as ufv_gkey
+
+            FROM
+
+            rail_car_visits rcv left outer join inv_unit_fcy_visit ufv on rcv.gkey = ufv.arrive_pos_loc_gkey
+        </subselect>
+
+        <synchronize table="rail_car_visits"/>
+
+        <id name="rcarvufvArrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="rcarvufvArrRailCarVisit" column="rcv_gkey" class="com.navis.rail.business.entity.RailcarVisit" not-null="false">
+            <meta attribute="field-description"></meta>
+        </many-to-one>
+
+        <many-to-one name="rcarvufvArrRailCarVisitTvInbound" column="rcv_inbound_gkey" class="com.navis.rail.business.entity.TrainVisitDetails"
+                     not-null="false">
+            <meta attribute="field-description"></meta>
+        </many-to-one>
+
+        <many-to-one name="rcarvufvArrRailCarVisitTvOutbound" column="rcv_outbound_gkey" class="com.navis.rail.business.entity.TrainVisitDetails"
+                     not-null="false">
+            <meta attribute="field-description"></meta>
+        </many-to-one>
+
+        <many-to-one name="rcarvufvArrUfv" column="ufv_gkey" class="com.navis.inventory.business.units.UnitFacilityVisit" not-null="false">
+            <meta attribute="field-description"></meta>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

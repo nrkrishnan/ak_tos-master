@@ -1,0 +1,22 @@
+Mailbox Name,Sender Qualifier,Sender Id,Receiver Qualifier,Receiver Id,Partner Nm,Complex,In/Out,Directory,Comm. Type,Address,FTP UserId,FTP Folder,LifeCycleState
+NRK-TEST,,,,,NRK-TEST,ALASKA,Send,temp,NONE,,,,Active
+RECEIVE_APL_FLEET,,,,,APLU,ALASKA,Receive,/var/tmp/aplfleet,FTP,10.102.0.29,mataedi1,~/tos/ib/COEDOR,Active
+RECEIVE_MAE_BAPLIE,,,,,MAEU,ALASKA,Receive,var/tmp/ibbaplie,NONE,,,,Active
+RECEIVE_MAE_BOOKING,,,,,MAEU,ALASKA,Receive,/var/tmp/edibookingmae,FTP,10.102.0.29,mataedi1,~/tos/ib/edi301,Active
+RECEIVE_MAE_BOOK_TES,,,,,MAEU,ALASKA,Receive,/var/tmp/snxmailbox/ANK,NONE,,,,Active
+RECEIVE_NYK_BAPLIE,,,,,NYK,ALASKA,Receive,/var/tmp/edi,FTP,10.102.0.29,mataedi1,~tos/ib/baplie/JPXNYK,Active
+RECEIVE_NYK_BOOKING,,,,,NYK,ALASKA,Receive,/var/tmp/edi,FTP,10.102.0.29,mataedi1,~/tos/ib/nykedi301,Active
+SEND NYK BAPLIE 2DUT,ZZ,MNC001,ZZ,NYKS,NYK,ALASKA,Send,/var/tmp/edi,Email,"jlucas@matson.com,cgarcia@matson.com,cparker@matson.com,jbalbarino@matson.com",,,Active
+SEND_GEMS_STOW_RECON,,,,,GEMS,ALASKA,Send,/var/tmp/gemsstowrecon,FTP,10.102.0.29,gxspftp1,~/MatNav/GEMS/IB/tos/stowrecon,Active
+SEND_MAE_322,ZZ,MNC001,ZZ,MAEU,MAEU,ALASKA,Send,/var/tmp/edi322ob,FTP,10.102.0.29,mataedi1,~/tos/ob/edi322,Active
+SEND_MAE_322_DIS,ZZ,MNC001,ZZ,MAEU,MAEU,ALASKA,Send,/var/tmp/edi322ob,FTP,10.102.0.29,mataedi1,~/tos/ob/edi322/DISH,Active
+SEND_MAE_322_INGATE,ZZ,MNC001,ZZ,MAEU,MAEU,ALASKA,Send,/var/tmp/edi322ob,FTP,10.102.0.29,mataedi1,~/tos/ob/edi322/INGATES,Active
+SEND_MAE_322_LOAD,ZZ,MNC001,ZZ,MAEU,MAEU,ALASKA,Send,/var/tmp/edi322ob ,FTP,10.102.0.29,mataedi1,~/tos/ob/edi322/LOAD,Active
+SEND_MAE_322_OUTGATE,ZZ,MNC001,ZZ,MAEU,MAEU,ALASKA,Send,/var/tmp/edi322ob ,FTP,10.102.0.29,mataedi1,~/tos/ob/edi322/OUTGATE,Active
+SEND_MAE_BAPLIE2DUT,ZZ,MNC001,ZZ,MAEU,MAEU,ALASKA,Send,/var/tmp/edistowob,Email,1aktosdevteam@matson.com,,,Active
+SEND_MAE_BAPLIE2KDK,ZZ,MNC001,ZZ,MAEU,MAEU,ALASKA,Send,/var/tmp/edistowob,Email,1aktosdevteam@matson.com,,,Active
+SEND_MAE_BAPLIE_EMAI,ZZ,MNC001,ZZ,MAEU,MAEU,ALASKA,Send,/var/tmp/edistowob,Email,1aktosdevteam@matson.com,,,Active
+SEND_MAE_BAPLIE_FTP,ZZ,MNC001,ZZ,MAEU,MAEU,ALASKA,Send,/var/tmp/edistowob,FTP,10.102.0.29,mataedi1,~/tos/ob/baplie/Maersk,Active
+SEND_NYK_322,ZZ,MNC001,02,NYKS,NYK,ALASKA,Send,/var/tmp/edi,Email,gbabu@matson.com,,,Active
+SEND_NYK_BAPLIE,ZZ,MNC001,02,NYKS,NYK,ALASKA,Send,/var/tmp/edi,FTP,10.102.0.29,mataedi1,~/tos/ob/baplie/JPXNYK,Active
+TEST_MAILBOX,,,,,NRK-TEST,ALASKA,Receive,temp,NONE,,,,Active

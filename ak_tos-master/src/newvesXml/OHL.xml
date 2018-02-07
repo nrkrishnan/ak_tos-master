@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OHL>
+	<Field name="tranCode" length="3"></Field>
+	<Field name="date" length="8"></Field>
+	<Field name="time" length="8"></Field>
+	<Field name="user1" length="5"></Field>
+	<Field name="pdlgId" length="9"></Field>
+	<Field name="bill" length="17"></Field>
+	<Field name="eqNo" length="12"></Field>
+	<Field name="vesvoy" length="6"></Field>
+	<Field name="srv" length="5"></Field>
+	<Field name="code" length="3"></Field>
+	<Field name="pby" length="3"></Field>
+	<Field name="hType" length="1"></Field>
+	<Field name="iGate" length="1"></Field>
+	<Field name="oGate" length="1"></Field>
+	<Field name="rfs" length="1"></Field>
+	<Field name="desc" length="50"></Field>
+	<Field name="aDateFormat" length="8"></Field>
+	<Field name="aTimeFormat" length="8"></Field>
+	<Field name="cDateFormat" length="8"></Field>
+	<Field name="cTimeFormat" length="8"></Field>
+	<Field name="aFlag" length="1"></Field>
+	<Field name="user2" length="5"></Field>
+	<Field name="leg" length="1"></Field>
+		
+</OHL>

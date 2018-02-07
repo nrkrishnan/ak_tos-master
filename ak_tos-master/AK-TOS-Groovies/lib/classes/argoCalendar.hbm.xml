@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">ArgoCalendar</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="scope-set">public</meta>
+
+    <class name="com.navis.argo.business.calendar.ArgoCalendar" table="argo_calendar">
+        <meta attribute="generated-class">com.navis.argo.business.calendar.ArgoCalendarHbr</meta>
+        <meta attribute="n4alias">argocal</meta>
+        <meta attribute="n4-entity-name">Calendar</meta>
+        <meta attribute="n4-entity-name-plural">Calendar</meta>
+        <meta attribute="class-description">Domain entity representing calendar </meta>
+
+        <id name="argocalGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="argocalId" column="Id" type="string" length="50" unique="false" not-null="true">
+            <meta attribute="field-description">Name of this calendar</meta>
+        </property>
+
+        <property name="argocalDescription" column="description" type="string" length="100">
+            <meta attribute="field-description">Description of this calendar</meta>
+        </property>
+
+        <property name="argocalCalendarType" column="calendar_type" type="com.navis.argo.persistence.atoms.UserTypeCalendarTypeEnum" length="16"
+                  not-null="true">
+            <meta attribute="field-description">An Enum giving the type of position of the Equipment's last known position</meta>
+        </property>
+
+        <property name="argocalIsDefaultCalendar" column="is_default_calendar" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">If true, calendar is default per calendar type</meta>
+        </property>
+
+        <set name="argocalCalendarEvent" table="argo_cal_event" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Calendar events belonging to this group</meta>
+            <key column="calendar_gkey"/>
+            <one-to-many class="com.navis.argo.business.calendar.ArgoCalendarEvent"/>
+        </set>
+    </class>
+
+    <class name="com.navis.argo.business.calendar.ArgoCalendarEvent" table="argo_cal_event">
+        <meta attribute="generated-class">com.navis.argo.business.calendar.ArgoCalendarEventHbr</meta>
+        <meta attribute="n4alias">argocalevt</meta>
+        <meta attribute="n4-entity-name">Calendar Event</meta>
+        <meta attribute="n4-entity-name-plural">Calendar Events</meta>
+        <meta attribute="class-description">Domain entity representing calendar events</meta>
+
+        <id name="argocalevtGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="argocalevtName" column="name" type="string" length="50" unique="false" not-null="true">
+            <meta attribute="field-description">Name of this calendar event</meta>
+        </property>
+
+        <property name="argocalevtDescription" column="description" type="string" length="100">
+            <meta attribute="field-description">Description of this calendar event</meta>
+        </property>
+
+        <property name="argocalevtOccurrDateStart" column="occ_start" type="timestamp" not-null="true">
+            <meta attribute="field-description">The first day the event occurs</meta>
+        </property>
+
+        <property name="argocalevtRecurrDateEnd" column="rec_end" type="timestamp" not-null="false">
+            <meta attribute="field-description">The last recurrence day of the event</meta>
+        </property>
+
+        <property name="argocalevtInterval" type="com.navis.framework.persistence.atoms.UserTypeAppCalendarIntervalEnum">
+            <meta attribute="field-description">The interval of recurrence of this calendar event</meta>
+            <column name="repeat_interval" not-null="true"/>
+        </property>
+
+        <many-to-one name="argocalevtFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility" not-null="false">
+            <meta attribute="field-description">The event is applicable for this Facility.</meta>
+        </many-to-one>
+
+        <many-to-one name="argocalevtEventType" class="com.navis.argo.business.calendar.ArgoCalendarEventType">
+            <meta attribute="field-description">The type of this calendar event EXEMPT / GRATIS</meta>
+            <column name="event_type_gkey" not-null="true"/>
+        </many-to-one>
+
+        <many-to-one name="argocalevtCalendar" column="calendar_gkey"
+                     class="com.navis.argo.business.calendar.ArgoCalendar">
+            <meta attribute="field-description">Calendar Type</meta>
+        </many-to-one>
+    </class>
+
+    <class name="com.navis.argo.business.calendar.ArgoCalendarEventType" table="argo_cal_event_type">
+        <meta attribute="generated-class">com.navis.argo.business.calendar.ArgoCalendarEventTypeHbr</meta>
+        <meta attribute="n4alias">argocalevttype</meta>
+        <meta attribute="n4-entity-name">Calendar Event Type</meta>
+        <meta attribute="n4-entity-name-plural">Calendar Event Types</meta>
+        <meta attribute="class-description">Domain entity representing calendar event types</meta>
+
+        <id name="argocalevttypeGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="argocalevttypeName" column="name" type="string" length="50" unique="false" not-null="true">
+            <meta attribute="field-description">Name of this calendar event type</meta>
+        </property>
+
+        <property name="argocalevttypeIsPartialDayEventType" column="partial_day" type="java.lang.Boolean"
+                  not-null="true">
+            <meta attribute="field-description">Full-day or partial-day flag of this calendar event type</meta>
+        </property>
+
+        <property name="argocalevttypeDescription" column="description" type="string" length="100">
+            <meta attribute="field-description">Description of this calendar event type</meta>
+        </property>
+    </class>
+
+</hibernate-mapping>

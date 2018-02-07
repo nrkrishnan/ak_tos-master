@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+    <container eqid="GLIP9451357" type="4200" created-by="sraja" created-date="2011-08-11T23:55:22" class="CTR" life-cycle-state="ACT">
+        <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="12192"
+                  material="UNKNOWN" strength-code="FB" tare-weight-kg="3084.0" width-mm="2438"/>
+        <ownership owner="HLC" operator="HLC"/>
+        <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="32000.0"
+                      stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+        <transponder/>
+    </container>
+    <unit id="GLIP9451357" category="IMPORT" restow="NONE" transit-state="YARD" freight-kind="FCL" unique-key="GLIP9451357" line="HLC">
+        <equipment eqid="GLIP9451357" type="4200" created-by="ldunovant" created-date="2010-05-12T23:55:22" class="CTR" life-cycle-state="ACT"
+                   role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="12192"
+                      material="UNKNOWN" strength-code="FB" tare-weight-kg="3084.0" width-mm="2438"/>
+            <ownership owner="HLC" operator="HLC"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="32000.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="YARD" location="YRD1111" slot="C57056"/>
+        <routing pol="ANT" pol-name="Belgium" pod-1="BAY" pod-1-name="United States" destination="NYC">
+            <carrier direction="IB" qualifier="DECLARED" mode="VESSEL" id="SANBE007-1"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="VESSEL" id="SANBE007-1"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="TRUCK"/>
+        </routing>
+        <contents weight-kg="22645.0" commodity-id="FAK" commodity-name="FREIGHT ALL KINDS" shipper-id="SANITIZE" consignee-id="SANITIZE"
+                  bl-nbr="ANR110631672"/>
+        <seals seal-1="0625595"/>
+        <unit-etc category="IMPORT" line="HLC"/>
+        <timestamps time-in="2011-07-28T20:57:00" time-last-move="2011-07-28T20:57:00"/>
+        <move-history>
+            <move move-kind="DSCH" timestamp="2011-07-28T20:57:00">
+                <from-position loc-type="VESSEL" location="SANBE007-1" slot="220904"/>
+                <to-position loc-type="YARD" location="YRD1111" slot="A14"/>
+                <move-details time-discharge="2011-07-28T20:57:00" time-put="2011-07-28T20:57:00"/>
+            </move>
+        </move-history>
+        <non-move-history>
+            <event id="UNIT_PROPERTY_UPDATE" note="Seals updated" time-event-applied="2011-07-29T06:01:04" user-id="snx:-snx-" is-billable="N">
+                <field-changes>
+                    <field-change id="unitForeignHostKey" new-value="GLIP9451357"/>
+                    <field-change id="unitVisitState" new-value="1ACTIVE" prev-value="2ADVISED"/>
+                    <field-change id="unitCategory" new-value="IMPRT" prev-value="STRGE"/>
+                    <field-change id="unitGoodsAndCtrWtKg" new-value="22645.0" prev-value="3084.0"/>
+                    <field-change id="unitSealNbr1" new-value="0625595"/>
+                    <field-change id="unitActiveUfv" new-value="117609039"/>
+                    <field-change id="unitPrimaryUe" new-value="117609028"/>
+                    <field-change id="rtgPOL" new-value="48213"/>
+                    <field-change id="rtgPOD1" new-value="44291"/>
+                    <field-change id="unitTimeDenormalizeCalc" new-value="20110729030104EDT" prev-value="19691231190000EST"/>
+                    <field-change id="unitTimeLastStateChange" new-value="20110729030104EDT" prev-value="20110729030104EDT"/>
+                </field-changes>
+            </event>
+            <event id="UNIT_CREATE" note="snx" time-event-applied="2011-07-29T06:01:04" user-id="snx:-snx-" is-billable="N"/>
+            <event id="UNIT_ACTIVATE" time-event-applied="2011-07-29T06:01:04" user-id="snx:-snx-" is-billable="N"/>
+            <event id="UNIT_RESERVE" note="[PropertyKey=UNIT_BL_RESERVE]ANR110631672" time-event-applied="2011-07-29T06:20:03" user-id="snx:-snx-"
+                   is-billable="Y"/>
+        </non-move-history>
+    </unit>
+    <bill-of-lading nbr="ANR110631672" category="IMPORT" line="HLC" shipper-id="SANITIZE" shipper-name="SANITIZE" consignee-id="SANITIZE"
+                    consignee-name="SANITIZE" carrier-visit="SANBE007-1" pod-1="BAY" pol="ANT" manifested-quantity="736.0" released-quantity="0.0"
+                    entered-quantity="0.0">
+        <items>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="16.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="0.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+            <item is-bulk="N" piece-is-bulk="N" quantity="720.0" commodity-id="FAK" package-type="GEN_PKG" bulk-unit="" piece-package-type="GEN_PKG"/>
+        </items>
+        <releases>
+            <release reference-nbr="000000000000000" qty="736.0" disposition-code="55" flag-type-id="CUSTOMS RELEASE INFORMATIONAL DISPOSITION"/>
+            <release reference-nbr="2011-07-15 11:51:08" qty="0.0" disposition-code="3Z" flag-type-id="CUSTOMS RELEASE INFORMATIONAL DISPOSITION"/>
+        </releases>
+        <goods-bl unit-id="GLIP9451357" unit-key="GLIP9451357"/>
+        <flags>
+            <hold id="CUSTOMS DEFAULT PERM"/>
+            <!--hold id="FREIGHT BL HOLD"/-->
+        </flags>
+    </bill-of-lading>
+</argo:snx>

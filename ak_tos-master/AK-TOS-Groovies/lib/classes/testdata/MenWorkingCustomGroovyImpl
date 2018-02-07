@@ -1,0 +1,78 @@
+import com.navis.apex.business.model.GroovyInjectionBase;
+import com.navis.framework.persistence.HibernateApi;
+import com.navis.framework.portal.FieldChanges;
+import com.navis.framework.util.BizViolation;
+import com.navis.inventory.InventoryBizMetafield;
+import com.navis.inventory.InventoryField;
+import com.navis.inventory.business.api.UnitManager
+import com.navis.inventory.business.units.UnitManagerPea;
+import com.navis.framework.business.Roastery
+import com.navis.community.bento.BentoNode;
+
+/**
+ * This is an example Groovy class and is  not readily production deployable. The idea is to provide a simple
+ *  template that can be extended by the
+ * deployers.
+ */
+public class MenWorkingCustomGroovyImpl extends GroovyInjectionBase {
+
+  final String CLASS_NAME = "MenWorkingCustomGroovyImpl ";
+
+  /**
+   * ARGO-21110 New Groovy hooks for pre and post dispatch of Men Working bento messages. RMK, 2009.12.08
+   */
+  public void preXpsDispatch(Map inArgs) throws BizViolation {
+    log(">>>>>>>>>>>>>>>>>>> preXpsDispatch(MenWorking): got called");
+    log(UnitManagerPea.MW_BENTO + ": " + inArgs.get(UnitManagerPea.MW_BENTO));
+    log(InventoryBizMetafield.RDT_APPLICATION_NAME.getFieldId() + ": " + inArgs.get(InventoryBizMetafield.RDT_APPLICATION_NAME));
+
+    BentoNode bn = (BentoNode) inArgs.get(UnitManagerPea.MW_BENTO);
+    if (bn != null) {
+
+      Iterator<BentoNode> iter = bn.getNodesIterator();
+      while (iter.hasNext()) {
+        BentoNode cn = iter.next();
+        if (cn.getName().equalsIgnoreCase(UnitManagerPea.MEN_WORKING_BENTO_RANGE_NODE)) {
+          cn.addString(UnitManagerPea.MEN_WORKING_BENTO_ROW_EXTENT, "2");
+          log("preXpsDispatch(MenWorking): Changed the row extent to 2");
+
+          BentoNode setMenWorkingNode = new BentoNode(UnitManagerPea.MEN_WORKING_BENTO_PARENT_NODE_NAME);
+          //user name
+          BentoNode range = setMenWorkingNode.addNewChildNode(UnitManagerPea.MEN_WORKING_BENTO_RANGE_NODE);
+          String old = cn.getString(UnitManagerPea.MEN_WORKING_BENTO_USER_NAME);
+          range.addString(UnitManagerPea.MEN_WORKING_BENTO_USER_NAME, old );
+
+          //binName name
+          old = cn.getString(UnitManagerPea.MEN_WORKING_BENTO_BIN_NAME);
+          range.addString(UnitManagerPea.MEN_WORKING_BENTO_BIN_NAME, old );
+
+          // action
+          old = cn.getString(UnitManagerPea.MEN_WORKING_BENTO_ACTION);
+          range.addString(UnitManagerPea.MEN_WORKING_BENTO_ACTION, old );
+
+          //row extent with defaults as per the spec, Groovy allows them to change these extents.
+          range.addString(UnitManagerPea.MEN_WORKING_BENTO_ROW_EXTENT, "2");
+
+          //column extentwith defaults as per the spec, Groovy allows them to change these extents.
+          old = cn.getString(UnitManagerPea.MEN_WORKING_BENTO_COLUMN_EXTENT);
+          range.addString(UnitManagerPea.MEN_WORKING_BENTO_COLUMN_EXTENT,old) ;
+          inArgs.put(UnitManagerPea.MW_BENTO, setMenWorkingNode);
+
+        }
+      }
+    }
+
+    log("<<<<<<<<<<<<<<<<<<<< preXpsDispatch(MenWorking): got done(with changes in bento to extend the row extent");
+  }
+
+
+  public void postXpsDispatch(Map inArgs) throws BizViolation {
+    log("================== postXpsDispatch(MenWorking): got called");
+    log(UnitManagerPea.MW_BENTO + ": " + inArgs.get(UnitManagerPea.MW_BENTO));
+    log(InventoryBizMetafield.RDT_APPLICATION_NAME.getFieldId() + ": " + inArgs.get(InventoryBizMetafield.RDT_APPLICATION_NAME));
+    log(UnitManagerPea.MW_XPS_RESULT + ": " + inArgs.get(UnitManagerPea.MW_XPS_RESULT));
+    log(UnitManagerPea.MW_XPS_ERR_MSG + ": " + inArgs.get(UnitManagerPea.MW_XPS_ERR_MSG));
+    log("=================== postXpsDispatch(MenWorking): got done");
+
+  }
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+        >
+
+    <!-- override the JSFManager from common and adds the scoping features -->
+    <bean id="JSFManager" class="com.navis.apex.mobile.ApexJSFManager"/>
+
+    <bean id="apexMobileForms" class="com.navis.framework.web.variforms.AppFormsProvider"
+          scope="singleton">
+        <property name="filePaths">
+            <list>
+                <value>/forms/ArgoMobileVariforms.xml</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="apexMobileMetafieldDictionaryLoader"
+          class="com.navis.framework.metafields.provider.MetafieldDictionaryXmlLoader"
+          scope="singleton">
+        <property name="xmlFilePaths">
+            <list>
+                <value>/metafields/ArgoMobileGuiMetafields.xml</value>
+            </list>
+        </property>
+    </bean>
+
+
+
+</beans>
+

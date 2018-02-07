@@ -1,0 +1,15 @@
+<!--
+  ~ Copyright (c) 2011 Navis LLC. All Rights Reserved.
+  ~
+  -->
+<edi:blTransactions xmlns:edi="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <edi:blTransaction edi:msgClass="MANIFEST">
+        <edi:Interchange edi:InterchangeSender="TP29127"/>
+        <edi:ediBillOfLading edi:blCategory="IMPORT" edi:blNbr="BL_NBR" edi:manifestedQty="799"/>
+        <edi:ediVesselVisit edi:actualTimeArrival="" edi:actualTimeDeparture="" edi:estimatedTimeArrival="0503152230"
+                            edi:estimatedTimeDeparture="0503150730" edi:inVoyageNbr="IBVYG" edi:outVoyageNbr="OBVYG" edi:vesselCountryCode=""
+                            edi:vesselId="VESSEL_ID" edi:vesselIdConvention="VESID">
+            <edi:shippingLine edi:shippingLineCode="MAT" edi:shippingLineCodeAgency=""/>
+        </edi:ediVesselVisit>
+    </edi:blTransaction>
+</edi:blTransactions>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Configurable</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- 2010.03.15 pji ARGO-21942 Persistent Bin Model -->
+    <subclass name="com.navis.spatial.business.model.configurable.ConfigurableBin" extends="com.navis.spatial.business.model.AbstractBin"
+              discriminator-value="CFB" dynamic-update="true">
+        <meta attribute="n4alias">cfb</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.configurable.ConfigurableBinHbr</meta>
+        <meta attribute="class-description">Configurable Bin</meta>
+        <meta attribute="n4-entity-name">Configurable Bin Entity</meta>
+        <meta attribute="n4-entity-name-plural">Configurable Bin Entities</meta>
+
+    </subclass>
+
+    <!-- 2010.06.02 pji ARGO-21942 Persistent Bin Model -->
+    <subclass name="com.navis.spatial.business.model.configurable.ConfigurableBinModel" extends="com.navis.spatial.business.model.AbstractBin"
+              discriminator-value="CBM" dynamic-update="true">
+        <meta attribute="n4alias">cbm</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.configurable.ConfigurableBinModelHbr</meta>
+        <meta attribute="class-description">Configurable Bin Model</meta>
+        <meta attribute="n4-entity-name">Configurable Bin Model Entity</meta>
+        <meta attribute="n4-entity-name-plural">Configurable Bin Model Entities</meta>
+
+    </subclass>
+
+    <!-- 2010.06.02 pji ARGO-21942 Persistent Bin Model -->
+    <subclass name="com.navis.spatial.business.model.configurable.ConfigurableBlock" extends="com.navis.spatial.business.model.block.AbstractBlock"
+              discriminator-value="CBB" dynamic-update="true">
+        <meta attribute="n4alias">cbb</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.configurable.ConfigurableBlockHbr</meta>
+        <meta attribute="class-description">Configurable Block</meta>
+        <meta attribute="n4-entity-name">Configurable Block Entity</meta>
+        <meta attribute="n4-entity-name-plural">Configurable Block Entities</meta>
+
+    </subclass>
+
+    <!-- 2010.06.02 pji ARGO-21942 Persistent Bin Model -->
+    <subclass name="com.navis.spatial.business.model.configurable.ConfigurableSection" extends="com.navis.spatial.business.model.block.AbstractSection"
+              discriminator-value="CBN" dynamic-update="true">
+        <meta attribute="n4alias">cbn</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.configurable.ConfigurableSectionHbr</meta>
+        <meta attribute="class-description">Configurable Section</meta>
+        <meta attribute="n4-entity-name">Configurable Section Entity</meta>
+        <meta attribute="n4-entity-name-plural">Configurable Section Entities</meta>
+
+    </subclass>
+
+    <!-- 2010.06.02 pji ARGO-21942 Persistent Bin Model -->
+    <subclass name="com.navis.spatial.business.model.configurable.ConfigurableStack" extends="com.navis.spatial.business.model.block.AbstractStack"
+              discriminator-value="CBK" dynamic-update="true">
+        <meta attribute="n4alias">cbk</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.configurable.ConfigurableStackHbr</meta>
+        <meta attribute="class-description">Configurable Stack</meta>
+        <meta attribute="n4-entity-name">Configurable Stack Entity</meta>
+        <meta attribute="n4-entity-name-plural">Configurable Stack Entities</meta>
+
+    </subclass>
+
+</hibernate-mapping>

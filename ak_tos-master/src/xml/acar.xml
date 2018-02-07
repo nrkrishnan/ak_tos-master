@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="¦" newRecord="\n"></Format>
+	<Field sequence="0" name="txnCode" dataType="String"></Field>
+	<Field sequence="1" name="sysDate" dataType="String"></Field>
+	<Field sequence="2" name="sysTime" dataType="String"></Field>
+	<Field sequence="3" name="neqr2" dataType="String"></Field>
+	<Field sequence="4" name="nextId" dataType="String"></Field>
+	<Field sequence="5" name="equipmentNum" dataType="String"></Field>
+	<Field sequence="6" name="checkDigit" dataType="String"></Field>
+	<Field sequence="7" name="emptyOrFull" dataType="String"></Field>
+	<Field sequence="8" name="trukerCode" dataType="String"></Field>
+	<Field sequence="9" name="destPort" dataType="String"></Field>
+	<Field sequence="10" name="consigneeName" dataType="String"></Field>
+	<Field sequence="11" name="shipperName" dataType="String"></Field>
+	<Field sequence="12" name="vesselCode" dataType="String"></Field>
+	<Field sequence="13" name="voyageNum" dataType="String"></Field>
+	<Field sequence="14" name="vesselLeg" dataType="String"></Field>
+	<Field sequence="15" name="dischargeService" dataType="String"></Field>
+	<Field sequence="16" name="sealNum" dataType="String"></Field>
+	<Field sequence="17" name="spotLocation" dataType="String"></Field>
+	<Field sequence="18" name="grossWeight" dataType="String"></Field>
+	<Field sequence="19" name="temperature" dataType="String"></Field>
+	<Field sequence="20" name="tempScale" dataType="String"></Field>
+	<Field sequence="21" name="hazFlag" dataType="String"></Field>
+	<Field sequence="22" name="oversizeFlag" dataType="String"></Field>
+	<Field sequence="23" name="eventType" dataType="String"></Field>
+	<Field sequence="24" name="locationCode" dataType="String"></Field>
+	<Field sequence="25" name="eventDate" dataType="String"></Field>
+	<Field sequence="26" name="eventTime" dataType="String"></Field>
+	<Field sequence="27" name="userId" dataType="String"></Field>
+	<Field sequence="28" name="bookingNum" dataType="String"></Field>
+	<Field sequence="29" name="addrRoleRefNum" dataType="String"></Field>
+	<Field sequence="30" name="dischargePort" dataType="String"></Field>
+	<Field sequence="31" name="commodity" dataType="String"></Field>
+	<Field sequence="32" name="vesselCode1" dataType="String"></Field>
+	<Field sequence="33" name="voyageNum1" dataType="String"></Field>
+	<Field sequence="34" name="vesselLeg1" dataType="String"></Field>
+	<Field sequence="35" name="loadPort" dataType="String"></Field>
+	<Field sequence="36" name="holdCode" dataType="String"></Field>
+	<Field sequence="37" name="comment" dataType="String"></Field>
+	<Field sequence="38" name="oversizeHeight" dataType="String"></Field>
+	<Field sequence="39" name="oversizeLeft" dataType="String"></Field>
+	<Field sequence="40" name="oversizeRight" dataType="String"></Field>
+	<Field sequence="41" name="oversizeFront" dataType="String"></Field>
+	<Field sequence="42" name="oversizeRear" dataType="String"></Field>
+</FileDesc>

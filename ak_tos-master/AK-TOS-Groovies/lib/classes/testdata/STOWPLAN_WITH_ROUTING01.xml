@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edi:stowplanTransactions xmlns:edi="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <edi:stowplanTransaction edi:msgClass="STOWPLAN" edi:msgReferenceNbr="TLY1011220324" edi:stowageCellPosition="0270606">
+        <edi:Interchange edi:InterchangeNumber="TLY1011220324"/>
+        <edi:ediVesselVisit edi:actualTimeArrival="101122" edi:inVoyageNbr="VL11116" edi:vesselId="VL11117_R" edi:vesselIdConvention="CALLSIGN"
+                            edi:vesselName="VL11117">
+            <edi:loadPort edi:portId="ILASH" edi:portIdConvention="UN"/>
+            <edi:nextPortOfCall edi:portId="ILASH" edi:portIdConvention="UNLOCCODE"/>
+        </edi:ediVesselVisit>
+        <edi:ediCommodity edi:destination="ILHFA"/>
+        <edi:ediContainer edi:containerCategory="IMPRT" edi:containerGrossWt="6400" edi:containerGrossWtUnit="KG" edi:containerISOcode="2200"
+                          edi:containerNbr="CONTAINERID" edi:containerStatus="FCL" edi:containerIntendedOutboundId="TOIVV"
+                          edi:containerGroupCode="GPID1">
+            <edi:dischargePort1 edi:portId="OAK" edi:portIdConvention="UN"/>
+            <edi:containerOperator edi:operator="MAT"/>
+        </edi:ediContainer>
+    </edi:stowplanTransaction>
+</edi:stowplanTransactions>
+

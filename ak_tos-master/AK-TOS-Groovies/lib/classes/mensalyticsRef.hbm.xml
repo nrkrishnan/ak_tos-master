@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+    <meta attribute="JavaClassPrefix">MensalyticsRef</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <class name="com.navis.mensa.business.reference.ActivityCode" table="mns_ref_activity_code" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.reference.ActivityCodeHbr</meta>
+        <meta attribute="n4alias">actc</meta>
+        <meta attribute="class-description">Reference table to maintain the activity codes.</meta>
+        <meta attribute="n4-entity-name">Activity Code</meta>
+        <meta attribute="n4-entity-name-plural">Activity Code</meta>
+        <meta attribute="carina-fk-index-disable">
+            (scope)
+        </meta>
+
+        <id name="actcGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="actcCode" column="activity_code" type="string" length="20">
+            <meta attribute="field-description">Code for an activity</meta>
+        </property>
+
+        <property name="actcDescription" column="activity_desc" type="string" length="50">
+            <meta attribute="field-description">Description for an activity</meta>
+        </property>
+
+        <property name="actcCategory" column="activity_category" type="com.navis.argo.persistence.atoms.UserTypeCraneDelayCategoryEnum">
+            <meta attribute="field-description">Crane activity delay category (FORCE_MAJEURE/NON_TERMINAL/TERMINAL)</meta>
+        </property>
+
+        <many-to-one name="actcScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="scope" not-null="true"/>
+        </many-to-one>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LegMapping>
+  <File name="LegField"/>
+  
+    <!-- TAC Mapping -->
+  <FromPort name="TAC">
+       <ToPort  name="ANK"  legValue="N"></ToPort>
+       <ToPort  name="KDK"  legValue="N"></ToPort>
+      <ToPort name="DUT" legValue="N"></ToPort>
+      <ToPort name="SHA" legValue="S"></ToPort>
+  </FromPort>
+  
+      <!-- DUT Mapping -->
+  <FromPort name="DUT">
+       <ToPort  name="TAC"  legValue="S"></ToPort>
+       <ToPort  name="KDK"  legValue="S"></ToPort>
+       <ToPort  name="ANK"  legValue="S"></ToPort>     
+       <ToPort  name="KQA"  legValue="N"></ToPort>
+       <ToPort  name="SDP"  legValue="N"></ToPort>
+      <ToPort name="SHA" legValue="S"></ToPort>
+  </FromPort>
+  
+      <!-- ANK Mapping -->
+  <FromPort name="ANK">
+       <ToPort  name="KDK"  legValue="S"></ToPort> 
+       <ToPort  name="DUT"  legValue="S"></ToPort>
+       <ToPort  name="TAC"  legValue="S"></ToPort>
+      <ToPort name="SHA" legValue="S"></ToPort>
+  </FromPort>
+
+        <!-- KDK Mapping -->
+  <FromPort name="KDK">
+       <ToPort  name="ANK"  legValue="S"></ToPort>
+       <ToPort  name="TAC"  legValue="S"></ToPort> 
+       <ToPort  name="DUT"  legValue="S"></ToPort> 
+       <ToPort  name="SDP"  legValue="N"></ToPort>
+       <ToPort name="SHA" legValue="S"></ToPort>
+  </FromPort>
+  
+  <FromPort name="KQA">
+       <ToPort  name="DUT"  legValue="S"></ToPort>
+       <ToPort  name="KDK"  legValue="S"></ToPort>
+       <ToPort  name="TAC"  legValue="S"></ToPort>
+       <ToPort  name="ANK"  legValue="S"></ToPort>
+      <ToPort name="SHA" legValue="S"></ToPort>
+  </FromPort>
+  
+  <FromPort name="SDP">
+       <ToPort  name="DUT"  legValue="S"></ToPort>
+       <ToPort  name="KDK"  legValue="S"></ToPort>
+       <ToPort  name="TAC"  legValue="S"></ToPort>
+       <ToPort  name="ANK"  legValue="S"></ToPort>
+      <ToPort name="SHA" legValue="S"></ToPort>
+</FromPort>
+  
+</LegMapping>

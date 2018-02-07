@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+
+    <routing-point id="ABJ" unloc-code="CIABJ" actual-pod-id="ABJ" terminal="Abijan" lifecycle-state="ACT"/>
+    <routing-point id="AKL" unloc-code="CNAKL" actual-pod-id="AKL" terminal="Auckland" lifecycle-state="ACT"/>
+    <routing-point id="ALR" unloc-code="ESALR" actual-pod-id="ALR" terminal="Algeciras" lifecycle-state="ACT"/>
+    <routing-point id="ANT" unloc-code="XZANT" actual-pod-id="ANT" terminal="Antwerp" lifecycle-state="ACT"/>
+    <routing-point id="APP" unloc-code="NGAPP" actual-pod-id="APP" terminal="APAPA" lifecycle-state="ACT"/>
+    <routing-point id="BXO" unloc-code="USBXO" actual-pod-id="BXO" terminal="Bissau" lifecycle-state="ACT"/>
+    <routing-point id="COO" unloc-code="BJCOO" actual-pod-id="COO" terminal="Cotonou" lifecycle-state="ACT"/>
+    <routing-point id="DUK" unloc-code="USDUK" actual-pod-id="DUK" terminal="Dunkerque" lifecycle-state="ACT"/>
+    <routing-point id="DUR" unloc-code="ZADUR" actual-pod-id="DUR" terminal="Durban" lifecycle-state="ACT"/>
+    <routing-point id="FSM" unloc-code="USFSM" actual-pod-id="FSM" terminal="Fos Sur Mer" lifecycle-state="ACT"/>
+    <routing-point id="HKG" unloc-code="HKHKG" actual-pod-id="HKG" terminal="Hong Kong" lifecycle-state="ACT"/>
+    <routing-point id="KIM" unloc-code="FIKIM" actual-pod-id="KIM" terminal="Kingston" lifecycle-state="ACT"/>
+    <routing-point id="LEH" unloc-code="FRLEH" actual-pod-id="LEH" terminal="Le Havre" lifecycle-state="ACT"/>
+    <routing-point id="LFW" unloc-code="TGLFW" actual-pod-id="LFW" terminal="Lome" lifecycle-state="ACT"/>
+    <routing-point id="LPA" unloc-code="FRLPA" actual-pod-id="LPA" terminal="Las Palmas" lifecycle-state="ACT"/>
+    <routing-point id="LPK" unloc-code="USLPK" actual-pod-id="LPK" terminal="Port Klang" lifecycle-state="ACT"/>
+    <routing-point id="MAN" unloc-code="IQMAN" actual-pod-id="MAN" terminal="Manzanillo" lifecycle-state="ACT"/>
+    <routing-point id="MGP" unloc-code="ESAGP" actual-pod-id="MGP" lifecycle-state="ACT"/>
+    <routing-point id="MOI" unloc-code="DEMOI" actual-pod-id="MOI" terminal="Puerto Moin" lifecycle-state="ACT"/>
+    <routing-point id="NAN" unloc-code="CNNAN" actual-pod-id="NAN" lifecycle-state="ACT"/>
+    <routing-point id="NIM" unloc-code="CLNIM" actual-pod-id="NIM" lifecycle-state="ACT"/>
+    <routing-point id="PNR" unloc-code="CGPNR" actual-pod-id="PNR" lifecycle-state="ACT"/>
+    <routing-point id="PTM" unloc-code="FRPTM" actual-pod-id="PTM" terminal="Tangier" lifecycle-state="ACT"/>
+    <routing-point id="SIN" unloc-code="FRSIN" actual-pod-id="SIN" terminal="Singapore" lifecycle-state="ACT"/>
+    <routing-point id="SJU" unloc-code="USSJU" actual-pod-id="SJU" terminal="San Juan" lifecycle-state="ACT"/>
+    <routing-point id="SP0" unloc-code="??SP0" actual-pod-id="SP0" terminal="San Pedro" lifecycle-state="ACT"/>
+    <routing-point id="TMA" unloc-code="GHTEM" actual-pod-id="TMA" lifecycle-state="ACT"/>
+    <routing-point id="TPP" unloc-code="MYTPP" actual-pod-id="TPP" terminal="Tanjun Pelepas" lifecycle-state="ACT"/>
+    <routing-point id="VU2" unloc-code="??VU2" actual-pod-id="VU2" terminal="Tin Can" lifecycle-state="ACT"/>
+    <routing-point id="WBA" unloc-code="USWBA" actual-pod-id="WBA" terminal="Walvis Bay" lifecycle-state="ACT"/>
+    <routing-point id="ZA6" unloc-code="??ZA6" actual-pod-id="ZA6" terminal="Caucedo" lifecycle-state="ACT"/>
+
+    <line-operator id="MAT" name="Matson" is-eq-operator="Y" is-eq-owner="Y">
+        <configurations booking-unique="Y" booking-usage="OPTIONAL" booking-roll="NO" booking-adhoc="N" roll-late-ctr="N" bl-unique="Y"/>
+    </line-operator>
+    <line-operator id="MSK" name="Maersk" is-eq-operator="Y" is-eq-owner="Y">
+        <configurations booking-unique="Y" booking-usage="OPTIONAL" booking-roll="NO" booking-adhoc="N" roll-late-ctr="N" bl-unique="Y"/>
+    </line-operator>
+    <line-operator id="HZN" name="Horizon" is-eq-operator="Y" is-eq-owner="Y">
+        <configurations booking-unique="Y" booking-usage="OPTIONAL" booking-roll="NO" booking-adhoc="N" roll-late-ctr="N" bl-unique="Y"/>
+    </line-operator>
+
+    <carrier-itinerary owner-cv-mode="VESSEL" id="WAF1-STD">
+        <call scan-code="S" point-id="PTM"/>
+        <call scan-code="H" point-id="ALR"/>
+        <call scan-code="H" point-id="MGP"/>
+        <call scan-code="H" point-id="ALR"/>
+        <call scan-code="H" point-id="LPA"/>
+        <call scan-code="H" point-id="COO"/>
+        <call scan-code="H" point-id="PTM"/>
+    </carrier-itinerary>
+
+    <carrier-itinerary owner-cv-mode="VESSEL" id="WAF4-STD">
+        <call scan-code="L" point-id="MGP"/>
+        <call scan-code="L" point-id="ALR"/>
+        <call scan-code="L" point-id="LFW"/>
+        <call scan-code="L" point-id="COO"/>
+        <call scan-code="L" point-id="MGP"/>
+        <call scan-code="L" point-id="DUR"/>
+    </carrier-itinerary>
+
+    <carrier-service id="WAF1" carrier-mode="VESSEL" itinerary-id="WAF1-STD"/>
+    <carrier-service id="WAF4" carrier-mode="VESSEL" itinerary-id="WAF4-STD"/>
+
+    <vessel id="02R" lloyds-id="9305881" name="MAERSK NEUCHATEL" vessel-class="02R" owner="MSK" radio-call-sign="C4AJ2" country-id="CY"
+            unit-system="SI" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="0J9" lloyds-id="9289192" name="SAFMARINE NIMBA" vessel-class="0J9" owner="MSK" radio-call-sign="ONBB" country-id="BE" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="165" lloyds-id="9064384" name="TAASINGE MAERSK" vessel-class="165" owner="MSK" radio-call-sign="OUSX2" country-id="DK"
+            unit-system="SI" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="1SD" lloyds-id="8413887" name="SAFMARINE ASIA" vessel-class="1SD" owner="MSK" radio-call-sign="A8LJ6" country-id="LR" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="1TD" lloyds-id="8413875" name="SAFMARINE EUROPE" vessel-class="1TD" owner="MSK" radio-call-sign="A8LJ7" country-id="LR"
+            unit-system="SI" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="34M" lloyds-id="9070759" name="NORTHERN HAPPINESS" vessel-class="34M" owner="MSK" radio-call-sign="A8KI7" country-id="LR"
+            unit-system="SI" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="3F2" lloyds-id="9289180" name="SAFMARINE CAMEROUN" vessel-class="3F2" owner="MSK" radio-call-sign="ONBA" country-id="BE"
+            unit-system="SI" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="42D" lloyds-id="9082374" name="NORTHERN DELIGHT" vessel-class="42D" owner="MSK" radio-call-sign="A8KI3" country-id="LR"
+            unit-system="SI" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="45N" lloyds-id="9259379" name="MAERSK NASSAU" vessel-class="45N" owner="MSK" radio-call-sign="V2OB5" country-id="AG" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="53D" lloyds-id="9007829" name="MAERSK MARYLAND" vessel-class="53D" owner="MSK" radio-call-sign="MXAR" country-id="GB" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="54A" lloyds-id="9152595" name="HANSA CASTELLA" vessel-class="54A" owner="MSK" radio-call-sign="A8DP8" country-id="LR" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="56R" lloyds-id="9305893" name="MAERSK VARBERG" vessel-class="56R" owner="MSK" radio-call-sign="TCPV5" country-id="TR" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="5QF" lloyds-id="9275024" name="NEDLLOYD ADRIANA" vessel-class="5QF" owner="MSK" radio-call-sign="A8DG6" country-id="LR"
+            unit-system="SI" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="60D" lloyds-id="9306471" name="MAERSK NAVIA" vessel-class="60D" owner="MSK" radio-call-sign="A8KX5" country-id="LR" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="61R" lloyds-id="9305908" name="MAERSK VYBORG" vessel-class="61R" owner="MSK" radio-call-sign="TCPV4" country-id="TR" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="63D" lloyds-id="9203526" name="SANTA ALEXANDRA" vessel-class="63D" owner="MSK" radio-call-sign="A8IU7" country-id="LR"
+            unit-system="SI" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="64D" lloyds-id="9203514" name="SANTA ARABELLA" vessel-class="64D" owner="MSK" radio-call-sign="A8IU5" country-id="LR" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="65D" lloyds-id="9203502" name="SANTA ANNABELLA" vessel-class="65D" owner="MSK" radio-call-sign="DBUY" country-id="DE" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="67D" lloyds-id="9209104" name="SANTA ALINA" vessel-class="67D" owner="MSK" radio-call-sign="DMRK" country-id="DE" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="68D" lloyds-id="9222118" name="ESTHER SCHULTE" vessel-class="68D" owner="MSK" radio-call-sign="P3DS9" country-id="CY" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="68L" lloyds-id="8708543" name="SAFMARINE CONCORD" vessel-class="68L" owner="MSK" radio-call-sign="PBFY" country-id="NL"
+            unit-system="SI" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="73D" lloyds-id="9215892" name="OCEAN PROMISE" vessel-class="73D" owner="MSK" radio-call-sign="MVLE2" country-id="GB" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="7HZ" lloyds-id="9144134" name="WEHR KOBLENZ" vessel-class="7HZ" owner="MSK" radio-call-sign="V7DQ8" country-id="MH" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="7IZ" lloyds-id="9060273" name="HARMONY" vessel-class="7IZ" owner="MSK" radio-call-sign="DGHR" country-id="DE" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="7TG" lloyds-id="9239886" name="SAFMARINE CUNENE" vessel-class="7TG" owner="MSK" radio-call-sign="A8CE8" country-id="LR"
+            unit-system="SI" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="888" lloyds-id="9064401" name="CECILIE MAERSK" vessel-class="888" owner="MSK" radio-call-sign="OZEI2" country-id="DK" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="8SZ" lloyds-id="9160437" name="ER SANTIAGO" vessel-class="8SZ" owner="MSK" radio-call-sign="LWP5" country-id="LR" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="99N" lloyds-id="9305879" name="MAERSK NEUSTADT" vessel-class="99N" owner="MSK" radio-call-sign="A8KX6" country-id="LR"
+            unit-system="SI" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="9E7" lloyds-id="9204984" name="SAFMARINE MONO" vessel-class="9E7" owner="MSK" radio-call-sign="A8HI9" country-id="LR" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="S12" lloyds-id="9194878" name="MAERSK VALENCIA" vessel-class="S12" owner="MSK" radio-call-sign="DAPG" country-id="DE" unit-system="SI"
+            temperature-units="C" stowage-scheme="ISO"/>
+
+    <trucking-company id="ACME" name="Acme Trucking, INC">
+        <line-agreements>
+            <line-agreement shipping-line="MAT" truck-line-status="OK" expiration-date="2009-10-30"/>
+            <line-agreement shipping-line="APL" truck-line-status="OK" expiration-date="2009-10-30"/>
+        </line-agreements>
+    </trucking-company>
+
+    <trucking-company id="BUD" name="ANHEUSER BUSCH SALES OF HAWAII, INC"/>
+
+    <trucking-company id="COVA" name="COVAN WORLD-WIDE MOVING, INC."/>
+
+    <trucking-company id="DHXI" name="DHX, INC. (DEPENDABLE HAWAIIAN EXP.)"/>
+
+    <trucking-company id="ETS" name="ELITE TRUCKING &amp; SERVICES, LLC"/>
+
+    <trucking-company id="FDTD" name="U.P.S. SUPPLY CHAIN SOLUTIONS, INC."/>
+
+    <trucking-company id="FOMC" name="JACK IN THE BOX"/>
+
+    <trucking-company id="HTC" name="HAWAII TRANSFER CO., LTD."/>
+
+    <trucking-company id="HWAI" name="HONOLULU FREIGHT SERVICE"/>
+
+    <trucking-company id="INTE" name="INTERNATIONAL EXPRESS, INC."/>
+
+    <trucking-company id="KANT" name="KANO TRUCKING SERVICE, LTD."/>
+
+    <trucking-company id="MARW" name="MARTIN TRANSPORTATION SERVICES MCB INC."/>
+
+    <trucking-company id="PACT" name="PACIFIC TRANSFER LLC"/>
+
+    <trucking-company id="QMI" name="QUICK MOVE, INC."/>
+
+    <trucking-company id="RHIM" name="ROYAL HAWAIIAN MOVERS/HI PROFESSIONAL MOV"/>
+
+    <trucking-company id="RPM" name="RPM TRANSPORTATION (HAWAII), INC."/>
+
+    <trucking-company id="WEPK" name="WESTPAC MOVING &amp; STORAGE, INC."/>
+
+    <trucking-company id="WWMS" name="WORLD WIDE MOVING &amp; STORAGE, INC."/>
+
+    <trucking-company id="XPTI" name="XPRESS TRUCKING, INC."/>
+
+    <trucking-company id="ZAHI" name="ZAHIIR TRUCKING CORP."/>
+
+    <trucking-company id="ZAJT" name="JOE ZAPUTIL TRUCKING, INC."/>
+
+    <trucking-company id="ZAKY" name="ZACKY FOODS"/>
+
+    <trucking-company id="ZAMC" name="ZAM TRANSPORTATION CO., INC."/>
+
+    <trucking-company id="ZAMO" name="ZAMORA TRUCKING"/>
+
+    <trucking-company id="ZAXT" name="ZAX TRUCKING, INC."/>
+
+    <trucking-company id="ZBBL" name="ZAMBELLI FIREWORKS MFG. CO. INC."/>
+
+    <trucking-company id="ZBTN" name="ZEBRA TRANSPORTATION LLC"/>
+
+    <trucking-company id="ZCSU" name="ZIM CONTAINER SERVIC"/>
+
+    <trucking-company id="ZDTG" name="ZAID TRUCKING, INC."/>
+
+    <trucking-company id="ZEEL" name="ZEELAND FARM SERVICES, INC."/>
+
+    <trucking-company id="ZEGR" name="ZEG EXPRESS"/>
+
+    <trucking-company id="ZENT" name="ZENITH TRANSPORT 1982, INC."/>
+
+    <trucking-company id="ZFRT" name="Z-FREIGHT"/>
+
+    <trucking-company id="ZGIC" name="ZYGO GROUP, INC."/>
+
+    <trucking-company id="ZHQC" name="ZHQ CORP."/>
+
+    <trucking-company id="ZIPO" name="ZIP TRUCK LINES, INC."/>
+
+    <trucking-company id="ZLHQ" name="ZILLAH HAULING SERVICE"/>
+
+    <trucking-company id="ZMCO" name="ZAMCO TRANSPORT SPECIALIST, INC."/>
+
+    <trucking-company id="ZMTL" name="ZIMMERMAN TRUCK LINES, INC."/>
+
+    <trucking-company id="ZMTS" name="ZOOM TRANSPORT SERVICES LLC"/>
+
+    <trucking-company id="ZNHC" name="ZEN-NOH HAY, INC."/>
+
+    <trucking-company id="ZOCI" name="ZOCALO IMPORTS INC."/>
+
+    <trucking-company id="ZOGJ" name="ZOT LUXURY LOGISTICS"/>
+
+    <trucking-company id="ZORF" name="ZORIA FARMS, INC."/>
+
+    <trucking-company id="ZOZB" name="ZOZZARO BROS., INC."/>
+
+    <trucking-company id="ZPHY" name="ZEPHYR TRUCKING INC."/>
+
+    <trucking-company id="ZPTN" name="ZP TRANSPORT, INC."/>
+
+    <trucking-company id="ZRAT" name="ZARATE, AURELIO TRUCKING"/>
+
+    <trucking-company id="ZRCA" name="ZR CARRIERS"/>
+
+    <trucking-company id="ZSSR" name="MACSTEEL SERVICE CENTERS"/>
+
+    <trucking-company id="ZTAL" name="ZECO TRANSPORT &amp; LOGISTICS L.P."/>
+
+    <trucking-company id="ZTAO" name="ZULETA EXPRESS, INC."/>
+
+    <trucking-company id="ZTIO" name="ZION TRUCKING, INC."/>
+
+    <trucking-company id="ZTRN" name="Z TRANS, INC."/>
+
+    <trucking-company id="ZTXP" name="Z TRANS EXPRESS"/>
+
+    <trucking-company id="ZUNG" name="ZUNIGA'S TRUCKING"/>
+
+    <trucking-company id="ZUNI" name="ZUNIGA SPECIALIZED CARRIERS, LC."/>
+
+    <trucking-company id="ZURI" name="ZURITAS TRUCKING"/>
+
+    <trucking-company id="ZZZZ" name="MATSON"/>
+
+</argo:snx>

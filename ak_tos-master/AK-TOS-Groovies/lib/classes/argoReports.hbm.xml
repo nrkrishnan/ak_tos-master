@@ -1,0 +1,370 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="false">
+
+    <meta attribute="JavaClassPrefix">ArgoReports</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- Xml based ReportDesign for creation of reports. The actual report design is stored as xml structure in field reportXml -->
+    <class name="com.navis.argo.business.reports.ReportDesign" table="argo_report_designs">
+        <meta attribute="n4alias">repdes</meta>
+        <meta attribute="generated-class">com.navis.argo.business.reports.ReportDesignHbr</meta>
+        <meta attribute="class-description">Represents the design structure used to create reports</meta>
+        <meta attribute="n4-entity-name">Report Design</meta>
+        <meta attribute="n4-entity-name-plural">Report Designs</meta>
+
+        <id name="repdesGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="repdesName" column="name" type="string" length="50" not-null="true">
+            <meta attribute="field-description">The unique name of this report design</meta>
+        </property>
+
+        <property name="repdesDescription" column="description" type="string" length="500">
+            <meta attribute="field-description">Description of this report design</meta>
+        </property>
+
+        <property name="repdesEntity" column="entity" type="string" not-null="true">
+            <meta attribute="field-description">The reporting entity for which this report has been created</meta>
+        </property>
+
+        <property name="repdesXmlContent" column="xml_design_content" type="text" length="1000000" not-null="true">
+            <meta attribute="field-description">XML structure defining report design</meta>
+        </property>
+
+        <property name="repdesVisibilityScope" column="visibility_scope" type="com.navis.argo.persistence.atoms.UserTypeScopeEnum" not-null="true">
+            <meta attribute="field-description">The scope the report design is visible in.</meta>
+        </property>
+
+        <!-- no required gkey since global has no key -->
+        <property name="repdesVisibilityScopeGkey" column="visibility_scope_gkey" type="string" not-null="false">
+            <meta attribute="field-description">The scope gkey the report design has been created for (is visible in).</meta>
+        </property>
+
+        <!-- for min and max scope the scope cordinate level is persisted to make query for 'scope in range' easier -->
+        <property name="repdesMaxScopeLevel" column="max_scope_level" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The maximal scope level the report design can be used in. Together with min scope this defines the user scope range that is allowed for reporting on this design.</meta>
+        </property>
+
+        <property name="repdesMinScopeLevel" column="min_scope_level" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The minimal scope level the report design can be used in. Together with max scope this defines the user scope range that is allowed for reporting on this design.</meta>
+        </property>
+
+        <property name="repdesIsDeprecated" column="is_deprecated" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">True if Report Design is no longer used</meta>
+        </property>
+
+        <many-to-one name="repdesFilter" class="com.navis.framework.query.business.SavedPredicate" column="filter_gkey" cascade="all">
+            <meta attribute="field-description">Filter to define entities that can be part of the report data</meta>
+        </many-to-one>
+
+        <!-- todo: role is not implemented in buisness code yet -->
+        <many-to-one name="repdesPublishedToRole" column="published_to_role" class="com.navis.security.business.user.SecRole" not-null="false">
+            <meta attribute="field-description">The role for which this report design has been published; can be null in which case the report design can be used by all users.</meta>
+        </many-to-one>
+
+        <property name="repdesCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="repdesCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="repdesChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="repdesChanger" type="java.lang.String" column="changer" length="30"/>
+        <!--2012.03.22 ramacke, 2.4.F ARGO-36070 Add Column Report Type -->
+        <property name="repdesType" type="com.navis.argo.persistence.atoms.UserTypeReportTypeEnum"
+                  column="report_type" not-null="true">
+            <meta attribute="field-description">Type of report, N4 HQL/SQL</meta>
+        </property>
+    </class>
+
+    <!-- Saved Report Definition -->
+    <class name="com.navis.argo.business.reports.ReportDefinition" table="argo_report_definitions">
+        <meta attribute="n4alias">repdef</meta>
+        <meta attribute="generated-class">com.navis.argo.business.reports.ReportDefinitionHbr</meta>
+        <meta attribute="class-description">Represents the definition needed to create a report</meta>
+        <meta attribute="n4-entity-name">Report Definition</meta>
+        <meta attribute="n4-entity-name-plural">Report Definitions</meta>
+
+        <id name="repdefGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="repdefName" column="name" type="string" length="80" not-null="true">
+            <meta attribute="field-description">The unique name for this report definition</meta>
+        </property>
+
+        <property name="repdefDescription" column="description" type="string" length="500">
+            <meta attribute="field-description">Description of this report definition</meta>
+        </property>
+
+        <property name="repdefDisplayTitle" column="title" type="string" length="100">
+            <meta attribute="field-description">The title used on the report.</meta>
+        </property>
+
+        <many-to-one name="repdefReportDesign" column="design_gkey" class="com.navis.argo.business.reports.ReportDesign" not-null="true">
+            <meta attribute="field-description">The reporting entity for which this report has been created</meta>
+        </many-to-one>
+
+        <property name="repdefOutputType" column="output_type" type="com.navis.argo.persistence.atoms.UserTypeReportOutputTypeEnum" not-null="true">
+            <meta attribute="field-description">Sort order of field 1, e.g. ASCENDING or DESCENDING</meta>
+        </property>
+
+        <many-to-one name="repdefFilter" class="com.navis.framework.query.business.SavedPredicate" column="filter_gkey" cascade="all">
+            <meta attribute="field-description">Filter to define entities to be part of report</meta>
+        </many-to-one>
+
+        <!-- sorting fields -->
+        <property name="repdefSortField1" column="sort_field_1" type="string" length="100">
+            <meta attribute="field-description">Sort field one - highest sort order field</meta>
+        </property>
+
+        <property name="repdefSortField1Order" column="sort_field_1_order" type="com.navis.argo.persistence.atoms.UserTypeSortOrderEnum">
+            <meta attribute="field-description">Sort order of field 1, e.g. ASCENDING or DESCENDING</meta>
+        </property>
+
+        <property name="repdefSortField2" column="sort_field_2" type="string" length="100">
+            <meta attribute="field-description">Sort field two - second sort order field</meta>
+        </property>
+
+        <property name="repdefSortField2Order" column="sort_field_2_order" type="com.navis.argo.persistence.atoms.UserTypeSortOrderEnum">
+            <meta attribute="field-description">Sort order of field 2, e.g. ASCENDING or DESCENDING</meta>
+        </property>
+
+        <property name="repdefSortField3" column="sort_field_3" type="string" length="100">
+            <meta attribute="field-description">Sort field three - last sort order field</meta>
+        </property>
+
+        <property name="repdefSortField3Order" column="sort_field_3_order" type="com.navis.argo.persistence.atoms.UserTypeSortOrderEnum">
+            <meta attribute="field-description">Sort order of field 3, e.g. ASCENDING or DESCENDING</meta>
+        </property>
+
+        <!-- 2007-02-01 lbarman v1.3.A/v1.2.1 ARGO-6088, ARGO-6097: check for referenced reporting jobs before deleting -->
+        <set name="repdefReportingJobDefinitions" table="argo_repjob_reportdef_mapping" lazy="true" cascade="none">
+            <key column="report_definition_gkey"/>
+            <many-to-many class="com.navis.argo.business.model.ReportingJobDefinition" column="reporting_job_definition_gkey"/>
+        </set>
+
+        <!-- July 21, 2006 EYU v1.1.0 ARGO-1840 Report design publishing role -->
+        <many-to-one name="repdefUserGkey" column="user_gkey" class="com.navis.security.business.user.BaseUser"/>
+
+        <set name="repdefRoleGkeys" table="argo_report_defn_roles_map" lazy="true" inverse="true" cascade="all-delete-orphan">
+            <key column="report_definition_gkey"/>
+            <one-to-many class="com.navis.argo.business.reports.ReportDefinitionRoleMapping"/>
+        </set>
+
+        <property name="repdefCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="repdefCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="repdefChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="repdefChanger" type="java.lang.String" column="changer" length="30"/>
+        <!--2012.03.22 ramacke, 2.4.F ARGO-36070 Add Column Report Type -->
+        <property name="repdefType" type="com.navis.argo.persistence.atoms.UserTypeReportTypeEnum"
+                  column="report_type" not-null="true">
+            <meta attribute="field-description">Type of report, N4 HQL/SQL</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.argo.business.reports.ReportDefinitionRoleMapping" table="argo_report_defn_roles_map" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.argo.business.reports.ReportDefinitionRoleMappingHbr</meta>
+        <meta attribute="n4alias">repdefrolem</meta>
+        <meta attribute="n4-entity-name">ReportDefinitionRole</meta>
+        <meta attribute="n4-entity-name-plural">ReportDefinitionRoles</meta>
+
+        <id name="repdefrolemGkey" column="repdefrole_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="mappingReportDefinitionGkey" class="com.navis.argo.business.reports.ReportDefinition" column="report_definition_gkey"
+                     not-null="true"/>
+        <many-to-one name="mappingRoleGkey" class="com.navis.security.business.user.SecRole" column="role_gkey" not-null="true"/>
+    </class>
+
+    <!-- definition for the specific implementation of JobDefinition for scheduled report generation -->
+    <!-- 2006-11-13 lbarman v1.2.G ARGO-5628: concrete scheduling implemenetation for reporting -->
+    <joined-subclass name="com.navis.argo.business.model.ReportingJobDefinition" table="argo_report_job_definition"
+                     extends="com.navis.argo.business.job.AbstractJobDefinition" dynamic-update="true">
+
+        <meta attribute="generated-class">com.navis.argo.business.job.ReportingJobDefinitionHbr</meta>
+        <meta attribute="n4alias">repjob</meta>
+        <meta attribute="class-description">Represents a job definition that deals with scheduling report generation</meta>
+        <meta attribute="n4-entity-name">Reporting Job Definition</meta>
+        <meta attribute="n4-entity-name-plural">Reporting Job Definitions</meta>
+
+        <key column="repjob_gkey"/>
+
+        <!-- set of all report definitions that will execute for this jobdefinition -->
+        <!-- 2007-02-01 lbarman v1.3.A/v1.2.1 ARGO-6097: add foreign key constraint btw reportJobDefinition and reportDefinition; rename mapping
+        table (upgrade action will drop old one) -->
+        <set name="repjobReportDefinitions" table="argo_repjob_reportdef_mapping" lazy="true">
+            <key column="reporting_job_definition_gkey"/>
+            <many-to-many class="com.navis.argo.business.reports.ReportDefinition" column="report_definition_gkey"/>
+        </set>
+
+        <many-to-one name="repjobOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator" not-null="true">
+            <meta attribute="field-description">The Complex to which this ReportJobDefinition belongs, and for which the report will be run.</meta>
+        </many-to-one>
+
+        <many-to-one name="repjobComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex">
+            <meta attribute="field-description">The Complex for which the report will be run.</meta>
+        </many-to-one>
+
+        <many-to-one name="repjobFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility">
+            <meta attribute="field-description">The Facility for which the report will be run.</meta>
+        </many-to-one>
+
+        <many-to-one name="repjobYard" column="yard_gkey" class="com.navis.argo.business.model.Yard">
+            <meta attribute="field-description">The Yard for which the report will be run.</meta>
+        </many-to-one>
+
+        <!-- 2007-08-26 lbarman v1.4.I ARGO-5771: define user used for scheduled reports -->
+        <many-to-one name="repjobUser" column="user_gkey" class="com.navis.argo.business.security.ArgoUser">
+            <meta attribute="field-description">The user for which the report will be run.</meta>
+        </many-to-one>
+
+        <!-- 2007-08-26 lbarman v1.4.I ARGO-5771: define language used for scheduled reports -->
+        <!-- locale, 2 digit2 ISO codes  -->
+        <property name="repjobLanguage" type="string" column="report_language" length="2">
+            <meta attribute="field-description">The language which will be used when generating the report.</meta>
+        </property>
+
+    </joined-subclass>
+
+    <!--2010-12-10 bbakthavachalam ARGO-28290 Introduce mechanism for customers to define new reportable entities -->
+    <class name="com.navis.argo.business.reports.ReportableEntity" table="argo_reportable_entity">
+        <meta attribute="n4alias">repent</meta> 
+        <meta attribute="generated-class">com.navis.argo.business.reports.ReportableEntityHbr</meta>
+        <meta attribute="class-description">Domain entity representing reportable entity</meta>
+        <meta attribute="n4-entity-name">Reportable Entity</meta>
+        <meta attribute="n4-entity-name-plural">Reportable Entities</meta>
+
+        <id name="repentGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="repentName" column="name" type="string" length="100" not-null="true">
+            <meta attribute="field-description">The unique name of this report reportable entity</meta>
+        </property>
+
+        <property name="repentDisplayName" column="display_name" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Display name of this reportable entity</meta>
+        </property>
+
+        <property name="repentBaseEntity" column="base_entity" type="string" not-null="true" length="100">
+            <meta attribute="field-description">Name of the entity on which the query will be based</meta>
+        </property>
+
+        <property name="repentDescription" column="description" type="string" length="1500">
+            <meta attribute="field-description">The description for this reportable entity</meta>
+        </property>
+
+        <property name="repentJoinedEntity" column="joined_entity" type="string" length="100">
+            <meta attribute="field-description">The entity for which a one to many relationship exists and that needs to be explicitly joined</meta>
+        </property>
+
+        <property name="repentJoinedEntityPath" column="joined_entity_path" type="string" length="255">
+            <meta attribute="field-description">The path to field (in respect to base entity) from which explicit join to joinedEnity</meta>
+        </property>
+
+        <property name="repentJoinedEntityPrefix" column="joined_entity_prefix" type="string" length="20">
+            <meta attribute="field-description">Prefix used for the fields of the joined entity for which a one to many relationship exists</meta>
+        </property>
+
+        <property name="repentIsBuiltIn" column="is_built_in" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Indicate whether this is an configured reportable entity or a custom reportable entity</meta>
+        </property>
+
+        <property name="repentIsEnabled" column="is_enabled" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Display the custom reportable entity in Report Definition's LOV</meta>
+        </property>
+
+        <!-- child Reportable Fields -->
+        <set name="repentReportableFieldSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="reportable_entity_gkey"/>
+            <one-to-many class="com.navis.argo.business.reports.ReportableField"/>
+        </set>
+
+        <property name="repentCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="repentCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="repentChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="repentChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>
+
+    <class name="com.navis.argo.business.reports.ReportableField" table="argo_reportable_field">
+        <meta attribute="n4alias">repfld</meta>
+        <meta attribute="generated-class">com.navis.argo.business.reports.ReportableFieldHbr</meta>
+        <meta attribute="class-description">Domain entity representing reportable entity's field</meta>
+        <meta attribute="n4-entity-name">Reportable Field</meta>
+        <meta attribute="n4-entity-name-plural">Reportable Fields</meta>
+
+        <id name="repfldGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="repfldExternalTag" column="external_tag" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Field name as used in the report design</meta>
+        </property>
+
+        <property name="repfldMetafieldId" column="metafield_id" type="string" length="100" not-null="true">
+            <meta attribute="field-description">metafieldId to which this field is mapped</meta>
+        </property>
+
+        <property name="repfldClassType" column="class_type" type="string" length="100">
+            <meta attribute="field-description">Java class type of the field</meta>
+        </property>
+
+        <property name="repfldDescription" column="description" type="string" length="500">
+            <meta attribute="field-description">The description for this reportable entity field</meta>
+        </property>
+
+        <property name="repfldCanUseInSort" column="is_sort_allowed" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Whether this field can be used in sorting and grouping</meta>
+        </property>
+
+        <property name="repfldCanUseInFilter" column="is_filter_allowed" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Whether this field shows in saved prdeicate filters</meta>
+        </property>
+
+        <property name="repfldCanUseInDesign" column="is_design_allowed" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Whether this field can be used in a report design</meta>
+        </property>
+
+        <property name="repfldUseDescriptiveVersion" column="is_descriptive_version" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">To display enum description instead of code</meta>
+        </property>
+
+        <property name="repfldFinderMethod" column="finder_method" type="string">
+            <meta attribute="field-description">The method to be used to find the object by passing in a string</meta>
+        </property>
+
+        <property name="repfldUpdateMethod" column="update_method" type="string">
+            <meta attribute="field-description">The method to be used to update the field</meta>
+        </property>
+
+        <property name="repfldCanUseForUpdating" column="is_update_allowed" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Whether to update the field</meta>
+        </property>
+
+        <property name="repfldIsBuiltIn" column="is_built_in" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Indicate whether this is an configured reportable field or a custom reportable field</meta>
+        </property>
+
+        <property name="repfldIsEnabled" column="is_enabled" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Whether to display the reportable field in Report Definition's filter and sort</meta>
+        </property>
+
+        <many-to-one name="repfldReportableEntity" column="reportable_entity_gkey" class="com.navis.argo.business.reports.ReportableEntity">
+            <meta attribute="field-description">The reportable entity which this field belong to</meta>
+        </many-to-one>
+
+        <property name="repfldCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="repfldCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="repfldChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="repfldChanger" type="java.lang.String" column="changer" length="30"/>
+    </class>
+
+</hibernate-mapping>

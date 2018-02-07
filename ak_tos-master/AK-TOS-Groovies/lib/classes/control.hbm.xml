@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Control</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <!--  Entity DriveInstruction  -->
+    <class name="com.navis.control.business.model.DriveInstruction" table="ctl_drive_instruction" dynamic-update="true">
+        <meta attribute="n4alias">drive_instruction</meta>
+        <meta attribute="generated-class">com.navis.control.business.hbr.DriveInstructionHbr</meta>
+        <meta attribute="class-description">Domain entity representing a drive instruction</meta>
+        <meta attribute="n4-entity-name">Drive Instruction</meta>
+        <meta attribute="n4-entity-name-plural">Drive Instructions</meta>
+
+        <meta attribute="carina-oracle-index">
+            CREATE INDEX di_pos_anchor_idx ON ctl_drive_instruction(pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE SPATIAL INDEX di_pos_anchor_idx ON ctl_drive_instruction(pos_anchor) WITH ( BOUNDING_BOX = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <id name="diGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="diType" column="type" type="com.navis.control.persistence.atoms.UserTypeDriveInstructionTypeEnum" not-null="false">
+            <meta attribute="field-description">Drive Instruction type</meta>
+        </property>
+
+        <property name="diStatus" column="status" type="com.navis.control.persistence.atoms.UserTypeDriveInstructionStatusEnum" not-null="true">
+            <meta attribute="field-description">Drive Instruction status</meta>
+        </property>
+
+        <many-to-one name="diWorkAssignment" class="com.navis.argo.business.xps.model.WorkAssignment"
+                     column="work_assignment_gkey" not-null="false">
+            <meta attribute="field description">Work Assignment that links to the assigned ITV</meta>
+        </many-to-one>
+
+        <many-to-one name="diYard" class="com.navis.argo.business.model.Yard" column="yard_gkey" not-null="true">
+            <meta attribute="field-description">Yard in which Drive Instruction is performed</meta>
+        </many-to-one>
+
+        <component name="diPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The position of the Drive Instruction.</meta>
+
+            <property name="posLocType" column="pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16" not-null="true">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="pos_name" type="string" length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+
+            <many-to-one name="posBin" column="pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <property name="diCreated" column="created" type="timestamp"/>
+        <property name="diCreator" column="creator" type="string" length="30"/>
+        <property name="diChanged" column="changed" type="timestamp"/>
+        <property name="diChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!--  Entity : AscMove Class -->
+    <class name="com.navis.control.business.asc.AscMove" table="ctl_asc_moves" dynamic-update="true">
+
+        <!--CONCURRENCY NOTES
+            -dynamic-update=true means that the update statement will only write the dirty fields back to the database
+            -optimistic-lock=dirty means that only the dirty fields will be checked for concurrent modification
+                (i.e. concurrent modification is permitted if the fields don't overlap)
+            -any property marked with optimistic-lock=false means that it is not checked for concurrent modification, even
+                     if it is dirty (i.e. last writer wins on these fields)
+        -->
+
+        <meta attribute="n4alias">ascmove</meta>
+        <meta attribute="generated-class">com.navis.control.business.asc.hbr.AscMoveHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Moves currently being scheduled by the ASC Scheduler</meta>
+        <meta attribute="n4-entity-name">Asc Move</meta>
+        <meta attribute="n4-entity-name-plural">Asc Moves</meta>
+
+        <id name="ascmoveGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!--scoping-->
+        <many-to-one name="ascmoveYard" column="yrd_gkey" class="com.navis.argo.business.model.Yard" not-null="true">
+            <meta attribute="field-description">The yard for this move.</meta>
+        </many-to-one>
+
+        <property name="ascmoveBlockGkey" type="java.lang.Long" column="block_gkey" not-null="true">
+            <meta attribute="field-description">Stack block where this move is scheduled</meta>
+        </property>
+
+        <property name="ascmoveWorkInstructionGkey" column="work_instr_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Work instruction related to this move if available</meta>
+        </property>
+
+        <property name="ascmoveMoveType" column="move_type"
+                  type="com.navis.control.persistence.atoms.UserTypeControlAscMoveTypeEnum" not-null="true">
+            <meta attribute="field-description">Move type for this move</meta>
+        </property>
+
+        <property name="ascmoveTransferType" column="transfer_type"
+                  type="com.navis.control.persistence.atoms.UserTypeControlHorizTransferTypeEnum" not-null="true">
+            <meta attribute="field-description">Transfer type for this move</meta>
+        </property>
+
+        <property name="ascmoveOriginYardStackGkey" column="origin_block_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The gkey for the origin yard stack of this move</meta>
+        </property>
+
+        <property name="ascmoveOriginTier" column="origin_tier" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The tier index for the origin of this move</meta>
+        </property>
+
+        <property name="ascmoveDestYardStackGkey" column="dest_block_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The gkey for the destination yard stack of this move</meta>
+        </property>
+
+        <property name="ascmoveDestTier" column="dest_tier" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">The tier index for the destination of this move</meta>
+        </property>
+
+        <property name="ascmoveCraneGkey" column="crane_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Crane scheduled to perform this move</meta>
+        </property>
+
+        <property name="ascmoveSequenceIndex" column="seq_index" type="java.lang.Long">
+            <meta attribute="field-description">Indicates the order in which moves will be performed,
+                the current position in the sequence for this move
+            </meta>
+        </property>
+
+        <property name="ascmoveTimeHorizon" column="time_horiz"
+                  type="com.navis.control.persistence.atoms.UserTypeControlAscTimeHorizonEnum" not-null="true">
+            <meta attribute="field-description">Indicates the current time horizion in which this move is scheduled.</meta>
+        </property>
+
+        <property name="ascmoveStartTime" column="start_time" type="timestamp">
+            <meta attribute="field-description">The estimated start time for this move</meta>
+        </property>
+
+        <property name="ascmoveEndTime" column="end_time" type="timestamp">
+            <meta attribute="field-description">The estimated end time for this move</meta>
+        </property>
+
+        <property name="ascmoveHolisticTargetTime" column="holistic_target_time" type="timestamp">
+            <meta attribute="field-description">The target time for this move set by holistic scheduler</meta>
+        </property>
+
+        <property name="ascmovePurpose" column="move_purpose"
+                  type="com.navis.argo.persistence.atoms.UserTypeWaMovePurposeEnum" not-null="true">
+            <meta attribute="field-description">Indicates the reason this asc move was created.</meta>
+        </property>
+
+        <property name="ascmoveUfvGkey" column="ufv_gkey" type="java.lang.Long">
+            <meta attribute="field-description">If this move does not have an associated work instruction,
+                this field must contain the gkey of the ufv for this unit. Otherwise, this
+                field may be null.
+            </meta>
+        </property>
+
+        <property name="ascmoveCreateWiToDestination" column="create_wi" type="boolean" not-null="false">
+            <meta attribute="field-description">If true, the original WI destination must not be modified for this container move.
+                Otherwise, a new WI may be created using the the destination on this AscMove.
+            </meta>
+        </property>
+
+        <property name="ascmoveInterchangeTime" column="interchange_time" type="timestamp" not-null="false">
+            <meta attribute="field-description">The calculated time of interchange with any CHE interacting with the ASCs.
+                This time may be calculated for indirect (to or from a Rack) or direct interchange.
+            </meta>
+        </property>
+
+        <property name="ascmoveRelatedWiGkey" column="related_wi_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">If this move is non-productive (for example, a rehandle), this field holds
+                the gkey of the work instruction which prompted the creation of this move.  This field is required for rehandles.
+            </meta>
+        </property>
+
+        <property name="ascmoveIsInitiated" column="is_initiated" type="boolean" not-null="false">
+            <meta attribute="field-description">'true' if this move is initiated by the ASC Scheduler.  For example,
+            an initiated move would be outbound from the block, but no AHT has been dispatched, yet.</meta>
+        </property>
+
+        <property name="ascmoveWorkAssignmentGkey" column="wa_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Points to the work assignment for this asc move.  For moves that are in the
+                future, the status on this work assignment will be PENDING_DISPATCH.  This field is only populated if the
+                move has been assigned to a che.
+            </meta>
+        </property>
+
+        <property name="ascmoveMessage" column="message" type="string" not-null="false">
+            <meta attribute="field-description">A readable description of why this asc move cannot be sent to the scheduler.
+            </meta>
+        </property>
+
+        <property name="ascmoveComponentId" column="component_id" type="string" not-null="false">
+            <meta attribute="field-description">The internal component which is responsible for managing this AscMove.
+            </meta>
+        </property>
+
+        <property name="ascmovePromoted" column="promoted" type="boolean" not-null="false">
+            <meta attribute="field-description">Flag set by the grand model to indicate that a move should be considered for promotion.
+            </meta>
+        </property>
+
+
+        <set name="ascmoveMoveSteps" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Move Steps associated with this Move</meta>
+            <key column="move_gkey"/>
+            <one-to-many class="com.navis.control.business.asc.AscMoveStep"/>
+        </set>
+
+    </class>
+
+    <class name="com.navis.control.business.asc.AscMoveStep" table="ctl_asc_move_step" dynamic-update="true">
+        <meta attribute="n4alias">ascstep</meta>
+        <meta attribute="generated-class">com.navis.control.business.asc.AscMoveStepHbr</meta>
+        <meta attribute="class-description">Domain entity representing the Move Step times for any Asc Move</meta>
+        <meta attribute="n4-entity-name">Asc Move Step</meta>
+        <meta attribute="n4-entity-name-plural">Asc Move Steps</meta>
+
+        <id name="ascstepGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="ascstepMove" column="move_gkey" class="com.navis.control.business.asc.AscMove" not-null="true">
+            <meta attribute="field-description">The Asc Move for this Move Step.</meta>
+        </many-to-one>
+
+        <property name="ascstepState" column="move_step_state"
+                  type="com.navis.argo.persistence.atoms.UserTypeCheJobStepStateEnum" not-null="true">
+            <meta attribute="field-description">The Move Step State associated with these estimated start and end times.</meta>
+        </property>
+
+        <property name="ascstepStartTime" column="start_time" type="timestamp">
+            <meta attribute="field-description">The estimated start time for this Move Step.</meta>
+        </property>
+
+        <property name="ascstepEndTime" column="end_time" type="timestamp">
+            <meta attribute="field-description">The estimated end time for this Move Step.</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.control.business.model.JobStepConfiguration" table="ctl_job_step_configuration" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.control.business.model.JobStepConfigurationHbr</meta>
+        <meta attribute="n4alias">jsc</meta>
+        <meta attribute="n4-entity-name">JobStepConfiguration</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+        <meta attribute="n4-code-extension-support">true</meta>
+
+        <id name="jscGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="jscId" column="id" type="string" length="40" not-null="true">
+            <meta attribute="field-description">The id of the Job step configuration</meta>
+        </property>
+
+        <property name="jscScopeLevel" column="scope_level" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Job step configuration Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+        </property>
+
+        <property name="jscScopeGkey" column="scope_gkey" type="string" length="50" not-null="false">
+            <meta attribute="field-description">Job step configuration Scope Gkey</meta>
+        </property>
+
+        <many-to-one name="jscEstimator" column="estimator_gkey" class="com.navis.extension.business.Extension" not-null="true">
+            <meta attribute="field-description">Custom code component responsible to evaluate time required for this job step configuration</meta>
+        </many-to-one>
+
+        <many-to-one name="jscJobStepProvider" column="job_step_provider_gkey" class="com.navis.extension.business.Extension" not-null="true">
+            <meta attribute="field-description">Custom code component responsible to provide steps involved in this job step configuration</meta>
+        </many-to-one>
+
+        <many-to-one name="jscFilterPredicate" column="saved_predicate_gkey" class="com.navis.framework.query.business.SavedPredicate"
+                     not-null="false" cascade="all">
+            <meta attribute="field-description">Filter criteria to be satisfied</meta>
+        </many-to-one>
+
+        <property name="jscJobType" column="job_type" type="com.navis.argo.persistence.atoms.UserTypeCheInstructionTypeEnum" not-null="false">
+            <meta attribute="field-description">Job type for which this job step configuration is applicable</meta>
+        </property>
+
+        <property name="jscSystemProvided" column="system_provided" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">The job step configuration is provided by the system</meta>
+        </property>
+
+        <property name="jscDescription" column="description" type="string" length="255">
+            <meta attribute="field-description">The description of job step configuration.</meta>
+        </property>
+
+        <property name="jscCreator" column="creator" type="string" length="30">
+            <meta attribute="field-description">Job step configuration creator.</meta>
+        </property>
+        <property name="jscCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Job step configuration create time.</meta>
+        </property>
+        <property name="jscChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Job step configuration change time.</meta>
+        </property>
+        <property name="jscChanger" column="changer" type="string" length="30">
+            <meta attribute="field-description">Job step configuration changer.</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.control.business.model.TransferTimeHistory" table="ctl_transfer_time_history" dynamic-update="true">
+        <meta attribute="n4alias">tthistory</meta>
+        <meta attribute="generated-class">com.navis.control.business.model.TransferTimeHistoryHbr</meta>
+        <meta attribute="class-description">Transfer Time Window History</meta>
+        <meta attribute="n4-entity-name">Transfer Time History</meta>
+        <meta attribute="n4-entity-name-plural">Transfer Time History</meta>
+
+        <id name="tthistoryGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="tthistoryBin" column="bin_gkey" class="com.navis.spatial.business.model.AbstractBin" not-null="true">
+            <meta attribute="field-description">The Associated TP Bin</meta>
+        </many-to-one>
+
+        <many-to-one name="tthistoryChe" column="che_gkey" class="com.navis.argo.business.xps.model.Che" not-null="true">
+            <meta attribute="field-description">The Associated Carry Che</meta>
+        </many-to-one>
+
+        <property name="tthistoryBeginTime" column="begin_time" type="timestamp" not-null="true">
+            <meta attribute="field-description">Begin Time of Transfer History Record.</meta>
+        </property>
+
+        <property name="tthistoryEndTime" column="end_time" type="timestamp">
+            <meta attribute="field-description">End Time of Transfer History Record.</meta>
+        </property>
+
+        <property name="tthistoryDuration" column="duration" type="java.lang.Long">
+            <meta attribute="field-description">Time Interval Between Begin and End.</meta>
+        </property>
+
+        <property name="tthistoryTransferType" column="transfer_type"
+                  type="com.navis.control.persistence.atoms.UserTypeControlHorizTransferTypeEnum">
+            <meta attribute="field-description">Transfer Type for This History Record</meta>
+        </property>
+
+        <property name="tthistoryType" column="history_type"
+                  type="com.navis.control.persistence.atoms.UserTypeTransferTimeHistoryTypeEnum" not-null="true">
+            <meta attribute="field-description">Type of Transfer Time History Record.</meta>
+        </property>
+
+    </class>
+
+</hibernate-mapping>

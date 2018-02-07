@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="&quot;,&quot;" newRecord="\n"></Format>
+	<Field sequence="0" name="rectype" dataType="String"></Field>
+	<Field sequence="1" name="date" dataType="String"></Field>
+	<Field sequence="2" name="time" dataType="String"></Field>
+	<Field sequence="3" name="user" dataType="String"></Field>
+	<Field sequence="4" name="dataElement1" dataType="String"></Field>
+	<Field sequence="5" name="dataElement2" dataType="String"></Field>
+	<Field sequence="6" name="dataElement3" dataType="String"></Field>
+	<Field sequence="6" name="dataElement4" dataType="String"></Field>
+</FileDesc>

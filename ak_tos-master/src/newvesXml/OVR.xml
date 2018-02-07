@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OVR>
+	<Field name="tranCode" length="3"></Field>
+	<Field name="date" length="8"></Field>
+	<Field name="time" length="8"></Field>
+	<Field name="user" length="5"></Field>
+	<Field name="pdlgId" length="9"></Field>
+	<Field name="ctrNo" length="12"></Field>
+	<Field name="height" length="4"></Field>
+	<Field name="left" length="4"></Field>
+	<Field name="right" length="4"></Field>
+	<Field name="front" length="4"></Field>
+	<Field name="rear" length="4"></Field>
+	<Field name="vesvoy" length="6"></Field>
+	<Field name="leg" length="1"></Field>
+		
+</OVR>

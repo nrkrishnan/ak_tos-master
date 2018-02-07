@@ -1,0 +1,55 @@
+println("//Start Event  ---:"+event.event.eventTypeId+ " on Unit :"+event.entity.unitId+" ----//")
+
+//1. When an equipment is rehandled we want to concatenate the text 'R/H:<pol>' to the front of the existing notes
+ //Filter for Category=Through
+def category = event.getProperty("Category")
+category = category.getKey()
+if(category.equals("THRGH"))
+{
+  def unit = event.getEntity();
+  def notes = unit.getUnitRemark();
+  def loadport = event.getProperty("POL");
+  def newRemarks = 'R/H:'+loadport+' '+ notes;
+  def newRemarks1 = null;
+  if(newRemarks.length()<=255){
+  newRemarks1=newRemarks;}
+  else{
+  newRemarks1=newRemarks.substring(0,255);}// unitRemarks takes only 255 char
+  unit.setUnitRemark(newRemarks1);
+}
+
+ //2. Set Avail Date
+ def unit = event.getEntity()
+
+ //3. Set EquiContainerService if NULL
+ def gvyEquiObj = api.getGroovyClassInstance("GvyCmisEquiDetail");
+ gvyEquiObj.setEqCntrSvr(event)
+
+ //4. Create Cmis Feed for Msg from Acets & UI Transaction
+ def gvyUtilObj = api.getGroovyClassInstance("GvyEventUtil")
+ boolean processCmisFeed  = gvyUtilObj.verfiyCmisFeedProcessing(event)
+ boolean msgPosted = false;
+
+   // N4 TO CMIS data processing
+   def unitDetails = api.getGroovyClassInstance("GvyCmisDataProcessor")
+   def unitDtl = unitDetails.doIt(event)
+   def gvyDischObj = api.getGroovyClassInstance("GvyCmisEventUnitDisch");
+   unitDtl= gvyDischObj.passpassDisch(unitDtl,unit,api,event)
+
+    //SERVICE MSG CHECK
+    println("//---- SERVICE MSG STARTS------------------//")
+    def gvySrvObj = api.getGroovyClassInstance("GvyCmisSrvMsgProcessor");
+    gvySrvObj.processServiceMessage(unitDtl,event,api)
+    println("//---- SERVICE MSG ENDS------------------//")
+
+   if(category.equals('TRSHP'))  {
+      //Tranship Check from Ship to Ship
+      msgPosted = true;
+      gvyDischObj.setTranshipValuesforShipToShip(unitDtl,event,api)
+   }
+
+   if(!msgPosted){
+     api.sendXml(unitDtl);
+   }
+
+println("//End Event ---:"+event.event.eventTypeId+ " on Unit :"+event.entity.unitId+" ----//")

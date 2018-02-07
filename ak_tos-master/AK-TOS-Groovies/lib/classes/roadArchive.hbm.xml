@@ -1,0 +1,1183 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">RoadArchive</meta>
+    <meta attribute="scope-set">public</meta>
+
+    <class name="com.navis.road.business.model.ArchiveTruckTransaction" table="road_ar_truck_transactions" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ArchiveTruckTransactionHbr</meta>
+        <meta attribute="n4alias">artran</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Archived Truck Transaction</meta>
+        <meta attribute="n4-entity-name-plural">Archived Truck Transactions</meta>
+        <meta attribute="carina-oracle-index">
+            create index ar_tran_chs_pos_anchor_idx on road_ar_truck_transactions(chs_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            create index ar_tran_ctr_pos_anchor_idx on road_ar_truck_transactions(ctr_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index ar_tran_chs_pos_anchor_idx on road_ar_truck_transactions(chs_pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+            create spatial index ar_tran_ctr_pos_anchor_idx on road_ar_truck_transactions(ctr_pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <id name="arTranGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">tran_gkey</param>
+            </generator>
+        </id>
+
+        <property name="arTranArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this entity was archived.</meta>
+        </property>
+
+        <property name="arTranOriginalGkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the original Unit before it's been purged/archived.</meta>
+            <column name="original_gkey" index="tran_ar_original_gkey_idx"/>
+        </property>
+
+        <!-- Control information -->
+        <property name="arTranSeqWithinFacility" type="java.lang.Long" column="seq_within_facility" length="10"
+                  index="ar_tran_seq"/>
+        <property name="arTranNbr" type="java.lang.Long" column="nbr" length="4"/>
+        <property name="arTranSubType" type="com.navis.road.persistence.atoms.UserTypeTranSubTypeEnum" column="sub_type"
+                  not-null="true" length="2"/>
+        <property name="arTranStatus" type="com.navis.road.persistence.atoms.UserTypeTranStatusEnum" column="status"
+                  length="16"/>
+        <property name="arTranStageId" type="java.lang.String" column="stage_id" length="60"/>
+        <property name="arTranNextStageId" type="java.lang.String" column="next_stage_id" length="60"/>
+        <property name="arTranTrouble" type="java.lang.String" column="trouble" length="3"/>
+        <property name="arTranTroubleStatus" type="java.lang.String" column="trouble_status" length="20"/>
+        <property name="arTranHadTrouble" type="java.lang.Boolean" column="had_trouble" length="5"/>
+        <property name="arTranCancelCode" type="java.lang.String" column="cancel_code" length="10"/>
+        <property name="arTranNotes" type="java.lang.String" column="notes" length="255"/>
+        <property name="arTranHandled" type="java.sql.Timestamp" column="handled"/>
+        <property name="arTranTerminalId" type="java.lang.String" column="terminal_id" length="4"/>
+        <!-- Reference Number attributes -->
+        <property name="arTranExportReleaseNbr" type="java.lang.String" column="export_release_nbr" length="15"/>
+        <property name="arTranImportReleaseNbr" type="java.lang.String" column="import_release_nbr" length="30"/>
+        <property name="arTranAppointmentNbr" type="java.lang.String" column="appointment_nbr" length="10"/>
+        <property name="arTranPinNbr" type="java.lang.String" column="pin_nbr" length="20"/>
+        <!-- truck attributes -->
+        <property name="arTranTrkcId" type="java.lang.String" column="trkco_id" length="100"/>
+        <property name="arTranTruckTareWeight" type="java.lang.Double" column="truck_tare_weight"/>
+        <property name="arTranTruckSafeWeight" type="java.lang.Double" column="truck_safe_weight"/>
+        <property name="arTranScaleWeight" type="java.lang.Double" column="scale_weight"/>
+        <property name="arTranCtrTruckPosition" type="java.lang.Integer" column="ctr_truck_position"/>
+        <property name="arTranCtrCenterToChassisBackMm" column="ctr_center_to_chassis_back_mm" type="java.lang.Long"/>
+        <property name="arTranCtrDoorDirection" type="com.navis.inventory.persistence.atoms.UserTypeDoorDirectionEnum"
+                  column="ctr_door_direction" length="8"/>
+        <!-- Container attributes -->
+        <property name="arTranCtrNbr" type="java.lang.String" column="ctr_id" length="30"/>
+        <property name="arTranCtrNbrDataSource" column="ctr_id_data_source" type="com.navis.argo.persistence.atoms.UserTypeDataSourceEnum" not-null="false"/>
+        <property name="arTranCtrOwnerId" type="java.lang.String" column="ctr_owner_id" length="16"/>
+        <property name="arTranCtrFreightKind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum"
+                  column="ctr_freight_kind" length="3"/>
+        <property name="arTranCtrunitGkey" type="java.lang.Long" column="ctrunit_gkey" length="10"/>
+        <property name="arTranCtrTypeId" type="java.lang.String" column="ctr_type_id" length="6"/>
+        <property name="arTranCtrIsDamaged" type="java.lang.Boolean" not-null="true" column="ctr_is_damaged"/>
+        <property name="arTranCtrSafeWeight" type="java.lang.Double" column="ctr_safe_weight" length="8"/>
+        <property name="arTranCtrTareWeight" type="java.lang.Double" column="ctr_tare_weight" length="8"/>
+        <property name="arTranCtrNetWeight" type="java.lang.Double" column="ctr_net_weight" length="8"/>
+        <property name="arTranCtrGrossWeight" type="java.lang.Double" column="ctr_gross_weight" length="8"/>
+        <property name="arTranCtrVGMWeight" type="java.lang.Double" column="ctr_vgm_weight" length="8"/>
+        <property name="arTranCtrVGMEntity" type="java.lang.String" column="ctr_vgm_entity"/>
+        <property name="arTranCtrNbrAssigned" type="java.lang.String" column="ctr_id_assigned" length="30"/>
+        <property name="arTranCtrTicketPosId" type="java.lang.String" column="ctr_ticket_pos_id"/>
+        <!-- Container Accessory attributes -->
+        <property name="arTranCtrAccNbr" type="java.lang.String" column="ctr_acc_nbr" length="30"/>
+        <property name="arTranCtrAccTypeId" type="java.lang.String" column="ctr_acc_type_id" length="6"/>
+        <property name="arTranCtrAccOwnerId" type="java.lang.String" column="ctr_acc_owner_id" length="16"/>
+
+        <property name="arTranCtrAccFuelLevel" type="java.lang.String" column="ctr_acc_fuel_level" length="8"/>
+        <property name="arTranCtrAccTareWeight" type="java.lang.Double" column="ctr_acc_tare_weight" length="8"/>
+        <!-- Chassis attributes -->
+        <property name="arTranChsNbr" type="java.lang.String" column="chs_id" length="30"/>
+        <property name="arTranChsNbrDataSource" column="chs_id_data_source" type="com.navis.argo.persistence.atoms.UserTypeDataSourceEnum" not-null="false"/>
+        <property name="arTranChsOwnerId" type="java.lang.String" column="chs_owner_id" length="16"/>
+        <property name="arTranChsIsOwners" type="java.lang.Boolean" not-null="true" column="chs_is_owners"/>
+        <property name="arTranChsunitGkey" type="java.lang.Long" column="chsunit_gkey" length="10"/>
+        <property name="arTranChsTypeId" type="java.lang.String" column="chs_type_id" length="6"/>
+        <property name="arTranChsIsDamaged" type="java.lang.Boolean" not-null="true" column="CHS_IS_DAMAGED"/>
+        <property name="arTranChsTareWeight" type="java.lang.Double" column="chs_tare_weight" length="8"/>
+        <property name="arTranChsSafeWeight" type="java.lang.Double" column="chs_safe_weight" length="8"/>
+        <property name="arTranChsLicenseNbr" type="java.lang.String" column="chs_license_nbr" length="11"/>
+        <property name="arTranChsNbrAssigned" type="java.lang.String" column="chs_id_assigned" length="30"/>
+        <!-- Chassis Accessory attributes -->
+        <property name="arTranChsAccNbr" type="java.lang.String" column="chs_acc_nbr" length="30"/>
+        <property name="arTranChsAccTypeId" type="java.lang.String" column="chs_acc_type_id" length="6"/>
+        <property name="arTranChsAccOwnerId" type="java.lang.String" column="chs_acc_owner_id" length="16"/>
+
+        <property name="arTranChsAccFuelLevel" type="java.lang.String" column="chs_acc_fuel_level" length="8"/>
+        <property name="arTranChsAccTareWeight" type="java.lang.Double" column="chs_acc_tare_weight" length="8"/>
+        <property name="arTranUnitId" type="java.lang.String" column="unit_id" length="50"/>
+
+        <!-- Routing attributes -->
+        <property name="arTranTradeId" type="java.lang.String" column="TRADE_ID" length="4"/>
+        <property name="arTranOrigin" type="java.lang.String" column="origin" length="30"/>
+        <property name="arTranDestination" type="java.lang.String" column="destination" length="30"/>
+        <!-- Business Organization attributes -->
+        <property name="arTranLineId" type="java.lang.String" column="line_id" length="100"/>
+        <property name="arTranShipper" type="java.lang.String" column="shipper" length="100"/>
+        <property name="arTranConsignee" type="java.lang.String" column="consignee" length="100"/>
+        <property name="arTranScAgent" type="java.lang.String" column="sc_agent" length="100"/>
+        <!-- Order attributes -->
+        <property name="arTranEqoAccTypeId" type="com.navis.argo.persistence.atoms.UserTypeEquipIsoGroupEnum" column="eqo_acc_type_id"/>
+        <property name="arTranEqoEqIsoGroup" type="com.navis.argo.persistence.atoms.UserTypeEquipIsoGroupEnum"
+                  column="eqo_eq_iso_group"/>
+        <property name="arTranEqoEqLength" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalLengthEnum"
+                  column="eqo_eq_length"/>
+        <property name="arTranEqoEqHeight" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalHeightEnum"
+                  column="eqo_eq_height"/>
+
+        <property name="arTranEqoNbr" type="java.lang.String" column="eqo_nbr" length="30"/>
+        <property name="arTranMilitaryVNbr" type="java.lang.String" column="military_v_nbr" length="5"/>
+        <property name="arTranMilitaryTcn" type="java.lang.String" column="military_tcn" length="10"/>
+        <property name="arTranMaterial" type="com.navis.argo.persistence.atoms.UserTypeEquipMaterialEnum"
+                  column="material" length="10"/>
+        <property name="arTranShandId" type="java.lang.String" column="shand_id" length="9"/>
+        <property name="arTranShandId2" type="java.lang.String" column="shand_id2" length="9"/>
+        <property name="arTranShandId3" type="java.lang.String" column="shand_id3" length="9"/>
+        <property name="arTranGroupId" type="java.lang.String" column="group_id" length="17"/>
+        <property name="arTranIdoId" type="java.lang.String" column="ido_id" length="30"/>
+
+        <property name="arTranEqFtrId" column="feature_id" type="string" length="16">
+            <meta attribute="field-description">Equipment Feature</meta>
+        </property>
+
+        <property name="arTranEqGradeId" column="grade_id" type="string" length="16">
+            <meta attribute="field-description">Required grade for equipment</meta>
+        </property>
+
+        <property name="arTranCtrConditionId" column="condition_id" type="string" length="16" not-null="false">
+            <meta attribute="field-description">Condition for the container</meta>
+        </property>
+
+        <property name="arTranCtrMnrStatusId" column="mnr_id" type="string" length="16" not-null="false">
+            <meta attribute="field-description">Maintenance and Repair status for container</meta>
+        </property>
+        <property name="arTranCscDate" type="java.lang.String" column="csc_date" length="5" not-null="false"/>
+        <property name="arTranCtrBuildDate" type="java.sql.Timestamp" column="built_date"/>
+        <property name="arTranBlNbr" type="java.lang.String" column="bl_nbr" length="30"/>
+        <property name="arTranBlItemQty" type="java.lang.Double" column="bl_item_qty"/>
+        <property name="arTranBlItemQtyMoved" type="java.lang.Double" column="bl_item_qty_moved"/>
+        <property name="arTranCargoServiceOrderNbr" type="java.lang.String" column="cargo_service_order_nbr" length="30"/>
+        <!-- Goods attributes -->
+        <property name="arTranCommodityCode" type="java.lang.String" column="commodity_code"/>
+        <property name="arTranCommodityDescription" type="java.lang.String" column="commodity_description" length="255"/>
+        <property name="arTranTempRequired" type="java.lang.Double" column="temp_required" length="5"/>
+        <property name="arTranTempObserved" type="java.lang.Double" column="temp_observed" length="5"/>
+        <property name="arTranTempSetting" type="java.lang.Double" column="temp_setting" length="5"/>
+        <property name="arTranReeferFaultCode" type="string" column="reefer_fault_code" length="8"/>
+        <property name="arTranReeferFuelLevel" type="java.lang.Double" column="reefer_fuel_level"/>
+        <property name="arTranVentUnit" column="vent_units" type="com.navis.argo.persistence.atoms.UserTypeVentUnitEnum" length="40">
+            <meta attribute="field-description">Unit (%,cubic feet per minute, etc.) that goes with the vent required and vent setting fields.</meta>
+        </property>
+        <property name="arTranVentRequired" type="java.lang.Double" column="vent_required_pct">
+            <meta attribute="field-description">Vent required</meta>
+        </property>
+        <property name="arTranVentSetting" type="java.lang.Double" column="vent_setting_pct">
+            <meta attribute="field-description">Vent setting</meta>
+        </property>
+        <property name="arTranO2Required" type="java.lang.Double" column="o2_required" length="4"/>
+        <property name="arTranCo2Required" type="java.lang.Double" column="co2_required" length="4"/>
+        <property name="arTranHumidityRequired" type="java.lang.Double" column="humidity_required" length="10"/>
+        <property name="arTranIsHazard" type="java.lang.Boolean" not-null="true" column="is_hazard"/>
+        <property name="arTranIsHazardChecked" type="java.lang.Boolean" column="is_hazard_checked"/>
+        <property name="arTranIsPlacarded" type="java.lang.Boolean" not-null="true" column="is_placarded"/>
+        <property name="arTranIsPlacardedOk" type="java.lang.Boolean" not-null="true" column="is_placarded_ok"/>
+        <property name="arTranIsOog" type="java.lang.Boolean" not-null="true" column="is_oog"/>
+        <property name="arTranOogFront" type="java.lang.Long" column="oog_front" length="5"/>
+        <property name="arTranOogBack" type="java.lang.Long" column="oog_back" length="5"/>
+        <property name="arTranOogLeft" type="java.lang.Long" column="oog_left" length="5"/>
+        <property name="arTranOogRight" type="java.lang.Long" column="oog_right" length="5"/>
+        <property name="arTranOogTop" type="java.lang.Long" column="oog_top" length="5"/>
+        <property name="arTranSealNbr1" type="java.lang.String" column="seal_nbr1" length="15"/>
+        <property name="arTranSealNbr2" type="java.lang.String" column="seal_nbr2" length="15"/>
+        <property name="arTranSealNbr3" type="java.lang.String" column="seal_nbr3" length="15"/>
+        <property name="arTranSealNbr4" type="java.lang.String" column="seal_nbr4" length="15"/>
+        <property name="arTranCtrIsSealed" type="java.lang.Boolean" column="is_ctr_sealed"/>
+        <property name="arTranFailureAction" type="string" length="20" column="failure_action">
+            <meta attribute="field-description">Highest level action code of failed business tasks</meta>
+        </property>
+        <property name="arTranTruckActionId" type="string" length="20" column="truck_action_id"/>
+        <property name="arTranIsXrayRequired" type="java.lang.Boolean" column="is_xray_required"/>
+        <property name="arTranIsConfirmed" type="java.lang.Boolean" column="is_confirmed"/>
+        <property name="arTranSeqNbr" type="java.lang.Integer" column="seq_nbr"/>
+        <property name="arTranExchangeAreaId" type="java.lang.String" column="exchange_area_id" length="20"/>
+        <property name="arTranHasDocuments" type="java.lang.Boolean" column="has_documents"/>
+        <!-- 2009-07-03 dkannadasan v2.0.D ARGO-18983, Adding new field "category" -->
+        <property name="arTranUnitCategory" column="category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum" not-null="false">
+            <meta attribute="field-description">The Category of the Unit (Export/Domestic).</meta>
+        </property>
+        <!-- This is the current position of the Container for deliveries, and planned position for recievals -->
+        <component name="arTranCtrPositionComp" class="com.navis.argo.business.model.ArchiveLocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The position of the truck from the perspective of this facility</meta>
+            <property name="arPosLocType" column="ctr_pos_loctype"
+                      type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="arPosLocId" column="ctr_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or
+                    carrier visit Id
+                </meta>
+            </property>
+            <property name="arPosLocGkey" column="ctr_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="arPosSlot" column="ctr_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its
+                    Location
+                </meta>
+            </property>
+            <property name="arPosOrientation" column="ctr_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the truck within this
+                    Position
+                </meta>
+            </property>
+            <property name="arPosName" column="ctr_pos_name" type="string"
+                      length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="arPosBin" column="ctr_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                 <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="arPosTier" column="ctr_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="arPosAnchor" column="ctr_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                 <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+             </property>
+             <property name="arPosOrientationDegrees" column="ctr_pos_orientation_degrees" type="java.lang.Double">
+                 <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+             </property>
+        </component>
+        <property name="arTranCtrPositionIsWheeled" type="java.lang.Boolean" column="ctr_pos_is_wheeled"/>
+
+        <!-- This is the current position of the Chassis for deliveries, and planned position for recievals -->
+        <component name="arTranChsPositionComp" class="com.navis.argo.business.model.ArchiveLocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The position of the truck from the perspective of this facility</meta>
+            <property name="arPosLocType" column="chs_pos_loctype"
+                      type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="arPosLocId" column="chs_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or
+                    carrier visit Id
+                </meta>
+            </property>
+            <property name="arPosLocGkey" column="chs_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="arPosSlot" column="chs_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its
+                    Location
+                </meta>
+            </property>
+            <property name="arPosOrientation" column="chs_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the truck within this
+                    Position
+                </meta>
+            </property>
+            <property name="arPosName" column="chs_pos_name" type="string"
+                      length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="arPosBin" column="chs_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                 <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="arPosTier" column="chs_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="arPosAnchor" column="chs_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                 <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+             </property>
+             <property name="arPosOrientationDegrees" column="chs_pos_orientation_degrees" type="java.lang.Double">
+                 <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+             </property>
+        </component>
+
+        <!-- Flex fields.  *MUST* be the same set as those in Unit.  -->
+        <property name="arTranUnitFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="arTranUnitFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+        <property name="arTranUnitFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+        <property name="arTranUnitFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <property name="arTranUnitFlexString05" column="flex_string09" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+        <property name="arTranUnitFlexString06" column="flex_string10" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+        <property name="arTranUnitFlexString07" column="flex_string11" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+        <property name="arTranUnitFlexString08" column="flex_string12" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+        <property name="arTranUnitFlexString09" column="flex_string13" type="string" length="255">
+            <meta attribute="field-description">String flex-field #09</meta>
+        </property>
+        <property name="arTranUnitFlexString10" column="flex_string14" type="string" length="255">
+            <meta attribute="field-description">String flex-field #10</meta>
+        </property>
+
+        <property name="arTranUnitFlexString11" column="flex_string15" type="string" length="255">
+            <meta attribute="field-description">String flex-field #11</meta>
+        </property>
+
+        <property name="arTranUnitFlexString12" column="flex_string16" type="string" length="255">
+            <meta attribute="field-description">String flex-field #12</meta>
+        </property>
+
+        <property name="arTranUnitFlexString13" column="flex_string17" type="string" length="255">
+            <meta attribute="field-description">String flex-field #13</meta>
+        </property>
+
+        <property name="arTranUnitFlexString14" column="flex_string18" type="string" length="255">
+            <meta attribute="field-description">String flex-field #14</meta>
+        </property>
+
+        <property name="arTranUnitFlexString15" column="flex_string19" type="string" length="255">
+            <meta attribute="field-description">String flex-field #15</meta>
+        </property>
+
+        <!-- Flex fields.  *MUST* be the same set as those in UnitFacilityVisit.  -->
+        <property name="arTranUfvFlexString01" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #01</meta>
+        </property>
+        <property name="arTranUfvFlexString02" column="flex_string06" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #02</meta>
+        </property>
+        <property name="arTranUfvFlexString03" column="flex_string07" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #03</meta>
+        </property>
+        <property name="arTranUfvFlexString04" column="flex_string08" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="arTranUfvFlexString05" column="flex_string20" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="arTranUfvFlexString06" column="flex_string21" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="arTranUfvFlexString07" column="flex_string22" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="arTranUfvFlexString08" column="flex_string23" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="arTranUfvFlexString09" column="flex_string24" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+        <property name="arTranUfvFlexString10" column="flex_string25" type="string" length="255">
+            <meta attribute="field-description">String ufv flex-field #04</meta>
+        </property>
+
+        <property name="arTranUfvFlexDate01" column="flex_date01" type="string" length="255">
+            <meta attribute="field-description">Date ufv flex-field #01</meta>
+        </property>
+        <property name="arTranUfvFlexDate02" column="flex_date02" type="string" length="255">
+            <meta attribute="field-description">Date ufv flex-field #02</meta>
+        </property>
+        <property name="arTranUfvFlexDate03" column="flex_date03" type="string" length="255">
+            <meta attribute="field-description">Date ufv flex-field #03</meta>
+        </property>
+        <property name="arTranUfvFlexDate04" column="flex_date04" type="string" length="255">
+            <meta attribute="field-description">Date ufv flex-field #04</meta>
+        </property>
+        <!--Truck Transaction flex fields-->
+        <property name="arTranFlexString01" column="tran_flex_string01" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #01</meta>
+        </property>
+        <property name="arTranFlexString02" column="tran_flex_string02" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #02</meta>
+        </property>
+        <property name="arTranFlexString03" column="tran_flex_string03" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #03</meta>
+        </property>
+        <property name="arTranFlexString04" column="tran_flex_string04" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #04</meta>
+        </property>
+        <property name="arTranFlexString05" column="tran_flex_string05" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #05</meta>
+        </property>
+        <property name="arTranFlexString06" column="tran_flex_string06" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #06</meta>
+        </property>
+        <property name="arTranFlexString07" column="tran_flex_string07" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #07</meta>
+        </property>
+        <property name="arTranFlexString08" column="tran_flex_string08" type="string" length="255">
+            <meta attribute="field-description">String Tran flex-field #08</meta>
+        </property>
+        <property name="arTranFlexDate01" column="tran_flex_date01" type="timestamp">
+            <meta attribute="field-description">Date Tran flex-field #01</meta>
+        </property>
+        <property name="arTranFlexDate02" column="tran_flex_date02" type="timestamp">
+            <meta attribute="field-description">Date Tran flex-field #02</meta>
+        </property>
+        <property name="arTranFlexDate03" column="tran_flex_date03" type="timestamp">
+            <meta attribute="field-description">Date Tran flex-field #03</meta>
+        </property>
+        <property name="arTranFlexDate04" column="tran_flex_date04" type="timestamp">
+            <meta attribute="field-description">Date Tran flex-field #04</meta>
+        </property>
+
+        <property name="arTranCreated" type="java.sql.Timestamp" column="created" index="ar_tran_created_idx"/>
+        <property name="arTranCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="arTranChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="arTranChanger" type="java.lang.String" column="changer" length="30"/>
+
+        <!-- The below are many-to-one relations.       -->
+        <!-- todo -->
+        <!--<many-to-one name="arTranUnit" column="unit_gkey" class="com.navis.inventory.business.units.Unit" cascade="none">-->
+        <!--<meta attribute="field-description">Gate Transaction UNIT (container and/or chassis)</meta>-->
+        <!--</many-to-one>-->
+        <!--<many-to-one name="arTranLine" column="line_gkey" class="com.navis.argo.business.reference.LineOperator"-->
+        <!--cascade="none">-->
+        <!--<meta attribute="field-description">Gate Transaction Shipping Gkey</meta>-->
+        <!--</many-to-one>-->
+        <!--<many-to-one name="tranChassis" column="chs_gkey" class="com.navis.argo.business.reference.Chassis"-->
+        <!--cascade="none">-->
+        <!--<meta attribute="field-description">Gate Transaction Equipment Gkey for chassis</meta>-->
+        <!--</many-to-one>-->
+        <!--<many-to-one name="tranContainer" column="ctr_gkey" class="com.navis.argo.business.reference.Container"-->
+        <!--cascade="none">-->
+        <!--<meta attribute="field-description">Gate Transaction Equipment Gkey for container</meta>-->
+        <!--</many-to-one>-->
+        <property name="arTranChsAccessoryId" column="chsacc_id" type="string" length="30">
+            <meta attribute="field-description">Gate Transaction Equipment Id for chassis accessory</meta>
+        </property>
+        <property name="arTranCtrAccessoryId" column="ctracc_id" type="string" length="30">
+            <meta attribute="field-description">Gate Transaction Equipment Id for container accessory</meta>
+        </property>
+        <!-- todo -->
+        <!--<many-to-one name="tranCtrOwner" column="ctr_owner_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"-->
+        <!--cascade="none">-->
+        <!--<meta attribute="field-description">Gate Transaction Container Owner Gkey</meta>-->
+        <!--</many-to-one>-->
+        <!--<many-to-one name="tranChsOwner" column="chs_owner_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"-->
+        <!--cascade="none">-->
+        <!--<meta attribute="field-description">Gate Transaction Chassis Owner Gkey</meta>-->
+        <!--</many-to-one>-->
+
+        <property name="arTranCtrOperatorId" column="ctr_operator_id" type="string" length="100">
+            <meta attribute="field-description">Gate Transaction Container Operator Id</meta>
+        </property>
+
+        <property name="arTranChsOperatorId" column="chs_operator_id" type="string" length="100">
+            <meta attribute="field-description">Gate Transaction Chassis Operator Id</meta>
+        </property>
+        <property name="arTranCtrAccOperatorId" column="ctr_acc_operator_id" type="string" length="100">
+            <meta attribute="field-description">Gate Transaction Container Operator Id</meta>
+        </property>
+
+        <property name="arTranChsAccOperatorId" column="chs_acc_operator_id" type="string" length="100">
+            <meta attribute="field-description">Gate Transaction Chassis Operator Id</meta>
+        </property>
+        <!-- todo -->
+        <!--<many-to-one name="arTranEqo" column="eqo_gkey" class="com.navis.orders.business.eqorders.EquipmentOrder"-->
+        <!--cascade="none">-->
+        <!--<meta attribute="field-description">Gate Transaction Equipment Order Gkey</meta>-->
+        <!--</many-to-one>-->
+        <!--<many-to-one name="arTranEqoItem" column="eqoitem_gkey"-->
+        <!--class="com.navis.orders.business.eqorders.EquipmentOrderItem" cascade="none">-->
+        <!--<meta attribute="field-description">Gate Transaction Equipment Order Item Gkey</meta>-->
+        <!--</many-to-one>-->
+        <property name="arTranCarrierVisitGkey" column="cv_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Gate Transaction carrier visit Gkey</meta>
+        </property>
+        <property name="arTranCarrierVisitId" column="cv_id" type="string" length="30">
+            <meta attribute="field-description">Gate Transaction carrier visit Id</meta>
+        </property>
+        <property name="arTranLoadPointId" column="pol_id" type="string" length="6">
+            <meta attribute="field-description">Gate Transaction load point id</meta>
+        </property>
+        <property name="arTranDischargePoint1Id" column="pod1_id" type="string" length="6">
+            <meta attribute="field-description">Gate Transaction 1st discharge point id</meta>
+        </property>
+        <property name="arTranDischargePoint2Id" column="pod2_id" type="string" length="6">
+            <meta attribute="field-description">Gate Transaction 2nd discharge point id</meta>
+        </property>
+        <property name="arTranDischargePoint3Id" column="pod3_id" type="string" length="6">
+            <meta attribute="field-description">Gate Transaction 3rd discharge point id</meta>
+        </property>
+        <property name="arTranOptionalPod1Id" column="opt_pod1_id" type="string" length="6">
+            <meta attribute="field-description">Gate Transaction 1st optional discharge point id</meta>
+        </property>
+        <property name="arTranCommodityId" column="commodity_id" type="string" length="255">
+            <meta attribute="field-description">Gate Transaction commodity id</meta>
+        </property>
+        <!--<many-to-one name="tranTruckingCompany" column="trkco_gkey"-->
+        <!--class="com.navis.road.business.model.TruckingCompany" cascade="none">-->
+        <!--<meta attribute="field-description">Gate Transaction Trucking Company Gkey</meta>-->
+        <!--</many-to-one>-->
+        <many-to-one name="arTranArTruckVisit" column="truck_visit_gkey"
+                     class="com.navis.road.business.model.ArchiveTruckVisitDetails" cascade="none">
+            <meta attribute="field-description">Truck Visit Details Gkey</meta>
+        </many-to-one>
+        <many-to-one name="arTranCtrArDmg" column="ctr_damages_gkey"
+                     class="com.navis.inventory.business.units.ArchiveUnitEquipDamages" cascade="all">
+            <meta attribute="field-description">Container Damage Gkey</meta>
+        </many-to-one>
+        <many-to-one name="arTranChsArDmg" column="chs_damages_gkey"
+                     class="com.navis.inventory.business.units.ArchiveUnitEquipDamages" cascade="all">
+            <meta attribute="field-description">Chassis Damage Gkey</meta>
+        </many-to-one>
+        <!-- 2009-10-13 rkasindula v2.1.A ARGO-19142 system fails the Hazards information (Contents) in the ArchivedGateTransaction inspector.-->
+        <many-to-one name="arTranArHaz" column="haz_gkey" class="com.navis.inventory.business.imdg.ArchiveHazards" cascade="none">
+            <meta attribute="field-description">Archived Hazards details</meta>
+        </many-to-one>
+        <many-to-one name="arTranCtrAccArDmg" column="ctr_acc_damages_gkey"
+                     class="com.navis.inventory.business.units.ArchiveUnitEquipDamages" cascade="all">
+            <meta attribute="field-description">Container Accessory Damage Gkey</meta>
+        </many-to-one>
+        <many-to-one name="arTranChsAccArDmg" column="chs_acc_damages_gkey"
+                     class="com.navis.inventory.business.units.ArchiveUnitEquipDamages" cascade="all">
+            <meta attribute="field-description">Chassis Accessory Damage Gkey</meta>
+        </many-to-one>
+        <many-to-one name="arTranYard" column="yard_gkey" class="com.navis.argo.business.model.Yard" not-null="false">
+            <meta attribute="field-description">The Yard (if known) of this TruckTransaction</meta>
+        </many-to-one>
+        <many-to-one name="arTranFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="true">
+            <meta attribute="field-description">The Facility of this TruckTransaction</meta>
+        </many-to-one>
+        <many-to-one name="arTranComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex"
+                     not-null="true">
+            <meta attribute="field-description">The Complex to which this TruckTransaction belongs.</meta>
+            <meta attribute="use-in-tostring">true</meta>
+        </many-to-one>
+        <many-to-one name="arTranOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator"
+                     not-null="false" cascade="none">
+            <meta attribute="field-description">Current operator of the Truck Transaction</meta>
+        </many-to-one>
+
+        <!--<set name="arTranBundle" lazy="true" table="road_truck_transaction_bundles">-->
+        <!--<key column="tran_gkey"/>-->
+        <!--<one-to-many class="com.navis.road.business.model.TruckTransactionBundle"/>-->
+        <!--</set>-->
+
+        <!--<set name="arTranPlacards" lazy="true" table="road_transaction_placards">-->
+        <!--<key column="tran_gkey"/>-->
+        <!--<one-to-many class="com.navis.road.business.model.TransactionPlacard"/>-->
+        <!--</set>-->
+
+        <!--2009-07-28 spabbala v2.0.E ARGO-19971 The new column "arTranGateId" in ArchiveTruckTransaction is marked not nullable.-->
+        <property name="arTranGateId" column="gate_id" type="string" length="12">
+            <meta attribute="field-description">Gate id of this transaction</meta>
+        </property>
+
+        <property name="arTranCancelReason" column="cancel_reason" type="string" not-null="false" length="15">
+            <meta attribute="field-description">Reason for cancelling a truck transaction</meta>
+        </property>
+
+        <!--2009-11-11 spabbala v2.0.R, v2.1.B ARGO-21655 Added Next Gate to transactions (corresponding column in archive entity)-->
+        <property name="arTranNextGateId" column="next_gate_id" type="string" length="12">
+            <meta attribute="field-description">Next gate for this transaction</meta>
+        </property>
+        <property name="arTranExchangeLaneId" column="exchange_lane_id" type="string" length="12">
+            <meta attribute="field-description">Exchange Lane Id Assigned for this transaction</meta>
+        </property>
+
+        <!-- 26.09.13 prabhat ARGO-51407-Enhance Road schema to support new Rail Configuration field for Tank containers -->
+        <property name="arTranTankRails" column="tank_rails" type="com.navis.argo.persistence.atoms.UserTypeTankRailTypeEnum" not-null="false">
+            <meta attribute="field-description">Tank rail configuration.</meta>
+        </property>
+
+        <property name="arTranWasAutoClosed" type="java.lang.Boolean" column="auto_closed"/>
+
+        <property name="arTranCheId" column="che_id" type="string" not-null="false"/>
+    </class>
+
+    <joined-subclass name="com.navis.road.business.model.ArchiveTruckVisitDetails" table="road_ar_truck_visit_details"
+                     extends="com.navis.argo.business.model.ArchiveVisitDetails" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ArchiveTruckVisitDetailsHbr</meta>
+        <meta attribute="n4alias">artvdtls</meta>
+        <meta attribute="scope-set">public</meta>
+        <meta attribute="n4-entity-name">Archived Truck Visit Details</meta>
+        <meta attribute="n4-entity-name-plural">Archived Truck Visit Details</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">tvdtlsCustomFlexFields</meta>
+        <meta attribute="carina-oracle-index">
+            create index ar_tvdtls_pos_anchor_idx on road_ar_truck_visit_details(pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index ar_tvdtls_pos_anchor_idx on road_ar_truck_visit_details(pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <key column="arTvdtls_gkey"/>
+        <!--2009-09-30 spabbala v2.0.K ARGO-21017  Extend bat nbr for archive table-->
+        <property name="arTvdtlsBatNbr" type="java.lang.String" column="bat_nbr" length="6"/>
+        <property name="arTvdtlsOutBatNbr" type="java.lang.String" column="bat_nbr_out" length="6"/>
+        <property name="arTvdtlsStatus" type="com.navis.road.persistence.atoms.UserTypeTruckVisitStatusEnum" column="status" length="8"/>
+        <property name="arTvdtlsTruckStatus" type="com.navis.road.persistence.atoms.UserTypeTruckVisitStatusEnum" column="truck_status" length="8"/>
+
+        <property name="arTvdtlsTruckLicenseNbr" type="java.lang.String" column="truck_license_nbr" length="10"/>
+        <property name="arTvdtlsTruckId" type="java.lang.String" column="truck_id" length="10"/>
+        <property name="arTvdtlsTruckAeiTagId" type="java.lang.String" column="truck_aei_tag_id" length="40"/>
+        <!--2010-01-18 mkamalakannan ARGO-22803 v2.1.G, 2.0.2, 1.8.8 increased column length of driver license nbr and driver card ID-->
+        <property name="arTvdtlsDriverLicenseNbr" type="java.lang.String" column="driver_license_nbr" length="15"/>
+        <property name="arTvdtlsDriverCardId" type="java.lang.String" column="driver_card_id" length="20"/>
+        <!-- 2012-06-06 kanampr ARGO-35009 increasing the driver_name column size in road_ar_truck_visit_details and road_truck_visit_details -->
+        <property name="arTvdtlsDriverName" type="java.lang.String" column="driver_name" length="60"/>
+        <property name="arTvdtlsDriverIsHazardLicensed" type="java.lang.Boolean" column="driver_is_hazard_licensed"/>
+
+        <property name="arTvdtlsCallUpTime" type="java.sql.Timestamp" column="call_up_time" length="7"/>
+        <property name="arTvdtlsEnteredYard" type="java.sql.Timestamp" column="entered_yard" length="7"/>
+        <property name="arTvdtlsExitedYard" type="java.sql.Timestamp" column="exited_yard" length="7"/>
+        <property name="arTvdtlsNextStageId" type="java.lang.String" column="next_stage_id" length="60"/>
+        <property name="arTvdtlsScaleWeight" type="java.lang.Double" column="scale_weight"/>
+
+        <property name="arTvdtlsCreated" type="java.sql.Timestamp" column="created" index="ar_tvdtls_created_idx"/>
+        <property name="arTvdtlsCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="arTvdtlsChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="arTvdtlsChanger" type="java.lang.String" column="changer" length="30"/>
+
+        <property name="arTvdtlsPriority" type="com.navis.road.persistence.atoms.UserTypePriorityStatusEnum"
+                  column="priority" not-null="false" length="15"/>
+        <property name="arTvdtlsGosTvKey" type="java.lang.Long" column="gos_tv_key" index="ar_tvdtls_gos_tv_key_idx"/>
+        <property name="arTvdtlsWaitStatus" type="java.lang.String" column="wait_status" length="20"/>
+
+        <component name="arTvdtlsPositionComp" class="com.navis.argo.business.model.ArchiveLocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The position of the truck from the perspective of this facility</meta>
+            <property name="arPosLocType" column="pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum"
+                      length="16">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="arPosLocId" column="pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or
+                    carrier visit Id
+                </meta>
+            </property>
+            <property name="arPosLocGkey" column="pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="arPosSlot" column="pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its
+                    Location
+                </meta>
+            </property>
+            <property name="arPosOrientation" column="pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the truck within this
+                    Position
+                </meta>
+            </property>
+            <property name="arPosName" column="pos_name" type="string"
+                      length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="arPosBin" column="pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                 <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="arPosTier" column="pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="arPosAnchor" column="pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                 <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+             </property>
+             <property name="arPosOrientationDegrees" column="pos_orientation_degrees" type="java.lang.Double">
+                 <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+             </property>
+        </component>
+
+        <property name="arTvdtlsFailureAction" type="string" length="20" column="failure_action">
+            <meta attribute="field-description">Highest level action code of failed business tasks</meta>
+        </property>
+
+        <property name="arTvdtlsTruckActionId" type="string" length="20" column="truck_action_id"/>
+        <property name="arTvdtlsPreStageStatus" type="com.navis.road.persistence.atoms.UserTypeTranStatusEnum" column="pre_stage_status" length="8"/>
+
+        <property name="arTvdtlsGateId" column="gate_id" type="string" not-null="true" length="12">
+            <meta attribute="field-description">Gate where truck was processed</meta>
+        </property>
+
+        <property name="arTvdtlsEntryLaneId" column="entry_lane_id" type="string" length="12">
+            <meta attribute="field-description">Entry Lane</meta>
+        </property>
+
+        <property name="arTvdtlsExchangeLaneId" column="exchange_lane_id" type="string" length="12">
+            <meta attribute="field-description">Exchange Lane</meta>
+        </property>
+
+        <property name="arTvdtlsExitLaneId" column="exit_lane_id" type="string" length="12">
+            <meta attribute="field-description">Exit Lane</meta>
+        </property>
+
+        <property name="arTvdtlsTroubleLaneId" column="trouble_lane_id" type="string" length="12">
+            <meta attribute="field-description">Trouble Lane</meta>
+        </property>
+
+        <property name="arTvdtlsTrkCompanyId" column="trkco_id" type="string" length="100">
+            <meta attribute="field-description">Trucking Company</meta>
+        </property>
+
+        <!--<property name="arTvdtlsTruckLicenseNbr" column="truck_license_nbr" type="string" length="10" >-->
+        <!--<meta attribute="field-description">Truck license number</meta>-->
+        <!--</property>-->
+
+        <property name="arTvdtlsDriverId" column="driver_id" type="string" length="25">
+            <meta attribute="field-description">Truck Driver id</meta>
+        </property>
+
+        <set name="arTvdtlsTruckTrans" lazy="true" table="road_ar_truck_transactions">
+            <key column="truck_visit_gkey"/>
+            <one-to-many class="com.navis.road.business.model.ArchiveTruckTransaction"/>
+        </set>
+        <property name="arTvdtlsTvAppointmentNbr" type="java.lang.Long" column="truck_visit_appointment_nbr" length="10"/>
+
+        <!--<set name="arTvdtlsStats" lazy="true" table="road_truck_visit_stats">-->
+        <!--<key column="tv_gkey"/>-->
+        <!--<one-to-many class="com.navis.road.business.model.TruckVisitStats"/>-->
+        <!--</set>-->
+        <property name="arTvdtlsFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String Tvdtls flex-field #01</meta>
+        </property>
+        <property name="arTvdtlsFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String Tvdtls flex-field #02</meta>
+        </property>
+        <property name="arTvdtlsFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String Tvdtls flex-field #03</meta>
+        </property>
+        <property name="arTvdtlsFlexDate01" column="flex_date01" type="timestamp">
+            <meta attribute="field-description">Date Tvdtls flex-field #01</meta>
+        </property>
+
+        <property name="arTvdtlsTruckingCoId" type="java.lang.String" column="trucking_co_id" length="100"/>
+
+        <property name="arTvdtlsChassisProfileId" column="chpro_id" type="string" length="12"/>
+
+        <property name="arTvdtlsChassisCount" type="java.lang.Integer" column="chassis_count"/>
+        <property name="arTvdtlsChassisLengthOverall" type="java.lang.Double" column="chassis_length_overall"/>
+
+        <property name="arTvdtlsChassisTotalTeu" type="java.lang.Integer" column="chassis_total_teu" length="2"/>
+
+        <property name="arTvdtlsChassis1Teu" type="java.lang.Integer" column="chassis1_teu" length="2"/>
+        <property name="arTvdtlsChassis2Teu" type="java.lang.Integer" column="chassis2_teu" length="2"/>
+        <property name="arTvdtlsChassis3Teu" type="java.lang.Integer" column="chassis3_teu" length="2"/>
+        <property name="arTvdtlsChassis4Teu" type="java.lang.Integer" column="chassis4_teu" length="2"/>
+        <property name="arTvdtlsChassis5Teu" type="java.lang.Integer" column="chassis5_teu" length="2"/>
+        <!--smandadi 21-June-2012 v2.4.M ARGO-39277: Incorrect reassessment of truckVisitStatus
+            while both truck visit and transaction is in trouble-->
+        <property name="arTvdtlsHasVisitTrouble" type="java.lang.Boolean" column="has_visit_trouble"/>
+
+        <dynamic-component name="tvdtlsCustomFlexFields"/>
+        <!--2014-06-23 metlana ARGO-58157: Changed the property name to fix the hibernate error " A collection with cascade="all-delete-orphan"-->
+        <!--was no longer referenced by the owning entity instance".If we override a hibernate generated setters of type set in Archiving Entity-->
+        <!--some times hibernate is throwing owning entity instance error,when the setter is called by the hibernate itself to-->
+        <!--persist the newly created entity to the database-->
+        <set name="arTvdtlsArImages" lazy="true" table="road_ar_truck_visit_images" cascade="all">
+            <key column="tv_gkey"/>
+            <one-to-many class="com.navis.road.business.model.ArchiveTruckVisitImage"/>
+        </set>
+
+        <property name="arTvdtlsClosureType" type="java.lang.String" column="closure_type" length="20"/>
+        <property name="arTvdtlsExtraTimeOverride" type="java.lang.Integer" column="extra_time_override"/>
+
+        <property name="arTvdtlsWasAutoClosed" type="java.lang.Boolean" column="auto_closed"/>
+
+    </joined-subclass>
+
+    <class name="com.navis.road.business.model.ArchiveDocument" table="road_ar_documents" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ArchiveDocumentHbr</meta>
+        <meta attribute="n4alias">ardoc</meta>
+        <meta attribute="n4-entity-name">Archived Document</meta>
+        <meta attribute="n4-entity-name-plural">Archived Documents</meta>
+
+        <id name="arDocPk" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">doc_gkey</param>
+            </generator>
+        </id>
+        <property name="arDocData" type="text" column="doc_data" length="100000000"/>
+        <property name="arDocTranSubType" type="com.navis.road.persistence.atoms.UserTypeTranSubTypeEnum" column="sub_type" length="2"/>
+        <property name="arDocCtrNbr" type="java.lang.String" column="ctr_id" length="30"/>
+        <property name="arDocChsNbr" type="java.lang.String" column="chs_id" length="30"/>
+        <property name="arDocCreated" type="java.sql.Timestamp" column="created" index="ar_road_doc_created_index"/>
+        <property name="arDocCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="arDocStageId" type="java.lang.String" column="stage_id" length="60">
+            <meta attribute="field-description">Gate Stage ID at which this document was created</meta>
+        </property>
+        <!--2009-11-10 rkasindula v2.O.R ARGO-16522 Archive Truck Visit Documents tab is added-->
+        <property name="arDocTypeId" type="java.lang.String" column="doc_type_id" length="10"/>
+        <!-- associations -->
+        <property name="arDocArTransactionOriginalGkey" type="java.lang.Long">
+            <meta attribute="field-description">Reference to Truck Transaction</meta>
+            <column name="tran_original_gkey" index="doc_ar_tran_original_gkey_idx"/>
+        </property>
+        <property name="arDocTruckVisitOriginalGkey" type="java.lang.Long">
+            <meta attribute="field-description">Reference to Truck Visit</meta>
+            <column name="tvdtls_original_gkey" index="doc_ar_tvd_orn_gkey_idx"/>
+        </property>
+        <!--<many-to-one name="arDocArTruckVisit" column="tvdtls_gkey" class="com.navis.road.business.model.ArchiveTruckVisitDetails"-->
+        <!--cascade="none">-->
+        <!--<meta attribute="field-description">Reference to Truck Visit</meta>-->
+        <!--</many-to-one>-->
+        <!--<many-to-one name="arDocDocType" column="doctype_gkey" class="com.navis.argo.business.model.DocumentType"-->
+        <!--cascade="none">-->
+        <!--<meta attribute="field-description">Reference to Truck Transaction</meta>-->
+        <!--</many-to-one>-->
+
+        <!--<set name="arDocMessages" lazy="true" table="road_document_messages" cascade="all-delete-orphan">-->
+        <!--<key column="doc_gkey"/>-->
+        <!--<one-to-many class="com.navis.road.business.model.DocumentMessage"/>-->
+        <!--</set>-->
+
+        <property name="arDocBatchNbr" type="java.lang.Long" column="batch_nbr"/>
+
+    </class>
+
+    <!--2009-09-23 rkasindula v2.0.J ARGO-20649 Trouble tab is added to Archived Gate Transaction inspector -->
+    <class name="com.navis.road.business.model.ArchiveDocumentMessage" table="road_ar_document_messages" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ArchiveDocumentMessageHbr</meta>
+        <meta attribute="n4alias">ardocmsg</meta>
+        <meta attribute="n4-entity-name">Archive Document Message</meta>
+        <meta attribute="n4-entity-name-plural">Archive Document Messages</meta>
+
+        <id name="arDocmsgGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="arDocmsgMsgId" type="java.lang.String" column="msg_id" length="255"/>
+        <property name="arDocmsgMsgText" type="java.lang.String" column="msg_text" length="255"/>
+        <property name="arDocmsgSeverity" type="java.lang.String" column="severity" length="255"/>
+        <property name="arDocmsgStageId" type="java.lang.String" column="stage_id" length="60">
+            <meta attribute="field-description">Gate Stage ID at which this document message was created</meta>
+        </property>
+        <property name="arDocmsgCreated" type="java.sql.Timestamp" column="created" index="road_ar_docmsg_created_index"/>
+        <property name="arDocmsgCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="arDocmsgArTransactionOriginalGkey" column="tran_orginal_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Truck Transaction Gkey</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.road.business.model.ArchiveTruckVisitImage" table="road_ar_truck_visit_images" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ArchiveTruckVisitImageHbr</meta>
+        <meta attribute="n4alias">artvimg</meta>
+        <meta attribute="n4-entity-name">Archived Truck Visit Image</meta>
+        <meta attribute="n4-entity-name-plural">Archived Truck Visit Images</meta>
+
+        <id name="arTvimgGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="arTvimgFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="true">
+        </many-to-one>
+
+        <property name="arTvimgCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="arTvimgCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="arTvimgChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="arTvimgChanged" type="java.sql.Timestamp" column="changed"/>
+
+        <many-to-one name="arTvimgArTruckVisit" column="tv_gkey"
+                     class="com.navis.road.business.model.ArchiveTruckVisitDetails" cascade="none">
+            <meta attribute="field-description">Truck Visit Details Gkey</meta>
+        </many-to-one>
+
+        <property name="arTvimgId" type="java.lang.String" length="40" column="id"/>
+        <property name="arTvimgUrl" type="java.lang.String" length="255" column="url"/>
+
+        <property name="arTvimgGateId" column="gate_id" type="string" not-null="false" length="12">
+            <meta attribute="field-description">Gate where image was sourced</meta>
+        </property>
+
+        <property name="arTvimgStageId" column="stage_id" type="string" not-null="false" length="20">
+            <meta attribute="field-description">Stage where image was sourced</meta>
+        </property>
+
+        <property name="arTvimgLaneId" column="lane_id" type="string" not-null="false" length="12">
+            <meta attribute="field-description">Lane where image was sourced</meta>
+        </property>
+
+        <property name="arTvimgExchangeAreaId" column="xcharea_id" type="string" not-null="false" length="12">
+            <meta attribute="field-description">Exchange Area where image was sourced</meta>
+        </property>
+
+        <property name="arTvimgSetId" type="java.lang.String" length="40" column="set_id"/>
+        <property name="arTvimgSubject" type="java.lang.String" length="40" column="subject"/>
+
+        <property name="arTvimgCaptured" type="java.sql.Timestamp" column="captured"/>
+
+    </class>
+
+    <!--2010-02-23 rkasindula ARGO-20959 Placard sub panel is added to Archived Gate Transaction inspector -->
+    <class name="com.navis.road.business.model.ArchiveTransactionPlacard" table="road_ar_transaction_placards"
+           dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ArchiveTransactionPlacardHbr</meta>
+        <meta attribute="n4alias">arTranplacard</meta>
+        <meta attribute="n4-entity-name">Archive Transaction Placard</meta>
+        <meta attribute="n4-entity-name-plural">Archive Transaction Placards</meta>
+
+        <id name="arTranplacardGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">tran_placard_gkey</param>
+            </generator>
+        </id>
+        <property name="arTranplacardTranOriginalGkey" column="tran_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Gate Transaction original Gkey</meta>
+        </property>
+        <property name="arTranplacardPlacardText" column="placard_text" type="string" length='70'>
+            <meta attribute="field-description">Placard Text.</meta>
+        </property>
+        <property name="arTranplacardPlacardFurtherExplanation" column="placard_explanation" type="string" length='70'>
+            <meta attribute="field-description">Additional information about placard.</meta>
+        </property>
+        <property name="arTranplacardPlacardMinWtKg" column="placard_min_wt_kg" type="java.lang.Double">
+            <meta attribute="field-description">Minimum weight for this placard.</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.road.business.model.ArchiveRoadInspection" table="road_ar_inspections" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ArchiveRoadInspectionHbr</meta>
+        <meta attribute="n4alias">arinsp</meta>
+        <meta attribute="n4-entity-name">ArchiveInspection</meta>
+        <meta attribute="n4-entity-name-plural">ArchiveInspections</meta>
+
+        <id name="arInspGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">insp_gkey</param>
+            </generator>
+        </id>
+
+        <many-to-one name="arInspFacility" column="fcy_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="true">
+            <meta attribute="field-description">The Facility where this inspection occured</meta>
+        </many-to-one>
+
+        <many-to-one name="arInspTruckTransaction" column="tran_gkey"
+                     class="com.navis.road.business.model.ArchiveTruckTransaction" cascade="none">
+            <meta attribute="field-description">Truck Transaction Gkey</meta>
+        </many-to-one>
+
+        <property name="arInspLaneId" column="insp_lane_id" type="string" length="12">
+            <meta attribute="field-description">Lane where inspection occured</meta>
+        </property>
+
+        <property name="arInspEqId" type="java.lang.String" column="eq_id" length="12"/>
+        <property name="arInspSealNbr1" type="java.lang.String" column="seal_nbr1" length="15"/>
+        <property name="arInspSealNbr2" type="java.lang.String" column="seal_nbr2" length="15"/>
+        <property name="arInspSealNbr3" type="java.lang.String" column="seal_nbr3" length="15"/>
+        <property name="arInspSealNbr4" type="java.lang.String" column="seal_nbr4" length="15"/>
+        <property name="arInspSealNbr5" type="java.lang.String" column="seal_nbr5" length="15"/>
+
+        <!-- Environment Details -->
+        <property name="arInspTempObserved" type="java.lang.Double" column="temp_observed" length="5"/>
+        <property name="arInspTempSetting" type="java.lang.Double" column="temp_setting" length="5"/>
+        <property name="arInspVentUnit" column="vent_units" type="com.navis.argo.persistence.atoms.UserTypeVentUnitEnum" length="40">
+            <meta attribute="field-description">Unit (%,cubic feet per minute, etc.) that goes with the vent required and vent setting fields.</meta>
+        </property>
+        <property name="arInspVentSetting" type="java.lang.Double" column="vent_setting_pct">
+            <meta attribute="field-description">Vent setting</meta>
+        </property>
+        <property name="arInspTempRequired" type="java.lang.Double" column="temp_required"/>
+        <property name="arInspIsDry" type="java.lang.Boolean" column="vent_is_dry"/>
+        <property name="arInspHadTrouble" type="java.lang.Boolean" column="had_trouble" length="5"/>
+        <property name="arInspEqtypId" type="java.lang.String" column="eqtypId" length="6">
+            <meta attribute="field-description">Equipment type code (ISO or other).</meta>
+        </property>
+        <property name="arInspLineOp" type="java.lang.String" column="lineop" length="100">
+            <meta attribute="field-description">Line operator ID/Codes</meta>
+        </property>
+        <property name="arInspLicense" type="java.lang.String" column="license" length="10"/>
+
+        <!-- Genset -->
+        <property name="arInspGensetId" type="java.lang.String" column="genset_id" length="20"/>
+        <property name="arInspGensetTypeId" column="equip_type_id" type="string" length="6" >
+            <meta attribute="field-description">Genset type ID</meta>
+        </property>
+
+        <!-- Position -->
+        <property name="arInspPosOnTruck" type="java.lang.Integer" column="position_on_truck"/>
+        <property name="arInspRemainOnTruck" type="java.lang.Boolean" column="remain_on_truck"/>
+        <property name="arInspDoorDirection" type="com.navis.inventory.persistence.atoms.UserTypeDoorDirectionEnum"
+                  column="door_direction" length="8"/>
+
+        <!-- CSC Info -->
+        <property name="arInspCscDate" type="java.lang.String" column="csc_date" length="15"/>
+        <property name="arInspCscMnfDate" type="java.sql.Timestamp" column="csc_mnf_date"/>
+
+        <!-- Weight -->
+        <property name="arInspSafeWt" type="java.lang.Double" column="safe_wt"/>
+        <property name="arInspTareWt" type="java.lang.Double" column="tare_wt"/>
+        <property name="arInspNotes" type="java.lang.String" column="notes" length="30"/>
+
+        <!-- Feature -->
+        <property name="arInspEqFtrId" column="feature_id" type="string" length="16" >
+            <meta attribute="field-description">Equipment Feature</meta>
+        </property>
+
+        <property name="arInspEqMaterial" type="com.navis.argo.persistence.atoms.UserTypeEquipMaterialEnum"
+                  column="material" length="16"/>
+
+        <property name="arInspTankRails" column="tank_rails" type="com.navis.argo.persistence.atoms.UserTypeTankRailTypeEnum" not-null="false">
+            <meta attribute="field-description">Tank rail configuration.</meta>
+        </property>
+
+        <!-- We are not adding reference for Inspection Placards at this time because Invenentory entity Placard is not yet archived,
+             the Archive Inspection UI will read it from ArchiveInspectionPlacard-->
+        <!--set name="arInspPlacards" table="road_ar_inspection_placard_map" lazy="true" cascade="none">
+            <key column="road_inspection_gkey"/>
+            <many-to-many class="com.navis.inventory.business.imdg.Placard" column="placd_gkey"/>
+        </set-->
+
+        <!-- We are not adding reference for inspection Bundles at this time, the Archive Inspection UI will read it from ArchiveInspectionBundle-->
+        <!-- set name="arInspBundles" lazy="true" table="road_ar_inspection_bundles" cascade="save-update">
+            <key column="road_inspection_gkey"/>
+            <one-to-many class="com.navis.road.business.model.ArchiveInspectionBundle"/>
+        </set-->
+
+        <!-- Hazard Details -->
+        <property name="arInspIsHazard" type="java.lang.Boolean" not-null="true" column="is_hazard"/>
+        <property name="arInspIsPlacarded" type="java.lang.Boolean" not-null="true" column="is_placarded"/>
+        <property name="arInspIsPlacardedOk" type="java.lang.Boolean" not-null="true" column="is_placarded_ok"/>
+
+        <!-- Over Dimension Details -->
+        <property name="arInspIsOog" type="java.lang.Boolean" not-null="true" column="is_oog"/>
+        <property name="arInspOogFront" type="java.lang.Double" column="oog_front" length="5"/>
+        <property name="arInspOogBack" type="java.lang.Double" column="oog_back" length="5"/>
+        <property name="arInspOogLeft" type="java.lang.Double" column="oog_left" length="5"/>
+        <property name="arInspOogRight" type="java.lang.Double" column="oog_right" length="5"/>
+        <property name="arInspOogTop" type="java.lang.Double" column="oog_top" length="5"/>
+
+        <!-- Damage Details -->
+        <property name="arInspDamageSeverity" column="damage_severity" type="com.navis.inventory.persistence.atoms.UserTypeEqDamageSeverityEnum"
+                  not-null="false">
+            <meta attribute="field-description">NONE/MINOR/MAJOR</meta>
+        </property>
+        <many-to-one name="arInspDamages" column="eq_damages_gkey" class="com.navis.inventory.business.units.ArchiveUnitEquipDamages" cascade="none">
+            <meta attribute="field-description">Equipment Damage Gkey</meta>
+        </many-to-one>
+
+        <property name="arInspEqGradeId" column="grade_id" type="string" length="16" >
+            <meta attribute="field-description">Required grade for equipment</meta>
+        </property>
+
+        <property name="arInspMnrStatusId" column="mnr_status_id" type="string" length="16" >
+            <meta attribute="field-description">The M&amp;R Status</meta>
+        </property>
+
+        <!-- Audit -->
+        <property name="arInspCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="arInspCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="arInspChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="arInspChanger" type="java.lang.String" column="changer" length="30"/>
+
+        <!-- Unit flex fields in the gate inspection table. -->
+        <property name="arInspUnitFlexString01" column="flex_string01" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+        <property name="arInspUnitFlexString02" column="flex_string02" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+        <property name="arInspUnitFlexString03" column="flex_string03" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+        <property name="arInspUnitFlexString04" column="flex_string04" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+        <property name="arInspUnitFlexString05" column="flex_string05" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+        <property name="arInspUnitFlexString06" column="flex_string06" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+        <property name="arInspUnitFlexString07" column="flex_string07" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+        <property name="arInspUnitFlexString08" column="flex_string08" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+        <property name="arInspUnitFlexString09" column="flex_string09" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #09</meta>
+        </property>
+        <property name="arInspUnitFlexString10" column="flex_string10" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #10</meta>
+        </property>
+        <property name="arInspUnitFlexString11" column="flex_string11" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #11</meta>
+        </property>
+        <property name="arInspUnitFlexString12" column="flex_string12" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #12</meta>
+        </property>
+        <property name="arInspUnitFlexString13" column="flex_string13" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #13</meta>
+        </property>
+        <property name="arInspUnitFlexString14" column="flex_string14" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #14</meta>
+        </property>
+        <property name="arInspUnitFlexString15" column="flex_string15" not-null="false" type="string" length="255">
+            <meta attribute="field-description">String flex-field #15</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.road.business.model.ArchiveInspectionBundle" table="road_ar_inspection_bundles" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ArchiveInspectionBundleHbr</meta>
+        <meta attribute="n4alias">arbndl</meta>
+        <meta attribute="n4-entity-name">ArchiveInspectionBundle</meta>
+        <meta attribute="n4-entity-name-plural">ArchiveInspectionBundles</meta>
+
+        <id name="arBndlGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">bndl_gkey</param>
+            </generator>
+        </id>
+        <property name="arBndlEqId" type="java.lang.String" column="eq_id" length="12"/>
+        <property name="arBndlOriginalInspGkey" column="insp_original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Reference to Road Inspections</meta>
+        </property>
+        <many-to-one name="arBndlDmg" column="damages_gkey"
+                     class="com.navis.inventory.business.units.ArchiveUnitEquipDamages" cascade="none">
+            <meta attribute="field-description">Bundle Damage Gkey</meta>
+        </many-to-one>
+        <many-to-one name="arBndlRoadInspection" column="road_ar_inspection_gkey" class="com.navis.road.business.model.ArchiveRoadInspection"
+                     not-null="false">
+            <meta attribute="field-description">The associated ArchiveRoadInspection Gkey.</meta>
+        </many-to-one>
+    </class>
+
+    <class name="com.navis.road.business.model.ArchiveInspectionPlacard" table="road_ar_inspection_placards"
+           dynamic-update="true">
+        <meta attribute="generated-class">com.navis.road.business.model.ArchiveInspectionPlacardHbr</meta>
+        <meta attribute="n4alias">arInspplacard</meta>
+        <meta attribute="n4-entity-name">Archive Inspection Placard</meta>
+        <meta attribute="n4-entity-name-plural">Archive Inspection Placards</meta>
+
+        <id name="arInspplacardGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native">
+                <param name="native">insp_placard_gkey</param>
+            </generator>
+        </id>
+        <many-to-one name="arInspplacardInspection" column="road_ar_inspection_gkey" class="com.navis.road.business.model.ArchiveRoadInspection"
+                     not-null="false">
+            <meta attribute="field-description">The associated RoadInspection Gkey.</meta>
+        </many-to-one>
+        <property name="arInspplacardPlacardText" column="placard_text" type="string" length='70'>
+            <meta attribute="field-description">Placard Text.</meta>
+        </property>
+        <property name="arInspplacardPlacardFurtherExplanation" column="placard_explanation" type="string" length='70'>
+            <meta attribute="field-description">Additional information about placard.</meta>
+        </property>
+        <property name="arInspplacardPlacardMinWtKg" column="placard_min_wt_kg" type="java.lang.Double">
+            <meta attribute="field-description">Minimum weight for this placard.</meta>
+        </property>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">ArgoIntegration</meta>
+    <meta attribute="scope-set">public</meta>
+ 
+    <class name="com.navis.argo.business.integration.IntegrationError" table="argo_integration_error" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.argo.business.integration.IntegrationErrorHbr</meta>
+        <meta attribute="class-description">Error representing a single integration transaction</meta>
+        <meta attribute="n4alias">ierr</meta>
+        <meta attribute="n4-entity-name">Integration Error</meta>
+        <meta attribute="n4-entity-name-plural">Integration Errors</meta>
+
+        <id name="ierrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="ierrIntegrationType" column="integration_type" type="com.navis.argo.persistence.atoms.UserTypeIntegrationTypeEnum"
+                  not-null="true">
+            <meta attribute="field-description">Type of integration such as Groovy,JMS,XPS...</meta>
+        </property>
+        <property name="ierrIntegrationStatus" column="integration_status" type="com.navis.argo.persistence.atoms.UserTypeIntegrationActionStatusEnum"
+                  not-null="true">
+            <meta attribute="field-description">Status of this action</meta>
+        </property>
+
+        <!-- Scoping pegged at Facility-->
+        <many-to-one name="ierrFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility" not-null="false" cascade="none">
+            <meta attribute="field-description">Facility where this service occurred</meta>
+        </many-to-one>
+
+        <property name="ierrNode" column="entity_node" type="java.lang.String" length="25" not-null="false">
+            <meta attribute="field-description">Node in the cluster in which the exception occurred</meta>
+        </property>
+
+        <property name="ierrException" column="exception" type="java.lang.String" length="4000" not-null="false">
+            <meta attribute="scope-set">protected</meta>
+            <meta attribute="field-description">Current error message or exception stack, less than 4000 to be searchable</meta>
+        </property>
+
+        <property name="ierrExceptionLog" column="exception_log" type="text" length="50000" not-null="false">
+            <meta attribute="field-description">Revolving exception log for retries</meta>
+        </property>
+
+        <property name="ierrEntityName" column="entity_name" type="java.lang.String" length="100" not-null="false">
+            <meta attribute="field-description">Associated entity name property key for translation</meta>
+        </property>
+
+        <property name="ierrBusinessKey" column="business_key" type="java.lang.String" length="100" not-null="false">
+            <meta attribute="field-description">Human readable business key such as container id</meta>
+        </property>
+
+        <property name="ierrEventId" column="event_name" type="java.lang.String" length="100" not-null="false">
+            <meta attribute="field-description">Event ID Entity</meta>
+        </property>
+
+        <!-- Optional denormalized foreign key to point to an integration event. -->
+        <property name="ierrEventGkey" column="event_gkey" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Actual gkey of the event</meta>
+        </property>
+
+        <property name="ierrDescription" column="description" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Human readable note</meta>
+        </property>
+
+        <!-- Use either ierrMessageBody or ierrMessageByteArray for the message to be resend.
+              ierrMessageBody is string so it can be easily displayed and edited if needed.  -->
+        <property name="ierrMessageBody" column="message_body" type="java.lang.String" length="4000" not-null="false">
+            <meta attribute="field-description">Searchable message body</meta>
+        </property>
+
+        <!-- Use for xps -->
+        <property name="ierrMessageByteArray" column="byte_array" type="com.navis.framework.persistence.util.BlobUserType" length="100000" not-null="false">
+            <meta attribute="field-description">The message body which may be reposted</meta>
+        </property>
+
+        <!-- Time Stampts-->
+        <property name="ierrErrorFirstRecorded" column="time_first_recorded" type="timestamp" not-null="true"/>
+        <property name="ierrLastRetry" column="time_last_retried" type="timestamp"/>
+
+        <!-- Integration Service -->
+        <property name="ierrIntegrationService" column="int_service" type="java.lang.String" length="255"/>
+    </class>
+
+    <class name="com.navis.argo.business.integration.IntegrationServiceMessage" table="argo_integration_service_msg">
+        <meta attribute="class-description">IntegrationServiceMessage</meta>
+        <meta attribute="generated-class">com.navis.argo.business.integration.IntegrationServiceMessageHbr</meta>
+        <meta attribute="n4alias">ism</meta>
+        <meta attribute="n4-entity-name">IntegrationServiceMessage</meta>
+        <meta attribute="n4-entity-name-plural">IntegrationServiceMessages</meta>
+
+        <id name="ismGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="ismIntegrationService" column="intserv_gkey" class="com.navis.carina.integrationservice.business.IntegrationService">
+            <meta attribute="field-description">Integration Service used to send this message</meta>
+        </many-to-one>
+
+        <property name="ismSeqNbr" column="seq_nbr" type="java.lang.Long">
+            <meta attribute="field-description">Seq Nbr, to identify the message</meta>
+        </property>
+
+        <property name="ismFirstSendTime" column="first_send_time" type="java.sql.Timestamp">
+            <meta attribute="field-description">Message first sent to the JMS Queue</meta>
+        </property>
+
+        <property name="ismLastSendTime" column="last_send_time" type="java.sql.Timestamp">
+            <meta attribute="field-description">Message last sent to the JMS Queue</meta>
+        </property>
+
+        <property name="ismEntityPrimaryKey" column="entity_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Primary key of the logical entity</meta>
+        </property>
+
+        <property name="ismEntityNaturalKey" column="entity_natural_key" type="java.lang.String" length="30">
+            <meta attribute="field-description">Logical entity Id</meta>
+        </property>
+
+        <property name="ismEntityClass" column="entity_class" type="com.navis.argo.persistence.atoms.UserTypeLogicalEntityEnum">
+            <meta attribute="field-description">Logical entity class</meta>
+        </property>
+
+        <property name="ismEventPrimaryKey" column="event_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Primary key of the Event</meta>
+        </property>
+
+        <property name="ismEventTypeId" column="event_type_id" type="java.lang.String" length="50">
+            <meta attribute="field-description">Event Type Id</meta>
+        </property>
+
+        <property name="ismUserString1" type="java.lang.String" column="user_string1" length="255">
+            <meta attribute="field-description">A short note about the message</meta>
+        </property>
+
+        <property name="ismUserString2" type="java.lang.String" column="user_string2" length="255">
+            <meta attribute="field-description">A short note about the message</meta>
+        </property>
+
+        <property name="ismUserString3" type="java.lang.String" column="user_string3" length="255">
+            <meta attribute="field-description">A short note about the message</meta>
+        </property>
+
+        <property name="ismUserString4" type="java.lang.String" column="user_string4" length="255">
+            <meta attribute="field-description">A short note about the message</meta>
+        </property>
+
+        <property name="ismUserString5" type="java.lang.String" column="user_string5" length="255">
+            <meta attribute="field-description">A short note about the message</meta>
+        </property>
+
+        <property name="ismMessagePayload" column="message_payload" type="string" length="4000">
+            <meta attribute="field-description">Message sent via JMS or web service integration service</meta>
+        </property>
+
+        <property name="ismMessagePayloadBig" column="message_payload_big" type="text">
+            <meta attribute="field-description">Message sent via JMS or web service integration service</meta>
+        </property>
+
+        <property name="ismScopeLevel" column="scope_level" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Integration service Message Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+        </property>
+
+        <property name="ismScopeGkey" column="scope_gkey" type="string" length="50">
+            <meta attribute="field-description">Integration service Message Scope Gkey</meta>
+        </property>
+
+        <property name="ismCreated" type="java.sql.Timestamp" column="created">
+            <meta attribute="field-description">Integration Service message created Time</meta>
+        </property>
+
+        <property name="ismCreator" type="java.lang.String" column="creator" length="30">
+            <meta attribute="field-description">Integration service message created by user</meta>
+        </property>
+
+        <property name="ismChanged" type="java.sql.Timestamp" column="changed">
+            <meta attribute="field-description">Integration service message last modified Time</meta>
+        </property>
+
+        <property name="ismChanger" type="java.lang.String" column="changer" length="30">
+            <meta attribute="field-description">Integration service message last modified by user</meta>
+        </property>
+    </class>
+
+</hibernate-mapping>

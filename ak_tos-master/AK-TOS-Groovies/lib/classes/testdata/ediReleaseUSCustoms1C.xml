@@ -1,0 +1,15 @@
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+<edi:releaseTransactions xmlns:edi="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <edi:releaseTransaction edi:ediCode="1C" edi:releaseReferenceId="12345" edi:msgClass="RELEASE" edi:msgTypeId="350"
+                            edi:releaseIdentifierCategory="IMPRT" edi:releaseIdentifierType="BLRELEASE" edi:releaseQty="799">
+        <edi:vesselCallFacility edi:facilityId="FCY111"/>
+        <edi:ediReleaseIdentifier edi:releaseIdentifierNbr="BL_NBR"/>
+        <edi:bondTruckingCompany edi:truckingCompanyId="TRUCKING_COMPANY_ID"/>
+        <edi:bondedDestination edi:portId="LAX" edi:portIdConvention="UNLOCCODE"/>
+        <edi:inbondStatus>INBOND</edi:inbondStatus>
+        <edi:examStatus>ONSITE</edi:examStatus>
+    </edi:releaseTransaction>
+</edi:releaseTransactions>

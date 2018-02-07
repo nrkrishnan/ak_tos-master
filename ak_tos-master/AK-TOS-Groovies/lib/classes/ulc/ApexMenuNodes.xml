@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2011 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE menuNodes PUBLIC "" "MenuNodes.dtd">
+
+<menuNodes>
+
+    <menuNode id="MENU_NODE_SHOW_JAVADOCS"
+        text="Model Docs"
+        mnemonic="j"
+        commandRefId="showJavaDocsCommand"/>
+
+    <menuNode id="MENU_NODE_SHOW_JAVA_API_DOCS"
+        text="Java API Docs"
+        mnemonic="j"
+        commandRefId="showJavaApiDocsCommand"/>
+
+
+</menuNodes>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.4" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+  <listener>
+     <listener-class>com.matson.cas.common.util.GraphicsMonitor</listener-class>
+  </listener>   
+
+     
+  <servlet>
+    <servlet-name>XFireServlet</servlet-name>
+    <servlet-class>org.codehaus.xfire.transport.http.XFireConfigurableServlet</servlet-class>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  
+    <servlet>
+      <servlet-name>upload</servlet-name>
+      <jsp-file>/upload.jsp</jsp-file>
+    </servlet>
+     
+    <servlet-mapping>
+        <servlet-name>upload</servlet-name>
+        <url-pattern>/upload.jsp</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+      <servlet-name>NewVes</servlet-name>
+      <servlet-class>com.matson.tos.upload.HonNewVessel</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+	<servlet-name>NewVes</servlet-name>
+	<url-pattern>/HonNewVes</url-pattern>
+	</servlet-mapping>
+	
+	 <servlet>
+      <servlet-name>GumNewVes</servlet-name>
+      <servlet-class>com.matson.tos.upload.GumNewVessel</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+	<servlet-name>GumNewVes</servlet-name>
+	<url-pattern>/GumNewVes</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+      <servlet-name>AGManifest</servlet-name>
+      <servlet-class>com.matson.tos.upload.AGManifest</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+		<servlet-name>AGManifest</servlet-name>
+		<url-pattern>/AGManifest</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+      <servlet-name>ScheduleNewves</servlet-name>
+      <servlet-class>com.matson.tos.upload.ScheduleNewves</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+		<servlet-name>ScheduleNewves</servlet-name>
+		<url-pattern>/ScheduleNewves</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+      <servlet-name>GumAddCtr</servlet-name>
+      <servlet-class>com.matson.tos.upload.GumAddCtr</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+		<servlet-name>GumAddCtr</servlet-name>
+		<url-pattern>/GumAddCtr</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+      <servlet-name>consigneeMaster</servlet-name>
+      <servlet-class>com.matson.tos.upload.ConsigneeMaster</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+	<servlet-name>consigneeMaster</servlet-name>
+	<url-pattern>/ConsigneeMaster</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+      <servlet-name>assignCodeForConsignee</servlet-name>
+      <servlet-class>com.matson.tos.upload.AssignCodeForConsignee</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+	<servlet-name>assignCodeForConsignee</servlet-name>
+	<url-pattern>/AssignCodeForConsignee</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+      <servlet-name>QueryEnabler</servlet-name>
+      <servlet-class>com.matson.tos.upload.QueryEnabler</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+	<servlet-name>QueryEnabler</servlet-name>
+	<url-pattern>/queryEnabler</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+      <servlet-name>newVesFileupload</servlet-name>
+      <jsp-file>/newVesFileupload.jsp</jsp-file>
+    </servlet>
+     
+    <servlet-mapping>
+        <servlet-name>newVesFileupload</servlet-name>
+        <url-pattern>/newVesFileupload.jsp</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+    <servlet-name>XFireServlet</servlet-name>
+    <url-pattern>/services/*</url-pattern>
+    </servlet-mapping>
+    
+	<servlet>
+      <servlet-name>ShedulerMaint</servlet-name>
+      <servlet-class>com.matson.tos.upload.ShedulerMaintenance</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+	<servlet-name>ShedulerMaint</servlet-name>
+	<url-pattern>/ShedulerMaintenance</url-pattern>
+	</servlet-mapping>
+  
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+   <mime-mapping>
+        <extension>doc</extension>
+        <mime-type>application/msword</mime-type>
+  </mime-mapping>
+  
+  <servlet>
+      <servlet-name>noFaxConsignee</servlet-name>
+      <servlet-class>com.matson.tos.upload.NoFaxConsignee</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+	<servlet-name>noFaxConsignee</servlet-name>
+	<url-pattern>/PhoneList.jsp</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+      <servlet-name>NoFaxAddConsignee</servlet-name>
+      <servlet-class>com.matson.tos.upload.NoFaxAddConsignee</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+		<servlet-name>NoFaxAddConsignee</servlet-name>
+		<url-pattern>/PhoneListAddConsignee.jsp</url-pattern>
+	</servlet-mapping>
+	
+		<servlet>
+      <servlet-name>LightManager</servlet-name>
+      <servlet-class>com.matson.tos.upload.LightManager</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+	<servlet-name>LightManager</servlet-name>
+	<url-pattern>/LightManager</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+      <servlet-name>LaneManager</servlet-name>
+      <servlet-class>com.matson.tos.upload.LaneManager</servlet-class>
+    </servlet>
+    
+	<servlet-mapping>
+	<servlet-name>LaneManager</servlet-name>
+	<url-pattern>/LaneManager</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+      <servlet-name>NascentClient</servlet-name>
+      <servlet-class>com.matson.tos.upload.NascentClient</servlet-class>
+    </servlet>
+	
+	<servlet-mapping>
+	<servlet-name>NascentClient</servlet-name>
+	<url-pattern>/NascentClient</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<servlet-class>
+                     com.sun.jersey.spi.container.servlet.ServletContainer
+                </servlet-class>
+		<init-param>
+		     <param-name>com.sun.jersey.config.property.packages</param-name>
+		     <param-value>com.matson.tos.nascent</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+ 
+	<servlet-mapping>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+	<!-- Changes for NascentStoreProc start -->
+	<servlet>
+    <description></description>
+    <display-name>NascentStoreProc</display-name>
+    <servlet-name>NascentStoreProc</servlet-name>
+    <servlet-class>com.matson.tos.upload.NascentStoreProc</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>NascentStoreProc</servlet-name>
+    <url-pattern>/NascentStoreProc</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Changes for NascentStoreProc end -->
+	
+</web-app>
+

@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<!DOCTYPE metafields PUBLIC "" "MetafieldDictionary.dtd" >
+<metafields>
+
+    <!-- 2010.02.24 tisaacson ARGO-24194 Restructured cluster management UI / service status tracking. -->
+
+    <metafield id="apexSparcsImportDirPath">
+        <labels>
+            <label-long>SPARCS Directory Path</label-long>
+            <label-short>SPARCS Dir Path</label-short>
+        </labels>
+        <help>
+            <entry-help-text>The directory path for the SPARCS application.</entry-help-text>
+        </help>
+        <gui>
+            <widget type="text">
+            </widget>
+            <width>
+                20
+            </width>
+        </gui>
+    </metafield>
+
+    <metafield id="nodeCacheItemScope">
+        <labels>
+            <label-long>Scope</label-long>
+            <label-short>Scope</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemType">
+        <labels>
+            <label-long>Type</label-long>
+            <label-short>Type</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemName">
+        <labels>
+            <label-long>Name</label-long>
+            <label-short>Name</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemState">
+        <labels>
+            <label-long>State</label-long>
+            <label-short>State</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemAddress">
+        <labels>
+            <label-long>Address</label-long>
+            <label-short>Address</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemVersion">
+        <labels>
+            <label-long>Version</label-long>
+            <label-short>Version</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemInfo">
+        <labels>
+            <label-long>Info</label-long>
+            <label-short>Info</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemStartupTime">
+        <labels>
+            <label-long>Startup Time</label-long>
+            <label-short>Started</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemHeartbeatTime">
+        <labels>
+            <label-long>Last Heartbeat Time</label-long>
+            <label-short>Heartbeat</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemActivityTime">
+        <labels>
+            <label-long>Last Activity Time</label-long>
+            <label-short>Activity</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemShutdownTime">
+        <labels>
+            <label-long>Shutdown Time</label-long>
+            <label-short>Shutdown</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemUserName">
+        <labels>
+            <label-long>User Name</label-long>
+            <label-short>User</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemMemory">
+        <labels>
+            <label-long>Memory Used/Max (MiB)</label-long>
+            <label-short>Memory</label-short>
+        </labels>
+    </metafield>
+
+    <metafield id="nodeCacheItemStorage">
+        <labels>
+            <label-long>Cache Storage Enabled</label-long>
+            <label-short>Storage</label-short>
+        </labels>
+    </metafield>
+
+    <!--Used in Database setup form for update all billable events-->
+
+    <metafield id="cutOffDate" value-class="Date">
+        <labels>
+            <label-long>Cut-Off Date</label-long>
+            <label-short>Cut-Off Date</label-short>
+        </labels>
+        <help>
+            <entry-help-text>Cut-off date for updating the billable events.</entry-help-text>
+        </help>
+        <gui>
+            <widget type="date"></widget>
+        </gui>
+        <validation>
+            <required/>
+        </validation>
+    </metafield>
+
+    <!-- mpadhye ARGO-32890: Integrity Checker Enhancements -->
+    <metafield id="idcSourceType" value-class="Long">
+        <labels>
+            <label-long>DataSource Type</label-long>
+            <label-short>Type</label-short>
+        </labels>
+        <help>
+            <entry-help-text>Type of source data (N4 DB, N4 XPS Shadow Table or Bridge Model Dump).</entry-help-text>
+        </help>
+        <gui>
+            <widget type="lov">
+                <lov-collection>DataSourceTypeEnum</lov-collection>
+            </widget>
+        </gui>
+    </metafield>
+    <metafield id="idcSource" value-class="String">
+        <labels>
+            <label-long>Data File</label-long>
+            <label-short>File</label-short>
+        </labels>
+        <help>
+            <entry-help-text>Source data file (not needed for N4 DB or N4 Shadow XPS_OBJECTS).</entry-help-text>
+        </help>
+        <gui>
+            <!-- TODO: Change this from a text field to a file picker. It will need a custom widget to be defined. -->
+            <widget type="text"></widget>
+            <width>30</width>
+        </gui>
+    </metafield>
+    <metafield id="idcTargetType" value-class="Long">
+        <labels>
+            <label-long>DataSource Type</label-long>
+            <label-short>Type</label-short>
+        </labels>
+        <help>
+            <entry-help-text>Type of target data (N4 DB, N4 XPS Shadow Table or Bridge Model Dump).</entry-help-text>
+        </help>
+        <gui>
+            <widget type="lov">
+                <lov-collection>DataSourceTypeEnum</lov-collection>
+            </widget>
+        </gui>
+    </metafield>
+    <metafield id="idcTarget" value-class="String">
+        <labels>
+            <label-long>Data File</label-long>
+            <label-short>File</label-short>
+        </labels>
+        <help>
+            <entry-help-text>Target data file (not needed for N4 DB or N4 Shadow XPS_OBJECTS).</entry-help-text>
+        </help>
+        <gui>
+            <!-- TODO: Change this from a text field to a file picker. It will need a custom widget to be defined. -->
+            <widget type="text"></widget>
+            <width>30</width>
+        </gui>
+    </metafield>
+    <metafield id="idcOutput" value-class="String">
+        <labels>
+            <label-long>Output Folder</label-long>
+            <label-short>Output</label-short>
+        </labels>
+        <help>
+            <entry-help-text>Folder to write the verification report.</entry-help-text>
+        </help>
+        <gui>
+            <!-- TODO: Change this from a text field to a folder picker. It will need a custom widget to be defined. -->
+            <widget type="text"></widget>
+            <width>30</width>
+        </gui>
+    </metafield>
+
+</metafields>

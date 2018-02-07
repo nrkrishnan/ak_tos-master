@@ -1,0 +1,699 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gateConfiguration name="ANK_1_STAGE" description="Anchorage Main Gate for Local ">
+  <gateStages>
+    <outStage id="reprint" leg="out" menuId="Reprint" order="5" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" autoStage="false" isTruckVisitRequired="true" pollNextTruck="false" pollTruckInterval="" extraTime="" timeAllowed="" allowAnyStage="false" exchangeLaneAssignmentBooth="false" allowTransactionEdit="true" includeAppointmentTab="" appointmentsTabFilterId="" includeGroupsTab="" cargoLotsFilterId="" supportsCallup="false" isExcluded="false">
+      <stagesAllowed />
+    </outStage>
+    <outStage id="gate" leg="out" menuId="Anchorage Gate" order="10" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" autoStage="false" isTruckVisitRequired="false" pollNextTruck="false" pollTruckInterval="5" extraTime="" timeAllowed="" allowAnyStage="false" exchangeLaneAssignmentBooth="false" allowTransactionEdit="false" includeAppointmentTab="" appointmentsTabFilterId="" includeGroupsTab="" cargoLotsFilterId="" supportsCallup="false" isExcluded="false">
+      <stagesAllowed />
+    </outStage>
+  </gateStages>
+  <gateStageSubTypes>
+    <gateStagesRI>
+      <outStage id="gate" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="true" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadCommodity-->
+          <!--System Task ReadUnitPreadvised-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadCarrierVisit-->
+          <bizTask name="ApplyOogDetails" include="true" />
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectContainerRequired" customCode="MATGvyUpdateGrossWeight" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectContainerInYard" include="true" />
+          <bizTask name="RejectGrossWeightRequired" include="true" />
+          <bizTask name="RejectChassisRequired" customCode="MATSetGateCarrierVisit" include="true" />
+          <bizTask name="RejectChassisUnknown" include="true" />
+          <bizTask name="RejectAccessoryUnknown" include="true" />
+          <bizTask name="RejectContainerNotDrayIn" include="true" />
+          <bizTask name="CreateContainerVisit" include="true" />
+          <bizTask name="ClearDrayStatus" include="true" />
+          <bizTask name="ApplyContainerNotes" customCode="MATGvyCopyGateNotesToTranNotes" include="true" />
+          <bizTask name="ApplyContainerSeals" include="true" />
+          <bizTask name="ApplyContainerHazards" customCode="MATApplyUnitHazards" include="true" />
+          <bizTask name="ApplyChassisDamages" include="true" />
+          <bizTask name="ApplyContainerGrossWeight" include="true" />
+          <bizTask name="ApplyReeferDetails" customCode="MATGateReeferTempRI" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="MATSetUnitFlex" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="PositionTruckVisit" include="true">
+            <parameter id="truckPosition" value="OUT" />
+          </bizTask>
+          <bizTask name="PlaceUnitIntoYard" include="true" />
+          <bizTask name="LogOverDimensionMission" customCode="MATSetHoldForOOG" include="true" />
+          <bizTask name="LogReeferMission" customCode="MATGvyUpdateVesselVisitForRI" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+            <parameter id="executeAtTVLevel" value="" />
+          </bizTask>
+          <bizTask name="PrintDocument" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+            <parameter id="executeAtTVLevel" value="" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument (on-trouble)" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+            <parameter id="executeAtTVLevel" value="" />
+          </bizTask>
+          <bizTask name="PrintDocument (on-trouble)" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+            <parameter id="executeAtTVLevel" value="" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccTypeId" fieldDisplayMode="NONE" fieldRequired="false" />
+          <uiField fieldId="tranDischargePoint1" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranCarrierVisit" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranShipper" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranConsignee" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranFlexString03" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrNetWeight" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="ufvFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="unitFlexString15" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranIsOog" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranHazVao" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="unitFlexString12" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranEqGrade" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="unitFlexString14" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="unitFlexString09" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrGrossWeight" fieldDisplayMode="HIDDEN" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString07" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesRI>
+    <gateStagesDM>
+      <outStage id="gate" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="ApplyContainerShippingDetails" customCode="MatsonAncSetEmptyTranNotes" include="true" />
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="SelectOrderItem" include="true" />
+          <bizTask name="RejectOrderNotFound" include="true" />
+          <bizTask name="RejectOrderItemTallyExceeded" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectOrderHold" include="true" />
+          <bizTask name="RejectContainerTypeNotMatched" include="true" />
+          <bizTask name="RejectContainerNotAtFacility" include="true" />
+          <bizTask name="RejectContainerNotInYard" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectTranNotMatchingOrderLineOperator" include="true" />
+          <bizTask name="RejectContainerNotEmpty" include="true" />
+          <bizTask name="RejectChassisRequired" customCode="MATSetGateCarrierVisit" include="true" />
+          <bizTask name="RejectChassisUnknown" customCode="MATPullChsAcc" include="true" />
+          <bizTask name="RejectAccessoryUnknown" include="true" />
+          <bizTask name="IncrementOrderItemTally" include="true" />
+          <bizTask name="RejectContainerReserved" include="true" />
+          <bizTask name="AttachOrderToTheUnitEquipment" include="true" />
+          <bizTask name="PositionTruckVisit" include="true">
+            <parameter id="truckPosition" value="OUT" />
+          </bizTask>
+          <bizTask name="CreateUnitDeparting" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="MATGvyUpdateInspectionOnOutGate" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="ApplyContainerNotes" customCode="MATGvyCopyGateNotesToTranNotes" include="true" />
+          <bizTask name="PlaceUnitOnTruck" customCode="MATDeliverImport" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument (on-trouble)" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument (on-trouble)" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranEqoNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDM>
+    <gateStagesRE>
+      <outStage id="gate" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="true" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadUnitPreadvised-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <bizTask name="SelectOrderItemForRcvCtr" include="true" />
+          <bizTask name="ReadAdvisedOOG" include="true" />
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadDischargePoint1-->
+          <bizTask name="ReadReeferDetails" include="true" />
+          <!--System Task ReadCommodity-->
+          <bizTask name="AdjustTally" include="true" />
+          <bizTask name="ApplyOogDetails" include="true" />
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectOrderNotFound" include="true" />
+          <bizTask name="RejectOrderItemQtyExceeded" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectContainerRequired" customCode="MATGvyUpdateGrossWeight" include="true" />
+          <bizTask name="RejectContainerInYard" customCode="MATGvyUpdateGrossWeight" include="true" />
+          <bizTask name="RejectChassisRequired" customCode="MATSetGateCarrierVisit" include="true" />
+          <bizTask name="RejectChassisUnknown" customCode="MATDetachChsAcc" include="true" />
+          <bizTask name="RejectAccessoryUnknown" include="true" />
+          <bizTask name="RejectOrderItemRequiredForRcv" include="true" />
+          <bizTask name="RejectCarrierVisitPhaseDeparted" include="true" />
+          <bizTask name="RejectCarrierVisitPastCutoff" include="true">
+            <parameter id="useTranHazardFlag" value="" />
+          </bizTask>
+          <bizTask name="CreateContainerVisit" include="true" />
+          <bizTask name="ApplyContainerSeals" include="true" />
+          <bizTask name="ApplyContainerExportGoods" include="true" />
+          <bizTask name="ApplyContainerHazards" customCode="MATApplyUnitHazards" include="true" />
+          <bizTask name="ApplyReeferDetails" customCode="//MATGateReeferTemp" include="true" />
+          <bizTask name="ApplyContainerNotes" customCode="MATGvyCopyGateNotesToTranNotes" include="true" />
+          <bizTask name="ApplyChassisDamages" include="true" />
+          <bizTask name="ApplyContainerGrossWeight" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="MATSetUnitFlex" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="PositionTruckVisit" include="true">
+            <parameter id="truckPosition" value="OUT" />
+          </bizTask>
+          <bizTask name="LogOverDimensionMission" customCode="MATSetHoldForOOG" include="true" />
+          <bizTask name="LogReeferMission" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+            <parameter id="executeAtTVLevel" value="" />
+          </bizTask>
+          <bizTask name="PrintDocument" customCode="//MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="" />
+            <parameter id="executeAtTVLevel" value="" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccTypeId" fieldDisplayMode="NONE" fieldRequired="false" />
+          <uiField fieldId="tranEqoNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranDischargePoint1" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCarrierVisit" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranShipper" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranConsignee" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranFlexString03" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrNetWeight" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="ufvFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="unitFlexString15" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranIsOog" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranHazVao" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tTranPlacardVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="unitFlexString12" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranEqGrade" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesRE>
+    <gateStagesRC>
+      <outStage id="gate" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectChassisRequired" customCode="MATSetGateCarrierVisit" include="true" />
+          <bizTask name="RejectChassisUnknown" include="true" />
+          <bizTask name="RejectAccessoryUnknown" customCode="MATDetachChsAcc" include="true" />
+          <bizTask name="CreateBareChassisVisit" include="true" />
+          <bizTask name="ApplyContainerNotes" customCode="MATGvyCopyGateNotesToTranNotes" include="true" />
+          <bizTask name="ApplyChassisDamages" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="PlaceBareChassisOnTruck" include="true" />
+          <bizTask name="PositionTruckVisit" include="true">
+            <parameter id="truckPosition" value="OUT" />
+          </bizTask>
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+          </bizTask>
+          <bizTask name="PrintDocument" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument (on-trouble)" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+          </bizTask>
+          <bizTask name="PrintDocument (on-trouble)" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranChsTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccTypeId" fieldDisplayMode="NONE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString03" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesRC>
+    <gateStagesDE>
+      <outStage id="gate" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadReleaseNbr-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="ApplyContainerShippingDetails" customCode="MatsonAncSetEmptyTranNotes" include="true" />
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadDischargePoint1-->
+          <bizTask name="RejectContainerNotAtFacility" include="true" />
+          <bizTask name="RejectContainerNotInYard" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectContainerNotExport" include="true" />
+          <bizTask name="RejectChassisRequired" customCode="MATSetGateCarrierVisit" include="true" />
+          <bizTask name="RejectChassisUnknown" customCode="MATPullChsAcc" include="true" />
+          <bizTask name="PositionTruckVisit" include="true">
+            <parameter id="truckPosition" value="OUT" />
+          </bizTask>
+          <bizTask name="RejectContainerNotDrayOff" include="true" />
+          <bizTask name="RejectAccessoryUnknown" include="true" />
+          <bizTask name="ApplyContainerNotes" customCode="MATGvyCopyGateNotesToTranNotes" include="true" />
+          <bizTask name="ApplyContainerSeals" include="true" />
+          <bizTask name="ApplyContainerGrossWeight" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="MATGvyUpdateInspectionOnOutGate" include="true" />
+          <bizTask name="CreateUnitDeparting" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="PlaceUnitOnTruck" customCode="MATDeliverImport" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR,TIR_LOAD,DR,DNB" />
+          </bizTask>
+          <bizTask name="PrintDocument" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR,TIR_LOAD,DR,DNB" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument (on-trouble)" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR,TIR_LOAD,DR,DNB" />
+          </bizTask>
+          <bizTask name="PrintDocument (on-trouble)" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR,TIR_LOAD,DR,DNB" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranEqoNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranConsignee" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranCtrGrossWeight" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="ufvFlexString09" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranCommodityCode" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="unitFlexString07" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDE>
+    <gateStagesDC>
+      <outStage id="gate" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadLine-->
+          <bizTask name="CopyChassisAssignedToNbr" customCode="MatsonAncSetEmptyTranNotes" include="true" />
+          <!--System Task ReadChassis-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="CreateUnitDeparting" include="true" />
+          <bizTask name="RejectChassisRequired" customCode="MATSetGateCarrierVisit" include="true" />
+          <bizTask name="RejectChassisUnknown" customCode="MATPullChsAcc" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="PositionTruckVisit" include="true">
+            <parameter id="truckPosition" value="OUT" />
+          </bizTask>
+          <bizTask name="RejectAccessoryUnknown" include="true" />
+          <bizTask name="ApplyContainerNotes" customCode="MATGvyCopyGateNotesToTranNotes" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" include="true" />
+          <bizTask name="PlaceUnitOnTruck" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument (on-trouble)" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR" />
+          </bizTask>
+          <bizTask name="PrintDocument (on-trouble)" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranChsTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDC>
+    <gateStagesRM>
+      <outStage id="gate" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="true" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <!--System Task ReadUnitPreadvised-->
+          <bizTask name="SelectOrderItemForRcvCtr" include="true" />
+          <bizTask name="SelectOrderItem" include="true" />
+          <bizTask name="CreateNewTruck" include="true" />
+          <!--System Task ReadAccessory-->
+          <bizTask name="UpdateDriver" customCode="GEMSPreTripCheck" include="true" />
+          <bizTask name="UpdateTruck" include="true" />
+          <bizTask name="RejectOrderHold" include="true" />
+          <bizTask name="RejectContainerNotFound" customCode="MATSetCtrAndLineOperator" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerInYard" include="true" />
+          <bizTask name="RejectChassisRequired" customCode="MATSetGateCarrierVisit" include="true" />
+          <bizTask name="RejectChassisUnknown" customCode="MATDetachChsAcc" include="true" />
+          <bizTask name="RejectAccessoryUnknown" include="true" />
+          <bizTask name="CreateContainerVisit" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="MATSetUnitFlex" include="true" />
+          <bizTask name="ApplyContainerNotes" customCode="MATGvyCopyGateNotesToTranNotes" include="true" />
+          <bizTask name="ApplyChassisDamages" customCode="MATCheckBookingFreightKind" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="PositionTruckVisit" include="true">
+            <parameter id="truckPosition" value="OUT" />
+          </bizTask>
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" customCode="MatsonAncCreateDocument&#xA;" include="true">
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+            <parameter id="executeAtTVLevel" value="" />
+          </bizTask>
+          <bizTask name="PrintDocument" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+            <parameter id="executeAtTVLevel" value="" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument (on-trouble)" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+            <parameter id="executeAtTVLevel" value="" />
+          </bizTask>
+          <bizTask name="PrintDocument (on-trouble)" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR,DAMAGES" />
+            <parameter id="executeAtTVLevel" value="" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccTypeId" fieldDisplayMode="NONE" fieldRequired="false" />
+          <uiField fieldId="tranEqoNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranDischargePoint1" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranCarrierVisit" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranShipper" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranConsignee" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranFlexString03" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="ufvFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="unitFlexString15" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tTranChsDmgVao" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="unitFlexString12" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranEqGrade" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCommodityCode" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranEqoItem" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesRM>
+    <gateStagesDI>
+      <outStage id="gate" leg="out" addAllowed="true" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadReleaseNbr-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="ApplyContainerShippingDetails" customCode="MatsonAncSetEmptyTranNotes" include="true" />
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadUnitActive-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadChassisPosition-->
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerNotAtFacility" include="true" />
+          <bizTask name="RejectContainerNotInYard" include="true" />
+          <bizTask name="RejectImportContainerDepartingByRail" include="true" />
+          <bizTask name="RejectImportContainerDepartingByVessel" include="true" />
+          <bizTask name="RejectContainerNotImport" customCode="MATDeliverDomestic" include="true" />
+          <bizTask name="RejectChassisRequired" customCode="MATSetGateCarrierVisit" include="true" />
+          <bizTask name="RejectChassisUnknown" customCode="MATPullChsAcc" include="true" />
+          <bizTask name="PositionTruckVisit" include="true">
+            <parameter id="truckPosition" value="OUT" />
+          </bizTask>
+          <bizTask name="CreateUnitDeparting" include="true" />
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectAccessoryUnknown" include="true" />
+          <bizTask name="ApplyContainerSeals" customCode="MATGvyCopyGateNotesToTranNotes" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="MATGvyUpdateInspectionOnOutGate" include="true" />
+          <bizTask name="RejectUnitServiceRules" include="true">
+            <parameter id="eventId" value="" />
+            <parameter id="includeCovertHolds" value="" />
+          </bizTask>
+          <bizTask name="PlaceUnitOnTruck" customCode="MATDeliverImport" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+          <bizTask name="CreateDocument" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR,TIR_LOAD,DR,DNB" />
+          </bizTask>
+          <bizTask name="PrintDocument" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR,TIR_LOAD,DR,DNB" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+          <bizTask name="CreateDocument (on-trouble)" customCode="MatsonAncCreateDocument" include="true">
+            <parameter id="docTypeId" value="TIR,TIR_LOAD,DR,DNB" />
+          </bizTask>
+          <bizTask name="PrintDocument (on-trouble)" customCode="MatsonAncPrintDocument" include="true">
+            <parameter id="displayPrintPopup" value="" />
+            <parameter id="docTypeId" value="TIR,TIR_LOAD,DR,DNB" />
+            <parameter id="printNoOfCopies" value="" />
+          </bizTask>
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranChsNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranChsIsOwners" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranChsTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrAccNbr" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranEqoNbr" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranConsignee" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrGrossWeight" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranSealNbr1" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="ufvFlexString09" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="unitFlexString01" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranImportReleaseNbr" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesDI>
+  </gateStageSubTypes>
+  <gateStageTruckVisit>
+    <outStage id="reprint" leg="out" autoStage="false" isTruckVisitRequired="true" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" pollNextTruck="false" pollTruckInterval="" allowAnyStage="false" supportsCallup="false" isExcluded="false">
+      <bizTasks>
+        <!--System Task ReadTruck-->
+        <!--System Task ReadTruck-->
+        <bizTask name="PrintAllDocumentsFromScreen" customCode="MatsonAncPrintDocument" include="true" />
+      </bizTasks>
+      <uiForm>
+        <uiField fieldId="tranNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tvdtlsTruckingCoId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+        <uiField fieldId="tvdtlsDriverName" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+        <uiField fieldId="tvdtlsExitLane" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+      </uiForm>
+    </outStage>
+    <outStage id="gate" leg="out" autoStage="false" isTruckVisitRequired="false" checkIfAllDone="false" allowStageId="" nextStageIdNoTran="" pollNextTruck="false" pollTruckInterval="5" allowAnyStage="false" supportsCallup="false" isExcluded="false">
+      <bizTasks>
+        <!--System Task ReadTruck-->
+        <!--System Task ReadTruck-->
+        <bizTask name="NotifyEquipmentDelivery" include="true" />
+        <bizTask name="DepartUnit" include="true" />
+        <bizTask name="DepartTruckVisit" include="true" />
+        <bizTask name="PositionTruckVisit" include="true">
+          <parameter id="truckPosition" value="OUT" />
+        </bizTask>
+        <bizTask name="OpenGateArm" customCode="MATPlaceUnitInYard" include="true" />
+        <bizTask name="RemoveUnusedAppointment" customCode="MATGateDisconnectTDP" include="true" />
+      </bizTasks>
+      <uiForm>
+        <uiField fieldId="tvdtlsExitLane" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tvdtlsCustomAction" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tvdtlsTrkCompany" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tvdtlsDriverName" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+        <uiField fieldId="tTranCtrNumber" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+      </uiForm>
+    </outStage>
+  </gateStageTruckVisit>
+</gateConfiguration>
+

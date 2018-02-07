@@ -1,0 +1,6 @@
+Id,Frequency,Hours,Mins,Start Date,End Date,Scheduled,Cluster Mode,Job Group Name,Job Group Status,Expression,Recipient Email,Mailbox Name
+CMA-CGM FLEET JOB,On Demand,0,0,03-28-2017,,false,true,GUI1,All nodes are up,,1aktosdevteam <1aktosdevteam@matson.com>,CMA-CGMFLEET
+FLEET FILE JOB,Daily,0,5,09-12-2016,,false,true,GUI1,All nodes are up,0 5/5 0/1 * * ? *,1aktosdevteam@matson.com,FLEET_MAILBOX
+SNX INBOUND ANK,On Demand,0,0,,,false,true,GUI1,All nodes are up,,1aktosdevteam@matson.com,SNX MAILBOX ANK
+SNX INBOUND DUT,On Demand,0,0,01-25-2017,,false,true,GUI3,All nodes are up,,,SNX MAILBOX DUT
+SNX INBOUND KDK,Daily,5,5,04-05-2016,,false,true,GUI3,All nodes are up,0 5 5 * * ? *,1aktosdevteam@matson.com,SNX MAILBOX KDK

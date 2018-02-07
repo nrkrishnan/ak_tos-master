@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+	<Format type ="csv" deliminator="¦" newRecord="\n"></Format>
+	<Field sequence="0" name="txnCode" dataType="String"></Field>
+	<Field sequence="1" name="date" dataType="String"></Field>
+	<Field sequence="2" name="time" dataType="String"></Field>
+	<Field sequence="3" name="filler1" dataType="String"></Field>
+	<Field sequence="4" name="nextId" dataType="String"></Field>
+	<Field sequence="5" name="equipmentNum" dataType="String"></Field>
+	<Field sequence="6" name="bookingNum" dataType="String"></Field>
+	<Field sequence="7" name="vessel" dataType="String"></Field>
+	<Field sequence="8" name="voyage" dataType="String"></Field>
+	<Field sequence="9" name="direction" dataType="String"></Field>
+	<Field sequence="10" name="dischargePort" dataType="String"></Field>
+	<Field sequence="11" name="destPort" dataType="String"></Field>
+	<Field sequence="12" name="loadPort" dataType="String"></Field>
+	<Field sequence="13" name="shipperName" dataType="String"></Field>
+	<Field sequence="14" name="consignee" dataType="String"></Field>
+	<Field sequence="15" name="userId" dataType="String"></Field>
+	<Field sequence="16" name="primCarrier" dataType="String"></Field>
+	<Field sequence="17" name="trade" dataType="String"></Field>
+	<Field sequence="18" name="sit" dataType="String"></Field>
+	<Field sequence="19" name="tit" dataType="String"></Field>
+	<Field sequence="20" name="inBound" dataType="String"></Field>
+	<Field sequence="21" name="ag" dataType="String"></Field>
+	<Field sequence="22" name="checkDigit" dataType="String"></Field>
+	<Field sequence="23" name="shipperArol" dataType="String"></Field>
+	<Field sequence="24" name="consigneeArol" dataType="String"></Field>
+	<Field sequence="25" name="shipperOrgn50" dataType="String"></Field>
+	<Field sequence="26" name="shipQual40" dataType="String"></Field>
+	<Field sequence="27" name="consignOrgn50" dataType="String"></Field>
+	<Field sequence="28" name="consigneeQual40" dataType="String"></Field>
+	<Field sequence="29" name="unitFlexString02" dataType="String"></Field>
+	
+	<!--  for Alaska  -->
+	<Field sequence="30" name="temp1" dataType="String"></Field>
+	<Field sequence="31" name="temp2" dataType="String"></Field>
+	<Field sequence="32" name="tempUnit" dataType="String"></Field>
+</FileDesc>

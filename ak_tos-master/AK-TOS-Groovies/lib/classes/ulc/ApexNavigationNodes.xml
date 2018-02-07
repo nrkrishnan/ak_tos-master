@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE navigationNodes PUBLIC "" "NavigationNodes.dtd">
+
+<navigationNodes>
+
+    <navigationNode id="APEX_APP"
+                    text="NAVIS N4"
+                    icon="/images/cubes_24x24.png"/>
+
+    <navigationNode id="XpsCacheMonitor"
+                    text="Cluster Management"
+                    controllerRefId="xpsCacheMonitorController"/>
+
+    <navigationNode id="XpsCachedObject"
+                    text="XPS Cached Object DB"
+                    controllerRefId="xpsCachedObjectController"/>
+
+    <navigationNode id="MaintainBookingsVesselMenu"
+                    text="Bookings"
+                    variformId="ORD001"/>
+    <!--controllerRefId="bookingsController"/>-->
+
+    <navigationNode id="EmptyLoadoutOrder"
+                    text="Empty Loadout Orders"
+                    controllerRefId="emptyLoadoutOrderController"/>
+
+    <navigationNode id="SparcsImportChooser"
+                    text="Import SPARCS Data"
+                    controllerRefId="sparcsImportChooserController"/>
+
+    <navigationNode id="DbaPanel"
+                    text="Manipulate Database"
+                    controllerRefId="apexDbaPanelController"/>
+
+    <navigationNode id="DatabaseSetUp"
+                    text="Set-up Database"
+                    controllerRefId="databaseSetupController"/>
+    <!-- 2009.03.26 ssampath ARGO-17376 -->
+    <navigationNode id="NODE_YARD_BLOCK_SUPPLEMENT"
+                    text="Yard Block Supplement"
+                    controllerRefId="yardBlockSupplementController"/>
+
+    <navigationNode id="NODE_SYSTEM_PERFORMANCE_CHARTS"
+                    text="System Performance Charts"
+                    icon="/images/column_chart_16x16.png"
+                    controllerRefId="systemPerformanceGraphicsController"/>
+
+    <navigationNode id="NODE_SYSTEM_PERFORMANCE_CHARTS_CONFIG"
+                    text="System Performance Charts Configuration"
+                    icon="/images/column_chart_16x16.png"
+                    controllerRefId="systemPerformanceGraphicsConfigurationController"/>
+
+    <!-- 2008-04-01 rsatish v1.5.N ARGO-10761 one-click SNX export of all the reference data and configuration entities -->
+    <navigationNode id="SnxRefExport"
+                    text="Export Base System to SNX"
+                    commandRefId="snxRefExport"/>
+
+    <!-- 2007-08-10 tramakrishnan ARGO-7940 Moved to Argo, to be shared by other applications like Billing -->
+    <!--<navigationNode id="TopologyTree"-->
+    <!--text="Topology"-->
+    <!--controllerRefId="topologyTreeController"/>-->
+
+    <!--2010-01-29 oviyak 2.1.G ARGO-13162 Implement Yard Area Codes table-->
+    <navigationNode id="MensaYardAreaCodes"
+                    text="Manage Yard Area Codes"
+                    controllerRefId="areaCodeTableViewController"/>
+
+    <!--2010-01-29 oviyak 2.1.G ARGO-13163 Implement Yard block table-->
+    <navigationNode id="MensaYardBlockTable"
+                    text="Yard Block Table"
+                    controllerRefId="yardBlockTableViewController"/>
+
+    <!-- 2010-04-16 oviyak 2.1.M ARGO-25271 "Vessel Crane Metrics" table view is available only for "admin" user-->
+    <navigationNode id="VesselCraneStatisticsTable"
+                    text="Vessel Crane Metrics"
+                    controllerRefId="vesselCraneStatisticsTableViewController"/>
+
+    <navigationNode id="MensaEqpBlockVisit"
+                    text="Equipment Block Visit"
+                    controllerRefId="EqpBlockVisitViewController"/>
+
+    <!--TODO: Change this to use the variformId directly once CAR-4277 is fixed. -->
+    <navigationNode id="ARG_CHECK_INTEGRITY"
+                    text="Perform Data Integrity Check"
+                    commandRefId="integrityCheckerCommand"/>
+
+    <navigationNode id="PurgedFailedEntities"
+            text="Failed Purges"
+            variformId="TABLE_PURGED_FAILED_ENTITY"/>
+
+    <navigationNode id="ArchivedPurgedEntities"
+                    text="Monitor Archive/Purge"
+                    variformId="TABLE_PURGE_ARCHIVE_ENTITY"/>
+
+</navigationNodes>

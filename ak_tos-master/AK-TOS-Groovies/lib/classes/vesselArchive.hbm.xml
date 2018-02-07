@@ -1,0 +1,1318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">VesselArchive</meta>
+    <meta attribute="scope-set">public</meta>
+
+    <joined-subclass name="com.navis.vessel.business.schedule.ArchiveVesselVisitDetails" table="vsl_ar_vessel_visit_details"
+                     extends="com.navis.argo.business.model.ArchiveVisitDetails" dynamic-update="true">
+
+        <meta attribute="generated-class">
+            com.navis.vessel.business.schedule.ArchiveVesselVisitDetailsHbr
+        </meta>
+        <meta attribute="n4alias">arvvd</meta>
+        <meta attribute="class-description">Reference entity representing the Vessel</meta>
+        <meta attribute="n4-entity-name">Archived Vessel Visit Details</meta>
+        <meta attribute="n4-entity-name-plural">Archived Vessel Visit Details</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">vvdCustomFlexFields</meta>
+
+        <key column="arVvd_gkey"/>
+
+        <property name="arVvdBizuId" column="bizu_id" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Vessel visit principal line operator</meta>
+        </property>
+
+        <property name="arVvdVesselGkey" column="vessel_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Reference to the visiting vessel</meta>
+        </property>
+        <property name="arVvdVesselId" column="vessel_id" type="string" length="8" not-null="true">
+            <meta attribute="field-description">Vessel Class Id. Must be unique within Vessel classes</meta>
+        </property>
+
+        <property name="arVvdIbVygNbr" column="ib_vyg" type="java.lang.String" length="17">
+            <meta attribute="field-description">Inbound voyage number</meta>
+        </property>
+
+        <property name="arVvdObVygNbr" column="ob_vyg" type="java.lang.String" length="17">
+            <meta attribute="field-description">Outbound voyage number</meta>
+        </property>
+
+        <property name="arVvdStackingStrategy" column="stacking_strategy" type="java.lang.String" length="10">
+            <meta attribute="field-description">Vessel reference</meta>
+        </property>
+
+        <property name="arVvdIsDrayOff" column="is_dray_off" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">check whether it is dray off or not</meta>
+        </property>
+
+        <property name="arVvdNotes" column="notes" type="java.lang.String" length="50">
+            <meta attribute="field-description">Notes about the visit</meta>
+        </property>
+
+        <property name="arVvdInCustomsVoyNbr" column="in_customs_voy_nbr" type="java.lang.String" length="16">
+            <meta attribute="field-description">Customs Inbound Voyage Number</meta>
+        </property>
+
+        <property name="arVvdOutCustomsVoyNbr" column="out_customs_voy_nbr" type="java.lang.String" length="16">
+            <meta attribute="field-description">Customs Outbound Voyage Number</meta>
+        </property>
+
+        <property name="arVvdIsNoClientAccess" column="is_no_client_access" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Check whether it has no client access or not</meta>
+        </property>
+
+        <property name="arVvdIsCommonCarrier" column="is_common_carrier" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Check whether the visiting vessel is a common carrier or not</meta>
+        </property>
+
+        <property name="arVvdPublishedEta" column="published_eta" type="timestamp">
+            <meta attribute="field-description">Published ETA</meta>
+        </property>
+
+        <property name="arVvdPublishedEtd" column="published_etd" type="timestamp">
+            <meta attribute="field-description">Published ETD</meta>
+        </property>
+
+        <property name="arVvdTimeBeginReceive" column="begin_receive" type="timestamp">
+            <meta attribute="field-description">begin receive time</meta>
+        </property>
+
+        <property name="arVvdTimeEmptyPickup" column="empty_pickup" type="timestamp">
+            <meta attribute="field-description">empty pickup time</meta>
+        </property>
+
+        <property name="arVvdTimeCargoCutoff" column="cargo_cutoff" type="timestamp">
+            <meta attribute="field-description">cargo cutoff time</meta>
+        </property>
+
+        <property name="arVvdTimeHazCutoff" column="haz_cutoff" type="timestamp">
+            <meta attribute="field-description">Haz Cutoff time</meta>
+        </property>
+
+        <property name="arVvdTimeReeferCutoff" column="reefer_cutoff" type="timestamp">
+            <meta attribute="field-description">Reefer cutoff time</meta>
+        </property>
+
+        <property name="arVvdTimeLaborOnBoard" column="labor_on_board" type="timestamp">
+            <meta attribute="field-description">date when labor on board</meta>
+        </property>
+
+        <property name="arVvdTimeLaborOffBoard" column="labor_off_board" type="timestamp">
+            <meta attribute="field-description">date when labor off board</meta>
+        </property>
+
+        <property name="arVvdTimeOffPortArrive" column="off_port_arr" type="timestamp">
+            <meta attribute="field-description">Time off Port Arrival</meta>
+        </property>
+
+        <property name="arVvdTimeOffPortDepart" column="off_port_dep" type="timestamp">
+            <meta attribute="field-description">Time off port departure</meta>
+        </property>
+
+        <property name="arVvdTimePilotOnBoard" column="pilot_on_board" type="timestamp">
+            <meta attribute="field-description">Time when the pilot is on board</meta>
+        </property>
+
+        <property name="arVvdTimePilotOffBoard" column="pilot_off_board" type="timestamp">
+            <meta attribute="field-description">Time during which the pilot is off board</meta>
+        </property>
+
+        <property name="arVvdTimeStartWork" column="start_work" type="timestamp">
+            <meta attribute="field-description">work starting time</meta>
+        </property>
+
+        <property name="arVvdTimeEndWork" column="end_work" type="timestamp" index="ar_vvd_created_idx">
+            <meta attribute="field-description">Work ending time</meta>
+        </property>
+
+        <property name="arVvdInVesselCaptain" column="in_ves_captain" type="java.lang.String" length="35">
+            <meta attribute="field-description">Inbound Vessel Captain's name</meta>
+        </property>
+
+        <property name="arVvdExportMnftNbr" column="export_mnft_nbr" type="java.lang.String" length="30">
+            <meta attribute="field-description">manifest number for export category</meta>
+        </property>
+
+        <property name="arVvdImportMnftNbr" column="import_mnft_nbr" type="java.lang.String" length="30">
+            <meta attribute="field-description">manifest number for import category</meta>
+        </property>
+
+        <property name="arVvdImportMnftDate" column="import_mnft_date" type="timestamp">
+            <meta attribute="field-description">Import manifest date</meta>
+        </property>
+
+        <property name="arVvdExportMnftDate" column="export_mnft_date" type="timestamp">
+            <meta attribute="field-description">Export manifest date</meta>
+        </property>
+
+        <property name="arVvdOutVesselCaptain" column="out_ves_captain" type="java.lang.String" length="35">
+            <meta attribute="field-description">Outbound Vessel Captain's name</meta>
+        </property>
+
+        <property name="arVvdClassification" column="classification" type="com.navis.vessel.persistence.atoms.UserTypeVesselClassificationEnum"
+                  not-null="false">
+            <meta attribute="field-description">Classification for this visit</meta>
+        </property>
+
+        <property name="arVvFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="arVvFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="arVvFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+
+        <property name="arVvFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <property name="arVvFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+
+        <property name="arVvFlexString06" column="flex_string06" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+
+        <property name="arVvFlexString07" column="flex_string07" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+
+        <property name="arVvFlexString08" column="flex_string08" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+
+        <property name="arVvFlexDate01" column="flex_date01" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+
+        <property name="arVvFlexDate02" column="flex_date02" type="timestamp">
+            <meta attribute="field-description">Date flex-field #02</meta>
+        </property>
+
+        <property name="arVvFlexDate03" column="flex_date03" type="timestamp">
+            <meta attribute="field-description">Date flex-field #03</meta>
+        </property>
+
+        <property name="arVvFlexDate04" column="flex_date04" type="timestamp">
+            <meta attribute="field-description">Date flex-field #04</meta>
+        </property>
+
+        <property name="arVvFlexDate05" column="flex_date05" type="timestamp">
+            <meta attribute="field-description">Date flex-field #05</meta>
+        </property>
+
+        <property name="arVvFlexDate06" column="flex_date06" type="timestamp">
+            <meta attribute="field-description">Date flex-field #06</meta>
+        </property>
+
+        <property name="arVvFlexDate07" column="flex_date07" type="timestamp">
+            <meta attribute="field-description">Date flex-field #07</meta>
+        </property>
+
+        <property name="arVvFlexDate08" column="flex_date08" type="timestamp">
+            <meta attribute="field-description">Date flex-field #08</meta>
+        </property>
+
+        <set name="arVvdVvlineSet" table="vsl_ar_vessel_visit_lines" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="vvd_gkey"/>
+            <one-to-many class="com.navis.vessel.business.schedule.ArchiveVesselVisitLine"/>
+        </set>
+
+        <list name="arVvdBrthgSet" lazy="true" inverse="true" cascade="all">
+            <key>
+                <column name="vvd_gkey" not-null="false"/>
+            </key>
+            <index column="seq"/>
+            <one-to-many class="com.navis.vessel.business.schedule.ArchiveVesselVisitBerthing"/>
+        </list>
+
+        <!-- TODO -->
+        <!--<set name="arVvdStatisticsByCraneSet" table="vsl_crane_statistics" inverse="true" lazy="true" cascade="all-delete-orphan">-->
+        <!--<key column="vvd_gkey"/>-->
+        <!--<one-to-many class="com.navis.vessel.business.schedule.VesselStatisticsByCrane"/>-->
+        <!--</set>-->
+
+        <!--<set name="arVvdStatisticsByLine" inverse="true" lazy="true" cascade="all-delete-orphan">-->
+        <!--<key column="vvd_gkey"/>-->
+        <!--<one-to-many class="com.navis.vessel.business.schedule.VesselStatisticsByLine"/>-->
+        <!--</set>-->
+
+        <component name="arVvdEstMoveCount" class="com.navis.vessel.business.schedule.MoveCount">
+
+            <meta attribute="generated-class">com.navis.vessel.business.schedule.MoveCountHbr</meta>
+            <meta attribute="field-description">Estimate the move counts of the vessel</meta>
+            <meta attribute="scope-set">public</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="mcLoad" column="est_load" type="java.lang.Long">
+                <meta attribute="field-description">Loading moves</meta>
+            </property>
+
+            <property name="mcDischarge" column="est_discharge" type="java.lang.Long">
+                <meta attribute="field-description">Discharge moves</meta>
+            </property>
+
+            <property name="mcRestow" column="est_restow" type="java.lang.Long">
+                <meta attribute="field-description">Restows</meta>
+            </property>
+
+            <property name="mcShift" column="est_shift" type="java.lang.Long">
+                <meta attribute="field-description">Shifts</meta>
+            </property>
+
+            <property name="mcBbkLoad" column="est_bbk_load" type="java.lang.Long">
+                <meta attribute="field-description">BreakBulk load</meta>
+            </property>
+
+            <property name="mcBbkDischarge" column="est_bbk_discharge" type="java.lang.Long">
+                <meta attribute="field-description">BreakBulk discharge</meta>
+            </property>
+        </component>
+
+        <property name="arVvdOnBoardUnitsXML" column="onboardUnits_xml" type="text" length="100000">
+            <meta attribute="field-description">XML presentation of GoodsDocuments</meta>
+        </property>
+
+        <property name="arVvdLineIbVoyNbrs" column="line_ib_vygs" type="string" length="255">
+            <meta attribute="field-description">Line I/B Voyage Nbrs</meta>
+        </property>
+
+        <property name="arVvdLineObVoyNbrs" column="line_ob_vygs" type="string" length="255">
+            <meta attribute="field-description">Line O/B Voyage Nbrs</meta>
+        </property>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="vvdCustomFlexFields"/>
+
+    </joined-subclass>
+
+    <class name="com.navis.vessel.business.schedule.ArchiveVesselVisitLine" table="vsl_ar_vessel_visit_lines" dynamic-update="true">
+        <meta attribute="n4alias">arvvline</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.schedule.ArchiveVesselVisitLineHbr</meta>
+        <meta attribute="class-description">Reference entity representing the VesselVisitLine</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Archived Vessel Visit Line</meta>
+        <meta attribute="n4-entity-name-plural">Archived Vessel Visit Lines</meta>
+
+        <id name="arVvlineGkey" column="vvline_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arVvlineOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arVvlineArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this unit was archived.</meta>
+        </property>
+
+        <many-to-one name="arVvlineVvd" column="vvd_gkey" class="com.navis.vessel.business.schedule.ArchiveVesselVisitDetails" not-null="true">
+            <meta attribute="field-description">Vessel Identity of the vessel in the visit visitlines</meta>
+        </many-to-one>
+
+        <property name="arVvlineInVoyNbr" column="line_in_voy_nbr" type="java.lang.String" length="17" not-null="true">
+            <meta attribute="field-description">In voyage number</meta>
+        </property>
+
+        <property name="arVvlineOutVoyNbr" column="line_out_voy_nbr" type="java.lang.String" length="17">
+            <meta attribute="field-description">Out voyage Number</meta>
+        </property>
+
+        <property name="arVvlineBizuId" column="line_id" type="string" length="100">
+            <meta attribute="field-description">Business Unit (Line)</meta>
+        </property>
+
+        <property name="arVvlineTimeBeginReceive" column="begin_receive" type="timestamp">
+            <meta attribute="field-description">Begin Receive Date</meta>
+        </property>
+
+        <property name="arVvlineTimeEmptyPickup" column="empty_pickup" type="timestamp">
+            <meta attribute="field-description">Empty Pickup Date</meta>
+        </property>
+
+        <property name="arVvlineTimeCargoCutoff" column="cargo_cutoff" type="timestamp">
+            <meta attribute="field-description">CargoCutoff date</meta>
+        </property>
+
+        <property name="arVvlineTimeReeferCutoff" column="reefer_cutoff" type="timestamp">
+            <meta attribute="field-description">ReeferCutoff date</meta>
+        </property>
+
+        <property name="arVvlineTimeHazCutoff" column="haz_cutoff" type="timestamp">
+            <meta attribute="field-description">Hazardous cutoff date</meta>
+        </property>
+
+        <property name="arVvlineTimeActivateYard" column="activate_yard" type="timestamp">
+            <meta attribute="field-description">Activation time of yard</meta>
+        </property>
+
+        <property name="arVvlineCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Created date of this record</meta>
+        </property>
+
+        <property name="arVvlineCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Creator name of this record</meta>
+        </property>
+
+        <property name="arVvlineChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="arVvlineChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Changer name of this record</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.vessel.business.schedule.ArchiveVesselVisitBerthing" table="vsl_ar_vessel_berthings" dynamic-update="true">
+        <meta attribute="n4alias">arbrthg</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.schedule.ArchiveVesselVisitBerthingHbr</meta>
+        <meta attribute="class-description">Reference entity representing the Berthing</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Archived Berthing</meta>
+        <meta attribute="n4-entity-name-plural">Archived Berthings</meta>
+        <meta attribute="carina-oracle-index">
+            create index ar_brthg_pos_anchor_idx on vsl_ar_vessel_berthings(pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index ar_brthg_pos_anchor_idx on vsl_ar_vessel_berthings(pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <id name="arBrthgGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arBrthgOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">gkey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arBrthgArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this unit was archived.</meta>
+        </property>
+
+        <property name="arBrthgSeq" column="seq" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Berth sequence number</meta>
+        </property>
+
+        <many-to-one name="arBrthgVvd" column="vvd_gkey" class="com.navis.vessel.business.schedule.ArchiveVesselVisitDetails" not-null="false">
+            <meta attribute="field-description">Vessel visit identity</meta>
+        </many-to-one>
+
+        <property name="arBrthgQuayId" column="quay_id" type="string" length="20" not-null="true">
+            <meta attribute="field-description">quay identity in the berth</meta>
+        </property>
+
+        <property name="arBrthgTimeShift" column="shift_time" type="timestamp">
+            <meta attribute="field-description">Shift time date</meta>
+        </property>
+
+        <property name="arBrthgDraftFwdArriveCm" column="arr_fwd_draft_cm" type="java.lang.Long">
+            <meta attribute="field-description">Forward draft on arrival, centimeters</meta>
+        </property>
+
+        <property name="arBrthgDraftAftArriveCm" column="arr_aft_draft_cm" type="java.lang.Long">
+            <meta attribute="field-description">Aft draft on arrival, centimeters</meta>
+        </property>
+
+        <property name="arBrthgDraftFwdDepartCm" column="dep_fwd_draft_cm" type="java.lang.Long">
+            <meta attribute="field-description">Forward draft on departure, centimeters</meta>
+        </property>
+
+        <property name="arBrthgDraftAftDepartCm" column="dep_aft_draft_cm" type="java.lang.Long">
+            <meta attribute="field-description">Aft draft on departure, centimeters</meta>
+        </property>
+
+        <property name="arBrthgShipSideTo" column="ship_side_to" type="com.navis.vessel.persistence.atoms.UserTypeBerthSideTypeEnum" not-null="true">
+            <meta attribute="field-description">Berthing side-to (port side-to, or starboard side-to)</meta>
+        </property>
+
+        <property name="arBrthgCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Record created date</meta>
+        </property>
+
+        <property name="arBrthgCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Record creator name</meta>
+        </property>
+
+        <property name="arBrthgChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="arBrthgChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Record changer name</meta>
+        </property>
+
+        <property name="arBrthgGmCm" column="gm" type="java.lang.Long">
+            <meta attribute="field-description">Vessel GM at berth</meta>
+        </property>
+
+        <property name="arBrthgMeanDraftCm" column="mean_draft_cm" type="java.lang.Long">
+            <meta attribute="field-description">Vessel Mean Draft at berth</meta>
+        </property>
+
+        <property name="arBrthgTrimCm" column="trim_cm" type="java.lang.Long">
+            <meta attribute="field-description">Vessel Trim at berth</meta>
+        </property>
+
+        <property name="arBrthgGantryCount" column="gantry_count" type="java.lang.Long">
+            <meta attribute="field-description">Number of gantries</meta>
+        </property>
+
+        <property name="arBrthgBerthLocationCm" column="berth_location_cm" type="java.lang.Long">
+            <meta attribute="field-description">Exact location on the berth</meta>
+        </property>
+
+        <property name="arBrthgEstimatedLoads" column="estimated_loads" type="java.lang.Long">
+            <meta attribute="field-description">Estimated number of loads</meta>
+        </property>
+
+        <property name="arBrthgEstimatedDischarges" column="estimated_discharges" type="java.lang.Long">
+            <meta attribute="field-description">Estimated number of discharges</meta>
+        </property>
+
+        <property name="arBrthgIngressVertex" column="ingress_vertex" type="java.lang.Long">
+            <meta attribute="field-description">Ingress Vertex</meta>
+        </property>
+
+        <property name="arBrthgEgressVertex" column="egress_vertex" type="java.lang.Long">
+            <meta attribute="field-description">Egress Vertex</meta>
+        </property>
+
+        <property name="arBrthgReceiveStatus" column="receive_status" type="java.lang.String" length="3">
+            <meta attribute="field-description">Receive Status</meta>
+        </property>
+
+        <property name="arBrthgDistanceFromDockCm" column="distance_from_dock_cm" type="java.lang.Long">
+            <meta attribute="field-description">Distance from Dock</meta>
+        </property>
+
+        <property name="arBrthgSlipFoldCm" column="slip_fold_cm" type="java.lang.Long">
+            <meta attribute="field-description">Indented Berth Length</meta>
+        </property>
+
+        <property name="arBrthgSlipWidthCm" column="slip_width_cm" type="java.lang.Long">
+            <meta attribute="field-description">Indented Berth Width</meta>
+        </property>
+
+        <property name="arBrthgStrategyReference" column="strategy_ref" type="java.lang.Long">
+            <meta attribute="field-description">AutoStow Strategy pkey</meta>
+        </property>
+
+        <property name="arBrthgAbsBerthCallType" column="call_type" type="java.lang.Long">
+            <meta attribute="field-description">Berth Call Type</meta>
+        </property>
+
+        <property name="arBrthgAbsBerthCallSlaveId" column="call_slave_id" type="java.lang.Long">
+            <meta attribute="field-description">Berth Call Slave ID</meta>
+        </property>
+
+        <property name="arBrthgAbsCallRemarks" column="call_remarks" type="java.lang.String" length="60">
+            <meta attribute="field-description">Call Remarks</meta>
+        </property>
+
+        <property name="arBrthgAbsBollardAft" column="bollard_aft" type="java.lang.String" length="5">
+            <meta attribute="field-description">Bollard Aft</meta>
+        </property>
+
+        <property name="arBrthgAbsBollardFore" column="bollard_fore" type="java.lang.String" length="5">
+            <meta attribute="field-description">Bollard Fore</meta>
+        </property>
+
+        <property name="arBrthgAbsBollardAftOffset" column="bollard_aft_offset" type="java.lang.String" length="10">
+            <meta attribute="field-description">Offset to Bollard Aft</meta>
+        </property>
+
+        <property name="arBrthgAbsBollardForeOffset" column="bollard_fore_offset" type="java.lang.String" length="10">
+            <meta attribute="field-description">Offset to Bollard Fore</meta>
+        </property>
+
+        <property name="arBrthgEstimatedOtherMoves" column="estimated_other_moves" type="java.lang.Long">
+            <meta attribute="field-description">Estimated Other Moves</meta>
+        </property>
+
+        <property name="arBrthgSealCheckForDischarges" column="discharge_seals_checked" type="java.lang.Boolean">
+            <meta attribute="field-description">Discharge Seals were checked</meta>
+        </property>
+
+        <property name="arBrthgSealCheckForLoads" column="load_seals_checked" type="java.lang.Boolean">
+            <meta attribute="field-description">Load Seals were checked</meta>
+        </property>
+
+        <property name="arBrthgAllocationStatus" column="berth_alloc_status" type="java.lang.String" length="10">
+            <meta attribute="field-description">Berth ETA</meta>
+        </property>
+
+        <property name="arBrthgETA" column="eta" type="timestamp">
+            <meta attribute="field-description">Berth ETA</meta>
+        </property>
+
+        <property name="arBrthgETD" column="etd" type="timestamp">
+            <meta attribute="field-description">Berth ETD</meta>
+        </property>
+
+        <property name="arBrthgATA" column="ata" type="timestamp">
+            <meta attribute="field-description">Berth ATA</meta>
+        </property>
+
+        <property name="arBrthgATD" column="atd" type="timestamp">
+            <meta attribute="field-description">Berth ATD</meta>
+        </property>
+
+        <property name="arBrthgTimeCargoCutoff" column="cargo_cutoff" type="timestamp">
+            <meta attribute="field-description">Cargo Cutoff Time</meta>
+        </property>
+
+        <property name="arBrthgTimeStartWork" column="start_work" type="timestamp">
+            <meta attribute="field-description">Start Work Time</meta>
+        </property>
+
+        <property name="arBrthgTimeStoptWork" column="stop_work" type="timestamp">
+            <meta attribute="field-description">Stop Work Time</meta>
+        </property>
+
+        <property name="arBrthgTimeBeginReceive" column="time_begin_receive" type="timestamp">
+            <meta attribute="field-description">Time Begin Receival</meta>
+        </property>
+
+        <component name="arBrthgPositionComp" class="com.navis.argo.business.model.ArchiveLocPosition">
+             <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+             <meta attribute="field-description">The position of the VesselVisitBerthing</meta>
+             <meta attribute="extends">com.navis.spatial.business.model.Position</meta>
+
+             <property name="arPosLocType" column="pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                       not-null="true">
+                 <meta attribute="field-description">An Enum giving the type of position</meta>
+             </property>
+             <property name="arPosLocId" column="pos_locid" type="string" length="16">
+                 <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+             </property>
+             <property name="arPosLocGkey" column="pos_loc_gkey" type="java.lang.Long">
+                 <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+             </property>
+             <property name="arPosSlot" column="pos_slot" type="string" length="16">
+                 <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+             </property>
+             <property name="arPosOrientation" column="pos_orientation" type="string" length="6">
+                 <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+             </property>
+             <property name="arPosName" column="pos_name" type="string" length="42">
+                 <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+             </property>
+             <property name="arPosOperationalPosId" column="ops_pos_id" type="string" length="80">
+                 <meta attribute="field-description">XPS operation position (TIP, TQ, LN.4, etc.)</meta>
+             </property>
+             <many-to-one name="arPosBin" column="pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                  <meta attribute="field-description">The bin to which this Position points to.</meta>
+             </many-to-one>
+             <property name="arPosTier" column="pos_tier" type="java.lang.Long">
+                 <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+             </property>
+             <property name="arPosAnchor" column="pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                 <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+             </property>
+             <property name="arPosOrientationDegrees" column="pos_orientation_degrees" type="java.lang.Double">
+                 <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+             </property>
+         </component>
+    </class>
+
+    <!-- 2009-09-23 spabbala v2.0.J ARGO-20841 modified ArchiveLateArrival(vsl_ar_late_arrivals) entity.-->
+    <class name="com.navis.vessel.business.schedule.ArchiveLateArrival" table="vsl_ar_late_arrivals" dynamic-update="true">
+        <meta attribute="n4alias">arVvlate</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.schedule.ArchiveLateArrivalHbr</meta>
+        <meta attribute="class-description">Archived Late arrivals for a Archived Vessel Visit</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Archive Late Arrival</meta>
+        <meta attribute="n4-entity-name-plural">Archive Late Arrivals</meta>
+
+        <id name="arVvlateGkey" column="vvline_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arVvlateVvdGkey" column="vvd_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Vessel visit for which late arrival is expected</meta>
+        </property>
+
+        <property name="arVvlateUfvGkey" column="ufv_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Unit eventually received against late arrival entry</meta>
+        </property>
+
+        <property name="arVvlateUnitId" column="unit_id" type="java.lang.String" length="17" not-null="true">
+            <meta attribute="field-description">Late Unit ID</meta>
+        </property>
+
+        <property name="arVvlateCutoff" column="cargo_cutoff" type="timestamp" not-null="false">
+            <meta attribute="field-description">Late Arrival Cutoff Time (ATD if null)</meta>
+        </property>
+
+        <property name="arVvlateCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Created date of this record</meta>
+        </property>
+
+        <property name="arVvlateCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Creator name of this record</meta>
+        </property>
+
+        <property name="arVvlateChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="arVvlateChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Changer name of this record</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.vessel.business.operation.ArchiveLineLoadList" table="vsl_ar_line_loadlist" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.vessel.business.operation.ArchiveLineLoadListHbr</meta>
+        <meta attribute="n4alias">arlinell</meta>
+        <meta attribute="class-description">Entity representing the Loadlist information as sent by Line Operator</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Archived Line LoadList</meta>
+        <meta attribute="n4-entity-name-plural">Archived Line LoadList</meta>
+
+        <id name="arLinellGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arLinellOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Gkey of the original Loadlist before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arLinellActionCode" column="action_code" type="com.navis.argo.persistence.atoms.UserTypeEdiActionCodeEnum">
+            <meta attribute="field-description">Effect of Load list - Add/Revoke</meta>
+        </property>
+
+        <property name="arLinellSenderId" column="sender_id" type="java.lang.String" length="30">
+            <meta attribute="field-description">Id of Line Operator who sends the Load List - value from EDI</meta>
+        </property>
+
+        <property name="arLinellLineOperatorId" column="line_operator_id" type="java.lang.String" length="100">
+            <meta attribute="field-description">Id of Line Operator who sends the Load List</meta>
+        </property>
+
+        <!-- Vessel Visit Information -->
+        <property name="arLinellVesselVisitId" column="cv_id" type="java.lang.String" length="30">
+            <meta attribute="field-description">Id of Vessel Visit for which the Loadlist pertains to</meta>
+        </property>
+        <property name="arLinellVesselVisitGkey" column="cv_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Gkey of Vessel Visit for which the Loadlist pertains to</meta>
+        </property>
+
+        <many-to-one name="arLinellComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which Loadlist info. belongs.</meta>
+        </many-to-one>
+        <!-- Container Information -->
+        <property name="arLinellCtrId" column="ctr_id" type="java.lang.String" length="30" not-null="true">
+            <meta attribute="field-description">Container Id</meta>
+        </property>
+
+        <property name="arLinellCtrEquipTypeId" column="ctr_eq_typ_id" type="java.lang.String" length="6">
+            <meta attribute="field-description">Container ISO Type Id from reference table</meta>
+        </property>
+
+        <property name="arLinellCtrCategory" column="category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum">
+            <meta attribute="field-description">Container Category</meta>
+        </property>
+
+        <property name="arLinellCtrFreightKind" column="freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum">
+            <meta attribute="field-description">Container Freight Kind</meta>
+        </property>
+
+        <property name="arLinellCtrOperatorId" column="ctr_operator_id" type="java.lang.String" length="100">
+            <meta attribute="field-description">Id of Container Operator</meta>
+        </property>
+
+        <property name="arLinellSpecialStowId" column="special_stow_id" type="java.lang.String" length="9">
+            <meta attribute="field-description">Special stow id</meta>
+        </property>
+
+        <property name="arLinellOrderNbr" column="order_nbr" type="java.lang.String" length="30">
+            <meta attribute="field-description">Order Number</meta>
+        </property>
+
+        <property name="arLinellPOLId" column="pol_id" type="java.lang.String" length="6">
+            <meta attribute="field-description">Port Of Load Id</meta>
+        </property>
+
+        <property name="arLinellPODId" column="pod_id" type="java.lang.String" length="6">
+            <meta attribute="field-description">Port Of Discharge Id</meta>
+        </property>
+
+        <property name="arLinellCtrGrossWeightKg" column="ctr_gross_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Container Gross Weight in Kg.</meta>
+        </property>
+
+        <property name="arLinellCtrWtKgVerfiedGross" column="ctr_verified_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Container Verified Weight in Kg.</meta>
+        </property>
+
+        <property name="arLinellVgmEntity" column="ctr_verified_entity" type="string" length="40" >
+            <meta attribute="field-description">Container Verified Entity </meta>
+        </property>
+
+        <!-- Temperature -->
+        <property name="arLinellTempRequiredC" column="temp_reqd_C" type="java.lang.Double">
+            <meta attribute="field-description">Preferred Temperature, degrees Centigrade</meta>
+        </property>
+
+        <property name="arLinellTempLimitMinC" column="temp_min_C" type="java.lang.Double">
+            <meta attribute="field-description">Min. Temperature, degrees Centigrade</meta>
+        </property>
+
+        <property name="arLinellTempLimitMaxC" column="temp_max_C" type="java.lang.Double">
+            <meta attribute="field-description">Max. Temperature, degrees Centigrade</meta>
+        </property>
+
+        <!-- OOG -->
+        <property name="arLinellOogBackCm" column="oog_back_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Back, in Centimeters</meta>
+        </property>
+
+        <property name="arLinellOogFrontCm" column="oog_front_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Front, in Centimeters</meta>
+        </property>
+
+        <property name="arLinellOogLeftCm" column="oog_left_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Left, in Centimeters</meta>
+        </property>
+
+        <property name="arLinellOogRightCm" column="oog_rignt_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Right, in Centimeters</meta>
+        </property>
+
+        <property name="arLinellOogTopCm" column="oog_top_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Top, in Centimeters</meta>
+        </property>
+
+        <!-- Container Seal Numbers  -->
+        <property name="arLinellSealNbr1" column="seal_nbr1" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 1</meta>
+        </property>
+
+        <property name="arLinellSealNbr2" column="seal_nbr2" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 2</meta>
+        </property>
+
+        <property name="arLinellSealNbr3" column="seal_nbr3" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 3</meta>
+        </property>
+
+        <property name="arLinellSealNbr4" column="seal_nbr4" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 4</meta>
+        </property>
+
+        <!-- Commodity -->
+        <property name="arLinellCommodityId" column="commodity_id" type="java.lang.String">
+            <meta attribute="field-description">Commodity Id from reference entity</meta>
+        </property>
+
+        <property name="arLinellConsigneeBzuId" column="consignee_bzu_id" type="java.lang.String" length="100">
+            <meta attribute="field-description">Consignee ScopedBizUnit Id</meta>
+        </property>
+
+        <many-to-one name="arLinellArchiveHazards" column="hazards_gkey" class="com.navis.inventory.business.imdg.ArchiveHazards" cascade="all">
+            <meta attribute="field-description">Archived Cargo Hazards</meta>
+        </many-to-one>
+
+        <property name="arLinellCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Created date of this record</meta>
+        </property>
+
+        <property name="arLinellCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Creator name of this record</meta>
+        </property>
+
+        <property name="arLinellChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="arLinellChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Changer name of this record</meta>
+        </property>
+
+        <!--2010-03-01 bbakthavachalam ARGO-23868 add Unit and UFV flex fields for Archive line loadList -->
+        <!-- Unit Flex fields-->
+        <property name="arLinellUnitFlexString01" column="unit_flex_string01" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #01</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString02" column="unit_flex_string02" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #02</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString03" column="unit_flex_string03" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #03</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString04" column="unit_flex_string04" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #04</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString05" column="unit_flex_string05" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #05</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString06" column="unit_flex_string06" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #06</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString07" column="unit_flex_string07" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #07</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString08" column="unit_flex_string08" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #08</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString09" column="unit_flex_string09" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #09</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString10" column="unit_flex_string10" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #10</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString11" column="unit_flex_string11" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #11</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString12" column="unit_flex_string12" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #12</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString13" column="unit_flex_string13" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #13</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString14" column="unit_flex_string14" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #14</meta>
+        </property>
+
+        <property name="arLinellUnitFlexString15" column="unit_flex_string15" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #15</meta>
+        </property>
+
+        <!-- Unit facility visit Flex fields-->
+        <property name="arLinellUfvFlexString01" column="ufv_flex_string01" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #01</meta>
+        </property>
+
+        <property name="arLinellUfvFlexString02" column="ufv_flex_string02" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #02</meta>
+        </property>
+
+        <property name="arLinellUfvFlexString03" column="ufv_flex_string03" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #03</meta>
+        </property>
+
+        <property name="arLinellUfvFlexString04" column="ufv_flex_string04" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #04</meta>
+        </property>
+
+        <property name="arLinellUfvFlexString05" column="ufv_flex_string05" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #05</meta>
+        </property>
+
+        <property name="arLinellUfvFlexString06" column="ufv_flex_string06" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #06</meta>
+        </property>
+
+        <property name="arLinellUfvFlexString07" column="ufv_flex_string07" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #07</meta>
+        </property>
+
+        <property name="arLinellUfvFlexString08" column="ufv_flex_string08" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #08</meta>
+        </property>
+
+        <property name="arLinellUfvFlexString09" column="ufv_flex_string09" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #09</meta>
+        </property>
+
+        <property name="arLinellUfvFlexString10" column="ufv_flex_string10" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #10</meta>
+        </property>
+
+        <property name="arLinellUfvFlexDate01" column="ufv_flex_date01" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #01</meta>
+        </property>
+
+        <property name="arLinellUfvFlexDate02" column="ufv_flex_date02" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #02</meta>
+        </property>
+
+        <property name="arLinellUfvFlexDate03" column="ufv_flex_date03" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #03</meta>
+        </property>
+
+        <property name="arLinellUfvFlexDate04" column="ufv_flex_date04" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #04</meta>
+        </property>
+
+        <property name="arLinellUfvFlexDate05" column="ufv_flex_date05" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #05</meta>
+        </property>
+
+        <property name="arLinellUfvFlexDate06" column="ufv_flex_date06" type="timestamp">
+            <meta attribute="field-description">Date UFV flex-field Date #06</meta>
+        </property>
+
+        <property name="arLinellUfvFlexDate07" column="ufv_flex_date07" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #07</meta>
+        </property>
+
+        <property name="arLinellUfvFlexDate08" column="ufv_flex_date08" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #08</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.vessel.business.operation.ArchiveLineDischargeList" table="vsl_ar_line_discharge_list" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.vessel.business.operation.ArchiveLineDischargeListHbr</meta>
+        <meta attribute="n4alias">arlinedl</meta>
+        <meta attribute="class-description">Entity representing the Discharge List information as sent by Line Operator</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Archived Line Discharge List</meta>
+        <meta attribute="n4-entity-name-plural">Archived Line Discharge List</meta>
+
+        <id name="arLinedlGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arLinedlOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Gkey of the original Discharge list before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arLinedlActionCode" column="action_code" type="com.navis.argo.persistence.atoms.UserTypeEdiActionCodeEnum">
+            <meta attribute="field-description">Effect of Discharge list - Add/Revoke</meta>
+        </property>
+
+        <property name="arLinedlSenderId" column="sender_id" type="java.lang.String" length="30">
+            <meta attribute="field-description">Id of Line Operator who sends the Discharge List - value from EDI</meta>
+        </property>
+
+        <property name="arLinedlLineOperatorId" column="line_operator_id" type="java.lang.String" length="100">
+            <meta attribute="field-description">Id of Line Operator who sends the Discharge List</meta>
+        </property>
+
+        <!-- Inbound Vessel Visit Information -->
+        <property name="arLinedlIbVesselVisitGkey" column="ib_cv_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Gkey of Vessel Visit for which the Discharge List pertains to</meta>
+        </property>
+        <property name="arLinedlIbVesselVisitId" column="ib_cv_id" type="java.lang.String" not-null="true">
+            <meta attribute="field-description">Id of Vessel Visit for which the Discharge List pertains to</meta>
+        </property>
+
+        <!-- Outbound Vessel Visit Information -->
+        <property name="arLinedlObVesselVisitGkey" column="ob_cv_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Gkey Vessel Visit which carries Transship containers</meta>
+        </property>
+        <property name="arLinedlObVesselVisitId" column="ob_cv_id" type="java.lang.String">
+            <meta attribute="field-description">Id of Vessel Visit which carries Transship containers</meta>
+        </property>
+
+        <many-to-one name="arLinedlComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which Discharge list info. belongs.</meta>
+        </many-to-one>
+
+        <!-- Container Information -->
+        <property name="arLinedlCtrId" column="ctr_id" type="java.lang.String" length="30">
+            <meta attribute="field-description">Container Id</meta>
+        </property>
+
+        <property name="arLinedlCtrEquipTypeId" column="ctr_eq_typ_id" type="java.lang.String" length="6">
+            <meta attribute="field-description">Container ISO Type Id from reference table</meta>
+        </property>
+
+        <property name="arLinedlCtrCategory" column="category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum">
+            <meta attribute="field-description">Container Category</meta>
+        </property>
+
+        <property name="arLinedlCtrFreightKind" column="freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum">
+            <meta attribute="field-description">Container Freight Kind</meta>
+        </property>
+
+        <property name="arLinedlCtrOperatorId" column="ctr_operator_id" type="java.lang.String" length="100">
+            <meta attribute="field-description">Container Operator Id</meta>
+        </property>
+
+        <property name="arLinedlCtrIntendedObMode" column="ctr_intended_ob_mode" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum">
+            <meta attribute="field-description">Container Intended Outbound Mode</meta>
+        </property>
+
+        <property name="arLinedlStowPosition" column="stow_position" type="java.lang.String" length="16">
+            <meta attribute="field-description">Stowage position on incoming vessel</meta>
+        </property>
+
+        <property name="arLinedlPOLId" column="pol_id" type="java.lang.String" length="6">
+            <meta attribute="field-description"> Id of Container Port Of Load</meta>
+        </property>
+
+        <property name="arLinedlPODId" column="pod_id" type="java.lang.String" length="6">
+            <meta attribute="field-description">Id of Container Port Of Discharge</meta>
+        </property>
+
+        <property name="arLinedlOPLId" column="opl_id" type="java.lang.String" length="6">
+            <meta attribute="field-description">Id of Origninal Port Of Load</meta>
+        </property>
+
+        <property name="arLinedlPOD2Id" column="pod2_id" type="java.lang.String" length="6">
+            <meta attribute="field-description">Id of Container Second Port Of Discharge</meta>
+        </property>
+
+        <property name="arLinedlDest" column="destination" type="java.lang.String" length="30">
+            <meta attribute="field-description">Destination</meta>
+        </property>
+
+        <property name="arLinedlCtrGrossWeightKg" column="ctr_gross_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Container Gross Weight in Kg.</meta>
+        </property>
+
+        <property name="arLinedlCtrWtKgVerfiedGross" column="ctr_verified_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Container Verified Weight in Kg.</meta>
+        </property>
+
+        <property name="arLinedlVgmEntity" column="ctr_verified_entity" type="string" length="40" >
+            <meta attribute="field-description">Container Verified Entity </meta>
+        </property>
+
+        <!-- Temperature -->
+        <property name="arLinedlTempRequiredC" column="temp_reqd_C" type="java.lang.Double">
+            <meta attribute="field-description">Preferred Temperature, degrees Centigrade</meta>
+        </property>
+
+        <property name="arLinedlTempLimitMinC" column="temp_min_C" type="java.lang.Double">
+            <meta attribute="field-description">Min. Temperature, degrees Centigrade</meta>
+        </property>
+
+        <property name="arLinedlTempLimitMaxC" column="temp_max_C" type="java.lang.Double">
+            <meta attribute="field-description">Max. Temperature, degrees Centigrade</meta>
+        </property>
+
+        <!-- OOG -->
+        <property name="arLinedlOogBackCm" column="oog_back_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Back, in Centimeters</meta>
+        </property>
+
+        <property name="arLinedlOogFrontCm" column="oog_front_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Front, in Centimeters</meta>
+        </property>
+
+        <property name="arLinedlOogLeftCm" column="oog_left_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Left, in Centimeters</meta>
+        </property>
+
+        <property name="arLinedlOogRightCm" column="oog_rignt_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Right, in Centimeters</meta>
+        </property>
+
+        <property name="arLinedlOogTopCm" column="oog_top_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Top, in Centimeters</meta>
+        </property>
+
+        <!-- Container Seal Numbers  -->
+        <property name="arLinedlSealNbr1" column="seal_nbr1" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 1</meta>
+        </property>
+
+        <property name="arLinedlSealNbr2" column="seal_nbr2" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 2</meta>
+        </property>
+
+        <property name="arLinedlSealNbr3" column="seal_nbr3" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 3</meta>
+        </property>
+
+        <property name="arLinedlSealNbr4" column="seal_nbr4" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 4</meta>
+        </property>
+
+        <!-- Commodity -->
+        <property name="arLinedlCommodityId" column="commodity_id"  type="java.lang.String">
+            <meta attribute="field-description">Id of Commodity reference entity</meta>
+        </property>
+
+        <property name="arLinedlBlNbr" column="bl_nbr" type="java.lang.String" length="30">
+            <meta attribute="field-description">Bill of Lading Number</meta>
+        </property>
+
+        <property name="arLinedlAgent1Id" column="agent1_id" type="java.lang.String" length="100">
+            <meta attribute="field-description">Agent1 Id of the Container</meta>
+        </property>
+
+        <property name="arLinedlAgent2Id" column="agent2_id" type="java.lang.String" length="100">
+            <meta attribute="field-description">Agent2 Id of the Container</meta>
+        </property>
+
+        <property name="arLinedlConsigneeBzuId" column="consignee_bzu_id"  type="java.lang.String" length="100">
+            <meta attribute="field-description">Consignee ScopedBizUnit Id</meta>
+        </property>
+
+        <many-to-one name="arLinedlArchiveHazards" column="hazards_gkey" class="com.navis.inventory.business.imdg.ArchiveHazards" cascade="all">
+            <meta attribute="field-description">Archived Cargo Hazards</meta>
+        </many-to-one>
+
+        <property name="arLinedlCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Created date of this record</meta>
+        </property>
+
+        <property name="arLinedlCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Creator name of this record</meta>
+        </property>
+
+        <property name="arLinedlChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="arLinedlChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Changer name of this record</meta>
+        </property>
+
+        <!--2010-03-01 bbakthavachalam ARGO-23868 add Unit and UFV flex fields for line Archive dischargeList -->
+        <!-- Unit Flex fields-->
+        <property name="arLinedlUnitFlexString01" column="unit_flex_string01" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #01</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString02" column="unit_flex_string02" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #02</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString03" column="unit_flex_string03" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #03</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString04" column="unit_flex_string04" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #04</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString05" column="unit_flex_string05" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #05</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString06" column="unit_flex_string06" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #06</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString07" column="unit_flex_string07" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #07</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString08" column="unit_flex_string08" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #08</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString09" column="unit_flex_string09" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #09</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString10" column="unit_flex_string10" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #10</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString11" column="unit_flex_string11" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #11</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString12" column="unit_flex_string12" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #12</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString13" column="unit_flex_string13" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #13</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString14" column="unit_flex_string14" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #14</meta>
+        </property>
+
+        <property name="arLinedlUnitFlexString15" column="unit_flex_string15" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #15</meta>
+        </property>
+
+        <!-- Unit facility visit Flex fields-->
+        <property name="arLinedlUfvFlexString01" column="ufv_flex_string01" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #01</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexString02" column="ufv_flex_string02" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #02</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexString03" column="ufv_flex_string03" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #03</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexString04" column="ufv_flex_string04" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #04</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexString05" column="ufv_flex_string05" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #05</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexString06" column="ufv_flex_string06" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #06</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexString07" column="ufv_flex_string07" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #07</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexString08" column="ufv_flex_string08" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #08</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexString09" column="ufv_flex_string09" type="string" length="255">
+            <meta attribute="field-description">flex-field String #09</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexString10" column="ufv_flex_string10" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #10</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexDate01" column="ufv_flex_date01" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #01</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexDate02" column="ufv_flex_date02" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #02</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexDate03" column="ufv_flex_date03" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #03</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexDate04" column="ufv_flex_date04" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #04</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexDate05" column="ufv_flex_date05" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #05</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexDate06" column="ufv_flex_date06" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #06</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexDate07" column="ufv_flex_date07" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #07</meta>
+        </property>
+
+        <property name="arLinedlUfvFlexDate08" column="ufv_flex_date08" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #08</meta>
+        </property>
+    </class>
+</hibernate-mapping>

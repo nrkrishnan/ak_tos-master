@@ -1,0 +1,287 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping default-lazy="true">
+
+    <!-- Anything added to this file will not be registered to mensa module as part of Apex-->
+    <meta attribute="JavaClassPrefix">MensalyticsArchive</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="scope-set">public</meta>
+
+    <!-- VesselVisitStatistics -->
+    <class name="com.navis.mensa.business.mensalytics.ArchiveVesselVisitStatistics" table="mns_ar_vessel_visit_statistics" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.mensa.business.mensalytics.ArchiveVesselVisitStatisticsHbr</meta>
+        <meta attribute="n4alias">arvvs</meta>
+        <meta attribute="class-description">Records vessel visit statistics for data from SPARCS</meta>
+        <meta attribute="n4-entity-name">Vessel Visit Statistic</meta>
+        <meta attribute="n4-entity-name-plural">Vessel Visit Statistics</meta>
+
+        <id name="arVvsGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arVvsVesselName" type="string">
+            <meta attribute="field-description">A String that represents the name of the vessel, e.g. "President Madison".</meta>
+            <column name="vessel_name" not-null="false"/>
+        </property>
+
+        <property name="arVvsVisitRef" type="string">
+            <meta attribute="field-description">Unique reference id for this visit</meta>
+            <column name="visit_ref" not-null="false"/>
+        </property>
+
+        <property name="arVvsCarrierGkey" type="java.lang.Long">
+            <meta attribute="field-description">Gkey of vvsCarrier</meta>
+            <column name="carrier_gkey" not-null="true"/>
+        </property>
+
+        <property name="arVvsCarrierId" type="string">
+            <meta attribute="field-description">The CarrierVisit cvId corresponding to this CarrierVisit</meta>
+            <column name="carrier_cvid" not-null="true"/>
+        </property>
+
+        <property name="arVvsOperator" column="operator_id" type="string" not-null="true">
+            <meta attribute="field-description">The Operator</meta>
+        </property>
+
+        <property name="arVvsLineOperator" column="line_operator" type="string" >
+            <meta attribute="field-description">The Line Operator for the vessel</meta>
+        </property>
+
+        <property name="arVvsComplex" column="complex_id" type="string" not-null="true">
+            <meta attribute="field-description">The Complex</meta>
+        </property>
+
+        <property name="arVvsFacility" column="facility_gkey" type="string" not-null="true">
+            <meta attribute="field-description">The Facility this vessel called</meta>
+        </property>
+
+        <property name="arVvsInVoyageName" type="string">
+            <meta attribute="field-description">A String that represents inbound voyage name, e.g. "134 N".</meta>
+            <column name="in_voyage_name" not-null="false"/>
+        </property>
+
+        <property name="arVvsOutVoyageName" type="string">
+            <meta attribute="field-description">A String that represents outbound voyage name, e.g. "134 N".</meta>
+            <column name="out_voyage_name" not-null="false"/>
+        </property>
+
+        <property name="arVvsVesselCode" type="string">
+            <meta attribute="field-description">A String that represents vessel voyage, e.g. "134 N".</meta>
+            <column name="vessel_code" not-null="false"/>
+        </property>
+
+        <property name="arVvsServiceCode" type="string">
+            <meta attribute="field-description">Service code for the vessel, e.g. "PSX".</meta>
+            <column name="service_code" not-null="false"/>
+        </property>
+
+        <property name="arVvsETA" column="t_eta" type="timestamp">
+            <meta attribute="field-description">Estimated Time of Arrival for this vessel.</meta>
+        </property>
+
+        <property name="arVvsETD" column="t_etd" type="timestamp">
+            <meta attribute="field-description">Estimated time of departure for this vessel.</meta>
+        </property>
+
+        <property name="arVvsShiftsCompleted" column="shifts_completed" type="java.lang.Long">
+            <meta attribute="field-description">Count of shifts completed for this vessel.</meta>
+        </property>
+
+        <property name="arVvsShiftsRemaining" column="shift_remaining" type="java.lang.Long">
+            <meta attribute="field-description">Count of shifts remaining for this vessel.</meta>
+        </property>
+
+        <property name="arVvsUpdateTime" column="t_update_time" type="timestamp">
+            <meta attribute="field-description">UTC timestamp at which this record was updated.</meta>
+        </property>
+
+        <!-- 2010-07-16 oviyak BIST-426
+        Expose new SPARCS fields in Vessel Visit Statistics table, reportable entity, gadget, and data mart-->
+        <property name="arVvsClass" column="vsl_cls" type="java.lang.String">
+            <meta attribute="field-description">Vessel class</meta>
+        </property>
+
+        <property name="arVvsCatType" column="vsl_cls_type" type="com.navis.vessel.persistence.atoms.UserTypeVesselClassificationEnum">
+            <meta attribute="field-description">Vessel class type</meta>
+        </property>
+
+        <property name="arVvsArrOffPort" column="arr_off_port" type="timestamp">
+            <meta attribute="field-description">Vessel class</meta>
+        </property>
+
+        <property name="arVvsStartWork" column="start_work" type="timestamp">
+            <meta attribute="field-description">Vessel class</meta>
+        </property>
+
+        <property name="arVvsStopWork" column="stop_work" type="timestamp">
+            <meta attribute="field-description">Vessel class</meta>
+        </property>
+
+        <property name="arVvsCutOff" column="cut_off" type="timestamp">
+            <meta attribute="field-description">Vessel class</meta>
+        </property>
+
+        <property name="arVvsVesselBerth" column="vsl_berth" type="java.lang.String">
+            <meta attribute="field-description">Berth</meta>
+        </property>
+
+        <property name="arVvsSideToCode" column="berth_side" type="java.lang.String">
+            <meta attribute="field-description">Berth Portside To</meta>
+        </property>
+
+        <property name="arVvsBollardFore" column="bollard_fore" type="java.lang.String">
+            <meta attribute="field-description">Fore Bollard</meta>
+        </property>
+
+        <property name="arVvsBollardAft" column="bollard_aft" type="java.lang.String">
+            <meta attribute="field-description">Aft Bollard</meta>
+        </property>
+
+        <property name="arVvsVesselLenInM" column="vsl_length" type="java.lang.String">
+            <meta attribute="field-description">Vessel length (m)</meta>
+        </property>
+    </class>
+
+
+
+    <!-- CraneActivity -->
+    <class name="com.navis.mensa.business.mensalytics.ArchiveCraneActivity" table="mns_ar_crane_activity" dynamic-update="false">
+        <meta attribute="generated-class">com.navis.mensa.business.mensalytics.ArchiveCraneActivityHbr</meta>
+        <meta attribute="n4alias">arcact</meta>
+        <meta attribute="class-description">Single crane activity</meta>
+        <meta attribute="n4-entity-name">Crane Activity</meta>
+        <meta attribute="n4-entity-name-plural">Crane Activities</meta>
+
+        <id name="arCactGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arCactCarrierGkey" type="java.lang.Long">
+            <meta attribute="field-description">Gkey of cactCarrier</meta>
+            <column name="carrier_gkey" not-null="true"/>
+        </property>
+
+        <property name="arCactCarrierId" type="string">
+            <meta attribute="field-description">The CarrierVisit cvId corresponding to this CarrierVisit</meta>
+            <column name="carrier_cvid" not-null="true"/>
+        </property>
+
+        <property name="arCactCraneCheId" column="crane_che_id" type="java.lang.Long"/>
+
+        <property name="arCactCraneCheShortName" column="crane_che_short_name" type="java.lang.String" length="255"/>
+
+        <property name="arCactCraneCheKind" column="crane_che_kind" type="java.lang.Long"/>
+
+        <property name="arCactCraneCheOperatingMode" column="crane_che_op_mode" type="java.lang.Long"/>
+
+        <property name="arCactCraneChePow" column="crane_che_pow" type="java.lang.Long"/>
+
+        <property name="arCactCraneChePool" column="crane_che_pool" type="java.lang.Long"/>
+
+        <property name="arCactActivityStatus" type="com.navis.mensa.persistence.atoms.UserTypeCraneActivityStatusEnum">
+            <meta attribute="field-description">Status (NONE/STARTED/STOPPED).</meta>
+            <column name="status" not-null="true"/>
+        </property>
+
+        <property name="arCactActivityId" column="activity_id" type="string" length="10">
+            <meta attribute="field-description">Id for an activity</meta>
+        </property>
+
+        <property name="arCactActivityCode" column="activity_code" type="string" not-null="true">
+            <meta attribute="field-description">Code for an activity (String representation of com.navis.mensa.business.reference.ActivityCode).</meta>
+        </property>
+
+        <!--2010-02-01 oviyak 2.1.G ARGO-23599 Handle Duplicate index names problem-->
+        <property name="arCactActivityRef" column="activity_ref" type="string" not-null="true">
+            <meta attribute="field-description">Unique Id that identifies this activity.</meta>
+        </property>
+
+        <property name="arCactActivityStartTime" column="t_activity_start_time" type="timestamp">
+            <meta attribute="field-description">Time at which this activity starts</meta>
+        </property>
+
+        <property name="arCactActivityEndTime" column="t_activity_end_time" type="timestamp">
+            <meta attribute="field-description">Time at which this activity ends</meta>
+        </property>
+
+        <property name="arCactActivityCount" column="activity_count" type="java.lang.Long">
+            <meta attribute="field-description">Some activities have counts i.e. egear moves, value is 1 if not specified.</meta>
+        </property>
+
+        <property name="arCactUpdateTime" column="t_update_time" type="timestamp">
+            <meta attribute="field-description">UTC timestamp at which this record was updated.</meta>
+        </property>
+
+    </class>
+
+   
+
+    <class name="com.navis.mensa.business.mensalytics.ArchiveMensaCarrierVisit" table="mns_ar_carrier_visit" dynamic-update="true">
+        <meta attribute="n4alias">arcv</meta>
+        <meta attribute="generated-class">com.navis.mensa.business.mensalytics.ArchiveMensaCarrierVisitHbr</meta>
+        <meta attribute="class-description">proxy representing a call of a carrier at a facility</meta>
+        <meta attribute="n4-entity-name">Carrier Visit</meta>
+        <meta attribute="n4-entity-name-plural">Carrier Visits</meta>
+
+        <id name="arCvGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arCvOriginalGkey" type="java.lang.Long">
+            <meta attribute="field-description">Gkey of the original entity before archived</meta>
+            <column name="carrier_gkey" not-null="true"/>
+        </property>
+
+        <property name="arCvId" type="string">
+            <meta attribute="field-description">carrier visit id: carrier identifier (vessel/voyage, truck license, etc.)</meta>
+            <column name="id" length="30" not-null="true"/>
+        </property>
+
+        <property name="arCvCustomsId" type="string">
+            <meta attribute="field-description">external reference id for this visit (e.g. customs' ID at PNC)</meta>
+            <column name="customs_id"  not-null="false"/>
+        </property>
+
+        <property name="arCvCarrierMode" column="carrier_mode" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" not-null="true">
+            <meta attribute="field-description">the carrier transport mode (vessel, rail or truck)</meta>
+        </property>
+
+        <property name="arCvVisitNbr" column="visit_nbr" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">number to disambuguate the visit: 1=first visit, 2=second, etc. (used for trucks and railcars only)</meta>
+        </property>
+
+        <property name="arCvVisitPhase" column="phase" type="com.navis.argo.persistence.atoms.UserTypeCarrierVisitPhaseEnum" not-null="true">
+            <meta attribute="field-description">Visit phase (CREATED, INBOUND ARRIVED, ...)</meta>
+        </property>
+
+        <property name="arCvOperator" column="operator" type="string">
+            <meta attribute="field-description">The primary operator of this carrier visit.</meta>
+        </property>
+
+        <property name="arCvComplex" column="complex" type="string">
+            <meta attribute="field-description">The Complex at which this carrier will call</meta>
+        </property>
+
+        <property name="arCvFacility" column="facility" type="string">
+            <meta attribute="field-description">The Facility at which this carrier will call (if known)</meta>
+        </property>
+
+        <property name="arCvNextFacility" column="next_facility" type="string">
+            <meta attribute="field-description">The next Facility this carrier will call. If null, assumption is carrier leaves complex on departure</meta>
+        </property>
+
+        <property name="arCvATA" column="ata" type="timestamp">
+            <meta attribute="field-description">Actual Time of Arrival</meta>
+        </property>
+
+        <property name="arCvATD" column="atd" type="timestamp">
+            <meta attribute="field-description">Actual Time of Departure</meta>
+        </property>
+
+    </class>
+
+
+
+</hibernate-mapping>

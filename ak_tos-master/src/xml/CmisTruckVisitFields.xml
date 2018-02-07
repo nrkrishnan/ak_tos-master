@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FileDesc>
+<File name="CmisTruckVisitFields" padChar=" "/>
+<Field sequence="0"  name="msgType"  size="40"></Field>  
+<Field sequence="1"  name="unitClass" size="15"></Field> 
+<Field sequence="2"  name="gateSeqNo"  size="12"></Field>
+<Field sequence="3"  name="action"  size="5"></Field>
+<Field sequence="4"  name="aDate"  size="10"></Field>
+<Field sequence="5"  name="aTime"  size="8"></Field>
+<Field sequence="6"  name="turnTime"  size="4"></Field>
+<Field sequence="7"  name="lineTime"  size="4"></Field>
+<Field sequence="8"  name="trans"  size="8"></Field>
+<Field sequence="9"  name="tractor"  size="11"></Field>
+<Field sequence="10" name="truck"  size="4"></Field>
+<Field sequence="11" name="truckerName" size="41"></Field>
+<Field sequence="12" name="ctrno" size="12"></Field>
+<Field sequence="13" name="ctrnoCd"  size="1"></Field>
+<Field sequence="14" name="typeCode" size="8"></Field>
+<Field sequence="15" name="cweight"  size="10"></Field>
+<Field sequence="16" name="chassisNumber" size="11"></Field>
+<Field sequence="17" name="chassisCd"  size="1"></Field>
+<Field sequence="18" name="mgNumber"  size="11"></Field>
+<Field sequence="19" name="bookingNumber"  size="17"></Field>
+<Field sequence="20" name="shipperConsignee"  size="35"></Field>
+<Field sequence="21" name="consigneeAddr1"  size="32"></Field>
+<Field sequence="22" name="consigneeAddr2"  size="32"></Field>
+<Field sequence="23" name="consigneeAddr3"  size="35"></Field>
+<Field sequence="24" name="seal"   size="10"></Field>
+<Field sequence="25" name="vesvoy"  size="6"></Field>
+<Field sequence="26" name="dport"  size="4"></Field>
+<Field sequence="27" name="srv"  size="5"></Field> 
+<Field sequence="28" name="loc"  size="7"></Field>
+<Field sequence="29" name="temp"  size="3"></Field> 
+<Field sequence="30" name="tempUnits"  size="1"></Field>
+<Field sequence="31" name="odf"  size="1"></Field>
+<Field sequence="32" name="hazf"  size="1"></Field>
+<Field sequence="33" name="comments"  size="65"></Field>
+<Field sequence="34" name="ctrOwner"  size="4"></Field>
+<Field sequence="35" name="chasSrv"  size="5"></Field>
+<Field sequence="36" name="chasOwner"  size="4"></Field>
+<Field sequence="37" name="chassisTypeCode"  size="3"></Field>
+<Field sequence="38" name="aeiTractorId"  size="8"></Field>
+<Field sequence="39" name="driversLicense"  size="30"></Field>
+<Field sequence="40" name="ctrPrimaryCarrier"  size="3"></Field>
+<Field sequence="41" name="chsPrimaryCarrier" size="3"></Field>
+<Field sequence="42" name="trade"  size="1"></Field>
+<Field sequence="43" name="shipperRefNo"  size="20"></Field>
+<Field sequence="44" name="militaryV"   size="4"></Field>
+<Field sequence="45" name="fullEmptyIndicator"	size="1"></Field>
+</FileDesc>
+
+
+
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

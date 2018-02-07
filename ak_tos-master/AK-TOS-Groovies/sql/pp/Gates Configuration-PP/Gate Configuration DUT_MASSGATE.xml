@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gateConfiguration name="DUT_MASSGATE" description="Gate Config for Dutch Mass Gate">
+  <gateStages>
+    <outStage id="outgate" leg="out" menuId="Out Gate" order="21" openBarrierOnTrouble="false" pickupAssignment="" checkIfAllDone="true" allowStageId="" nextStageIdNoTran="" autoStage="false" isTruckVisitRequired="false" pollNextTruck="false" pollTruckInterval="" extraTime="" timeAllowed="" allowAnyStage="false" exchangeLaneAssignmentBooth="false" allowTransactionEdit="false" includeAppointmentTab="" appointmentsTabFilterId="" includeGroupsTab="" cargoLotsFilterId="" supportsCallup="false" isExcluded="false">
+      <stagesAllowed />
+    </outStage>
+  </gateStages>
+  <gateStageSubTypes>
+    <gateStagesRE>
+      <outStage id="outgate" leg="out" addAllowed="false" pollScale="false" pollScaleInterval="" autoSubmit="false" prepopulateInspInfo="false" proceedIfTrouble="false">
+        <bizTasks>
+          <!--System Task ReadTruckingCompany-->
+          <!--System Task ReadDriver-->
+          <!--System Task ReadTruck-->
+          <!--System Task ReadContainer-->
+          <!--System Task ReadChassis-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadContainerOperator-->
+          <!--System Task ReadContainerPosition-->
+          <!--System Task ReadAccessory-->
+          <!--System Task ReadLine-->
+          <!--System Task ReadUnitPreadvised-->
+          <!--System Task ReadOrder-->
+          <!--System Task ReadOrderItem-->
+          <bizTask name="SelectOrderItemForRcvCtr" include="true" />
+          <!--System Task ReadCarrierVisit-->
+          <!--System Task ReadDischargePoint1-->
+          <bizTask name="ReadReeferDetails" include="true" />
+          <!--System Task ReadCommodity-->
+          <bizTask name="AdjustTally" include="true" />
+          <bizTask name="ApplyOogDetails" include="true" />
+          <!--System Task ReadAccessory-->
+          <bizTask name="RejectDuplicateTransaction" include="true" />
+          <bizTask name="RejectContainerNotFound" include="true" />
+          <bizTask name="RejectContainerRequired" include="true" />
+          <bizTask name="RejectContainerInYard" customCode="MATGvyUpdateGrossWeight" include="true" />
+          <bizTask name="CreateContainerVisit" customCode="MATSetGateCarrierVisitNoTruck" include="true" />
+          <bizTask name="ApplyPhysicalDetails" include="true" />
+          <bizTask name="ApplyObservedPlacardsToUnit" include="true" />
+          <bizTask name="ApplyContainerSeals" include="true" />
+          <bizTask name="ApplyContainerExportGoods" include="true" />
+          <bizTask name="ApplyContainerDamages" include="true" />
+          <bizTask name="ApplyContainerNotes" include="true" />
+          <bizTask name="ApplyContainerGrossWeight" include="true" />
+          <bizTask name="ApplyFlexFieldsToUnit" customCode="MATSetUnitFlex" include="true" />
+          <bizTask name="PlaceContainerOnTruck" include="true" />
+          <bizTask name="PlaceUnitIntoYard" customCode="MATPlaceUnitInYardHeap" include="true" />
+          <!--System Task CreateInfoAndWarningDocumentMessages-->
+        </bizTasks>
+        <uiForm>
+          <uiField fieldId="tranCtrNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCtrOperator" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrOwnerId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranCtrTypeId" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranEqoNbr" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+          <uiField fieldId="tranCarrierVisit" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranDischargePoint1" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="tranNotes" fieldDisplayMode="VIEW_ONLY" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="unitFlexString15" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="ufvFlexString10" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+          <uiField fieldId="tranFlexString08" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        </uiForm>
+      </outStage>
+    </gateStagesRE>
+  </gateStageSubTypes>
+  <gateStageTruckVisit>
+    <outStage id="outgate" leg="out" autoStage="false" isTruckVisitRequired="false" checkIfAllDone="true" allowStageId="" nextStageIdNoTran="" pollNextTruck="false" pollTruckInterval="" allowAnyStage="false" supportsCallup="false" isExcluded="false">
+      <bizTasks>
+        <bizTask name="CheckTruckOKAtStage" include="true" />
+        <!--System Task ReadTruck-->
+        <!--System Task ReadTruck-->
+        <bizTask name="DepartUnit" include="true" />
+        <bizTask name="DepartTruckVisit" include="true" />
+        <bizTask name="PositionTruckVisit" include="true">
+          <parameter id="truckPosition" value="OUT" />
+        </bizTask>
+      </bizTasks>
+      <uiForm>
+        <uiField fieldId="tvdtlsDriverName" fieldDisplayMode="EDITABLE" fieldRequired="false" />
+        <uiField fieldId="tTranCtrNumber" fieldDisplayMode="EDITABLE" fieldRequired="true" />
+      </uiForm>
+    </outStage>
+  </gateStageTruckVisit>
+</gateConfiguration>
+

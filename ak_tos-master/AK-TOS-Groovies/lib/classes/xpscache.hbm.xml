@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <meta attribute="JavaClassPrefix">Xpscache</meta>
+    <meta attribute="extends">com.navis.xpscache.business.entity.HibernatingEntity</meta>
+
+    <!--  Entity : XPS Cached Object store  -->
+    <class name="com.navis.xpscache.business.model.XpsCachedObject" table="xps_object" dynamic-update="true">
+        <meta attribute="n4alias">xpsobj</meta>
+        <meta attribute="generated-class">com.navis.xpscache.business.model.XpsCachedObjectHbr</meta>
+        <meta attribute="class-description">XPS Cached Object store</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">XPS Cached Object</meta>
+        <meta attribute="n4-entity-name-plural">XPS Cached Objects</meta>
+        <meta attribute="carina-index">
+            xpsobject_pkey_tbl_yrd_idx(xps_pkey,xps_table_id,yard_gkey);
+            xpsobject_changed_created_idx(changed, created);
+        </meta>
+
+        <id name="xpsobjGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="xpsobjYardGkey" column="yard_gkey" type="java.lang.Long" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">Yard associated with the object</meta>
+        </property>
+
+        <property name="xpsobjXpsTableName" column="xps_table_name" type="java.lang.String" length="40" not-null="false">
+            <meta attribute="field-description">XPS integer ID for this entity</meta>
+        </property>
+
+        <property name="xpsobjXpsTableId" column="xps_table_id" type="java.lang.Integer" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">XPS integer ID for this entity</meta>
+        </property>
+
+        <property name="xpsobjN4Gkey" column="n4_gkey" type="java.lang.Long" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">N4 internal key for this instance (gkey)</meta>
+        </property>
+
+        <property name="xpsobjXpsPkey" column="xps_pkey" type="java.lang.Long" not-null="false">
+                    <meta attribute="field-description">Corresponding XPS object instance primary key (pkey)</meta>
+        </property>
+
+        <property name="xpsobjObjectData" column="object_data" type="com.navis.framework.persistence.util.BlobUserType" length="10000000"  lazy="true" not-null="true">
+            <meta attribute="field-description">XPS object as a byte array</meta>
+        </property>
+
+        <property name="xpsobjKeyword1" column="keyword_1" type="java.lang.String" length="80" lazy="true">
+                   <meta attribute="field-description">First keyword (e.g. container id)</meta>
+        </property>
+
+        <property name="xpsobjKeyword2" column="keyword_2" type="java.lang.String" length="80" lazy="true">
+                   <meta attribute="field-description">Second keyword</meta>
+        </property>
+
+        <property name="xpsobjKeyword3" column="keyword_3" type="java.lang.String" length="80" lazy="true">
+                   <meta attribute="field-description">Third keyword</meta>
+        </property>
+
+        <property name="xpsobjAction" column="action" type="com.navis.xpscache.persistence.atoms.UserTypeXpsCachedObjectActionEnum">
+            <meta attribute="field-description">CRUD Action performed on this instance</meta>
+        </property>
+
+        <property name="xpsobjCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Created date of this record</meta>
+        </property>
+
+        <property name="xpsobjCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Creator name of this record</meta>
+        </property>
+
+        <property name="xpsobjChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="xpsobjChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Changer name of this record</meta>
+        </property>
+
+
+    </class>
+</hibernate-mapping>

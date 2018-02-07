@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2011 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+ For testing N4 extension integration
+-->
+
+<hibernate-mapping>
+    <!--  This can only be used because the shipper hbm.xml has been patched to have shpprCustomFlexFields   -->
+    <class name="com.navis.argo.business.reference.Shipper">
+        <id/>
+        <dynamic-component name="shpprCustomFlexFields">
+            <property name="shpprCustomDFFString1" column="custdff_shipper_string1" type="string" length="255"/>
+            <property name="shpprCustomDFFString2" column="custdff_shipper_string2" type="string" length="255"/>
+
+            <property name="shpprCustomDFFDateTime1" column="custdff_shipper_datetime1" type="timestamp"/>
+            <property name="shpprCustomDFFDateTime2" column="custdff_shipper_datetime2" type="timestamp"/>
+
+            <property name="shpprCustomDFFLong1" column="custdff_shipper_long1" type="java.lang.Long"/>
+            <property name="shpprCustomDFFLong2" column="custdff_shipper_long2" type="java.lang.Long"/>
+
+            <property name="shpprCustomDFFDouble1" column="custdff_shipper_double1" type="java.lang.Double"/>
+            <property name="shpprCustomDFFDouble2" column="custdff_shipper_double2" type="java.lang.Double"/>
+
+            <many-to-one name="shpprCustomDFFEvilTwinShipper" class="com.navis.argo.business.reference.Shipper"
+                         column="custdff_shipper_twin_shipper"/>
+        </dynamic-component>
+    </class>
+
+</hibernate-mapping>

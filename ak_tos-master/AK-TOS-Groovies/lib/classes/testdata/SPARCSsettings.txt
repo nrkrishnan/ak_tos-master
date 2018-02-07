@@ -1,0 +1,578 @@
+****************Source file for SPARCS Configuration************									
+******Lines beginning with stars are comment lines ********									
+**************************************************************									
+#SETTINGS	code	may change	value	comment					
+	ACTVEC	Y	Y	Work with active queues only					
+	ACTVMK	Y	Y	Marked jobs become active					
+	ALLOCL	Y	EQID EQTP CTGY LPRT ACRR DCRR LOPR SPCD COMD DSGP IMOC   						
+	ALLOCR	Y	ISRF ISFL ISHZ ISOG ISHC USC1 USC2 RFTP RLSE MXTR FLWA						
+	ALTCRN	Y	Y	Terminal may assign mooves to alternating crane lanes					
+	AMIXET	Y	N	Contols whether exports and tranships are treated the same for Yard Allocation					
+	ARCLIC	Y	Y	AR Click in allocation window flows selected containers (DARs only)					
+	AREARG	Y	Y	May activate/deactivate alloc ranges from yard selections					
+	ARTIER	Y	N	ARs default to tier-wise					
+	ARYWIN	Y	Y	Auto restore saved set of yard windows					
+	AUTOCN	Y	N	Automatically connect SPARCS server to host on restart					
+	BANOTE	Y	Y	Bay notes					
+	BERTHI	Y	VETA VSTW VETD						
+	BLKNAM	Y	Y	Block name 					
+	BOLDMW	Y	Y	Extra bold for Men Working Areas					
+	CHEPFX	Y	N	SHow CHE prefix					
+	CHKALC	Y	Y	Check allocations for a rehandle					
+	CLFONT	Y	Helvetica	Client font for name					
+	CLNAME	Y	Lyttelton Port of Chistchurch	Lyttelton Port of Christchurch					
+	CLSTYL	Y	normal	Client style for name					
+	CNFNDL	Y	EQID EQTP CTGY DPRT LPRT ACRR DCRR LOPR SPCD COMD DSGP CLCQ						
+	CNFNDR	Y	ISHZ ISRF ISFL ISOG ISPL ISDM USC1 USC2 RLSE USR7 QWGT TRNG RPWR						
+	CNFDSP	Y	Y	confirm display as if move was completed					
+	CNDFNL	Y	QWGT DPRT LPRT DCRR LOPR COMD IMOC STAT						
+	CNDFNR	Y	EQTP HGHT ISRF TEMP ODMH ODML ODMR ODMF ODMA						
+	CONSEQ	Y	Y	20s then 40s sequence  auto discharge					
+	CPROJP	Y	N	Create dummy projection					
+	CURFRD	Y	Y	Host receives Reefer detail chanfes					
+	CURFRP	Y	Y	Host recevies reefer plug changes					
+	CURFRS	Y	Y	Host receives reefer state changes					
+	CURFRT	Y	Y	Host receives reefer temp changes					
+	DRPLMT	Y	Y	Deallocations					
+	DRVRF2	Y	Y	Driver can enter rehandle via F2					
+	DRVRF6	Y	N						
+	DRVRSD	Y	Y						
+	DRVRXV	Y	Y						
+	ECARPT	Y	2300	Save EC Status Report					
+	ECOPMD	Y	Y	May Change Operating maode					
+	ECRFCN	Y	Y	Reefer connect warning in CHE					
+	EDSHOW	Y	STRAD	which ed penalties to display					
+	ENTPOS	Y	N						
+	FITALL	Y	Y	Container must fit ALL allocations on a slot					
+	FRERHD	Y	N						
+	FRKPOR	Y	Y	Show Fork lift Point of Reference on RDT					
+	HCCRLN	Y	N	Hatch clerk assign discharge to lane					
+	ICON40	Y	Y	show 4 when 40 in small icon					
+	INCPHO	Y	Y	Include Port Holes in Reefer work list					
+	KEYSP1	Y	Printer Port USB						
+	KEYSP2	Y	P#2USA28X01						
+	KILLAR	Y	N	Alloc. ranges automatically deleted when all containers in range are deleted (positioned elsewhere?)					
+	KILLAG	Y	N	Alloc. group automatically deleted when all ranges are deleted					
+	MOVLOK	Y	Y	Can reallocate locked moves to different slot in the same location (usually ship discharge)					
+	LIFTSC	Y	880	lift limit for straddles					
+	LDSTOP	Y	NONE	Put stop signs in the sequence number on sequence sheets					
+	LOGDAY	Y	60	Days B4 Delete logs					
+	LSTFLT	Y	N	Lists as floating windows					
+	MUSTMP	Y	N	Must enter temp for all actions on Reefer RDT					
+	POWMOD	Y	MANU STOP CUST AUTO						
+	PRJSGD	Y	Y	"Show ground slot instead of ""Drive to Row"""					
+	PRLOGT	Y	N	Use F2 to logout of LXE					
+	PRTEMP	Y	Y	Stow plans will print mt rostow sections					
+	PRUSHC	Y	N	Hatch clerk discharges ship					
+	RDTEZH	Y	Y						
+	REFINE	Y	N	Che can use F6					
+	REMSEL	Y	Y	Yard Moves Remain Selected					
+	RESQLK	Y	N	Allow resequence locked moves					
+	RFROPM	Y	Y	Reefer power monitoring					
+	RDACTV	Y	10	Road Activation seconds until Move Marks					
+	RFRARE	Y	Y	Reefer RDt can filter br area					
+	RFRYMO	Y	Y	Reefer Walk order					
+	RHNDLV	Y	Y						
+	RHNDLY	Y	Y						
+	ROADV1	Y	Y	Receivals b4 deliveries					
+	SASPCD	Y	E.R.T.M.S	Include special stow code in autostow factor					
+	SATMPR	Y	E.R.T.M.S	Include temperature range in Autostow Factor					
+	SADSGP	Y	E.R.T.M.S	Include discharge group in stow factor					
+	SCARCC	Y	E.R.T.M.I	Section factor includes category					
+	SCARCT	Y	%	Section factor includes visit					
+	SEQMSK	Y	TO COME	Mask for sq sheet / created MTs					
+	SFARCC	Y	E.R.T	Stacking factor includes visit					
+	SFARCT	Y	%	Stacking factor includes category					
+	SFDPRT	Y	E.T.R.I.M	Stacking factor includes disport					
+	SFDSGP	Y	%	Stacking factor includes discharge group					
+	SFEQTP	Y	M.E.T	stacking factor includes equipment class					
+	SFLINE	Y	M	Stacking factor includes line operater					
+	SFODIM	Y	%	stacking factor includes over dim					
+	SFSPCD	Y	%	Stacking factor can include special stow					
+	SHRPRJ	Y	Y	"Share projections, tanks, lashing"					
+	SLOTSZ	Y	Y	Show restrictions on MT slots					
+	SOLOLG	Y	Y	Force login in solo mode					
+	STKIND	Y	Y	Stack indicators on scan view of ship					
+	STOWLN	Y	N	Stow plan outlines					
+	STOWOL	Y	N	Stow plan outlines					
+	TCPTIM	Y	300	TCPIP timeout					
+	TEMPAL	Y	Y						
+	UNLOAD	Y	N	Host required to removed loaded box					
+	UPDTMT	Y	DCRR DPRT LOPR						
+	UPDTFL	Y	DCRR DPRT LOPR						
+	VESPWP	Y	Y	Uses predefined work pattern					
+	V2SLOT	Y	Y	CHE completes Load Move					
+	WQXLEN	Y	N	Separate 20' 40' ship queues					
+	DXTRCT	Y	Y	Something about the BI extract					
+	MUSDET	Y	Y						
+**************************************************************									
+#CLASS	code	# chars	in use	long name	short name				
+	COMD		Y						
+	DSGP	3	Y						
+	EQTP		Y	Eq.type	Eq.type				
+	TRNG		Y	Temp Range	temp rng				
+**************************************************************									
+#ATTRIBUTE	code	# chars	in use	long name	short name				
+	ACRR	12	Y	Inbound Carrier	Inb Carrier				
+	ALFT	8	Y						
+	ALLB	17	Y						
+	ALLR	19	Y						
+	ALOG	23	Y						
+	AMOD	6	Y						
+	BURN		N						
+	BKNG	20	Y						
+	CHGT		Y						
+	CHID		Y						
+	CHNG		Y						
+	COND		Y						
+	CONS		Y						
+	COMD	4	Y						
+	COUF	1	Y						
+	CSLT	7	Y						
+	CTST		N						
+	DCRR	12	Y	Outbound Carrier	O/B Carrier				
+	DEST	6	Y			destination			
+	DLVR		Y						
+	DMGC		Y	Damage Codes					
+	DMGE		Y						
+	DMOD	6	Y						
+	DOOR	3	Y	Door Direction	Door				
+	DSGP		Y	Disch Grp	Group				
+	DSTA		Y						
+	EQID		Y						
+	GRID		Y						
+	HKEY		N						
+	IMOC		Y	IMOC Code					
+	IMOM	6	Y						
+	INDX		N						
+	ISOC		N						
+	LANE	6	Y						
+	LICN		N						
+	LNTH		Y						
+	LOGN		Y						
+	LSTO		Y						
+	MDIR		Y						
+	MTIM		Y						
+	NMBR		N						
+	ODMF		Y						
+	ODMA		Y						
+	ODMH		Y						
+	ODML		Y						
+	ODMR		Y						
+	OPOS		Y						
+	OWNR		Y						
+	PDDS		Y						
+	PDPL		Y						
+	PPIP		Y						
+	PPMS		Y		Max Jobs				
+	PPSW		Y						
+	PPTL		Y						
+	PRFX		N						
+	PSLT	6	Y						
+	PTCH		Y						
+	PTPT		Y						
+	QPOW		Y						
+	QTOT		Y						
+	QTYP		Y						
+	QUEU	15	Y						
+	QWGT	4	Y						
+	RDTS	6	Y						
+	RFRT	7	Y						
+	RLSE		Y						
+	RMRK	15	Y						
+	RPWR		Y						
+	SEL1		N						
+	SEL2		N						
+	SEL3		N						
+	SEL4		N						
+	SBIP	4	Y						
+	SLOT		Y						
+	SMHS		Y						
+	SMTS		Y						
+	SORT		N						
+	SPCD		Y						
+	SRVC		Y						
+	STCD		Y						
+	STFC		Y						
+	TEMP	7	Y	Reefer temp C					
+	TIME		Y						
+	TLQV		N						
+	TLVS		Y						
+	TMPF	7	Y	Farenheit					
+	TRNS	3	Y	Bat Number	Bat				
+	TRNG		Y	Temp Range					
+	TYIN		Y						
+	TYOT		Y						
+	UNDR	3	Y						
+	USC1	1	Y	Clean	Cln				
+	USC2	1	Y	PTI	PTI				
+	USC3		Y						
+	USR1	1	Y	Truck Position	T Pos				
+	USR2	4	Y	Commodity	Cmdty				
+	USR3	1	Y	Transfer Area	xfer				
+	USR4	1	N	Clean.old	Cln				
+	USR5	1	N	PTI.old	PTI				
+	USR6	1	Y	Trk Door	T Dr				
+	USR7	10	N	User Stop Code	Stop Code				
+	USR9	15	Y	Rail Car ID	Railcar ID				
+	VACT		Y						
+	VCUT		N						
+	VDRF		N						
+	VETA		Y	Vessel ETA					
+	VETD		Y	Vessel ETD					
+	VEMS		Y	Estimated Moves					
+	VEBT		Y	Estimated Berth time					
+	VFYL		Y	Verfird Load List					
+	VMPH		Y	Moves per Hour					
+	VGNT		Y						
+	VPRT		Y	Current port					
+	VRFY		Y	Verify					
+	VSTB		Y	Starboard Side					
+	VSTW		Y	Start Work					
+	WCLS		Y	Weight Class					
+	WIMK		Y	Mark					
+	WIMT		Y	Modified Time					
+	WIMU		Y	Modified by					
+	YBLK		N						
+	YROW		N						
+	XPOL		Y	Load port					
+	YPLN		Y	Yard Plan					
+**************************************************************									
+#LOG BLOCK	code	code name	name	icon ID	xloc	yloc		Ingress	Egress
+	EQPC	EC	E.C.	1		15	80	8	8
+	COMM	COM	Preadvised	2	263	26		30	30
+	GQCD	GRIDQ	GridQ	34	263	26	   G	30	30
+	LANE	LN	Lane	32	263	26	   G	30	30
+	LANE	MTLANE	Mt lane	7				29	29
+	TQCD	TQ	T.Queue	7	2	100	 M M	30	30
+	TIPC	TIP	TIP	28	2	100	 M M	30	30
+	FDEC	FLD	Failed to deck	31					
+	FRME	FRM	Frame	43		30	30		
+	RAIL	IBRAIL	Rail In	14				R2	R3
+	RAIL	OBRAIL	Rail Out	14				R4	R5
+	APRN	BR	BR						
+**************************************************************									
+#LOAD SEQ	categories	title	# chars	style					
+	EQID	CONTAINER	13	U					
+	CSLT	FROM	7	U					
+	PSLT	TO	6	U					
+	UNDR	STR	2	U					
+	UNDR	LN	3	U					
+	DOOR	DR	3						
+	DPRT	PRT	3						
+	COMD	PRD	4						
+	QWGT	WT	4						
+	SBIP	!!!	4						
+	TEMP	Temp	7						
+**************************************************************									
+#DISCH SEQ	categories	title	# chars	style					
+	EQID	CONTAINER	13	U					
+	CSLT	FROM	6	U					
+	PSLT	TO	6	U					
+	EQTP	TYPE	4						
+	LOPR	USR	3						
+	COMD	PRD	4						
+	QWGT	WT	4						
+	DPRT	PRT	3						
+	SBIP	!!!	4						
+	TEMP	TEMP	7						
+	DSGP	GRP	3						
+******Additional Source file for SPARCS Configuration************									
+******Append some of these sections to  ********									
+*******your current config files to support new stow plan options************									
+**************************************************************									
+**************************************************************									
+#STOW FINAL	height (mm)	width (mm)							
+	19	24							
+#OPTIONS	inc. moments	big bay num	sep. lengths	comb.Decks	labels	met. Tonnes	Proj IDs		
+	N	N	N	N	Y	N	Y		
+#FONT SET	set number	font	size						
+	1	Helvetica	12						
+	2	Courier	12						
+#FIELDS	categories	just	vert. offset	font set					
+	PDDS	L	17	2					
+	XPOL	R	17	2					
+	EQID	L	37	1					
+	EQTP	L	57	2					
+	QWGT	R	57	2					
+	SBIC	C	76	2					
+	LOPR	R	76	2					
+	COMD	L	95	2					
+	SLOT	R	95	2					
+**************************************************************									
+#STOW CUST	height (mm)	width (mm)	line operator						
+	17	19	MSK						
+#OPTIONS	inc. moments	big bay num	sep. lengths	comb.Decks	labels	met. Tonnes			
+	Y	N	N	N	N	N			
+#FONT SET	set number	font	size						
+	1	Helvetica	12						
+	2	Courier	12						
+#FIELDS	categories	just	vert. offset	font set					
+	SLOT	L	17	2					
+	EQID	L	37	1					
+	QWGT	L	57	2					
+	COMD	L	95	1					
+	SPCD	C	57	2					
+	EQTP	R	57	2					
+	PTPT	L	76	2					
+	TMPF	R	76	2					
+**************************************************************									
+#STOW CUST	height (mm)	width (mm)	line operator						
+	19	24	HL						
+#OPTIONS	inc. moments	big bay num	sep. lengths	comb.Decks	labels	met. Tonnes			
+	N	N	N	N	N	N			
+#FONT SET	set number	font	size						
+	1	Helvetica	12						
+	2	Courier	12						
+#FIELDS	categories	just	vert. offset	font set					
+	PDDS	L	17	2					
+	XPOL	R	17	2					
+	EQID	L	37	1					
+	EQTP	L	57	2					
+	QWGT	R	57	2					
+	SBIC	C	76	2					
+	LOPR	R	76	2					
+	HGHT	L	95	2					
+	SLOT	R	95	2					
+**************************************************************									
+#STOW DISCH	height (mm)	width (mm)							
+	19	22							
+#OPTIONS	inc. moments	big bay num	sep. lengths	comb.Decks	labels	met. Tonnes			
+	N	N	N	N	N	N			
+#FONT SET	set number	font	size						
+	1	Helvetica	12						
+	2	Courier	13						
+#FIELDS	categories	just	vert. offset	font set					
+	SLOT	L	17	2					
+	LOPR	R	17	2					
+	EQID	L	37	1					
+	QWGT	R	57	2					
+	EQTP	L	57	2					
+	PDPL	L	76	2					
+	SBIC	R	76	2					
+	PPOS	L	95	1					
+**************************************************************									
+#STOW LOAD	height (mm)	width (mm)							
+	19	22			labels	met. Tonnes			
+#OPTIONS	inc. moments	big bay num	sep. lengths	comb.Decks	N	N			
+	N	N	N	N					
+#FONT SET	set number	font	size						
+	1	Helvetica	12						
+	2	Courier	12						
+#FIELDS	categories	just	vert. offset	font set					
+	SLOT	L	17	2					
+	EQID	L	37	1					
+	QWGT	L	57	2					
+	LOPR	R	90	2					
+	SPCD	C	57	2					
+	EQTP	R	57	2					
+	PTPT	L	76	2					
+	SBIC	R	76	2					
+	COMD	L	95	1					
+**************************************************************									
+* BEGIN RECAP REPORT DEFINITIONS									
+**************************************************************									
+* Recap report for Container Summary Table									
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell		
+	Container Summary Table	Y	Y	N	N	None	4		
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells					
+	1	Helvetica	10						
+	2	Times	10						
+	3	Helvetica	12						
+	4	Times	9						
+	5	Times	14						
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set			
+	ShipNameAndVoyNum	2	ShipCode	2	PortName	2			
+	ContainerStatus	2			ppIncluded	2			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set				
+	DISCHARGE  PORT		LOAD PORT		3				
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set				
+	Row	DPRT	DPRT	Solid	4				
+	Row	LOPR	LOPR	Bold	4				
+	Col	LNTH	LNTH	Solid	4				
+	Col	COND	COND	Solid	4				
+**************************************************************									
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell		
+	Disch B-Wise Recap	Y	Y	N	N	None	4		
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells					
+	1	Helvetica	10						
+	2	Times	10						
+	3	Helvetica	12						
+	4	Times	9						
+	5	Times	14						
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set			
+				5					
+	ShipNameAndVoyNum	5	Disch B-Wise Recap	5	ShipCode	5			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set				
+	BAY		SIZE		3				
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set				
+	Col	LNTH	LNTH	Solid	4				
+	Col	COND	COND	Solid	4				
+	Row	BDEC	BDEC	Solid	4				
+**************************************************************									
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell		
+	LineOp &  Count	Y	Y	N	N	None	5		
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells					
+	1	Helvetica	10						
+	2	Times	10						
+	3	Helvetica	12						
+	4	Times	9						
+	5	Times	14						
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set			
+			Line Operator	5					
+	ShipNameAndVoyNum	5	Destination Port	5	ShipCode	5			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set				
+	DISCHARGE  PORT		LINE OP		1				
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set				
+	Col	LOPR	LOPR	Bold	3				
+	Col	LNTH	LNTH	Solid	4				
+	Col	COND	COND	Bold	4				
+	Row	DPRT	DPRT	Solid	4				
+**************************************************************									
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell		
+	Condition	Y	Y	N	N	None	7		
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells					
+	1	Helvetica	10						
+	2	Times	10						
+	3	Helvetica	12						
+	4	Times	9						
+	5	Times	14						
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set			
+	ShipNameAndVoyNum	5	Condition	5	ShipCode	5			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set				
+	DISCHARGE  PORT		Condition		1				
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set				
+	Col	LNTH	LNTH	Solid	4				
+	Col	COND	COND	Bold	4				
+	Row	DPRT	DPRT	Solid	4				
+**************************************************************									
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell		
+	LineOp &  Count	Y	Y	N	N	None	3		
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells					
+	1	Helvetica	8						
+	2	Times	10						
+	3	Helvetica	10						
+	4	Times	9						
+	5	Times	14						
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set			
+			Line Operator	5					
+	ShipNameAndVoyNum	5	Destination Port	5	ShipCode	5			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set				
+	DISCHARGE  PORT		LINE OP		3				
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set				
+	Col	LOPR	LOPR	Bold	4				
+	Col	LNTH	LNTH	Solid	4				
+	Col	COND	COND	Bold	4				
+	Row	DPRT	DPRT	Solid	4				
+**************************************************************									
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell		
+	Load B-Wise Recap	Y	Y	N	N	None	6		
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells					
+	1	Helvetica	10						
+	2	Times	10						
+	3	Helvetica	12						
+	4	Times	9						
+	5	Times	14						
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set			
+				5					
+	ShipNameAndVoyNum	5	Load B-Wise Recap	5	ShipCode	5			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set				
+	BAY		SIZE		1				
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set				
+	Col	LNTH	LNTH	Solid	3				
+	Col	COND	COND	Solid	3				
+	Col	CTGY	CTGY	Solid	2				
+	Row	BDEC	BDEC	Solid	3				
+**************************************************************									
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell		
+	Mini Recap	Y	Y	N	N	None	7		
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells					
+	1	Helvetica	10						
+	2	Times	10						
+	3	Helvetica	12						
+	4	Times	9						
+	5	Times	14						
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set			
+				5					
+	ShipNameAndVoyNum	5	Scan Recap	5	ShipCode	5			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set				
+	PORT		SIZE		1				
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set				
+	Col	LNTH	LNTH	Solid	1				
+	Row	DPRT	DPRT	Solid	1				
+**************************************************************									
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell		
+	Outbound List	Y	Y	Y	N	dotted	5		
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells					
+	1	Helvetica	10						
+	2	Times	10						
+	3	Helvetica	12						
+	4	Times	9						
+	5	Times	14						
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set			
+			Line Operator	5					
+		5	Destination Port	5		5			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set				
+	DISCHARGE PORT		LINE OP		3				
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set				
+	Col	DCRR	DCRR	Solid	4				
+	Col	LOPR	LOPR	Solid	4				
+	Row	DPRT	DPRT	Bold	4				
+	Row	LNTH	LNTH	Solid	4				
+	Row	COND	COND	Bold	4				
+**************************************************************									
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell		
+	scan Recap	Y	Y	N	N	None	5		
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells					
+	1	Helvetica	15						
+	2	Times	12						
+	3	Helvetica	15						
+	4	Times	9						
+	5	Times	20						
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set			
+				5					
+	ShipNameAndVoyNum	2	Scan Recap	2	PortName	2			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set				
+	DIS PORT		LENGTH		3				
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set				
+	Row	DPRT	DPRT	Bold	5				
+	Col	LNTH	LNTH	Solid	5				
+**************************************************************									
+#RECAP	Name	Row Totals	Column Totals	Weight Totals	Cell Weights	Half cell line	Chars per Cell		
+	Export List	Y	Y	Y	Y	none	7		
+#RFONTSET	set number	font	size	The first font set will be the one used in the cells					
+	1	Helvetica	10						
+	2	Times	10						
+	3	Helvetica	12						
+	4	Times	9						
+	5	Helvetica	14						
+#RTITLE	Left	left font set	Center	center font set	Right 	right font set			
+			ShipName	5	PortName	5			
+#RHEADER	Row Head 1	Row Head 2	Col Head 1	Col Head 2	header font set				
+	"DisPort, HGT"		Condition.Length.		5				
+#RCATEGORY	Col or Row	Sort Cat	Display Cat	Border	font set				
+	Col	COND	COND	Bold	3				
+	Col	LNTH	LNTH	Bold	3				
+	Row	DPRT	DPRT	Bold	3				
+	Row	FHGT	FHGT	Bold	3				
+**************************************************************									
+#SWL_NAME									
+	default								
+#SWL_REP_HDRS									
+	Lyttelton Port Company								
+	*VES_VOY	*COL	40	Estimated Ship Exchange Start 	*START_DATE_TIME				
+	*LF								
+#SWL_SHIFT_HDRS									
+	*CRANE_NAME	*COL	40	*SHIFT_NAME					
+#SWL_STYLE									
+	*SHIFTS_PER_PAGE_ACROSS	1							
+	*SHIFTS_PER_PAGE_DOWN	1							
+	*INC_MOVES								
+	*CNTR_ATTRIB_BY_COL								
+	*INC_SUM_PROD								
+	*INC_SUM_LIFT								
+	*FIRST_ROW_BLANK								
+	*RUNNING_TOT								
+**************************************************************									
+#END									
+**************************************************************									

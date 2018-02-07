@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+        name="EdiService"
+        targetNamespace="http://www.navis.com/services/ediservice"
+        xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:tns="http://www.navis.com/services/ediservice"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Edi Services</wsdl:documentation>
+
+    <wsdl:types>
+        <xsd:schema
+                elementFormDefault="qualified"
+                targetNamespace="http://www.navis.com/services/ediservice"
+                xmlns:types="http://types.webservice.edi.navis.com/v1.0"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:import
+                    namespace="http://types.webservice.edi.navis.com/v1.0"
+                    schemaLocation="../schema/edi-types.xsd">
+            </xsd:import>
+            <!-- wrapped style add the method name and arguments -->
+            <xsd:element name="vesselExtract">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinateIdsWsType" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="sessionId" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="vesselCode" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="vesselEncoding" type="xsd:string" minOccurs="0"/>
+                        <xsd:element name="voyageNbr" type="xsd:string" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="vesselExtractWithPlanned">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="scopeCoordinateIdsWsType" type="types:ScopeCoordinateIdsWsType"/>
+                        <xsd:element name="sessionId" type="xsd:string" />
+                        <xsd:element name="vesselCode" type="xsd:string" />
+                        <xsd:element name="vesselEncoding" type="xsd:string" />
+                        <xsd:element name="voyageNbr" type="xsd:string" />
+                        <xsd:element name="isPlanned" type="xsd:boolean" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+            <xsd:element name="vesselExtractResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="vesselExtractResponse" type="types:VesselExtractResponseWsType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="vesselExtractRequest">
+        <wsdl:part element="tns:vesselExtract" name="vesselExtract"/>
+    </wsdl:message>
+    <wsdl:message name="vesselExtractWithPlannedRequest">
+        <wsdl:part element="tns:vesselExtractWithPlanned" name="vesselExtractWithPlanned"/>
+    </wsdl:message>
+
+    <wsdl:message name="vesselExtractResponse">
+        <wsdl:part element="tns:vesselExtractResponse" name="vesselExtractResponse"/>
+    </wsdl:message>
+
+    <wsdl:portType name="EdiServicePort">
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="vesselExtract">
+            <wsdl:input message="tns:vesselExtractRequest"/>
+            <wsdl:output message="tns:vesselExtractResponse"/>
+        </wsdl:operation>
+        <wsdl:operation name="vesselExtractWithPlanned">
+            <wsdl:input message="tns:vesselExtractWithPlannedRequest"/>
+            <wsdl:output message="tns:vesselExtractResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="EdiServiceSoapBinding" type="tns:EdiServicePort">
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <!-- name of your wrapped method -->
+        <wsdl:operation name="vesselExtract">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="vesselExtractWithPlanned">
+            <soap:operation soapAction=""/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+    <wsdl:service name="EdiService">
+        <wsdl:port binding="tns:EdiServiceSoapBinding" name="EdiServicePort">
+            <soap:address location="http://localhost:8080/apex/services/ediservice"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

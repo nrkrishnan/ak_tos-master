@@ -1,0 +1,263 @@
+<?xml version="1.0"?>
+
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">ServicesMoves</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!--  Entity MoveEvent  -->
+    <!--  JJS: Using dynamic update "FALSE" due to the fact that these entities are rarely, if ever, modified once created.  -->
+    <joined-subclass name="com.navis.inventory.business.moves.MoveEvent" table="inv_move_event" extends="com.navis.services.business.event.Event"
+                     dynamic-update="false">
+
+        <meta attribute="generated-class">com.navis.inventory.business.moves.MoveEventHbr</meta>
+        <meta attribute="n4alias">mve</meta>
+        <meta attribute="class-description">Entity to track movements of UnitFacilityVisits</meta>
+        <meta attribute="n4-entity-name">Move Event</meta>
+        <meta attribute="n4-entity-name-plural">Move Events</meta>
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <meta attribute="subclassCustomComponent">mveCustomFlexFields</meta>
+        <meta attribute="carina-oracle-index">
+            CREATE INDEX mve_fm_pos_anchor_idx ON inv_move_event(fm_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            CREATE INDEX mve_to_pos_anchor_idx ON inv_move_event(to_pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE SPATIAL INDEX mve_fm_pos_anchor_idx ON inv_move_event(fm_pos_anchor) WITH ( BOUNDING_BOX = ( 0, 0, 1000000, 1000000 ) );
+            CREATE SPATIAL INDEX mve_to_pos_anchor_idx ON inv_move_event(to_pos_anchor) WITH ( BOUNDING_BOX = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <key column="mve_gkey"/>
+
+        <property name="mveMoveKind" column="move_kind" type="com.navis.argo.persistence.atoms.UserTypeWiMoveKindEnum" not-null="false"
+                  index="mve_move_kind_idx">
+            <meta attribute="field-description">Move Kind (load/disch/receive, etc.). This seems redundant with EventType, but easier to query on and differentiates yard moves vs. yard shifts</meta>
+        </property>
+
+        <many-to-one name="mveUfv" column="ufv_gkey" class="com.navis.inventory.business.units.UnitFacilityVisit" not-null="true">
+            <meta attribute="field-description">UnitFacilityVisit of the Unit that was moved.</meta>
+        </many-to-one>
+
+        <many-to-one name="mveLineSnapshot" column="line_op" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Line Operator of the Unit at the time of the move</meta>
+        </many-to-one>
+
+        <many-to-one name="mveCarrier" column="carrier_gkey" class="com.navis.argo.business.model.CarrierVisit" not-null="false">
+            <meta attribute="field-description">The CarrierVisit, if the move was to or from a CarrierVisit, else null</meta>
+        </many-to-one>
+
+        <property name="mveExclude" column="exclude" type="java.lang.Boolean">
+            <meta attribute="field-description">If TRUE, this event should be excluded from reporting.</meta>
+        </property>
+
+        <component name="mveFromPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The 'from' position</meta>
+
+            <property name="posLocType" column="fm_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="true" index="inv_mve_fm_pos_loctype_idx">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="fm_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="fm_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="fm_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="fm_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="fm_pos_name" type="string" length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="fm_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="fm_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="fm_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="fm_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <component name="mveToPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The 'to' position</meta>
+
+            <property name="posLocType" column="to_pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="true" index="inv_mve_to_pos_loctype_idx">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="to_pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="to_pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="to_pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="to_pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="to_pos_name" type="string" length="42">   <!--42 = 1 + 16 + 16 + 6 + 3 separators -->
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <!-- 2010-01-28 pji Support persistent bin model. -->
+            <many-to-one name="posBin" column="to_pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="to_pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="to_pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="to_pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+        <many-to-one name="mveCheFetch" column="che_fetch" class="com.navis.argo.business.xps.model.Che" not-null="false">
+            <meta attribute="field-description">Che that executed the 'fetch' phase of the move</meta>
+        </many-to-one>
+
+        <many-to-one name="mveCheCarry" column="che_carry" class="com.navis.argo.business.xps.model.Che" not-null="false">
+            <meta attribute="field-description">Che that executed the 'carry' phase of the move</meta>
+        </many-to-one>
+
+        <many-to-one name="mveChePut" column="che_put" class="com.navis.argo.business.xps.model.Che" not-null="false">
+            <meta attribute="field-description">Che that executed the 'put' phase of the move</meta>
+        </many-to-one>
+
+        <many-to-one name="mveCheQuayCrane" column="che_qc" class="com.navis.argo.business.xps.model.Che" not-null="false">
+            <meta attribute="field-description">The quay crane that did the move (will be also be the fetch or put che, denormalized for query convenience)</meta>
+        </many-to-one>
+
+        <property name="mveDistToStart" column="dist_start" type="java.lang.Long">
+            <meta attribute="field-description">Distance prime mover travelled in fetch phase, meters. SPARCS getHistoryDistToStart()</meta>
+        </property>
+
+        <property name="mveDistOfCarry" column="dist_carry" type="java.lang.Long">
+            <meta attribute="field-description">Distance prime mover travelled in carry phase, meters. SPARCS getHistoryDistOfCarry()</meta>
+        </property>
+
+        <property name="mveTimeCarryComplete" column="t_carry_complete" type="timestamp">
+            <meta attribute="field-description">Time at which carry phase was completed. SPARCS getHistoryCarryCompl()</meta>
+        </property>
+
+        <property name="mveTimeDispatch" column="t_dispatch" type="timestamp" index="mve_t_dispatch_idx">
+            <meta attribute="field-description">Time at which move was dispatched. SPARCS getHistoryDispatchTime()</meta>
+        </property>
+
+        <property name="mveTimeFetch" column="t_fetch" type="timestamp">
+            <meta attribute="field-description">Time at which fetch phase was completed. SPARCS getHistoryFetchTime()</meta>
+        </property>
+
+        <property name="mveTimeDischarge" column="t_discharge" type="timestamp" index="mve_t_discharge_idx">
+            <meta attribute="field-description">Time at which discharge phase was completed</meta>
+        </property>
+
+        <property name="mveTimePut" column="t_put" type="timestamp" index="mve_t_put_idx">
+            <meta attribute="field-description">Time at which put phase was completed. SPARCS getHistoryPutTime()</meta>
+        </property>
+
+        <property name="mveTimeCarryCheFetchReady" column="t_carry_fetch_ready" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was ready to fetch. SPARCS 3.4: kWITagHistoryCarryCheFetchReadyTime</meta>
+        </property>
+
+        <property name="mveTimeCarryChePutReady" column="t_carry_put_ready" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was ready to put. SPARCS 3.4: kWITagHistoryCarryChePutReadyTime</meta>
+        </property>
+
+        <property name="mveTimeCarryCheDispatch" column="t_carry_dispatch" type="timestamp">
+            <meta attribute="field-description">Time at which the carry CHE was dispatched. SPARCS 3.4: kWITagHistoryCarryCheDispatchTime</meta>
+        </property>
+
+        <!-- 2013-11-07 ahmedsa ARGO-52765 -->
+        <property name="mveTZArrivalTime" column="t_tz_arrival" type="timestamp">
+            <meta attribute="field-description">Time at which CHE arrived at the transfer zone</meta>
+        </property>
+
+        <property name="mveRehandleCount" column="rehandle_count" type="java.lang.Long">
+            <meta attribute="field-description">Number of rehandles required to perform the move. SPARCS getHistoryRhndlCount()</meta>
+        </property>
+
+        <property name="mveTwinFetch" column="twin_fetch" type="java.lang.Boolean">
+            <meta attribute="field-description">True if we the Fetch phase was a twin move</meta>
+        </property>
+
+        <property name="mveTwinCarry" column="twin_carry" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the Carry phase was a twin move</meta>
+        </property>
+
+        <property name="mveTwinPut" column="twin_put" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the Put phase was a twin move</meta>
+        </property>
+
+        <property name="mveRestowAccount" column="restow_account" type="string" length="20">
+            <meta attribute="field-description">Account to charge restow cost against. SPARCS getRestowAccount()</meta>
+        </property>
+
+        <property name="mveServiceOrder" column="service_order" type="string" length="20">
+            <meta attribute="field-description">The service order against which this move is to be charged</meta>
+        </property>
+
+        <property name="mveRestowReason" column="restow_reason" type="string" length="20">
+            <meta attribute="field-description">Reason for restow. SPARCS getRestowReason()</meta>
+        </property>
+
+        <property name="mveProcessed" column="processed" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the che metrics are calculated for this move otherwise false</meta>
+        </property>
+
+        <!--  2010.04.07 mpompa ARGO-24378  -->
+        <property name="mvePOW" column="pow" type="string" length="20">
+            <meta attribute="field-description">The Work Instruction Queue's Work Shift Point Of Work</meta>
+        </property>
+
+        <!-- 07-19-2010 SAB v2.1 ARGO-26667  Move History cannot be deleted if it has associated che move statistics -->
+        <bag name="cheMoves" inverse="true" cascade="all-delete-orphan" lazy="true">
+            <key column="move_event_gkey"/>
+            <one-to-many class="com.navis.mensa.business.mensa.CheMoveStatistics"/>
+        </bag>
+
+        <!-- 08-12-2010, ARGO-27660 RMK, v2.1.X, Additional columns to capture the carry, put, fetch che logins-->
+        <property name="mveCheCarryLoginName" column="che_carry_login_name" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Carry CHE Operator Login Name</meta>
+        </property>
+
+        <property name="mveChePutLoginName" column="che_put_login_name" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Put CHE Operator Login Name</meta>
+        </property>
+        <property name="mveCheFetchLoginName" column="che_fetch_login_name" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">Fetch CHE Operator Login Name</meta>
+        </property>
+
+        <property name="mveBerth" column="berth" type="string" length="20" not-null="false">
+            <meta attribute="field-description">The Work Instruction Queue's Work Shift Berthing</meta>
+        </property>
+
+        <!-- 02-22-11 Serge Marchenko, added special subclass holder for dynamic flex field -->
+        <dynamic-component name="mveCustomFlexFields"/>
+
+    </joined-subclass>
+
+</hibernate-mapping>

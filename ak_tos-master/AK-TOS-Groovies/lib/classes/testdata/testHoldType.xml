@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<flag-type id="ULC_TST_HOLD" applies-to="UNIT" type="HOLD" description="This is test ULC hold" is-ref-id-required="N" is-unique-by-ref-id="N" is-billing-hold-required="Y" life-cycle-state="ACT" />
+</argo:snx>
+

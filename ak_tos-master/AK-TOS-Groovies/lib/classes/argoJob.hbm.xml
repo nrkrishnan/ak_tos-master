@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- This hbm mapping contains all class definitions for generic job definitions and logs.
+2006-11-07 lbarman v1.2.F ARGO-5539: Job scheduling mechanism -->
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">ArgoJob</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <class name="com.navis.argo.business.job.AbstractJobDefinition" table="frm_job_definition" dynamic-update="true">
+        <meta attribute="n4alias">jobdef</meta>
+        <meta attribute="generated-class">com.navis.argo.business.job.JobDefinitionHbr</meta>
+        <meta attribute="class-description">Domain entity representing an abstract Job Definition</meta>
+        <meta attribute="n4-entity-name">Job Definition</meta>
+        <meta attribute="n4-entity-name-plural">Job Definitions</meta>
+
+        <id name="jobdefGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="jobdefId" type="string">
+            <meta attribute="field-description">The id/name of this job definition</meta>
+            <column name="id" index="job_id_idx" not-null="true" length="200"/>
+        </property>
+
+        <!-- 2006-11-20 shivajic v1.2.H ARGO-5670 removed unique constraint as the key generation fails in mysql db
+        <property name="jobdefInternalName" column="internal_name" type="string" length="510" unique="true">
+        -->
+        <property name="jobdefInternalName" column="internal_name" type="string" length="255">
+            <meta attribute="field-description">The unique internal name used to register jobs with the scheduler.</meta>
+        </property>
+
+        <property name="jobdefDescription" column="description" type="string" length="255">
+            <meta attribute="field-description">Description for this job definition</meta>
+        </property>
+
+        <property name="jobdefMessageSubject" column="message_subject" type="string" length="100">
+            <meta attribute="field-description">This will show as the subject of any message sent.</meta>
+        </property>
+
+        <!-- the following two addressses are named generically to allow other communication media in future; currently only email will be supported-->
+        <property name="jobdefErrorMessageReceiverAddress" column="error_receival_address" type="string" length="255">
+            <meta attribute="field-description">The (email) address a message can be sent to in case the job does not run correctly.</meta>
+        </property>
+
+        <property name="jobdefErrorMessagePrefix" column="error_message_prefix" type="string" length="2000">
+            <meta attribute="field-description">This will show as the first part in the error message sent.</meta>
+        </property>
+
+        <property name="jobdefMessageReceiverAddress" column="message_receival_address" type="string" length="255">
+            <meta attribute="field-description">The (email) address the successfull job execution will notify.</meta>
+        </property>
+
+        <property name="jobdefMessagePrefix" column="success_message_prefix" type="string" length="2000">
+            <meta attribute="field-description">This will show as the first part in the (success) message sent.</meta>
+        </property>
+
+        <property name="jobdefFrequency" column="frequency" length="40" type="com.navis.argo.persistence.atoms.UserTypeJobFrequencyEnum"
+                  not-null="true">
+            <meta attribute="field-description">The frequency type with which the job runs.</meta>
+        </property>
+
+        <property name="jobdefLifeStartDate" column="life_start_date" type="timestamp">
+            <meta attribute="field-description">The date from when on the job is active. Can be used with all frequency types except for On Demand.</meta>
+        </property>
+
+        <property name="jobdefLifeEndDate" column="life_end_date" type="timestamp">
+            <meta attribute="field-description">The date from when on the job is inactive. Can be used with all frequency types except for On Demand.</meta>
+        </property>
+
+        <property name="jobdefHours" column="hours" type="java.lang.String">
+            <meta attribute="field-description">The hours of the day the job is starting to execute. Can be used with all frequency types except for On Demand.</meta>
+        </property>
+
+        <property name="jobdefMinutes" column="minutes" type="java.lang.String">
+            <meta attribute="field-description">The minutes of the hour the job is starting to run. Can be used with all frequency types except for On Demand.</meta>
+        </property>
+
+        <property name="jobdefRepeatIntervalMin" column="repeat_interval_min" type="java.lang.Long">
+            <meta attribute="field-description">The time in minutes that elapses between two job executions. Can be used with all frequency types except for On Demand.</meta>
+        </property>
+
+        <property name="jobdefRepeatIntervalHour" column="repeat_interval_hour" type="java.lang.Long">
+            <meta attribute="field-description">The amount of hours that elapses between two job execution hours. Can be used with all frequency types except for On Demand.</meta>
+        </property>
+
+        <property name="jobdefRepeatIntervalDay" column="repeat_interval_day" type="java.lang.Long">
+            <meta attribute="field-description">The amount of days that elapses between two job execution days. Can be used with all frequency types except for On Demand.</meta>
+        </property>
+
+        <property name="jobdefRepeatCount" column="repeat_count" type="java.lang.Long">
+            <meta attribute="field-description">The amount of times the job runs. Can only be used for the 'by repeat count' frequency.</meta>
+        </property>
+
+        <!-- The days of the week the job executes. Can be used with the 'by weekday' frequency type. -->
+        <set name="jobdefWeekdays" table="frm_job_weekday" lazy="true">
+            <key column="job_definition_gkey"/>
+            <element type="com.navis.argo.persistence.atoms.UserTypeWeekdayEnum" column="weekday" not-null="true"/>
+        </set>
+
+        <property name="jobdefIsOnLastDefinedWeekdayOfMonth" column="is_on_last_weekday_of_month" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the job executes at the last day of the defined weekday of the month. Can be used with the 'by weekday' frequency type.</meta>
+        </property>
+
+        <!-- The days of the month the job executes. Can be used with the 'by day of month' frequency type. -->
+        <set name="jobdefDaysOfMonth" table="frm_job_month_day" lazy="true">
+            <key column="job_definition_gkey"/>
+            <element type="java.lang.Long" column="day" not-null="true"/>
+        </set>
+
+        <property name="jobdefIsAtLastDayOfMonth" column="last_day_of_month" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the job executes at the last day of the month. Can be used with the monthly frequency type.</meta>
+        </property>
+
+        <property name="jobdefIsOnClosestWorkday" column="is_on_closest_workday" type="java.lang.Boolean">
+            <meta attribute="field-description">True if the job executes at the workday (Mon - Fr) that is closest to the defined day of month (for Saturday this is Friday, for
+                Sunday this is Monday). Can be used with the 'by day of month' frequency type.
+            </meta>
+        </property>
+
+        <property name="jobdefIsOnDefinedWeekdayOccuranceOfMonth" column="nth_weekday_of_month" type="java.lang.Long">
+            <meta attribute="field-description">The job executes at the defined occurance of that weekday in the month (e.g. third Wednesday of month).
+                Can be used with the 'by weekday' frequency type.
+            </meta>
+        </property>
+
+        <property name="jobdefIsClustered" column="is_clustered" type="java.lang.Boolean">
+            <meta attribute="field-description">The column denotes whether the job is run in cluster mode or not.</meta>
+        </property>
+
+        <property name="jobdefExecutionNode" column="execution_node" type="string" length="255">
+            <meta attribute="field-description">The unique name used to define the node that will execute the job.</meta>
+        </property>
+
+        <many-to-one name="jobdefJobGroup" column="job_group_gkey" class="com.navis.framework.quartz.business.JobGroup">
+            <meta attribute="field-description">The job group to run the job.</meta>
+        </many-to-one>
+
+        <property name="jobdefExpression" column="cron_expression" type="java.lang.String" length="255">
+            <meta attribute="field-description">The cron expression for this job; not null for daily, by weekday, by day of month or for cron expression frequencies.</meta>
+        </property>
+
+        <set name="jobdefLogs" lazy="true" cascade="all-delete-orphan" inverse="true">
+            <key column="job_definition_gkey"/>
+            <one-to-many class="com.navis.argo.business.job.JobExecutionLog"/>
+        </set>
+
+        <property name="jobdefCreated" column="created" type="timestamp"/>
+        <property name="jobdefCreator" column="creator" type="string" length="30"/>
+        <property name="jobdefChanged" column="changed" type="timestamp"/>
+        <property name="jobdefChanger" column="changer" type="string" length="30"/>
+    </class>
+
+    <class name="com.navis.argo.business.job.JobExecutionLog" table="frm_job_log" dynamic-update="true">
+        <meta attribute="n4alias">joblog</meta>
+        <meta attribute="generated-class">com.navis.argo.business.job.JobExecutionLogHbr</meta>
+        <meta attribute="class-description">Domain entity representing a logged job execution.</meta>
+        <meta attribute="n4-entity-name">Job History</meta>
+        <meta attribute="n4-entity-name-plural">Job History</meta>
+        <meta attribute="carina-index">joblog_jobdef_strtdate_idx(job_definition_gkey, job_start_date);</meta>
+
+        <id name="joblogGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="joblogJobName" type="string">
+            <meta attribute="field-description">The name of the job registered with the schedular for which this entry has been created.</meta>
+            <column name="joblogJobName" index="job_name" not-null="true" length="255"/>
+        </property>
+
+        <many-to-one name="joblogDefinition" column="job_definition_gkey" class="com.navis.argo.business.job.AbstractJobDefinition">
+            <meta attribute="field-description">The job definition for which the job that created this log entry has been scheduled.</meta>
+        </many-to-one>
+
+        <property name="joblogJobClass" column="job_class" type="string" not-null="true">
+            <meta attribute="field-description">The JobClass that defines the job execution routine.</meta>
+        </property>
+
+        <property name="joblogExecutionNode" column="execution_node" type="string" length="255">
+            <meta attribute="field-description">The name of the node with which the job was executed.</meta>
+        </property>
+
+        <!-- 2006-12-07 lbarman v1.2.java ARGO-5695: define scheduling group; add group name to log -->
+        <property name="joblogSchedulerGroupName" column="scheduler_group_name" type="string">
+            <meta attribute="field-description">The name of the group the job was registered for with the scheduler.</meta>
+        </property>
+
+        <property name="joblogTriggerExpression" column="trigger_expression" type="string">
+            <meta attribute="field-description">The cron expression used for the trigger, "repeat trigger" for a simple trigger, or "on demand" for
+                a one time execution.
+            </meta>
+        </property>
+
+        <property name="joblogJobExecutionStartDate" column="job_start_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The date the job started executing.</meta>
+        </property>
+
+        <property name="joblogJobExecutionEndDate" column="job_end_date" type="timestamp">
+            <meta attribute="field-description">The date when the job execution ended.</meta>
+        </property>
+
+        <property name="joblogExecutionTime" column="job_execution_time" type="java.lang.Long">
+            <meta attribute="field-description">The time it took to execute this job.</meta>
+        </property>
+
+        <property name="joblogPreviousExecutionDate" column="job_previous_execution_date" type="timestamp">
+            <meta attribute="field-description">The date when this scheduled job execute before this execution.</meta>
+        </property>
+
+        <property name="joblogNextExecutionDate" column="job_next_execution_date" type="timestamp">
+            <meta attribute="field-description">The date when this scheduled job is scheduled to execute again.</meta>
+        </property>
+
+        <property name="joblogRefireCount" column="job_refire_count" type="java.lang.Long">
+            <meta attribute="field-description">The amount of times a job will refire.</meta>
+        </property>
+
+        <property name="joblogState" column="state" type="com.navis.argo.persistence.atoms.UserTypeJobStateEnum">
+            <meta attribute="field-description">The status after the job finished execution.</meta>
+        </property>
+
+        <property name="joblogNote" column="note" type="text" length="10000">
+            <meta attribute="field-description">The message created after the job finished execution.</meta>
+        </property>
+    </class>
+
+    <!--rkasindula 2008-10-24 ARGO-14328 add Snx job definition for batch processing     -->
+    <joined-subclass name="com.navis.argo.business.job.SnxJobDefinition" table="snx_job_definition"
+                     extends="com.navis.argo.business.job.AbstractJobDefinition" dynamic-update="true">
+
+        <meta attribute="generated-class">com.navis.argo.business.job.SnxJobDefinitionHbr</meta>
+        <meta attribute="n4alias">snxjob</meta>
+        <meta attribute="n4-entity-name">Snx Job Definition</meta>
+        <meta attribute="n4-entity-name-plural">Snx Job Definitions</meta>
+
+        <key column="snxjob_gkey"/>
+
+        <many-to-one name="snxjobMailbox" class="com.navis.argo.business.reference.SnxMailbox">
+            <meta attribute="field-description">SNX Mailbox Gkey</meta>
+            <!-- 2008-12-15 rkasindula, ARGO-15943 Required Field Missing error message was displayed for optional field -->
+            <column name="snx_mailbox_gkey" not-null="true"></column>
+        </many-to-one>
+    </joined-subclass>
+
+    <!--2009-05-21 rkasindula v2.0 ARGO-18827 Background process to periodically execute a Groovy plug-in-->
+    <joined-subclass name="com.navis.argo.business.job.GroovyJobDefinition" table="groovy_job_definition"
+                     extends="com.navis.argo.business.job.AbstractJobDefinition" dynamic-update="true">
+
+        <meta attribute="generated-class">com.navis.argo.business.job.GroovyJobDefinitionHbr</meta>
+        <meta attribute="n4alias">grvjob</meta>
+        <meta attribute="class-description">Represents a job definition that deals with scheduling groovy plug-in generation</meta>
+        <meta attribute="n4-entity-name">Groovy Job Definition</meta>
+        <meta attribute="n4-entity-name-plural">Groovy Job Definitions</meta>
+
+        <key column="grvjob_gkey"/>
+
+        <many-to-one name="grvjobBaseUser" column="user_gkey" class="com.navis.security.business.user.BaseUser">
+            <meta attribute="field-description">The base user for which the job will be run.</meta>
+        </many-to-one>
+
+        <set name="grvjobGroovyPlugins" table="grvjob_grvplugin_mapping" lazy="true">
+            <key column="grvjob_definition_gkey"/>
+            <many-to-many class="com.navis.argo.business.reports.DigitalAsset" column="grv_plugin_gkey"/>
+        </set>
+
+    </joined-subclass>
+
+    <!--2009-05-21 rkasindula v2.0 ARGO-18827 Background process to periodically execute a Groovy plug-in-->
+    <joined-subclass name="com.navis.argo.business.job.ArgoGroovyJobDefinition" table="argo_groovy_job_definition"
+                     extends="com.navis.argo.business.job.GroovyJobDefinition" dynamic-update="true">
+
+        <meta attribute="generated-class">com.navis.argo.business.job.ArgoGroovyJobDefinitionHbr</meta>
+        <meta attribute="n4alias">agrvjob</meta>
+        <meta attribute="class-description">Represents a job definition that deals with scheduling groovy plug-in generation</meta>
+        <meta attribute="n4-entity-name">Argo Groovy Job Definition</meta>
+        <meta attribute="n4-entity-name-plural">Argo Groovy Job Definitions</meta>
+
+        <key column="agrvjob_gkey"/>
+
+        <many-to-one name="agrvjobOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator" not-null="true">
+            <meta attribute="field-description">The Operator to which this GroovyPlugins belongs, and for which the job will be run.</meta>
+        </many-to-one>
+
+        <many-to-one name="agrvjobComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex">
+            <meta attribute="field-description">The Complex for which the job will be run.</meta>
+        </many-to-one>
+
+        <many-to-one name="agrvjobFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility">
+            <meta attribute="field-description">The Facility for which the job will be run.</meta>
+        </many-to-one>
+
+        <many-to-one name="agrvjobYard" column="yard_gkey" class="com.navis.argo.business.model.Yard">
+            <meta attribute="field-description">The Yard for which the job will be run.</meta>
+        </many-to-one>
+
+    </joined-subclass>
+
+</hibernate-mapping>

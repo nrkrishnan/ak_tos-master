@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2012 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+    <bill-of-lading nbr="BL35413" line="3541" carrier-visit="VV35413" category="EXPORT" notify-party1-name="NAVIS LLC" notify-party2-name="NIT"
+                    notify-party1-address1="OAKLAND US" notify-party2-address1="CHENNAI INDIA" notify-party1-contact-no1="15102675000"
+                    notify-party2-contact-no1="914445903000"/>
+</argo:snx>

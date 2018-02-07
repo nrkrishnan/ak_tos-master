@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo">
+
+    <unit time-out="2007-08-02T07:47:16.000" time-in="2007-08-02T12:04:17.000" commodity-name="MTY" commodity-id="MTY" remark=" P/loc:CGF"
+          weight-kg="2365.04" line="MAT" freight-kind="MTY" transit-state="YARD" category="STORAGE" unique-key="TEXU2211995" id="TEXU2211995">
+        <equipment material="STEEL" operator="MAT" owner="MAT" strength-code="TB" height-mm="2590" role="PRIMARY" type="2200" class="CTR"
+                   eqid="TEXU2211995"/>
+        <position slot="S6 21H5" location="YARD" loc-type="YARD"/>
+        <routing destination="COO" pod-1="COO">
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="DECLARED" direction="IB"/>
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="GEN_CARRIER" mode="VESSEL" qualifier="DECLARED" direction="OB"/>
+            <carrier id="GEN_CARRIER" mode="VESSEL" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+    </unit>
+
+    <unit seal-1="1315161" shipper-name="DHX-DEPENDABLE HAWAIIAN EXPRE" consignee-name="DHX-DEPENDABLE HAWAIIAN EXPRE" consignee-id="0000003550"
+          time-out="2007-04-23T08:27:55.000" time-in="2007-04-22T19:32:52.000" bl-nbr="4536759000"
+          remark="C/O HITCO MOVING &amp; STORAGE SVC CO-FAK S-4/23/07" weight-kg="8364.25" line="MAT" freight-kind="FCL" transit-state="DEPARTED"
+          category="IMPORT" unique-key="TEXU3832960" id="TEXU3832960">
+        <equipment material="STEEL" operator="MAT" owner="SHO" strength-code="TA" height-mm="2590" role="PRIMARY" type="2200" class="CTR"
+                   eqid="TEXU3832960"/>
+        <equipment material="UNKNOWN" owner="MAT" role="CARRIAGE" type="C20" class="CHS" eqid="FLXZ010813X"/>
+        <position location="ETS" loc-type="VESSEL"/>
+        <routing destination="COO" opl="ALR" pod-1="COO" pol="ALR">
+            <carrier id="RJP323" mode="VESSEL" qualifier="DECLARED" direction="IB"/>
+            <carrier id="RJP323" mode="VESSEL" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="ETS" mode="TRUCK" qualifier="DECLARED" direction="OB"/>
+            <carrier id="ETS" mode="TRUCK" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+    </unit>
+
+    <unit seal-1="CCC409373" last-free-day="2007-08-30" shipper-name="SAUEREISEN" consignee-name="DOLE FOOD COMPANY HAWAII" consignee-id="0013944200"
+          unit-flex-3="$UBPIN" ufv-flex-date-3="2007-09-04T00:00:00.000" ufv-flex-date-2="2007-08-20T00:00:00.000" bl-nbr="6232835"
+          remark="CEMENT, CONCRETE " weight-kg="24612.38" line="MAT" freight-kind="FCL" transit-state="INBOUND" category="IMPORT"
+          unique-key="TEXU4812850" id="TEXU4812850">
+        <equipment material="STEEL" operator="MAT" owner="MAT" strength-code="FC" height-mm="2590" role="PRIMARY" type="4200" class="CTR"
+                   eqid="TEXU4812850"/>
+        <position slot="140615" location="MAT475" loc-type="VESSEL"/>
+        <routing destination="COO" opl="ALR" pod-1="COO" pol="ALR">
+            <carrier id="MAT475" mode="VESSEL" qualifier="DECLARED" direction="IB"/>
+            <carrier id="MAT475" mode="VESSEL" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="HTC" mode="TRUCK" qualifier="DECLARED" direction="OB"/>
+            <carrier id="HTC" mode="TRUCK" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+    </unit>
+
+    <unit seal-1="6853" shipper-name="CAL-WEST EXPRESS CO LTD" shipper-id="0030927100" consignee-name="MIYAKE CONCRETE" consignee-id="0000009072"
+          time-out="2007-08-13T15:54:38.000" time-in="2007-08-13T11:18:58.000" ufv-flex-date-3="2007-08-28T00:00:00.000"
+          ufv-flex-date-2="2007-08-14T00:00:00.000" bl-nbr="7993879000" remark="FAK PAINT RELATED MATERIAL,3, UN1263 ,PGIII ,F/P100F PAINT RELATE"
+          weight-kg="15149.99" line="MAT" freight-kind="FCL" transit-state="DEPARTED" category="IMPORT" unique-key="TGHU2314944" id="TGHU2314944">
+        <equipment material="STEEL" operator="MAT" owner="MAT" strength-code="TA" height-mm="2590" role="PRIMARY" type="2200" class="CTR"
+                   eqid="TGHU2314944"/>
+        <equipment material="UNKNOWN" owner="MAT" role="CARRIAGE" type="C20" class="CHS" eqid="FLXZ0104708"/>
+        <position location="HHH" loc-type="VESSEL"/>
+        <routing destination="COO" opl="ALR" pod-1="COO" pol="ALR">
+            <carrier id="MKI078" mode="VESSEL" qualifier="DECLARED" direction="IB"/>
+            <carrier id="MKI078" mode="VESSEL" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="HHH" mode="TRUCK" qualifier="DECLARED" direction="OB"/>
+            <carrier id="HHH" mode="TRUCK" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+    </unit>
+
+    <unit seal-1="1398289" shipper-name="HONOLULU FREIGHT SERVICE" shipper-id="0000006256" consignee-name="KAUAI COMMERCIAL COMPANY"
+          consignee-id="0000007379" unit-flex-3="$UAWES" bl-nbr="6772634" remark="FAK " weight-kg="20108.21" line="MAT" freight-kind="FCL"
+          transit-state="INBOUND" category="IMPORT" unique-key="TOLU1810029" id="TOLU1810029">
+        <equipment material="STEEL" operator="MAT" owner="MAT" strength-code="BC" height-mm="2895" role="PRIMARY" type="4500" class="CTR"
+                   eqid="TOLU1810029"/>
+        <position slot="060113" location="LUR609" loc-type="VESSEL"/>
+        <routing destination="COO" opl="LFW" pod-1="COO" pol="LFW">
+            <carrier id="LUR609" mode="VESSEL" qualifier="DECLARED" direction="IB"/>
+            <carrier id="LUR609" mode="VESSEL" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="GEN_VESSEL" mode="VESSEL" qualifier="DECLARED" direction="OB"/>
+            <carrier id="GEN_VESSEL" mode="VESSEL" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+    </unit>
+
+    <unit seal-1="17443402" last-free-day="2007-08-24" shipper-name="RE TRANSPORTATION INC" shipper-id="0023971300"
+          consignee-name="C C ENGINEERING &amp; CONST INC" consignee-id="0000001980" unit-flex-3="$UCCAS" time-out="2007-08-14T10:29:36.000"
+          time-in="2007-08-13T21:51:52.000" ufv-flex-date-3="2007-08-28T00:00:00.000" ufv-flex-date-2="2007-08-14T00:00:00.000" bl-nbr="7131856000"
+          remark="IRON OR STEEL ARTICLES, NOS " weight-kg="16773.85" line="MAT" freight-kind="FCL" transit-state="DEPARTED" category="IMPORT"
+          unique-key="TOLU4857919" id="TOLU4857919">
+        <equipment material="STEEL" operator="MAT" owner="MAT" strength-code="FC" height-mm="2590" role="PRIMARY" type="4280" class="CTR"
+                   eqid="TOLU4857919"/>
+        <equipment material="UNKNOWN" owner="SHO" role="CARRIAGE" type="C40" class="CHS" eqid="FLGZ441564X"/>
+        <position location="TRUCK" loc-type="TRUCK"/>
+        <routing destination="COO" opl="ALR" pod-1="COO" pol="ALR">
+            <carrier id="MKI078" mode="VESSEL" qualifier="DECLARED" direction="IB"/>
+            <carrier id="MKI078" mode="VESSEL" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="PTS" mode="TRUCK" qualifier="DECLARED" direction="OB"/>
+            <carrier id="PTS" mode="TRUCK" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+    </unit>
+
+    <unit shipper-name="COMM BLDGS OF AMER INC." consignee-name="BKA BUILDERS" time-load="2007-07-30T19:02:00.000" time-in="2007-08-09T13:44:48.000"
+          bl-nbr="7178432001" remark="CARGO TRANSFER FROM MHQU005933. 2 FEET OW B/S " weight-kg="14999.85" line="MAT" freight-kind="FCL"
+          transit-state="YARD" category="IMPORT" unique-key="TOLU8774345" id="TOLU8774345">
+        <equipment material="UNKNOWN" operator="MAT" owner="MAT" strength-code="FC" height-mm="2590" role="PRIMARY" type="4260" class="CTR"
+                   eqid="TOLU8774345"/>
+        <position slot="E11 32" location="YARD" loc-type="YARD"/>
+        <routing destination="COO" opl="DUK" pod-1="COO" pol="LFW">
+            <carrier id="LUR607" mode="VESSEL" qualifier="DECLARED" direction="IB"/>
+            <carrier id="LUR607" mode="VESSEL" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="GEN_VESSEL" mode="VESSEL" qualifier="DECLARED" direction="OB"/>
+            <carrier id="GEN_VESSEL" mode="VESSEL" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+        <oog right-cm="60" left-cm="60"/>
+    </unit>
+
+    <unit last-free-day="2007-08-28" shipper-name="CERTAINTEED GYPSUM" shipper-id="0000007002" consignee-name="G W KILLEBREW COMPANY INC"
+          consignee-id="0000004836" unit-flex-3="PREMIUM" unit-flex-1="27698-01" time-in="2007-08-12T10:18:10.000"
+          ufv-flex-date-3="2007-08-27T00:00:00.000" ufv-flex-date-2="2007-08-13T00:00:00.000" bl-nbr="9459745000"
+          remark="PLASTERBOARD/GYPSUM WALLBOARD 2&quot; OWL 4&quot; OWR " weight-kg="25038.76" line="MAT" freight-kind="FCL" transit-state="YARD"
+          category="IMPORT" unique-key="TOLU8798408" id="TOLU8798408">
+        <equipment material="UNKNOWN" operator="MAT" owner="MAT" strength-code="FC" height-mm="2590" role="PRIMARY" type="4260" class="CTR"
+                   eqid="TOLU8798408"/>
+        <position slot="D17 14" location="YARD" loc-type="YARD"/>
+        <routing destination="COO" opl="DUR" pod-1="COO" pol="DUR">
+            <carrier id="MNA139" mode="VESSEL" qualifier="DECLARED" direction="IB"/>
+            <carrier id="MNA139" mode="VESSEL" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="DECLARED" direction="OB"/>
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+        <oog right-cm="10" left-cm="5"/>
+    </unit>
+
+    <unit time-load="2007-08-12T22:02:14.000" time-in="2007-08-10T09:56:01.000" commodity-name="MTY" commodity-id="MTY" remark=" P/loc:S3 14"
+          weight-kg="4961.85" line="MAT" freight-kind="MTY" transit-state="DEPARTED" category="EXPORT" unique-key="TOLU8953016" id="TOLU8953016">
+        <equipment material="UNKNOWN" operator="MAT" owner="MAT" strength-code="FC" height-mm="2590" role="PRIMARY" type="4260" class="CTR"
+                   eqid="TOLU8953016"/>
+        <position slot="040702" location="MNA139" loc-type="VESSEL"/>
+        <routing destination="DUR" opl="COO" pod-1="DUR" pol="COO">
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="DECLARED" direction="IB"/>
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="MNA139" mode="VESSEL" qualifier="DECLARED" direction="OB"/>
+            <carrier id="MNA139" mode="VESSEL" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+    </unit>
+
+    <unit time-out="2007-08-09T13:08:06.000" time-in="2007-07-17T14:01:57.000" commodity-name="MTY" commodity-id="MTY"
+          remark="RAMP PARTS FOR MKA EX MAU689  P/loc:C12 26" weight-kg="4961.85" line="MAT" freight-kind="MTY" transit-state="DEPARTED"
+          category="STORAGE" unique-key="TOLU8972187" id="TOLU8972187">
+        <equipment material="UNKNOWN" operator="MAT" owner="MAT" strength-code="FC" height-mm="2590" role="PRIMARY" type="4260" class="CTR"
+                   eqid="TOLU8972187"/>
+        <equipment material="UNKNOWN" owner="MAT" role="CARRIAGE" type="C40" class="CHS" eqid="MATZ9027280"/>
+        <position location="TRUCK" loc-type="TRUCK"/>
+        <routing destination="COO" opl="COO" pod-1="COO" pol="COO">
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="DECLARED" direction="IB"/>
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="WEPK" mode="TRUCK" qualifier="DECLARED" direction="OB"/>
+            <carrier id="WEPK" mode="TRUCK" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+    </unit>
+
+    <unit seal-1="NA" shipper-name="KLUPENGER LUMBER COMPANY" shipper-id="0000007633" consignee-name="LOWE'S HOME CENTERS #21"
+          consignee-id="0055113700" unit-flex-3="CONSTRUC" unit-flex-1="43619230" time-out="2007-08-13T09:17:37.000" time-in="2007-08-13T09:47:56.000"
+          bl-nbr="7535770" remark="LUMBER, UNITIZED, GREEN 4&quot; OWL 3&quot; OWR , RETNG FULL OVER WEIGHT RE" weight-kg="25579.44" line="MAT"
+          freight-kind="FCL" transit-state="YARD" category="IMPORT" unique-key="TOLU8985327" id="TOLU8985327">
+        <equipment material="UNKNOWN" operator="MAT" owner="MAT" strength-code="FC" height-mm="2590" role="PRIMARY" type="4260" class="CTR"
+                   eqid="TOLU8985327"/>
+        <position slot="UA1948" location="YARD" loc-type="YARD"/>
+        <routing designated-trucker="ETS" destination="COO" opl="DUK" pod-1="COO" pol="DUK">
+            <carrier id="MNA139" mode="VESSEL" qualifier="DECLARED" direction="IB"/>
+            <carrier id="MNA139" mode="VESSEL" qualifier="ACTUAL" direction="IB"/>
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="DECLARED" direction="OB"/>
+            <carrier id="GEN_TRUCK" mode="TRUCK" qualifier="ACTUAL" direction="OB"/>
+        </routing>
+    </unit>
+
+</argo:snx>

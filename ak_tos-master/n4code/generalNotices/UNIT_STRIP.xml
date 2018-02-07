@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<notice-request action="GROOVY" business-entity="UNIT" event-type="UNIT_STRIP" description="Strip a unit">
+  <filter />
+</notice-request>
+</argo:snx>
+

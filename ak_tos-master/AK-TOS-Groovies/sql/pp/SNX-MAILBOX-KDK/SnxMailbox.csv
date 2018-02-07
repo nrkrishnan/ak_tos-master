@@ -1,0 +1,2 @@
+Mailbox Name,Facility,Directory,Comm. Type,FTP Address,FTP UserId,FTP Folder,Life Cycle
+SNX MAILBOX KDK,KDK,/var/tmp/snxmailbox/KDK,FTP,10.102.0.29,tdpnewves,~/snx/newves/KDK,Active

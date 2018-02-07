@@ -1,0 +1,1391 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">ArgoExtractArchive</meta>
+    <!-- Scope set is not applicable for BILLING EXTRACT. The extract tables are at ARGO level to be accessed
+         by billing module. The Manager class will be in their respective module. Inorder to set the field,
+         the protected attribute has been commented-->
+    <meta attribute="scope-set">public</meta>
+
+    <!-- ARCHIVE BILLING EXTRACT MARINE EVENTS -->
+    <class name="com.navis.argo.business.extract.ArchiveChargeableMarineEvent" table="argo_ar_chargeable_mrn_events"
+           dynamic-update="true">
+        <meta attribute="n4alias">arbexm</meta>
+        <meta attribute="generated-class">com.navis.argo.business.extract.ArchiveChargeableMarineEventHbr</meta>
+        <meta attribute="class-description">Domain entity representing Archive billable marine events</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">ArchiveChargeableMarineEvent</meta>
+        <meta attribute="n4-entity-name-plural">ArchivedChargeableMarineEvents</meta>
+
+        <id name="arBexmGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="arBexmArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this ChargeableMarineEvent was archived.</meta>
+        </property>
+
+        <property name="arBexmOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">The GKey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arBexmBatchId" column="batch_id" type="java.lang.Long">
+            <meta attribute="field-description">Batch ID to group all the transactions as a set</meta>
+        </property>
+
+        <!-- Event  -->
+        <property name="arBexmEventTypeId" column="event_type_id" type="string" length="50">
+            <meta attribute="field-description">Event Id eg: TUG, PILOT etc.,</meta>
+        </property>
+
+        <property name="arBexmEventGkey" column="event_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Source event Gkey. srv_event(gkey)</meta>
+        </property>
+
+        <property name="arBexmQuantity" column="event_quantity" type="java.lang.Double">
+            <meta attribute="field-description">Quantity provided</meta>
+        </property>
+
+        <property name="arBexmQuantityUnit" column="event_quantity_unit" type="string" length="30">
+            <meta attribute="field-description">Quantity units</meta>
+        </property>
+
+        <!-- Topology  -->
+        <many-to-one name="arBexmFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="false" cascade="none">
+            <meta attribute="field-description">Facility where this service occurred</meta>
+        </many-to-one>
+
+        <property name="arBexmFacilityId" column="facility_id" type="string" length="20">
+            <meta attribute="field-description">Facility Id</meta>
+        </property>
+
+        <property name="arBexmComplexId" column="complex_id" type="string" length="20">
+            <meta attribute="field-description">Complex Id</meta>
+        </property>
+
+        <property name="arBexmOperatorId" column="operator_id" type="string" length="20">
+            <meta attribute="field-description">Complex Id</meta>
+        </property>
+
+        <!-- Vessel Visit attributes -->
+        <property name="arBexmVvdGkey" column="vvd_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Vessel Visit detail gkey</meta>
+        </property>
+
+        <property name="arBexmVvId" column="vv_id" type="string" length="30">
+            <meta attribute="field-description">Vessel Visit reference ID.</meta>
+        </property>
+
+        <property name="arBexmVvATA" column="vv_ata" type="java.util.Date">
+            <meta attribute="field-description">The actual vessel visit ATA</meta>
+        </property>
+
+        <property name="arBexmVvATD" column="vv_atd" type="java.util.Date">
+            <meta attribute="field-description">The actual vessel visit ATD</meta>
+        </property>
+
+        <property name="arBexmVvETA" column="vv_eta" type="java.util.Date">
+            <meta attribute="field-description">The vessel visit ETA</meta>
+        </property>
+
+        <property name="arBexmVvETD" column="vv_etd" type="java.util.Date">
+            <meta attribute="field-description">The vessel visit ETD</meta>
+        </property>
+
+        <property name="arBexmVvTimeStartWork" column="vv_time_start_work" type="java.util.Date">
+            <meta attribute="field-description">The vessel work starting time</meta>
+        </property>
+
+        <property name="arBexmVvTimeEndWork" column="vv_time_end_work" type="java.util.Date">
+            <meta attribute="field-description">The vessel work ending time</meta>
+        </property>
+
+        <property name="arBexmIbVoyNbr" column="ib_voy_nbr" type="string" length="30">
+            <meta attribute="field-description">Inbound voyage number.</meta>
+        </property>
+
+        <property name="arBexmIbCallNbr" column="ib_call_nbr" type="string" length="30">
+            <meta attribute="field-description">Inbound voyage number.</meta>
+        </property>
+
+        <property name="arBexmObVoyNbr" column="ob_voy_nbr" type="string" length="30">
+            <meta attribute="field-description">Outbound voyage number.</meta>
+        </property>
+
+        <property name="arBexmObCallNbr" column="ob_call_nbr" type="string" length="30">
+            <meta attribute="field-description">Outbound voyage number.</meta>
+        </property>
+
+        <property name="arBexmServiceId" column="service_id" type="string" length="30">
+            <meta attribute="field-description">Service ID.</meta>
+        </property>
+
+        <!-- Vessel attributes -->
+        <property name="arBexmVslId" column="vsl_id" type="string" length="30">
+            <meta attribute="field-description">Vessel ID</meta>
+        </property>
+
+        <property name="arBexmVslName" column="vsl_name" type="string" length="80">
+            <meta attribute="field-description">Vessel Name</meta>
+        </property>
+
+        <property name="arBexmVslTypeId" column="vsl_type_id" type="string" length="30">
+            <meta attribute="field-description">The avessel type RORO, PSNGR etc.,</meta>
+        </property>
+
+        <property name="arBexmVslClassId" column="vsl_class_id" type="string" length="30">
+            <meta attribute="field-description">Vessel Class</meta>
+        </property>
+
+        <property name="arBexmVslLoaCm" column="vsl_loa_cm" type="java.lang.Long">
+            <meta attribute="field-description">Vessel Length over All in CM</meta>
+        </property>
+
+        <property name="arBexmVslBeamCm" column="vsl_beam_cm" type="java.lang.Long">
+            <meta attribute="field-description">Vessel Beam in CM</meta>
+        </property>
+
+        <property name="arBexmVslNetRevenueTons" column="vsl_net_revenue_tons" type="java.lang.Double">
+            <meta attribute="field-description">Vessel NET REVENUE TONS</meta>
+        </property>
+
+        <property name="arBexmVslGrossRevenueTons" column="vsl_gross_revenue_tons" type="java.lang.Double">
+            <meta attribute="field-description">Vessel GROSS REVENUE TONS</meta>
+        </property>
+
+        <property name="arBexmVslIsSelfSustaining" column="vsl_is_self_sustaining" type="java.lang.Boolean">
+            <meta attribute="field-description">Vessel is Self Sustaining</meta>
+        </property>
+
+        <property name="arBexmVslOperatorId" column="vsl_operator_id" type="string" length="20">
+            <meta attribute="field-description">Vessel Operator ID</meta>
+        </property>
+
+        <property name="arBexmVslOperatorName" column="vsl_operator_name" type="string" length="80">
+            <meta attribute="field-description">Vessel Operator Name</meta>
+        </property>
+
+        <property name="arBexmPerformed" column="performed" type="java.util.Date">
+            <meta attribute="field-description">The date and time service was performed</meta>
+        </property>
+
+        <property name="arBexmInboundFirstFreeDay" column="first_free_day" type="timestamp">
+            <meta attribute="field-description">Storage First Free Day for inbound cargo</meta>
+        </property>
+
+        <property name="arBexmTimeDischargeComplete" column="time_discharge_complete" type="timestamp">
+            <meta attribute="field-description">Time discharge of entire carrier visit completed.</meta>
+        </property>
+
+        <!-- User maintained -->
+        <property name="arBexmIsLocked" column="is_locked" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Locked record is not allowed for modification. Default value is
+                false.
+            </meta>
+        </property>
+
+        <property name="arBexmStatus" column="status" type="string" length="30">
+            <meta attribute="field-description">Third party system mark the status to avoid re-extract</meta>
+        </property>
+
+        <property name="arBexmLastDraftInvNbr" column="last_draft_inv_nbr" type="string" length="30">
+            <meta attribute="field-description">Last draft invoice number</meta>
+        </property>
+
+        <property name="arBexmPayeeCustomerId" column="payee_customer_id" type="string" length="30">
+            <meta attribute="field-description">The customer who is going to pay the charges.(Bill to party)</meta>
+        </property>
+
+        <property name="arBexmPayeeRole" column="payee_role" type="com.navis.argo.persistence.atoms.UserTypeBizRoleEnum">
+            <meta attribute="field-description">Role of this business unit: shipping line, agent, etc.</meta>
+        </property>
+
+        <property name="arBexmServiceOrder" column="service_order" type="string" length="30">
+            <meta attribute="field-description">Service Order</meta>
+        </property>
+
+        <property name="arBexmNotes" column="notes" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Remarks recorded for this event</meta>
+        </property>
+
+        <!-- Flex fields-->
+        <property name="arBexmFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="arBexmFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="arBexmFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+
+        <property name="arBexmFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <property name="arBexmFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+
+        <property name="arBexmFlexDate01" column="flex_date01" type="java.util.Date">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+
+        <property name="arBexmFlexDate02" column="flex_date02" type="java.util.Date">
+            <meta attribute="field-description">Date flex-field #02</meta>
+        </property>
+
+        <property name="arBexmFlexDate03" column="flex_date03" type="java.util.Date">
+            <meta attribute="field-description">Date flex-field #03</meta>
+        </property>
+
+        <property name="arBexmFlexDate04" column="flex_date04" type="java.util.Date">
+            <meta attribute="field-description">Date flex-field #04</meta>
+        </property>
+
+        <property name="arBexmFlexDate05" column="flex_date05" type="java.util.Date">
+            <meta attribute="field-description">Date flex-field #05</meta>
+        </property>
+
+        <property name="arBexmFlexLong01" column="flex_long01" type="java.lang.Long">
+            <meta attribute="field-description">Long flex-field #01</meta>
+        </property>
+
+        <property name="arBexmFlexLong02" column="flex_long02" type="java.lang.Long">
+            <meta attribute="field-description">Long flex-field #02</meta>
+        </property>
+
+        <property name="arBexmFlexLong03" column="flex_long03" type="java.lang.Long">
+            <meta attribute="field-description">Long flex-field #03</meta>
+        </property>
+
+        <property name="arBexmFlexLong04" column="flex_long04" type="java.lang.Long">
+            <meta attribute="field-description">Long flex-field #04</meta>
+        </property>
+
+        <property name="arBexmFlexLong05" column="flex_long05" type="java.lang.Long">
+            <meta attribute="field-description">Long flex-field #05</meta>
+        </property>
+
+        <property name="arBexmFlexDouble01" column="flex_double01" type="java.lang.Double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+
+        <property name="arBexmFlexDouble02" column="flex_double02" type="java.lang.Double">
+            <meta attribute="field-description">Double flex-field #02</meta>
+        </property>
+
+        <property name="arBexmFlexDouble03" column="flex_double03" type="java.lang.Double">
+            <meta attribute="field-description">Double flex-field #03</meta>
+        </property>
+
+        <property name="arBexmFlexDouble04" column="flex_double04" type="java.lang.Double">
+            <meta attribute="field-description">Double flex-field #04</meta>
+        </property>
+
+        <property name="arBexmFlexDouble05" column="flex_double05" type="java.lang.Double">
+            <meta attribute="field-description">Double flex-field #05</meta>
+        </property>
+
+        <!--    Audit Data -->
+        <property name="arBexmCreated" column="created" type="timestamp"/>
+        <property name="arBexmCreator" column="creator" type="string" length="30"/>
+        <property name="arBexmChanged" column="changed" type="timestamp"/>
+        <property name="arBexmChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!--
+    BILLING EXTRACT UNIT EVENTS
+    -->
+    <class name="com.navis.argo.business.extract.ArchiveChargeableUnitEvent" table="argo_ar_chargeable_unit_events" dynamic-update="true">
+        <meta attribute="n4alias">arbexu</meta>
+        <meta attribute="generated-class">com.navis.argo.business.extract.ArchiveChargeableUnitEventHbr</meta>
+        <meta attribute="class-description">Domain entity representing archive billable events of unit</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">ArchiveChargeableUnitEvent</meta>
+        <meta attribute="n4-entity-name-plural">ArchivedChargeableUnitEvents</meta>
+        <meta attribute="carina-index">
+            ac_ar_unit_events_type_gkey_idx(event_type,unit_gkey);ac_ar_unit_events_source_idx(unit_gkey,source_event_gkey);
+            ac_ar_unit_events_source_fac_idx(source_event_gkey,facility_gkey)
+        </meta>
+
+        <id name="arBexuGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arBexuArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this ChargeableUnitEvent was archived.</meta>
+        </property>
+
+        <property name="arBexuOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">The GKey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arBexuBatchId" column="batch_id" type="java.lang.Long" index="arBexu_batch_id_idx">
+            <meta attribute="field-description">Batch ID to group all the transactions as a set</meta>
+        </property>
+
+        <!-- Key fields -->
+        <property name="arBexuEventType" column="event_type" type="string" index="arBexu_event_type" length="50">
+            <meta attribute="field-description">Event Id eg: DISCHARGE, LOAD , STORAGE etc.,</meta>
+        </property>
+
+        <property name="arBexuSourceGkey" column="source_event_gkey" type="java.lang.Long" index="arBexu_source_event_gkey">
+            <meta attribute="field-description">Source event Gkey. srv_event(gkey)</meta>
+        </property>
+
+        <property name="arBexuUfvGkey" column="ufv_gkey" type="java.lang.Long" index="arBexu_ufv_gkey">
+            <meta attribute="field-description">Unit facility gkey</meta>
+        </property>
+
+        <property name="arBexuFacilityId" column="facility_id" type="string" length="20">
+            <meta attribute="field-description">Facility Id</meta>
+        </property>
+
+        <!-- Topology  -->
+        <many-to-one name="arBexuFacility" column="facility_gkey" class="com.navis.argo.business.model.Facility"
+                     not-null="false" cascade="none">
+            <meta attribute="field-description">Facility where this service occurred</meta>
+        </many-to-one>
+
+        <property name="arBexuComplexId" column="complex_id" type="string" length="20">
+            <meta attribute="field-description">Complex Id</meta>
+        </property>
+
+        <many-to-one name="arBexuTerminalOperator" column="terminal_operator_gkey" class="com.navis.argo.business.model.Operator" not-null="true">
+            <meta attribute="field-description">The terminal operator (determines scope).</meta>
+        </many-to-one>
+        <!-- Equipment attributes -->
+
+        <property name="arBexuEqId" column="equipment_id" type="string" index="arBexu_equipment_id" length="30">
+            <meta attribute="field-description">Container number, Chassis number etc.</meta>
+        </property>
+
+        <property name="arBexuEqSubClass" column="eq_subclass" type="string" length="30">
+            <meta attribute="field-description">Equipment sub class CTR, CHS etc.</meta>
+        </property>
+
+        <property name="arBexuLineOperatorId" column="line_operator_id" type="string" length="20">
+            <meta attribute="field-description">Line Operator of the equipment</meta>
+        </property>
+
+        <property name="arBexuFreightKind" column="freight_kind" type="string" length="30">
+            <meta attribute="field-description">Freight Kind of Unit: MTY,FCL,LCL,BBK</meta>
+        </property>
+
+        <property name="arBexuIsoCode" column="iso_code" type="string" length="30">
+            <meta attribute="field-description">ISO code</meta>
+        </property>
+
+        <property name="arBexuIsoGroup" column="iso_group" type="string" length="30">
+            <meta attribute="field-description">ISO group</meta>
+        </property>
+
+        <property name="arBexuIsoLength" column="eq_length" type="string" length="30">
+            <meta attribute="field-description">Equipment Length</meta>
+        </property>
+
+        <property name="arBexuIsoHeight" column="eq_height" type="string" length="30">
+            <meta attribute="field-description">Equipment Height</meta>
+        </property>
+
+        <property name="arBexuCategory" column="category" type="string" length="10">
+            <meta attribute="field-description">The Category of the equipment (Import, Export, ...).</meta>
+        </property>
+
+        <property name="arBexuPaidThruDay" column="paid_thru_day" type="java.util.Date">
+            <meta attribute="field-description">Day thru which demurrage charges have been paid</meta>
+        </property>
+
+        <property name="arBexuDrayStatus" column="dray_status" type="string" length="30">
+            <meta attribute="field-description">Dray Status of equipment</meta>
+        </property>
+
+        <property name="arBexuIsOog" column="is_oog" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Ture if equipment is OOG</meta>
+        </property>
+
+        <property name="arBexuIsRefrigerated" column="is_refrigerated" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Ture if equipment is Regrigerated</meta>
+        </property>
+
+        <property name="arBexuIsHazardous" column="is_hazardous" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Ture if Hazardous</meta>
+        </property>
+
+        <property name="arBexuImdgClass" column="imdg_class" type="string" length="30">
+            <meta attribute="field-description">IMDG Class. If multiple hazardous, then store the max value</meta>
+        </property>
+
+        <property name="arBexuFireCode" column="fire_code" type="string" length="12">
+            <meta attribute="field-description">Worst fire code for hazardous cargo</meta>
+        </property>
+
+        <property name="arBexuFireCodeClass" column="fire_code_class" type="string" length="4">
+            <meta attribute="field-description">Worst fire code class for hazardous cargo</meta>
+        </property>
+
+        <property name="arBexuCommodityId" column="commodity_id" type="string" length="255">
+            <meta attribute="field-description">Commodity Id</meta>
+        </property>
+
+        <property name="arBexuSpecialStow" column="special_stow_id" type="string" length="30">
+            <meta attribute="field-description">Special Stow Id</meta>
+        </property>
+
+        <property name="arBexuPod1" column="pod1" type="string" length="30">
+            <meta attribute="field-description">Port of discharge COUNTRY + ID</meta>
+        </property>
+
+        <property name="arBexuPol1" column="pol1" type="string" length="30">
+            <meta attribute="field-description">Port of Loading COUTNRY + ID</meta>
+        </property>
+
+        <property name="arBexuBundleUnitId" column="bundle_unitid" type="string" length="30">
+            <meta attribute="field-description">Equipment is bundled to (master) number.</meta>
+        </property>
+
+        <property name="arBexuBundleUfvGkey" column="bundle_ufv_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Equipment is bundled to (master) number.</meta>
+        </property>
+
+        <property name="arBexuBlNbr" column="bl_nbr" type="string" length="30">
+            <meta attribute="field-description">B/L number</meta>
+        </property>
+
+        <property name="arBexuGuaranteeParty" column="guarantee_party" type="string" length="30">
+            <meta attribute="field-description">Import storage guarantee party</meta>
+        </property>
+
+        <property name="arBexuGuaranteeThruDay" column="guarantee_thru_day" type="java.util.Date">
+            <meta attribute="field-description">Day thru which demurrage guaranteed</meta>
+        </property>
+
+        <!--collection of related guarentees-->
+        <set name="arBexuArGuarantees" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">guarentees for the event</meta>
+            <key column="applied_to_gkey"/>
+            <one-to-many class="com.navis.argo.business.extract.ArchiveGuarantee"/>
+        </set>
+
+        <property name="arBexuBookingNbr" column="booking_nbr" type="string" length="30">
+            <meta attribute="field-description">Booking number</meta>
+        </property>
+
+        <property name="arBexuRestowType" column="restow_type" type="string" length="30">
+            <meta attribute="field-description">Restow type</meta>
+        </property>
+
+        <property name="arBexuUnitGkey" column="unit_gkey" type="java.lang.Long" index="arBexu_unit_gkey_idx">
+            <meta attribute="field-description">Unit Gkey.</meta>
+        </property>
+
+        <property name="arBexuOpl" column="opl" type="string" length="30">
+            <meta attribute="field-description">Original Port of Loading</meta>
+        </property>
+
+        <property name="arBexuFinalDestination" column="final_destination" type="string" length="30">
+            <meta attribute="field-description">Final Destination</meta>
+        </property>
+
+        <property name="arBexuUfvTimeIn" column="ufv_time_in" type="java.util.Date">
+            <meta attribute="field-description">Unit facility visit Time In</meta>
+        </property>
+
+        <property name="arBexuUfvTimeOut" column="ufv_time_out" type="java.util.Date">
+            <meta attribute="field-description">Unit facility visit Time Out</meta>
+        </property>
+
+        <property name="arBexuTempRequiredC" column="temp_reqd_C" type="java.lang.Double">
+            <meta attribute="field-description">Temperature required, degrees Centigrade</meta>
+        </property>
+
+        <property name="arBexuTimeOfLoading" column="time_load" type="timestamp">
+            <meta attribute="field-description">The time at which the ufv was loaded to the outbound carrier.</meta>
+        </property>
+
+        <!-- 2009-05-12 pmelappalayam v1.9.F ARGO-18139 - increase the column length of consignee_id for ChargeableUnitEvent -->
+        <property name="arBexuConsigneeId" column="consignee_id" type="string" length='255'>
+            <meta attribute="field-description">Consignee Id</meta>
+        </property>
+
+        <property name="arBexuShipperId" column="shipper_id" type="string" length='100'>
+            <meta attribute="field-description">Shipper Id</meta>
+        </property>
+
+        <property name="arBexuTimeFirstFreeDay" column="time_first_free_day" type="timestamp">
+            <meta attribute="field-description">Date/time discharged cargo is available for pickup.</meta>
+        </property>
+
+        <property name="arBexuTimeDischargeComplete" column="time_discharge_complete" type="timestamp">
+            <meta attribute="field-description">Time discharge of entire carrier visit completed.</meta>
+        </property>
+
+        <property name="arBexuCargoQuantity" column="cargo_quantity" type="java.lang.Double">
+            <meta attribute="field-description">Cargo quantity</meta>
+        </property>
+
+        <property name="arBexuCargoQuantityUnit" column="cargo_quantity_unit" type="string" length="255">
+            <meta attribute="field-description">Volume or weight units (kilograms, gallons, etc.) of cargo quantity</meta>
+        </property>
+
+        <!-- Inbound intended carrier details -->
+
+        <property name="arBexuIbintendedLocType" column="ib_intended_loctype" type="string" length="30">
+            <meta attribute="field-description">The intended arrival location type. VESSEL, TRUCK, TRAIN</meta>
+        </property>
+
+        <property name="arBexuIbintendedId" column="ib_intended_id" type="string" length="30">
+            <meta attribute="field-description">The intended inbound carrier id</meta>
+        </property>
+
+        <property name="arBexuIbintendedVisitId" column="ib_intended_visit_id" type="string" length="30" index="arBexu_ib_intended_visit_id">
+            <meta attribute="field-description">The intended inbound carrier visit id</meta>
+        </property>
+
+        <property name="arBexuIbintendedCarrierName" column="ib_intended_carrier_name" type="string" length="35">
+            <meta attribute="field-description">The intended inbound carrier name</meta>
+        </property>
+
+        <property name="arBexuIbintendedCallNbr" column="ib_intended_call_nbr" type="string" length="30">
+            <meta attribute="field-description">The intended inbound carrier call nbr</meta>
+        </property>
+
+        <property name="arBexuIbintendedCarrierETA" column="ib_intended_eta" type="java.util.Date">
+            <meta attribute="field-description">The intended inbound carrier ETA</meta>
+        </property>
+
+        <property name="arBexuIbintendedCarrierATA" column="ib_intended_ata" type="java.util.Date">
+            <meta attribute="field-description">The intended inbound carrier ATA</meta>
+        </property>
+
+        <property name="arBexuIbintendedCarrierATD" column="ib_intended_atd" type="java.util.Date">
+            <meta attribute="field-description">The intended inbound carrier ATD</meta>
+        </property>
+
+        <property name="arBexuIbintendedVesselType" column="ib_intended_vessel_type" type="string" length="30">
+            <meta attribute="field-description">The intended inbound vessel type RORO, PSNGR etc.,</meta>
+        </property>
+
+        <property name="arBexuIbintendedCarrierLineId" column="ib_intended_line_id" type="string" length="30">
+            <meta attribute="field-description">The intended inbound carrier line id</meta>
+        </property>
+
+        <property name="arBexuIbintendedServiceId" column="ib_intended_service_id" type="string" length="30">
+            <meta attribute="field-description">Intended inbound service Id. Applicable for vessel</meta>
+        </property>
+
+        <property name="arBexuIbintendedVesselClassId" column="ib_intended_vessel_class_id" type="string" length="30">
+            <meta attribute="field-description">Intended inbound vessel class Id. Applicable for vessel</meta>
+        </property>
+
+        <!-- Inbound carrier details -->
+
+        <property name="arBexuIbLocType" column="ib_loctype" type="string" length="30">
+            <meta attribute="field-description">The actual arrival location type. VESSEL, TRUCK, TRAIN</meta>
+        </property>
+
+        <property name="arBexuIbId" column="ib_id" type="string" length="30">
+            <meta attribute="field-description">The actual inbound carrier id</meta>
+        </property>
+
+        <property name="arBexuIbVisitId" column="ib_visit_id" type="string" length="30" index="arBexu_ib_visit_id">
+            <meta attribute="field-description">The actual inbound carrier visit id</meta>
+        </property>
+
+        <property name="arBexuIbCarrierName" column="ib_carrier_name" type="string" length="35">
+            <meta attribute="field-description">The actual inbound carrier name</meta>
+        </property>
+
+        <property name="arBexuIbCallNbr" column="ib_call_nbr" type="string" length="30">
+            <meta attribute="field-description">The actual inbound carrier call nbr</meta>
+        </property>
+
+        <property name="arBexuIbCarrierETA" column="ib_eta" type="java.util.Date">
+            <meta attribute="field-description">The actual inbound carrier ETA</meta>
+        </property>
+
+        <property name="arBexuIbCarrierATA" column="ib_ata" type="java.util.Date">
+            <meta attribute="field-description">The actual inbound carrier ATA</meta>
+        </property>
+
+        <property name="arBexuIbCarrierATD" column="ib_atd" type="java.util.Date">
+            <meta attribute="field-description">The actual inbound carrier ATD</meta>
+        </property>
+
+        <property name="arBexuIbVesselType" column="ib_vessel_type" type="string" length="30">
+            <meta attribute="field-description">The actual inbound vessel type RORO, PSNGR etc.,</meta>
+        </property>
+
+        <property name="arBexuIbCarrierLineId" column="ib_line_id" type="string" length="30">
+            <meta attribute="field-description">The actual inbound carrier line id</meta>
+        </property>
+
+        <property name="arBexuIbServiceId" column="ib_service_id" type="string" length="30">
+            <meta attribute="field-description">Inbound service Id. Applicable for vessel</meta>
+        </property>
+
+        <property name="arBexuIbVesselClassId" column="ib_vessel_class_id" type="string" length="30">
+            <meta attribute="field-description">Inbound vessel class Id. Applicable for vessel</meta>
+        </property>
+
+        <property name="arBexuIbVesselLloydsId" column="ib_vessel_lloyds_id" type="string" length="8">
+            <meta attribute="field-description">The actual inbound vessel Lloyds identity</meta>
+        </property>
+
+        <!-- Outbound intended carrier details -->
+
+        <property name="arBexuObintendedLocType" column="ob_intended_loctype" type="string" length="30">
+            <meta attribute="field-description">The intended departure location type. VESSEL, TRUCK, TRAIN</meta>
+        </property>
+
+        <property name="arBexuObintendedId" column="ob_intended_id" type="string" length="30">
+            <meta attribute="field-description">The intended outbound carrier id</meta>
+        </property>
+
+        <property name="arBexuObintendedVisitId" column="ob_intended_visit_id" type="string" length="30">
+            <meta attribute="field-description">The intended outbound carrier visit id</meta>
+        </property>
+
+        <property name="arBexuObintendedCarrierName" column="ob_intended_carrier_name" type="string" length="35">
+            <meta attribute="field-description">The intended outbound carrier name</meta>
+        </property>
+
+        <property name="arBexuObintendedCallNbr" column="ob_intended_call_nbr" type="string" length="30">
+            <meta attribute="field-description">The intended outbound carrier call nbr</meta>
+        </property>
+
+        <property name="arBexuObintendedCarrierETA" column="ob_intended_eta" type="java.util.Date">
+            <meta attribute="field-description">The intended outbound carrier ETA</meta>
+        </property>
+
+        <property name="arBexuObintendedCarrierATA" column="ob_intended_ata" type="java.util.Date">
+            <meta attribute="field-description">The intended outbound carrier ATA</meta>
+        </property>
+
+        <property name="arBexuObintendedCarrierATD" column="ob_intended_atd" type="java.util.Date">
+            <meta attribute="field-description">The intended outbound carrier ATD</meta>
+        </property>
+
+        <property name="arBexuObintendedVesselType" column="ob_intended_vessel_type" type="string" length="30">
+            <meta attribute="field-description">The intended outbound vessel type RORO, PSNGR etc.,</meta>
+        </property>
+
+        <property name="arBexuObintendedCarrierLineId" column="ob_intended_line_id" type="string" length="30">
+            <meta attribute="field-description">The intended outbound carrier line id</meta>
+        </property>
+
+        <property name="arBexuObintendedServiceId" column="ob_intended_service_id" type="string" length="30">
+            <meta attribute="field-description">Intended outbound service Id. Applicable for vessel</meta>
+        </property>
+
+        <property name="arBexuObintendedVesselClassId" column="ob_intended_vessel_class_id" type="string" length="30">
+            <meta attribute="field-description">Intended outbound vessel class Id. Applicable for vessel</meta>
+        </property>
+
+        <!-- Outbound carrier details -->
+
+        <property name="arBexuObLocType" column="ob_loctype" type="string" length="30">
+            <meta attribute="field-description">The actual departure location type. VESSEL, TRUCK, TRAIN</meta>
+        </property>
+
+        <property name="arBexuObId" column="ob_id" type="string" length="30">
+            <meta attribute="field-description">The actual outbound carrier id</meta>
+        </property>
+
+        <property name="arBexuObVisitId" column="ob_visit_id" type="string" length="30">
+            <meta attribute="field-description">The actual outbound carrier visit id</meta>
+        </property>
+
+        <property name="arBexuObCarrierName" column="ob_carrier_name" type="string" length="35">
+            <meta attribute="field-description">The actual outbound carrier name</meta>
+        </property>
+
+        <property name="arBexuObCallNbr" column="ob_call_nbr" type="string" length="30">
+            <meta attribute="field-description">The actual outbound carrier call nbr</meta>
+        </property>
+
+        <property name="arBexuObCarrierETA" column="ob_eta" type="java.util.Date">
+            <meta attribute="field-description">The actual outbound carrier ETA</meta>
+        </property>
+
+        <property name="arBexuObCarrierATA" column="ob_ata" type="java.util.Date">
+            <meta attribute="field-description">The actual outbound carrier ATA</meta>
+        </property>
+
+        <property name="arBexuObCarrierATD" column="ob_atd" type="java.util.Date">
+            <meta attribute="field-description">The actual outbound carrier ATD</meta>
+        </property>
+
+        <property name="arBexuObVesselType" column="ob_vessel_type" type="string" length="30">
+            <meta attribute="field-description">The actual outbound vessel type RORO, PSNGR etc.,</meta>
+        </property>
+
+        <property name="arBexuObCarrierLineId" column="ob_line_id" type="string" length="30">
+            <meta attribute="field-description">The actual outbound carrier line id</meta>
+        </property>
+
+        <property name="arBexuObServiceId" column="ob_service_id" type="string" length="30">
+            <meta attribute="field-description">Outbound service Id. Applicable for vessel</meta>
+        </property>
+
+        <property name="arBexuObVesselClassId" column="ob_vessel_class_id" type="string" length="30">
+            <meta attribute="field-description">Outbound vessel class Id. Applicable for vessel</meta>
+        </property>
+
+        <property name="arBexuObVesselLloydsId" column="ob_vessel_lloyds_id" type="string" length="8">
+            <meta attribute="field-description">The actual outbound vessel Lloyds identity</meta>
+        </property>
+
+        <!-- Events  -->
+
+        <property name="arBexuEventStartTime" column="event_start_time" type="java.util.Date">
+            <meta attribute="field-description">Start time of the event. It is applicale like STORAGE,REEFER kind</meta>
+        </property>
+
+        <property name="arBexuEventEndTime" column="event_end_time" type="java.util.Date">
+            <meta attribute="field-description">End time of the event. It is applicale like STORAGE,REEFER kind</meta>
+        </property>
+
+        <property name="arBexuRuleStartDay" column="rule_start_day" type="java.util.Date">
+            <meta attribute="field-description">STORAGE/REEFER rule start day as per rule definition</meta>
+        </property>
+
+        <property name="arBexuRuleEndDay" column="rule_end_day" type="java.util.Date">
+            <meta attribute="field-description">STORAGE/REEFER rule end day as per rule definition</meta>
+        </property>
+
+        <property name="arBexuPayeeCustomerId" column="payee_customer_id" type="string" length="30">
+            <meta attribute="field-description">The customer who is going to pay the charges.(Bill to party)</meta>
+        </property>
+
+        <property name="arBexuPayeeRole" column="payee_role" type="com.navis.argo.persistence.atoms.UserTypeBizRoleEnum">
+            <meta attribute="field-description">Role of this business unit: shipping line, agent, etc.</meta>
+        </property>
+
+        <property name="arBexuFirstAvailability" column="first_availability_date" type="java.util.Date">
+            <meta attribute="field-description">First availability date. It is applicable for STORAGE</meta>
+        </property>
+
+        <property name="arBexuQuayCheId" column="qc_che_id" type="string" length="30">
+            <meta attribute="field-description">Quay crane Id</meta>
+        </property>
+
+        <property name="arBexuFmPosLocType" column="fm_pos_loctype" type="string" length="16">
+            <meta attribute="field-description">From position loc type</meta>
+        </property>
+
+        <property name="arBexuFmPosLocId" column="fm_pos_locid" type="string" length="16">
+            <meta attribute="field-description">From position loc Id</meta>
+        </property>
+
+        <property name="arBexuToPosLocType" column="to_pos_loctype" type="string" length="16">
+            <meta attribute="field-description">To position loc type</meta>
+        </property>
+
+        <property name="arBexuToPosLocId" column="to_pos_locid" type="string" length="16">
+            <meta attribute="field-description">To position loc Id</meta>
+        </property>
+
+        <property name="arBexuServiceOrder" column="service_order" type="string" length="30">
+            <meta attribute="field-description">Service Order</meta>
+        </property>
+
+        <property name="arBexuRestowReason" column="restow_reason" type="string" length="20">
+            <meta attribute="field-description">Restow Reason</meta>
+        </property>
+
+        <property name="arBexuRestowAccount" column="restow_account" type="string" length="20">
+            <meta attribute="field-description">Restow Reason</meta>
+        </property>
+
+        <property name="arBexuRehandleCount" column="rehandle_count" type="java.lang.Long">
+            <meta attribute="field-description">Restow Reason</meta>
+        </property>
+
+        <property name="arBexuQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">Quantity</meta>
+        </property>
+
+        <property name="arBexuQuantityUnit" column="quantity_unit" type="string" length="255">
+            <meta attribute="field-description">Quantity Unit</meta>
+        </property>
+
+        <property name="arBexuFmPositionSlot" column="fm_pos_slot" type="string" length='30'>
+            <meta attribute="field-description">Move event from position slot</meta>
+        </property>
+
+        <property name="arBexuFmPositionName" column="fm_pos_name" type="string" length='60'>
+            <meta attribute="field-description">Move event from position name</meta>
+        </property>
+
+        <property name="arBexuToPositionSlot" column="to_pos_slot" type="string" length='30'>
+            <meta attribute="field-description">Move event to position slot</meta>
+        </property>
+
+        <property name="arBexuToPositionName" column="to_pos_name" type="string" length='60'>
+            <meta attribute="field-description">Move event to position name</meta>
+        </property>
+
+        <!-- User maintains -->
+
+        <property name="arBexuIsLocked" column="is_locked" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Locked record is not allowed for modification. Default value is false.</meta>
+        </property>
+
+        <property name="arBexuStatus" column="status" type="string" index="arBexu_status" length="30">
+            <meta attribute="field-description">Third party system mark the status to avoid re-extract</meta>
+        </property>
+
+        <property name="arBexuLastDraftInvNbr" column="last_draft_inv_nbr" type="string" length="30">
+            <meta attribute="field-description">Last draft invoice number</meta>
+        </property>
+
+        <property name="arBexuNotes" column="notes" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Remarks recorded for this event</meta>
+        </property>
+
+        <!-- Guarantee related fields-->
+        <property name="arBexuIsOverrideValue" column="is_override_value" type="java.lang.Boolean" not-null="false">
+            <meta attribute="field-description">Is Tariff rate value to be override?</meta>
+        </property>
+        <property name="arBexuOverrideValueType" column="override_value_type" type="string" length="30">
+            <meta attribute="field-description">Override Type</meta>
+        </property>
+        <property name="arBexuOverrideValue" column="override_value" type="java.lang.Double">
+            <meta attribute="field-description">Override value (rate or fixed amount or percentage)</meta>
+        </property>
+        <property name="arBexuGuaranteeId" column="guarantee_id" type="string" length="30">
+            <meta attribute="field-description">Guarantee Id / Waiver Id</meta>
+        </property>
+        <property name="arBexuGuaranteeGkey" column="guarantee_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Guarantee Gkey</meta>
+        </property>
+
+        <property name="arBexuGnteInvProcessingStatus" column="gnte_inv_processing_status" type="string" length="30">
+            <meta attribute="field-description">Invoice processing status is used for internal purpose to be used by Groovy script</meta>
+        </property>
+        <!-- Flex fields-->
+
+        <property name="arBexuFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="arBexuFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="arBexuFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+
+        <property name="arBexuFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <property name="arBexuFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+
+        <property name="arBexuFlexString06" column="flex_string06" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+
+        <property name="arBexuFlexString07" column="flex_string07" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+
+        <property name="arBexuFlexString08" column="flex_string08" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+
+        <property name="arBexuFlexString09" column="flex_string09" type="string" length="255">
+            <meta attribute="field-description">String flex-field #09</meta>
+        </property>
+
+        <property name="arBexuFlexString10" column="flex_string10" type="string" length="255">
+            <meta attribute="field-description">String flex-field #10</meta>
+        </property>
+
+        <property name="arBexuFlexString11" column="flex_string11" type="string" length="255">
+            <meta attribute="field-description">String flex-field #11</meta>
+        </property>
+
+        <property name="arBexuFlexString12" column="flex_string12" type="string" length="255">
+            <meta attribute="field-description">String flex-field #12</meta>
+        </property>
+
+        <property name="arBexuFlexString13" column="flex_string13" type="string" length="255">
+            <meta attribute="field-description">String flex-field #13</meta>
+        </property>
+
+        <property name="arBexuFlexString14" column="flex_string14" type="string" length="255">
+            <meta attribute="field-description">String flex-field #14</meta>
+        </property>
+
+        <property name="arBexuFlexString15" column="flex_string15" type="string" length="255">
+            <meta attribute="field-description">String flex-field #15</meta>
+        </property>
+
+        <property name="arBexuFlexString16" column="flex_string16" type="string" length="255">
+            <meta attribute="field-description">String flex-field #16</meta>
+        </property>
+
+        <property name="arBexuFlexString17" column="flex_string17" type="string" length="255">
+            <meta attribute="field-description">String flex-field #17</meta>
+        </property>
+
+        <property name="arBexuFlexString18" column="flex_string18" type="string" length="255">
+            <meta attribute="field-description">String flex-field #18</meta>
+        </property>
+
+        <property name="arBexuFlexString19" column="flex_string19" type="string" length="255">
+            <meta attribute="field-description">String flex-field #19</meta>
+        </property>
+
+        <property name="arBexuFlexString20" column="flex_string20" type="string" length="255">
+            <meta attribute="field-description">String flex-field #20</meta>
+        </property>
+
+        <property name="arBexuFlexDate01" column="flex_date01" type="java.util.Date">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+
+        <property name="arBexuFlexDate02" column="flex_date02" type="java.util.Date">
+            <meta attribute="field-description">Date flex-field #02</meta>
+        </property>
+
+        <property name="arBexuFlexDate03" column="flex_date03" type="java.util.Date">
+            <meta attribute="field-description">Date flex-field #03</meta>
+        </property>
+
+        <property name="arBexuFlexDate04" column="flex_date04" type="java.util.Date">
+            <meta attribute="field-description">Date flex-field #04</meta>
+        </property>
+
+        <property name="arBexuFlexDate05" column="flex_date05" type="java.util.Date">
+            <meta attribute="field-description">Date flex-field #05</meta>
+        </property>
+
+        <property name="arBexuFlexLong01" column="flex_long01" type="java.lang.Long">
+            <meta attribute="field-description">Long flex-field #01</meta>
+        </property>
+
+        <property name="arBexuFlexLong02" column="flex_long02" type="java.lang.Long">
+            <meta attribute="field-description">Long flex-field #02</meta>
+        </property>
+
+        <property name="arBexuFlexLong03" column="flex_long03" type="java.lang.Long">
+            <meta attribute="field-description">Long flex-field #03</meta>
+        </property>
+
+        <property name="arBexuFlexLong04" column="flex_long04" type="java.lang.Long">
+            <meta attribute="field-description">Long flex-field #04</meta>
+        </property>
+
+        <property name="arBexuFlexLong05" column="flex_long05" type="java.lang.Long">
+            <meta attribute="field-description">Long flex-field #05</meta>
+        </property>
+
+        <property name="arBexuFlexDouble01" column="flex_double01" type="java.lang.Double">
+            <meta attribute="field-description">Double flex-field #01</meta>
+        </property>
+
+        <property name="arBexuFlexDouble02" column="flex_double02" type="java.lang.Double">
+            <meta attribute="field-description">Double flex-field #02</meta>
+        </property>
+
+        <property name="arBexuFlexDouble03" column="flex_double03" type="java.lang.Double">
+            <meta attribute="field-description">Double flex-field #03</meta>
+        </property>
+
+        <property name="arBexuFlexDouble04" column="flex_double04" type="java.lang.Double">
+            <meta attribute="field-description">Double flex-field #04</meta>
+        </property>
+
+        <property name="arBexuFlexDouble05" column="flex_double05" type="java.lang.Double">
+            <meta attribute="field-description">Double flex-field #05</meta>
+        </property>
+
+        <property name="arBexuEqOwnerId" column="equipment_owner_id" type="string" length="30">
+            <meta attribute="field-description">The owner of the equipment.</meta>
+        </property>
+
+        <property name="arBexuVerifiedGrossMass" column="verified_gross_mass" type="java.lang.Double">
+            <meta attribute="field-description">Goods and Container weight in Kgs (VGM-Verified Gross Mass) as verified by Terminal.</meta>
+        </property>
+
+        <property name="arBexuVgmVerifierEntity" column="vgm_verifier_entity" type="string" length="40">
+            <meta attribute="field-description">Verifier of the Gross Mass Ex: Load port, Shipper</meta>
+        </property>
+
+        <!--    Audit Data -->
+
+        <property name="arBexuCreated" column="created" type="timestamp"/>
+        <property name="arBexuCreator" column="creator" type="string" length="30"/>
+        <property name="arBexuChanged" column="changed" type="timestamp" index="arBexu_changed_idx"/>
+        <property name="arBexuChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!-- BILLING EXTRACT APPOINTMENT EVENTS -->
+    <class name="com.navis.argo.business.extract.ArchiveChargeableAppointmentEvent" table="argo_ar_chargeable_appt_events" dynamic-update="true">
+        <meta attribute="n4alias">arbexa</meta>
+        <meta attribute="generated-class">com.navis.argo.business.extract.ArchiveChargeableAppointmentEventHbr</meta>
+        <meta attribute="class-description">Domain entity representing billable appointment events</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">ArchiveChargeableAppointmentEvent</meta>
+        <meta attribute="n4-entity-name-plural">ArchivedChargeableAppointmentEvents</meta>
+
+        <id name="arBexaGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arBexaArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this ChargeableAppointmentEvent was archived.</meta>
+        </property>
+
+        <property name="arBexaOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">The GKey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arBexaBatchId" column="batch_id" type="java.lang.Long">
+            <meta attribute="field-description">Batch ID to group all the transactions as a set</meta>
+        </property>
+        <property name="arBexaEventTypeId" column="event_type_id" type="string" length="50">
+            <meta attribute="field-description">Event Id eg: TUG, PILOT etc.,</meta>
+        </property>
+        <property name="arBexaEventGkey" column="event_gkey" type="java.lang.Long">
+            <meta attribute="field-description">Source event Gkey. srv_event(gkey)</meta>
+        </property>
+        <property name="arBexaComplexId" column="complex_id" type="string" length="20">
+            <meta attribute="field-description">Complex Id</meta>
+        </property>
+        <property name="arBexaFacilityId" column="facility_id" type="string" length="20">
+            <meta attribute="field-description">Facility Id</meta>
+        </property>
+        <property name="arBexaStatus" column="status" type="string" length="30">
+            <meta attribute="field-description">Third party system mark the status to avoid re-extract</meta>
+        </property>
+        <property name="arBexaPerformed" column="performed" type="java.util.Date">
+            <meta attribute="field-description">The date and time service was performed</meta>
+        </property>
+        <property name="arBexaApptNbr" column="appt_nbr" type="java.lang.Long">
+            <meta attribute="field-description">Appointment Number</meta>
+        </property>
+        <property name="arBexaTruckVisitApptNbr" column="truck_visit_appt_nbr" type="java.lang.Long">
+            <meta attribute="field-description">Truck Visit Appointment Number</meta>
+        </property>
+        <property name="arBexaApptState" column="appt_state" type="string" length="30">
+            <meta attribute="field-description">The state of this appointment (Created, Used)</meta>
+        </property>
+        <property name="arBexaApptDate" column="appt_date" type="java.util.Date">
+            <meta attribute="field-description">The date and time appointment was created</meta>
+        </property>
+        <property name="arBexaTimeStartSlot" column="time_start_slot" type="java.util.Date">
+            <meta attribute="field-description">Time Slot Start Time.</meta>
+        </property>
+        <property name="arBexaTimeEndSlot" column="time_end_slot" type="java.util.Date">
+            <meta attribute="field-description">Time Slot End Time.</meta>
+        </property>
+        <property name="arBexaTimeSlotTolerance" column="time_slot_tolerance" type="java.lang.Long">
+            <meta attribute="field-description">Time Slot Tolerance.</meta>
+        </property>
+        <property name="arBexaGateId" column="gate_id" type="string" length="20">
+            <meta attribute="field-description">Gate Id</meta>
+        </property>
+        <property name="arBexaTransactionType" column="tran_type" type="string" length="30">
+            <meta attribute="field-description">The transaction type of this time slot</meta>
+        </property>
+        <property name="arBexaTruckingCompanyId" column="trkco_id" type="string" length="100">
+            <meta attribute="field-description">Appointment Trucking Company Id</meta>
+        </property>
+        <property name="arBexaTruckingCompanyName" column="trkco_name" type="string" length="80">
+            <meta attribute="field-description">Appointment Trucking Company Name</meta>
+        </property>
+        <property name="arBexaTruckId" column="truck_id" type="string" length="30">
+            <meta attribute="field-description">The truck id</meta>
+        </property>
+        <property name="arBexaTruckLicenseNbr" column="truck_license_nbr" type="string" length="30">
+            <meta attribute="field-description">The truck license number</meta>
+        </property>
+        <property name="arBexaDriverCardId" type="string" column="driver_card_id" length="20">
+            <meta attribute="field-description">Driver Card ID</meta>
+        </property>
+        <property name="arBexaDriverName" type="string" column="driver_name" length="60">
+            <meta attribute="field-description">Driver Name</meta>
+        </property>
+        <property name="arBexaQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">Quantity</meta>
+        </property>
+        <property name="arBexaQuantityUnit" column="quantity_unit" type="string" length="255">
+            <meta attribute="field-description">Quantity Unit</meta>
+        </property>
+        <property name="arBexaLastDraftInvNbr" column="last_draft_inv_nbr" type="string" length="30">
+            <meta attribute="field-description">Last draft invoice number</meta>
+        </property>
+        <property name="arBexaUnitId" column="unit_id" type="string" length="30">
+            <meta attribute="field-description">Unit Identifier:Container number, Chassis number, Marks and Numbers, etc.
+                An name by which people identify this Unit.
+            </meta>
+        </property>
+        <property name="arBexaCtrIsoCode" column="ctr_iso_code" type="string" length="30">
+            <meta attribute="field-description">Container Type ISO</meta>
+        </property>
+        <property name="arBexaChassisId" column="chassis_id" type="string" length="30">
+            <meta attribute="field-description">The Chassis Id</meta>
+        </property>
+        <property name="arBexaChsIsoCode" column="chs_iso_code" type="string" length="30">
+            <meta attribute="field-description">Chassis Type ISO</meta>
+        </property>
+        <property name="arBexaLineOperatorId" column="line_operator_id" type="string" length="20">
+            <meta attribute="field-description">Line Operator of the equipment</meta>
+        </property>
+        <property name="arBexaVvId" column="vv_id" type="string" length="30">
+            <meta attribute="field-description">Vessel Visit reference ID.</meta>
+        </property>
+        <property name="arBexaOrderNbr" column="order_nbr" type="string" length="30">
+            <meta attribute="field-description">Order number</meta>
+        </property>
+        <property name="arBexaBlNbr" column="bl_nbr" type="string" length="30">
+            <meta attribute="field-description">Bill of Lading number</meta>
+        </property>
+        <property name="arBexaImportReleaseNbr" type="string" column="import_release_nbr" length="30">
+            <meta attribute="field-description">Import Release Number</meta>
+        </property>
+        <property name="arBexaNotes" column="notes" type="string" length="255" not-null="false">
+            <meta attribute="field-description">Remarks recorded for this event</meta>
+        </property>
+
+        <!-- Flex fields-->
+        <property name="arBexaFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">Flex String #01</meta>
+        </property>
+        <property name="arBexaFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">Flex String #02</meta>
+        </property>
+        <property name="arBexaFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">Flex String #03</meta>
+        </property>
+        <property name="arBexaFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">Flex String #04</meta>
+        </property>
+        <property name="arBexaFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">Flex String #05</meta>
+        </property>
+        <property name="arBexaFlexLong01" column="flex_long01" type="java.lang.Long">
+            <meta attribute="field-description">Flex Long #01</meta>
+        </property>
+        <property name="arBexaFlexLong02" column="flex_long02" type="java.lang.Long">
+            <meta attribute="field-description">Flex Long #02</meta>
+        </property>
+        <property name="arBexaFlexLong03" column="flex_long03" type="java.lang.Long">
+            <meta attribute="field-description">Flex Long #03</meta>
+        </property>
+        <property name="arBexaFlexLong04" column="flex_long04" type="java.lang.Long">
+            <meta attribute="field-description">Flex Long #04</meta>
+        </property>
+        <property name="arBexaFlexLong05" column="flex_long05" type="java.lang.Long">
+            <meta attribute="field-description">Flex Long #05</meta>
+        </property>
+        <property name="arBexaFlexDate01" column="flex_date01" type="java.util.Date">
+            <meta attribute="field-description">Flex Date #01</meta>
+        </property>
+        <property name="arBexaFlexDate02" column="flex_date02" type="java.util.Date">
+            <meta attribute="field-description">Flex Date #02</meta>
+        </property>
+        <property name="arBexaFlexDate03" column="flex_date03" type="java.util.Date">
+            <meta attribute="field-description">Flex Date #03</meta>
+        </property>
+        <property name="arBexaFlexDate04" column="flex_date04" type="java.util.Date">
+            <meta attribute="field-description">Flex Date #04</meta>
+        </property>
+        <property name="arBexaFlexDate05" column="flex_date05" type="java.util.Date">
+            <meta attribute="field-description">Flex Date #05</meta>
+        </property>
+
+        <!--    Audit Data -->
+        <property name="arBexaCreated" column="created" type="timestamp"/>
+        <property name="arBexaCreator" column="creator" type="string" length="30"/>
+        <property name="arBexaChanged" column="changed" type="timestamp"/>
+        <property name="arBexaChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+    <!--
+    GUARANTEE DETAIL FOR BILLABLE EVENTS
+    -->
+    <class name="com.navis.argo.business.extract.ArchiveGuarantee" table="argo_ar_guarantees" dynamic-update="true">
+        <meta attribute="n4alias">argnte</meta>
+        <meta attribute="generated-class">com.navis.argo.business.extract.ArchiveGuaranteeHbr</meta>
+        <meta attribute="class-description">Domain entity representing guarantees for billable events</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">ArchiveGuarantee</meta>
+        <meta attribute="n4-entity-name-plural">ArchivedGuarantees</meta>
+        <meta attribute="n4-code-extension-support">true</meta>
+        <meta attribute="carina-index">argo_ar_guarant_aclass_agkey_idx(applied_to_class, applied_to_gkey)</meta>
+
+        <id name="arGnteGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="arGnteArchiveDate" column="archived_date" type="timestamp" not-null="true">
+            <meta attribute="field-description">The time this Guarantee was archived.</meta>
+        </property>
+
+        <property name="arGnteOriginalGkey" column="original_gkey" type="java.lang.Long">
+            <meta attribute="field-description">The GKey of the original entity before it's been purged/archived.</meta>
+        </property>
+
+        <property name="arGnteAppliedToClass" column="applied_to_class" type="com.navis.argo.persistence.atoms.UserTypeBillingExtractEntityEnum"
+                  not-null="true">
+            <meta attribute="field-description">Name of the business class of the EXTRACT entity</meta>
+        </property>
+        <property name="arGnteAppliedToPrimaryKey" column="applied_to_gkey" type="java.lang.Long" not-null="true" index="arGnte_applied_to_idx">
+            <meta attribute="field-description">Primary key of the EXTRACT entity ChargeableUnitEvent, ChargeableMarineEvent etc.,</meta>
+        </property>
+        <property name="arGnteAppliedToNaturalKey" column="applied_to_natural_key" type="string" not-null="true" index="arGnte_applied_nat_key_idx">
+            <meta attribute="field-description">Natural key of the EXTRACT entity Equipment ID, Vessel Visit ID etc.,</meta>
+        </property>
+        <property name="arGnteGuaranteeId" column="guarantee_id" type="string" length="15" not-null="true" index="arGnte_guarantee_idx">
+            <meta attribute="field-description">Generated sequence with configurable prefix defined at facility level</meta>
+        </property>
+
+        <property name="arGnteGuaranteeCustomerGkey" column="guarantee_customer_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Gkey of the organization (Line operator, trucking co., agent etc.) that is making the guarantee</meta>
+        </property>
+        <property name="arGnteGuaranteeCustomerId" column="guarantee_customer_id" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Id of the organization (Line operator, trucking co., agent etc.) that is making the guarantee</meta>
+        </property>
+        <property name="arGnteN4UserId" column="n4_user_id" type="string" length="30" not-null="false">
+            <meta attribute="field-description">N4 user id</meta>
+        </property>
+        <property name="arGnteExternalUserId" column="external_user_id" type="string" length="30" not-null="false">
+            <meta attribute="field-description">External user using the Terminal's Portal system (Eg: CSP User Id)</meta>
+        </property>
+        <property name="arGnteExternalContactName" column="external_user_contact_name" type="string" length="60" not-null="false">
+            <meta attribute="field-description">External user's contact name</meta>
+        </property>
+        <property name="arGnteExternalAddress1" column="external_address_1" type="string" length="60" not-null="false">
+            <meta attribute="field-description">External user's Address line 1</meta>
+        </property>
+        <property name="arGnteExternalAddress2" column="external_address_2" type="string" length="60" not-null="false">
+            <meta attribute="field-description">External user's Address line 2</meta>
+        </property>
+        <property name="arGnteExternalAddress3" column="external_address_3" type="string" length="60" not-null="false">
+            <meta attribute="field-description">External user's Address line 3</meta>
+        </property>
+        <property name="arGnteExternalCity" column="external_city" type="string" length="60" not-null="false">
+            <meta attribute="field-description">The city where it is located</meta>
+        </property>
+        <property name="arGnteExternalMailCode" column="external_mail_code" type="string" length="10" not-null="false">
+            <meta attribute="field-description">The mail code where this address is located</meta>
+        </property>
+        <many-to-one name="arGnteExternalState" class="com.navis.reference.business.locale.RefState"
+                     not-null="false" column="external_state_gkey">
+            <meta attribute="field-description">The state where it is located</meta>
+        </many-to-one>
+        <many-to-one name="arGnteExternalCountry" class="com.navis.reference.business.locale.RefCountry">
+            <meta attribute="field-description">The Country where it is located</meta>
+            <column name="external_country_code"/>
+        </many-to-one>
+        <property name="arGnteExternalTelephone" column="external_telephone" type="string" length="30">
+            <meta attribute="field-description">The telephone of this customer</meta>
+        </property>
+        <property name="arGnteExternalFax" type="string" length="30" column="fax">
+            <meta attribute="field-description">The fax number of this customer</meta>
+        </property>
+        <property name="arGnteExternalEmailAddress" column="external_email_address" type="string" length="255">
+            <meta attribute="field-description">The contact email address of this customer</meta>
+        </property>
+        <property name="arGnteGuaranteeType" column="guarantee_type" type="com.navis.argo.persistence.atoms.UserTypeGuaranteeTypeEnum"
+                  not-null="true" index="arGnte_guarantee_type_idx">
+            <meta attribute="field-description">Guarantee Type OAC/Credit Card Pre-authorization/Waiver</meta>
+        </property>
+        <property name="arGnteGuaranteeStartDay" column="guarantee_start_day" type="java.util.Date">
+            <meta attribute="field-description">For Storage/Power events, the first day this is being guaranteed</meta>
+        </property>
+        <property name="arGnteGuaranteeEndDay" column="guarantee_end_day" type="java.util.Date">
+            <meta attribute="field-description">For Storage/Power events, the end day this is being guaranteed</meta>
+        </property>
+        <property name="arGnteQuantity" column="quantity" type="java.lang.Double">
+            <meta attribute="field-description">Quantity ( No of days / No of Unit etc.,)</meta>
+        </property>
+        <property name="arGnteGuaranteeAmount" column="guarantee_amount" type="java.lang.Double">
+            <meta attribute="field-description">Guarantee Amount</meta>
+        </property>
+        <property name="arGnteVoidedOrExpiredDate" column="voided_or_expired_date" type="java.util.Date">
+            <meta attribute="field-description">Date/Time Guarantee voided or expired</meta>
+        </property>
+        <property name="arGnteVoidedEmailSentDate" column="voided_email_sent_date" type="java.util.Date">
+            <meta attribute="field-description">Guarantee voided Email sent date/time</meta>
+        </property>
+        <property name="arGnteWaiverExpirationDate" column="waiver_expiration_date" type="java.util.Date">
+            <meta attribute="field-description">Waiver expiration date / time</meta>
+        </property>
+        <property name="arGnteNotes" column="notes" type="string" length="255">
+            <meta attribute="field-description">Notes</meta>
+        </property>
+        <property name="arGntePaymentType" column="payment_type" type="com.navis.argo.persistence.atoms.UserTypePaymentTypeEnum"
+                  not-null="true">
+            <meta attribute="field-description">Payment type Credit Card / Pay Pal / Check</meta>
+        </property>
+        <property name="arGntePaymentNbr" column="payment_nbr" type="string" length="255">
+            <meta attribute="field-description">Payment number such as check number, money order number, wire transfer confirmation number</meta>
+        </property>
+        <property name="arGntePaymentDate" column="payment_date" type="java.util.Date">
+            <meta attribute="field-description">Check date, Money order date, Wire Transfer date</meta>
+        </property>
+        <property name="arGnteCheckRoutingNbr" column="check_routing_nbr" type="string" length="255">
+            <meta attribute="field-description">Check routing number</meta>
+        </property>
+        <property name="arGnteBankName" column="bank_name" type="string" length="255">
+            <meta attribute="field-description">Bank name</meta>
+        </property>
+
+        <property name="arGnteAuthorizationNbr" column="authorization_nbr" type="string" length="30">
+            <meta attribute="field-description">Payment authorization number</meta>
+        </property>
+        <property name="arGnteAuthorizationExpiration" column="authorization_Expiration" type="java.util.Date">
+            <meta attribute="field-description">Date/Time of payment authorization expiraton</meta>
+        </property>
+        <property name="arGnteTransactionReference" column="transaction_reference" type="string" length="128">
+            <meta attribute="field-description">Payment transaction reference - credit card transaction reference number</meta>
+        </property>
+        <property name="arGnteCustomerReferenceId" column="customer_reference_id" type="string" length="60">
+            <meta attribute="field-description">Customer reference Id</meta>
+        </property>
+        <property name="arGnteOverrideValueType" column="override_value_type"
+                  type="com.navis.argo.persistence.atoms.UserTypeGuaranteeOverrideTypeEnum"
+                  not-null="false">
+            <meta attribute="field-description">Override Type</meta>
+        </property>
+        <!--ARGO-24732 groovy script writer's responsibility to update the status and invoice draft nbr -->
+        <property name="arGnteInvoiceStatus" column="gnte_invoice_status" type="string" length="30">
+            <meta attribute="field-description">Invoiced gurantee record will have a value of INVOICED otherwise it is null</meta>
+        </property>
+
+        <property name="arGnteInvDraftNbr" column="invoice_draft_nbr" type="string" length="30">
+            <meta attribute="field-description">Invoice draft number to be updated by Groovy script.</meta>
+        </property>
+
+        <many-to-one name="arGnteRelatedGuarantee" class="com.navis.argo.business.extract.ArchiveGuarantee"
+                     not-null="false" column="related_guarantee_gkey" cascade="none">
+            <meta attribute="field-description">Refers to another Guarantee record such as GuaranteeType = WAIVER record</meta>
+        </many-to-one>
+        <!--    Audit Data -->
+        <property name="arGnteCreated" column="created" type="timestamp"/>
+        <property name="arGnteCreator" column="creator" type="string" length="30"/>
+        <property name="arGnteChanged" column="changed" type="timestamp"/>
+        <property name="arGnteChanger" column="changer" type="string" length="30"/>
+    </class>
+
+</hibernate-mapping>

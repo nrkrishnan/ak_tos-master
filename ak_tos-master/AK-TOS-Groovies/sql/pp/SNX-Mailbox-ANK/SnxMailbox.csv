@@ -1,0 +1,5 @@
+Mailbox Name,Facility,Directory,Comm. Type,FTP Address,FTP UserId,FTP Folder,Life Cycle
+CMA-CGMFLEET,ANK,/home/tomcat/navis/snxmailbox/CMA-CGM,FTP,10.102.0.29,mataedi1,~/tos/ib/cma-cgm,Active
+FLEET_MAILBOX,ANK,/var/tmp/aplfleet,FTP,10.102.0.29,mataedi1,tos/ib/COEDOR,Active
+GATE-TICKET MAILBOX,ANK,/var/tmp/gate/tickets,FTP,,jboss,/home/jboss/ftp/N4/tickets,Active
+SNX MAILBOX ANK,ANK,/home/tomcat/navis/snxmailbox/newves/ANK,FTP,10.102.0.29,tdpnewves,~/snx/newvess/ANK,Active

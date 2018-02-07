@@ -1,0 +1,3675 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Vessel</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!--  Entity : Vessel Class -->
+    <class name="com.navis.vessel.business.operation.VesselClass" table="vsl_vessel_classes" dynamic-update="true">
+        <meta attribute="n4alias">vesclass</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.VesselClassHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="class-description">Reference entity representing the Vessel Class</meta>
+        <meta attribute="n4-entity-name">Vessel Class</meta>
+        <meta attribute="n4-entity-name-plural">Vessel Classes</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">vesclassId</meta>
+
+        <id name="vesclassGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="vesclassScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="vesclassId" column="id" type="string" length="8" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">Vessel Class Id. Must be unique within Vessel classes</meta>
+        </property>
+
+        <property name="vesclassName" column="name" type="string" length="35" not-null="true">
+            <meta attribute="field-description">Name of the Vessel Class</meta>
+        </property>
+
+        <property name="vesclassVesselType" column="basic_class" type="com.navis.vessel.persistence.atoms.UserTypeVesselTypeEnum" not-null="true">
+            <meta attribute="field-description">Basic class of this vessel class</meta>
+        </property>
+
+        <property name="vesclassIsActive" column="is_active" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Check whether the class is Active or not</meta>
+        </property>
+
+        <property name="vesclassIsSelfSustaining" column="is_self_sustaining" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Check whether it is Self sustaining</meta>
+        </property>
+
+        <property name="vesclassLoaCm" column="loa_cm" type="java.lang.Long">
+            <meta attribute="field-description">LOA number</meta>
+        </property>
+
+        <property name="vesclassBeamCm" column="beam_cm" type="java.lang.Long">
+            <meta attribute="field-description">Beam length</meta>
+        </property>
+
+        <property name="vesclassBaysForward" column="bays_forward" type="java.lang.Long">
+            <meta attribute="field-description">Bays forward or bridge</meta>
+        </property>
+
+        <property name="vesclassBaysAft" column="bays_aft" type="java.lang.Long">
+            <meta attribute="field-description">Bays aft of bridge</meta>
+        </property>
+
+        <property name="vesclassBowOverhangCm" column="bow_overhang_cm" type="java.lang.Long">
+            <meta attribute="field-description">Bow overhang length</meta>
+        </property>
+
+        <property name="vesclassSternOverhangCm" column="stern_overhang_cm" type="java.lang.Long">
+            <meta attribute="field-description">Stern overhang length</meta>
+        </property>
+
+        <property name="vesclassBridgeToBowCm" column="vbridge_to_bow_cm" type="java.lang.Long">
+            <meta attribute="field-description">Bridge to bow length</meta>
+        </property>
+
+        <!-- 2007-01-05 ARGO-5310 eyu v1.2.O Change all WEIGHT fields from Long to Double -->
+        <property name="vesclassGrossRegTon" column="gross_registered_ton" type="java.lang.Double">
+            <meta attribute="field-description">Gross registered tons</meta>
+        </property>
+
+        <!-- 2007-01-05 ARGO-5310 eyu v1.2.O Change all WEIGHT fields from Long to Double -->
+        <property name="vesclassNetRegTon" column="net_registered_ton" type="java.lang.Double">
+            <meta attribute="field-description">Net registered tons</meta>
+        </property>
+
+        <property name="vesclassNotes" column="notes" type="java.lang.String" length="100">
+            <meta attribute="field-description">Note for this record</meta>
+        </property>
+
+        <property name="vesclassCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Created date of this record</meta>
+        </property>
+
+        <property name="vesclassCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Creator name of this record</meta>
+        </property>
+
+        <property name="vesclassChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="vesclassChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Changer name of this record</meta>
+        </property>
+
+        <property name="vesclassLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <!-- don't delete vessels when a vessel class is deleted (AFN 31-May-2005) !-->
+        <set name="vesclassVessels" table="vsl_vessels" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="vesclass_gkey"/>
+            <one-to-many class="com.navis.vessel.business.operation.Vessel"/>
+        </set>
+
+        <many-to-one name="vesclassBinModel" column="abm_gkey" class="com.navis.spatial.business.model.AbstractBin">
+            <meta attribute="field-description">The bin model that is associated with this Vessel Class.</meta>
+        </many-to-one>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!--  Entity : Vessels -->
+    <class name="com.navis.vessel.business.operation.Vessel" table="vsl_vessels" dynamic-update="true">
+        <meta attribute="n4alias">ves</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.VesselHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="class-description">Reference entity representing the Vessel</meta>
+        <meta attribute="n4-entity-name">Vessel</meta>
+        <meta attribute="n4-entity-name-plural">Vessels</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">vesId</meta>
+
+        <id name="vesGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="vesScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="vesId" column="id" type="string" length="8" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">Vessel Id. Must be unique within vessels</meta>
+        </property>
+
+        <property name="vesLloydsId" column="lloyds_id" type="string" length="8" not-null="true">
+            <meta attribute="field-description">Lloyds identity</meta>
+        </property>
+
+        <property name="vesName" column="name" type="java.lang.String" length="35" not-null="true">
+            <meta attribute="field-description">Name of the vessel</meta>
+        </property>
+
+        <many-to-one name="vesVesselClass" column="vesclass_gkey" class="com.navis.vessel.business.operation.VesselClass" not-null="true">
+            <meta attribute="field-description">class of the vessel</meta>
+        </many-to-one>
+
+        <many-to-one name="vesOwner" column="owner_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="true">
+            <meta attribute="field-description">Vessel owner</meta>
+        </many-to-one>
+
+        <property name="vesCaptain" column="ves_captain" type="java.lang.String" length="35">
+            <meta attribute="field-description">Captain name</meta>
+        </property>
+
+        <property name="vesRadioCallSign" column="radio_call_sign" type="java.lang.String" length="10">
+            <meta attribute="field-description">RadioCallSign Number</meta>
+        </property>
+
+        <many-to-one name="vesCountry" class="com.navis.reference.business.locale.RefCountry">
+            <meta attribute="field-description">Country</meta>
+            <column name="country_code"/>
+        </many-to-one>
+
+        <property name="vesIsActive" column="is_active" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Check whether it is active or not</meta>
+        </property>
+
+        <property name="vesUnitSystem" column="unit_system" type="com.navis.framework.persistence.atoms.UserTypeUnitSystemEnum" not-null="true">
+            <meta attribute="field-description">Choice of units of measurement used on this ship (excluding temperature, controlled separately)</meta>
+        </property>
+
+        <property name="vesTemperatureUnits" column="temperature_unit" type="com.navis.argo.persistence.atoms.UserTypeTempUnitEnum" not-null="true">
+            <meta attribute="field-description">Choice of units for temperature used on this ship: Centigrade or Fahrenheit</meta>
+        </property>
+
+        <property name="vesNotes" column="notes" type="java.lang.String" length="100">
+            <meta attribute="field-description">Notes about the vessel</meta>
+        </property>
+
+        <property name="vesCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Created date of this record</meta>
+        </property>
+
+        <property name="vesCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Creator name of this record</meta>
+        </property>
+
+        <property name="vesChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="vesChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Changer name of this record</meta>
+        </property>
+
+        <property name="vesStowageScheme" column="stowage_scheme" type="com.navis.vessel.persistence.atoms.UserTypeStowageSchemeEnum" not-null="true">
+            <meta attribute="field-description">Stowage scheme for this vessel</meta>
+        </property>
+
+        <property name="vesDocumentationNbr" column="documentation_nbr" type="java.lang.String" length="10">
+            <meta attribute="field-description">Documentation Number for this vessel</meta>
+        </property>
+
+        <property name="vesServiceRegistryNbr" column="service_registry_nbr" type="java.lang.String" length="10">
+            <meta attribute="field-description">Service Registry Number</meta>
+        </property>
+
+        <property name="vesLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <!--  Entity : VesselVisitDetails  -->
+    <joined-subclass name="com.navis.vessel.business.schedule.VesselVisitDetails" table="vsl_vessel_visit_details"
+                     extends="com.navis.argo.business.model.VisitDetails" dynamic-update="true">
+
+        <meta attribute="generated-class">
+            com.navis.vessel.business.schedule.VesselVisitDetailsHbr
+        </meta>
+        <meta attribute="n4alias">vvd</meta>
+        <meta attribute="class-description">Reference entity representing the Vessel</meta>
+        <meta attribute="n4-entity-name">Vessel Visit Details</meta>
+        <meta attribute="n4-entity-name-plural">Vessel Visit Details</meta>
+        <meta attribute="n4-code-extension-support">true</meta>
+        <meta attribute="subclassCustomComponent">vvdCustomFlexFields</meta>
+
+        <key column="vvd_gkey"/>
+
+        <many-to-one name="vvdBizu" column="bizu_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="true">
+            <meta attribute="field-description">Vessel visit principal line operator</meta>
+        </many-to-one>
+
+        <many-to-one name="vvdVessel" column="vessel_gkey" class="com.navis.vessel.business.operation.Vessel" not-null="true">
+            <meta attribute="field-description">Reference to the visiting vessel</meta>
+        </many-to-one>
+
+        <property name="vvdIbVygNbr" column="ib_vyg" type="java.lang.String" length="17">
+            <meta attribute="field-description">Inbound voyage number</meta>
+        </property>
+
+        <property name="vvdObVygNbr" column="ob_vyg" type="java.lang.String" length="17">
+            <meta attribute="field-description">Outbound voyage number</meta>
+        </property>
+
+        <property name="vvdStackingStrategy" column="stacking_strategy" type="java.lang.String" length="10">
+            <meta attribute="field-description">Vessel reference</meta>
+        </property>
+
+        <property name="vvdIsDrayOff" column="is_dray_off" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">check whether it is dray off or not</meta>
+        </property>
+
+        <property name="vvdNotes" column="notes" type="java.lang.String" length="50">
+            <meta attribute="field-description">Notes about the visit</meta>
+        </property>
+
+        <property name="vvdInCustomsVoyNbr" column="in_customs_voy_nbr" type="java.lang.String" length="16">
+            <meta attribute="field-description">Customs Inbound Voyage Number</meta>
+        </property>
+
+        <property name="vvdOutCustomsVoyNbr" column="out_customs_voy_nbr" type="java.lang.String" length="16">
+            <meta attribute="field-description">Customs Outbound Voyage Number</meta>
+        </property>
+
+        <property name="vvdIsNoClientAccess" column="is_no_client_access" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Check whether it has no client access or not</meta>
+        </property>
+
+        <property name="vvdIsCommonCarrier" column="is_common_carrier" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Check whether the visiting vessel is a common carrier or not</meta>
+        </property>
+
+        <property name="vvdPublishedEta" column="published_eta" type="timestamp">
+            <meta attribute="field-description">Published ETA</meta>
+        </property>
+
+        <property name="vvdPublishedEtd" column="published_etd" type="timestamp">
+            <meta attribute="field-description">Published ETD</meta>
+        </property>
+
+        <property name="vvdTimeBeginReceive" column="begin_receive" type="timestamp">
+            <meta attribute="field-description">begin receive time</meta>
+        </property>
+
+        <property name="vvdTimeEmptyPickup" column="empty_pickup" type="timestamp">
+            <meta attribute="field-description">empty pickup time</meta>
+        </property>
+
+        <property name="vvdTimeCargoCutoff" column="cargo_cutoff" type="timestamp">
+            <meta attribute="field-description">cargo cutoff time</meta>
+        </property>
+
+        <property name="vvdTimeHazCutoff" column="haz_cutoff" type="timestamp">
+            <meta attribute="field-description">Haz Cutoff time</meta>
+        </property>
+
+        <property name="vvdTimeReeferCutoff" column="reefer_cutoff" type="timestamp">
+            <meta attribute="field-description">Reefer cutoff time</meta>
+        </property>
+
+        <property name="vvdTimeLaborOnBoard" column="labor_on_board" type="timestamp">
+            <meta attribute="field-description">date when labor on board</meta>
+        </property>
+
+        <property name="vvdTimeLaborOffBoard" column="labor_off_board" type="timestamp">
+            <meta attribute="field-description">date when labor off board</meta>
+        </property>
+
+        <property name="vvdTimeOffPortArrive" column="off_port_arr" type="timestamp">
+            <meta attribute="field-description">Time off Port Arrival</meta>
+        </property>
+
+        <property name="vvdTimeOffPortDepart" column="off_port_dep" type="timestamp">
+            <meta attribute="field-description">Time off port departure</meta>
+        </property>
+
+        <property name="vvdTimePilotOnBoard" column="pilot_on_board" type="timestamp">
+            <meta attribute="field-description">Time when the pilot is on board</meta>
+        </property>
+
+        <property name="vvdTimePilotOffBoard" column="pilot_off_board" type="timestamp">
+            <meta attribute="field-description">Time during which the pilot is off board</meta>
+        </property>
+
+        <property name="vvdTimeStartWork" column="start_work" type="timestamp">
+            <meta attribute="field-description">work starting time</meta>
+        </property>
+
+        <property name="vvdTimeEndWork" column="end_work" type="timestamp" index="vvd_created_idx">
+            <meta attribute="field-description">Work ending time</meta>
+        </property>
+
+        <property name="vvdInVesselCaptain" column="in_ves_captain" type="java.lang.String" length="35">
+            <meta attribute="field-description">Inbound Vessel Captain's name</meta>
+        </property>
+
+        <property name="vvdOutVesselCaptain" column="out_ves_captain" type="java.lang.String" length="35">
+            <meta attribute="field-description">Outbound Vessel Captain's name</meta>
+        </property>
+
+        <property name="vvdExportMnftNbr" column="export_mnft_nbr" type="java.lang.String" length="30">
+            <meta attribute="field-description">manifest number for export category</meta>
+        </property>
+
+        <property name="vvdImportMnftNbr" column="import_mnft_nbr" type="java.lang.String" length="30">
+            <meta attribute="field-description">manifest number for import category</meta>
+        </property>
+
+        <property name="vvdImportMnftDate" column="import_mnft_date" type="timestamp">
+            <meta attribute="field-description">Import manifest date</meta>
+        </property>
+
+        <property name="vvdExportMnftDate" column="export_mnft_date" type="timestamp">
+            <meta attribute="field-description">Export manifest date</meta>
+        </property>
+
+        <!-- 2008-04-28 jwang ARGO-9886 Include the vessel class 'Vessel Type' attribute
+        within the vessel visit entity when a new vessel visit is created and
+        include it in the unit activity extract -->
+        <property name="vvdClassification" column="classification" type="com.navis.vessel.persistence.atoms.UserTypeVesselClassificationEnum"
+                  not-null="false">
+            <meta attribute="field-description">Classification for this visit</meta>
+        </property>
+
+        <!-- smandadi ARGO-13310 Create Vessel Visit Flex Fields -->
+        <property name="vvFlexString01" column="flex_string01" type="string" length="255">
+            <meta attribute="field-description">String flex-field #01</meta>
+        </property>
+
+        <property name="vvFlexString02" column="flex_string02" type="string" length="255">
+            <meta attribute="field-description">String flex-field #02</meta>
+        </property>
+
+        <property name="vvFlexString03" column="flex_string03" type="string" length="255">
+            <meta attribute="field-description">String flex-field #03</meta>
+        </property>
+
+        <property name="vvFlexString04" column="flex_string04" type="string" length="255">
+            <meta attribute="field-description">String flex-field #04</meta>
+        </property>
+
+        <property name="vvFlexString05" column="flex_string05" type="string" length="255">
+            <meta attribute="field-description">String flex-field #05</meta>
+        </property>
+
+        <property name="vvFlexString06" column="flex_string06" type="string" length="255">
+            <meta attribute="field-description">String flex-field #06</meta>
+        </property>
+
+        <property name="vvFlexString07" column="flex_string07" type="string" length="255">
+            <meta attribute="field-description">String flex-field #07</meta>
+        </property>
+
+        <property name="vvFlexString08" column="flex_string08" type="string" length="255">
+            <meta attribute="field-description">String flex-field #08</meta>
+        </property>
+
+        <property name="vvFlexDate01" column="flex_date01" type="timestamp">
+            <meta attribute="field-description">Date flex-field #01</meta>
+        </property>
+
+        <property name="vvFlexDate02" column="flex_date02" type="timestamp">
+            <meta attribute="field-description">Date flex-field #02</meta>
+        </property>
+
+        <property name="vvFlexDate03" column="flex_date03" type="timestamp">
+            <meta attribute="field-description">Date flex-field #03</meta>
+        </property>
+
+        <property name="vvFlexDate04" column="flex_date04" type="timestamp">
+            <meta attribute="field-description">Date flex-field #04</meta>
+        </property>
+
+        <property name="vvFlexDate05" column="flex_date05" type="timestamp">
+            <meta attribute="field-description">Date flex-field #05</meta>
+        </property>
+
+        <property name="vvFlexDate06" column="flex_date06" type="timestamp">
+            <meta attribute="field-description">Date flex-field #06</meta>
+        </property>
+
+        <property name="vvFlexDate07" column="flex_date07" type="timestamp">
+            <meta attribute="field-description">Date flex-field #07</meta>
+        </property>
+
+        <property name="vvFlexDate08" column="flex_date08" type="timestamp">
+            <meta attribute="field-description">Date flex-field #08</meta>
+        </property>
+
+        <set name="vvdVvlineSet" table="vsl_vessel_visit_lines" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="vvd_gkey"/>
+            <one-to-many class="com.navis.vessel.business.schedule.VesselVisitLine"/>
+        </set>
+
+        <!-- 2006-10-03 eyu ARGO-4370 Need Archiving/Purging extended to high growth tables -->
+        <list name="vvdBrthgSet" lazy="true" inverse="true" cascade="all">
+            <key>
+                <column name="vvd_gkey" not-null="false"/>
+            </key>
+            <index column="seq"/>
+            <one-to-many class="com.navis.vessel.business.schedule.VesselVisitBerthing"/>
+        </list>
+
+        <!-- 2006-03-22 lbarman v1.0.10.6 ARGO-3151: add set of craneStatistics to VisitDetails used for Reporting  -->
+        <set name="vvdStatisticsByCraneSet" table="vsl_crane_statistics" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="vvd_gkey"/>
+            <one-to-many class="com.navis.vessel.business.schedule.VesselStatisticsByCrane"/>
+        </set>
+
+        <!-- 2006-10-03 eyu ARGO-4370 Need Archiving/Purging extended to high growth tables -->
+        <set name="vvdStatisticsByLine" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <key column="vvd_gkey"/>
+            <one-to-many class="com.navis.vessel.business.schedule.VesselStatisticsByLine"/>
+        </set>
+
+        <component name="vvdEstMoveCount" class="com.navis.vessel.business.schedule.MoveCount">
+
+            <meta attribute="generated-class">com.navis.vessel.business.schedule.MoveCountHbr</meta>
+            <meta attribute="field-description">Estimate the move counts of the vessel</meta>
+            <meta attribute="scope-set">public</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+
+            <property name="mcLoad" column="est_load" type="java.lang.Long">
+                <meta attribute="field-description">Loading moves</meta>
+            </property>
+
+            <property name="mcDischarge" column="est_discharge" type="java.lang.Long">
+                <meta attribute="field-description">Discharge moves</meta>
+            </property>
+
+            <property name="mcRestow" column="est_restow" type="java.lang.Long">
+                <meta attribute="field-description">Restows</meta>
+            </property>
+
+            <property name="mcShift" column="est_shift" type="java.lang.Long">
+                <meta attribute="field-description">Shifts</meta>
+            </property>
+
+            <property name="mcBbkLoad" column="est_bbk_load" type="java.lang.Long">
+                <meta attribute="field-description">BreakBulk load</meta>
+            </property>
+
+            <property name="mcBbkDischarge" column="est_bbk_discharge" type="java.lang.Long">
+                <meta attribute="field-description">BreakBulk discharge</meta>
+            </property>
+        </component>
+
+        <!-- special subclass holder for dynamic flex field  -->
+        <dynamic-component name="vvdCustomFlexFields"></dynamic-component>
+    </joined-subclass>
+
+    <!--  Entity : VesselStatisticsByCrane  -->
+    <class name="com.navis.vessel.business.schedule.VesselStatisticsByCrane" table="vsl_crane_statistics" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.vessel.business.schedule.VesselStatisticsByCraneHbr</meta>
+        <meta attribute="n4alias">cstat</meta>
+        <meta attribute="class-description">Reference entity representing the Crane Statistics details</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Vessel Statistics By Crane</meta>
+        <meta attribute="n4-entity-name-plural">Vessel Statistic By Crane</meta>
+
+        <id name="cstatGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="cstatStartTime" column="start_time" type="timestamp">
+            <meta attribute="field-description">Start Time</meta>
+        </property>
+
+        <property name="cstatEndTime" column="end_time" type="timestamp">
+            <meta attribute="field-description">End Time</meta>
+        </property>
+
+        <property name="cstatFullCtrs" column="full_ctrs" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Full Containers</meta>
+        </property>
+
+        <property name="cstatEmptyCtrs" column="empty_ctrs" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Empty Containers</meta>
+        </property>
+
+        <property name="cstatFullTeus" column="full_teus" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Full Teus</meta>
+        </property>
+
+        <property name="cstatEmptyTeus" column="empty_teus" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Empty Teus</meta>
+        </property>
+
+        <property name="cstatHatchCoverMoves" column="hatch_cover_moves" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Hatch Cover Moves</meta>
+        </property>
+
+        <property name="cstatGenCargoMoves" column="gen_cargo_moves" type="java.lang.Long" length="8">
+            <meta attribute="field-description">General Cargo Moves</meta>
+        </property>
+
+        <property name="cstatSobTotal" column="shift_on_board" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Shift On Board</meta>
+        </property>
+
+        <property name="cstatSobTerminal" column="sob_terminal" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Shift On Board Terminal</meta>
+        </property>
+
+        <property name="cstatSobLine" column="sob_line" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Shift On Board Line</meta>
+        </property>
+
+        <property name="cstatSobOthers" column="sob_others" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Shift On Board Others</meta>
+        </property>
+
+        <property name="cstatRestowTerminal" column="restow_terminal" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Restow Terminal</meta>
+        </property>
+
+        <property name="cstatRestowLine" column="restow_line" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Restow Line</meta>
+        </property>
+
+        <property name="cstatRestowOthers" column="restow_others" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Restow Others</meta>
+        </property>
+
+        <property name="cstatBreakBulkMoves" column="breakbulb_moves" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Restow Line</meta>
+        </property>
+
+        <property name="cstatTotalMoves" column="total_moves" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Total Moves</meta>
+        </property>
+
+        <many-to-one name="cstatVvd" column="vvd_gkey" class="com.navis.vessel.business.schedule.VesselVisitDetails">
+            <meta attribute="field-description">Reference to the vessel visit details</meta>
+        </many-to-one>
+
+        <many-to-one name="cstatCrane" column="crane_gkey" class="com.navis.argo.business.xps.model.Che"
+                     not-null="true">
+            <meta attribute="field-description">Reference to the Crane</meta>
+        </many-to-one>
+
+        <set name="cstatCraneDelays" table="vsl_crane_statistics_delays" inverse="true" lazy="true"
+             cascade="all-delete-orphan">
+            <key column="cstat_gkey"/>
+            <one-to-many class="com.navis.vessel.business.schedule.VesselStatisticsDelay"/>
+        </set>
+
+    </class>
+
+    <!--  Entity : VesselStatisticsByLine  -->
+    <class name="com.navis.vessel.business.schedule.VesselStatisticsByLine" table="vsl_line_statistics" dynamic-update="true">
+
+        <meta attribute="generated-class">com.navis.vessel.business.schedule.VesselStatisticsByLineHbr</meta>
+        <meta attribute="n4alias">lstat</meta>
+        <meta attribute="class-description">Reference entity representing the Line Statistics details</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Vessel Statistics By Line</meta>
+        <meta attribute="n4-entity-name-plural">Vessel Statistic By Line</meta>
+
+        <id name="lstatGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="lstatVvd" column="vvd_gkey" class="com.navis.vessel.business.schedule.VesselVisitDetails">
+            <meta attribute="field-description">Reference to the vessel visit details</meta>
+        </many-to-one>
+
+        <many-to-one name="lstatLineBizu" column="line_gkey" class="com.navis.argo.business.reference.ScopedBizUnit"
+                     not-null="true">
+            <meta attribute="field-description">Reference to the Line Operator</meta>
+        </many-to-one>
+
+        <property name="lstatEquipLength" column="full_ctrs" type="com.navis.argo.persistence.atoms.UserTypeEquipNominalLengthEnum">
+            <meta attribute="field-description">Container Length</meta>
+        </property>
+
+        <property name="lstatDischargedImports" column="discharged_imports" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Discharged Imports</meta>
+        </property>
+
+        <property name="lstatDischargedCoastals" column="discharged_coastals" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Discharged Coastals</meta>
+        </property>
+
+        <property name="lstatDischargedTransships" column="discharged_transships" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Discharged Tranships</meta>
+        </property>
+
+        <property name="lstatDischargedOthers" column="discharged_others" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Discharged Others</meta>
+        </property>
+
+        <property name="lstatDischargedImportMts" column="discharged_import_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Discharged Imports Empties</meta>
+        </property>
+
+        <property name="lstatDischargedCoastalMts" column="discharged_coastal_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Discharged Coastals Empties</meta>
+        </property>
+
+        <property name="lstatDischargedTransshipMts" column="discharged_transship_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Discharged Tranships Empties</meta>
+        </property>
+
+        <property name="lstatDischargedOtherMts" column="discharged_other_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Discharged Others Empties</meta>
+        </property>
+
+        <property name="lstatLoadedExports" column="loaded_exports" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Loaded Exports</meta>
+        </property>
+
+        <property name="lstatLoadedCoastals" column="loaded_coastals" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Loaded Coastals</meta>
+        </property>
+
+        <property name="lstatLoadedTransships" column="loaded_transships" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Loaded Transships</meta>
+        </property>
+
+        <property name="lstatLoadedOthers" column="loaded_others" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Loaded Others</meta>
+        </property>
+
+        <property name="lstatLoadedExportMts" column="loaded_export_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Loaded Export Empties</meta>
+        </property>
+
+        <property name="lstatLoadedCoastalMts" column="loaded_coastal_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Loaded Coastals Empties</meta>
+        </property>
+
+        <property name="lstatLoadedTransshipMts" column="loaded_transship_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Loaded Transships Empties</meta>
+        </property>
+
+        <property name="lstatLoadedOtherMts" column="loaded_other_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Loaded Others Empties</meta>
+        </property>
+
+        <property name="lstatSobTerminal" column="sob_terminal" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Shift On Board Terminal</meta>
+        </property>
+
+        <property name="lstatSobLine" column="sob_line" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Shift On Board Line</meta>
+        </property>
+
+        <property name="lstatSobOthers" column="sob_others" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Shift On Board Others</meta>
+        </property>
+        <property name="lstatSobTerminalMts" column="sob_terminal_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Shift On Board Terminal Empties</meta>
+        </property>
+
+        <property name="lstatSobLineMts" column="sob_line_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Shift On Board Line Empties</meta>
+        </property>
+
+        <property name="lstatSobOtherMts" column="sob_other_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Shift On Board Others Empties</meta>
+        </property>
+
+        <property name="lstatRestowTerminal" column="restow_terminal" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Restow Terminal</meta>
+        </property>
+
+        <property name="lstatRestowLine" column="restow_line" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Restow Line</meta>
+        </property>
+
+        <property name="lstatRestowOthers" column="restow_others" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Restow Others</meta>
+        </property>
+
+        <property name="lstatRestowTerminalMts" column="restow_terminal_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Restow Terminal Empties</meta>
+        </property>
+
+        <property name="lstatRestowLineMts" column="restow_line_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Restow Line Empties</meta>
+        </property>
+
+        <property name="lstatRestowOtherMts" column="restow_other_mts" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Restow Others Empties</meta>
+        </property>
+
+    </class>
+
+    <!--  Entity : CraneDelays  -->
+    <class name="com.navis.vessel.business.schedule.VesselStatisticsDelay" table="vsl_crane_statistics_delays" dynamic-update="true">
+
+        <meta attribute="generated-class">com.navis.vessel.business.schedule.VesselStatisticsDelayHbr</meta>
+        <meta attribute="n4alias">cdelay</meta>
+        <meta attribute="class-description">Reference entity representing the Crane Delays details</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Crane Delay</meta>
+        <meta attribute="n4-entity-name-plural">Crane Delays</meta>
+
+        <id name="cdelayGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!--bshrinevas May 21 2009 ARGO-18647, this has been deprecated, please use cdelayCraneDelayType instead of this column -->
+        <property name="cdelayCode" column="code" type="com.navis.vessel.persistence.atoms.UserTypeCheDelayCodeEnum"
+                  length="50">
+            <meta attribute="field-description">Crane Delays Code</meta>
+        </property>
+
+        <property name="cdelayDate" column="delay_date" type="timestamp">
+            <meta attribute="field-description">Date/time crane delay occured</meta>
+        </property>
+
+        <property name="cdelayMinutes" column="time" type="java.lang.Long" length="8" not-null="true">
+            <meta attribute="field-description">Delay Time</meta>
+        </property>
+
+        <property name="cdelayRemarks" column="remarks" type="string" length="100">
+            <meta attribute="field-description">Crane Delays Remarks</meta>
+        </property>
+
+        <many-to-one name="cdelayCraneStatistics" column="cstat_gkey"
+                     class="com.navis.vessel.business.schedule.VesselStatisticsByCrane" not-null="true">
+            <meta attribute="field-description">Reference to the Crane Statistics</meta>
+        </many-to-one>
+
+        <many-to-one name="cdelayCraneDelayType" column="crane_delay_type_gkey" class="com.navis.argo.business.reference.CraneDelayType">
+            <meta attribute="field-description">Reference to the crane delay type</meta>
+        </many-to-one>
+
+    </class>
+
+    <!--  Entity : Vessel Visit Line  -->
+    <class name="com.navis.vessel.business.schedule.VesselVisitLine" table="vsl_vessel_visit_lines" dynamic-update="true">
+        <meta attribute="n4alias">vvline</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.schedule.VesselVisitLineHbr</meta>
+        <meta attribute="class-description">Reference entity representing the VesselVisitLine</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Vessel Visit Line</meta>
+        <meta attribute="n4-entity-name-plural">Vessel Visit Lines</meta>
+
+        <id name="vvlineGkey" column="vvline_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="vvlineVvd" column="vvd_gkey" class="com.navis.vessel.business.schedule.VesselVisitDetails" not-null="true">
+            <meta attribute="field-description">Vessel Identity of the vessel in the visit visitlines</meta>
+        </many-to-one>
+
+        <property name="vvlineInVoyNbr" column="line_in_voy_nbr" type="java.lang.String" length="17" not-null="true">
+            <meta attribute="field-description">In voyage number</meta>
+        </property>
+
+        <property name="vvlineOutVoyNbr" column="line_out_voy_nbr" type="java.lang.String" length="17">
+            <meta attribute="field-description">Out voyage Number</meta>
+        </property>
+
+        <many-to-one name="vvlineBizu" column="line_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="true">
+            <meta attribute="field-description">Business Unit (Line)</meta>
+        </many-to-one>
+
+        <property name="vvlineTimeBeginReceive" column="begin_receive" type="timestamp">
+            <meta attribute="field-description">Begin Receive Time</meta>
+        </property>
+
+        <property name="vvlineTimeEmptyPickup" column="empty_pickup" type="timestamp">
+            <meta attribute="field-description">Empty Pickup Time</meta>
+        </property>
+
+        <property name="vvlineTimeCargoCutoff" column="cargo_cutoff" type="timestamp">
+            <meta attribute="field-description">CargoCutoff date</meta>
+        </property>
+
+        <property name="vvlineTimeReeferCutoff" column="reefer_cutoff" type="timestamp">
+            <meta attribute="field-description">ReeferCutoff date</meta>
+        </property>
+
+        <property name="vvlineTimeHazCutoff" column="haz_cutoff" type="timestamp">
+            <meta attribute="field-description">Hazardous cutoff date</meta>
+        </property>
+
+        <property name="vvlineTimeActivateYard" column="activate_yard" type="timestamp">
+            <meta attribute="field-description">Activation time of yard</meta>
+        </property>
+
+        <property name="vvlineCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Created date of this record</meta>
+        </property>
+
+        <property name="vvlineCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Creator name of this record</meta>
+        </property>
+
+        <property name="vvlineChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="vvlineChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Changer name of this record</meta>
+        </property>
+
+    </class>
+
+    <!--  Entity : Vessel Visit Late Arrival  -->
+    <class name="com.navis.vessel.business.schedule.LateArrival" table="vsl_late_arrivals" dynamic-update="true">
+        <meta attribute="n4alias">vvlate</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.schedule.LateArrivalHbr</meta>
+        <meta attribute="class-description">Late arrivals for a Vessel Visit</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Late Arrival</meta>
+        <meta attribute="n4-entity-name-plural">Late Arrivals</meta>
+
+        <id name="vvlateGkey" column="vvline_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="vvlateVvd" column="vvd_gkey" class="com.navis.vessel.business.schedule.VesselVisitDetails" not-null="true">
+            <meta attribute="field-description">Vessel visit for which late arrival is expected</meta>
+        </many-to-one>
+
+        <property name="vvlateUnitId" column="unit_id" type="java.lang.String" length="17" not-null="true">
+            <meta attribute="field-description">Late Unit ID</meta>
+        </property>
+
+        <many-to-one name="vvlateUfv" column="ufv_gkey" class="com.navis.inventory.business.units.UnitFacilityVisit" not-null="false">
+            <meta attribute="field-description">Unit eventually received against late arrival entry</meta>
+        </many-to-one>
+
+        <property name="vvlateCutoff" column="cargo_cutoff" type="timestamp" not-null="false">
+            <meta attribute="field-description">Late Arrival Cutoff Time (ATD if null)</meta>
+        </property>
+
+        <property name="vvlateCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Created date of this record</meta>
+        </property>
+
+        <property name="vvlateCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Creator name of this record</meta>
+        </property>
+
+        <property name="vvlateChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="vvlateChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Changer name of this record</meta>
+        </property>
+
+    </class>
+
+    <!--  Entity : Berthing -->
+    <class name="com.navis.vessel.business.schedule.VesselVisitBerthing" table="vsl_vessel_berthings" dynamic-update="true">
+        <meta attribute="n4alias">brthg</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.schedule.VesselVisitBerthingHbr</meta>
+        <meta attribute="class-description">Reference entity representing the Berthing</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Berthing</meta>
+        <meta attribute="n4-entity-name-plural">Berthings</meta>
+        <meta attribute="carina-oracle-index">
+            create index brthg_pos_anchor_idx on vsl_vessel_berthings(pos_anchor) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index brthg_pos_anchor_idx on vsl_vessel_berthings(pos_anchor) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+
+        <id name="brthgGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="brthgSeq" column="seq" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Berth sequence number</meta>
+        </property>
+
+        <many-to-one name="brthgVvd" column="vvd_gkey" class="com.navis.vessel.business.schedule.VesselVisitDetails" not-null="false">
+            <meta attribute="field-description">Vessel visit identity</meta>
+        </many-to-one>
+
+        <many-to-one name="brthgQuay" column="quay" class="com.navis.argo.business.model.Quay" not-null="true">
+            <meta attribute="field-description">quay identity in the berth</meta>
+        </many-to-one>
+
+        <property name="brthgTimeShift" column="shift_time" type="timestamp">
+            <meta attribute="field-description">Shift time date</meta>
+        </property>
+
+        <property name="brthgDraftFwdArriveCm" column="arr_fwd_draft_cm" type="java.lang.Long">
+            <meta attribute="field-description">Forward draft on arrival, centimeters</meta>
+        </property>
+
+        <property name="brthgDraftAftArriveCm" column="arr_aft_draft_cm" type="java.lang.Long">
+            <meta attribute="field-description">Aft draft on arrival, centimeters</meta>
+        </property>
+
+        <property name="brthgDraftFwdDepartCm" column="dep_fwd_draft_cm" type="java.lang.Long">
+            <meta attribute="field-description">Forward draft on departure, centimeters</meta>
+        </property>
+
+        <property name="brthgDraftAftDepartCm" column="dep_aft_draft_cm" type="java.lang.Long">
+            <meta attribute="field-description">Aft draft on departure, centimeters</meta>
+        </property>
+
+        <property name="brthgShipSideTo" column="ship_side_to" type="com.navis.vessel.persistence.atoms.UserTypeBerthSideTypeEnum" not-null="true">
+            <meta attribute="field-description">Berthing side-to (port side-to, or starboard side-to)</meta>
+        </property>
+
+        <property name="brthgCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Record created date</meta>
+        </property>
+
+        <property name="brthgCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Record creator name</meta>
+        </property>
+
+        <property name="brthgChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="brthgChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Record changer name</meta>
+        </property>
+
+        <!-- 2007.10.25 MEP ARGO-7257 Add all missing Advanced Berth Sceduler fields -->
+        <property name="brthgGmCm" column="gm" type="java.lang.Long">
+            <meta attribute="field-description">Vessel GM at berth</meta>
+        </property>
+
+        <property name="brthgMeanDraftCm" column="mean_draft_cm" type="java.lang.Long">
+            <meta attribute="field-description">Vessel Mean Draft at berth</meta>
+        </property>
+
+        <property name="brthgTrimCm" column="trim_cm" type="java.lang.Long">
+            <meta attribute="field-description">Vessel Trim at berth</meta>
+        </property>
+
+        <property name="brthgGantryCount" column="gantry_count" type="java.lang.Long">
+            <meta attribute="field-description">Number of gantries</meta>
+        </property>
+
+        <property name="brthgBerthLocationCm" column="berth_location_cm" type="java.lang.Long">
+            <meta attribute="field-description">Exact location on the berth</meta>
+        </property>
+
+        <property name="brthgEstimatedLoads" column="estimated_loads" type="java.lang.Long">
+            <meta attribute="field-description">Estimated number of loads</meta>
+        </property>
+
+        <property name="brthgEstimatedDischarges" column="estimated_discharges" type="java.lang.Long">
+            <meta attribute="field-description">Estimated number of discharges</meta>
+        </property>
+
+        <property name="brthgIngressVertex" column="ingress_vertex" type="java.lang.Long">
+            <meta attribute="field-description">Ingress Vertex</meta>
+        </property>
+
+        <property name="brthgEgressVertex" column="egress_vertex" type="java.lang.Long">
+            <meta attribute="field-description">Egress Vertex</meta>
+        </property>
+
+        <property name="brthgReceiveStatus" column="receive_status" type="java.lang.String" length="3">
+            <meta attribute="field-description">Receive Status</meta>
+        </property>
+
+        <property name="brthgDistanceFromDockCm" column="distance_from_dock_cm" type="java.lang.Long">
+            <meta attribute="field-description">Distance from Dock</meta>
+        </property>
+
+        <property name="brthgSlipFoldCm" column="slip_fold_cm" type="java.lang.Long">
+            <meta attribute="field-description">Indented Berth Length</meta>
+        </property>
+
+        <property name="brthgSlipWidthCm" column="slip_width_cm" type="java.lang.Long">
+            <meta attribute="field-description">Indented Berth Width</meta>
+        </property>
+
+        <property name="brthgStrategyReference" column="strategy_ref" type="java.lang.Long">
+            <meta attribute="field-description">AutoStow Strategy pkey</meta>
+        </property>
+
+        <property name="brthgAbsBerthCallType" column="call_type" type="java.lang.Long">
+            <meta attribute="field-description">Berth Call Type</meta>
+        </property>
+
+        <property name="brthgAbsBerthCallSlaveId" column="call_slave_id" type="java.lang.Long">
+            <meta attribute="field-description">Berth Call Slave ID</meta>
+        </property>
+
+        <property name="brthgAbsCallRemarks" column="call_remarks" type="java.lang.String" length="60">
+            <meta attribute="field-description">Call Remarks</meta>
+        </property>
+
+        <property name="brthgAbsBollardAft" column="bollard_aft" type="java.lang.String" length="5">
+            <meta attribute="field-description">Bollard Aft</meta>
+        </property>
+
+        <property name="brthgAbsBollardFore" column="bollard_fore" type="java.lang.String" length="5">
+            <meta attribute="field-description">Bollard Fore</meta>
+        </property>
+
+        <property name="brthgAbsBollardAftOffset" column="bollard_aft_offset" type="java.lang.String" length="10">
+            <meta attribute="field-description">Offset to Bollard Aft</meta>
+        </property>
+
+        <property name="brthgAbsBollardForeOffset" column="bollard_fore_offset" type="java.lang.String" length="10">
+            <meta attribute="field-description">Offset to Bollard Fore</meta>
+        </property>
+
+        <property name="brthgEstimatedOtherMoves" column="estimated_other_moves" type="java.lang.Long">
+            <meta attribute="field-description">Estimated Other Moves</meta>
+        </property>
+
+        <property name="brthgSealCheckForDischarges" column="discharge_seals_checked" type="java.lang.Boolean">
+            <meta attribute="field-description">Discharge Seals were checked</meta>
+        </property>
+
+        <property name="brthgSealCheckForLoads" column="load_seals_checked" type="java.lang.Boolean">
+            <meta attribute="field-description">Load Seals were checked</meta>
+        </property>
+
+        <property name="brthgAllocationStatus" column="berth_alloc_status" type="java.lang.String" length="10">
+            <meta attribute="field-description">Berth ETA</meta>
+        </property>
+
+        <property name="brthgETA" column="eta" type="timestamp">
+            <meta attribute="field-description">Berth ETA</meta>
+        </property>
+
+        <property name="brthgETD" column="etd" type="timestamp">
+            <meta attribute="field-description">Berth ETD</meta>
+        </property>
+
+        <property name="brthgATA" column="ata" type="timestamp">
+            <meta attribute="field-description">Berth ATA</meta>
+        </property>
+
+        <property name="brthgATD" column="atd" type="timestamp">
+            <meta attribute="field-description">Berth ATD</meta>
+        </property>
+
+        <property name="brthgTimeCargoCutoff" column="cargo_cutoff" type="timestamp">
+            <meta attribute="field-description">Cargo Cutoff Time</meta>
+        </property>
+
+        <property name="brthgTimeStartWork" column="start_work" type="timestamp">
+            <meta attribute="field-description">Start Work Time</meta>
+        </property>
+
+        <property name="brthgTimeStoptWork" column="stop_work" type="timestamp">
+            <meta attribute="field-description">Stop Work Time</meta>
+        </property>
+
+        <property name="brthgTimeBeginReceive" column="time_begin_receive" type="timestamp">
+            <meta attribute="field-description">Time Begin Receival</meta>
+        </property>
+
+        <component name="brthgPosition" class="com.navis.argo.business.model.LocPosition">
+            <meta attribute="generated-class">com.navis.argo.business.model.LocPositionHbr</meta>
+            <meta attribute="field-description">The position of the VesselVisitBerthing</meta>
+            <meta attribute="extends">com.navis.spatial.business.model.Position</meta>
+
+            <property name="posLocType" column="pos_loctype" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16"
+                      not-null="true">
+                <meta attribute="field-description">An Enum giving the type of position</meta>
+            </property>
+            <property name="posLocId" column="pos_locid" type="string" length="16">
+                <meta attribute="field-description">A String giving the Id of the location: either a yard code, or carrier visit Id</meta>
+            </property>
+            <property name="posLocGkey" column="pos_loc_gkey" type="java.lang.Long">
+                <meta attribute="field-description">The gkey of the Yard or CarrierVisit of this Position</meta>
+            </property>
+            <property name="posSlot" column="pos_slot" type="string" length="16">
+                <meta attribute="field-description">A String giving the coordinates of the Position within its Location</meta>
+            </property>
+            <property name="posOrientation" column="pos_orientation" type="string" length="6">
+                <meta attribute="field-description">A String defining the orientation of the Unit within this Position</meta>
+            </property>
+            <property name="posName" column="pos_name" type="string" length="42">
+                <meta attribute="field-description">A String formatted for the user that represents the position</meta>
+            </property>
+            <property name="posOperationalPosId" column="ops_pos_id" type="string" length="80">
+                <meta attribute="field-description">XPS operation position (TIP, TQ, LN.4, etc.)</meta>
+            </property>
+            <many-to-one name="posBin" column="pos_bin" class="com.navis.spatial.business.model.AbstractBin">
+                <meta attribute="field-description">The bin to which this Position points to.</meta>
+            </many-to-one>
+            <property name="posTier" column="pos_tier" type="java.lang.Long">
+                <meta attribute="field-description">An integer specifying the tier for this Position.</meta>
+            </property>
+            <property name="posAnchor" column="pos_anchor" type="org.hibernatespatial.GeometryUserType">
+                <meta attribute="field-description">xyz anchor point in bin's coordinate system.</meta>
+            </property>
+            <property name="posOrientationDegrees" column="pos_orientation_degrees" type="java.lang.Double">
+                <meta attribute="field-description">Orientation in degrees in bin's coordinate system.</meta>
+            </property>
+        </component>
+
+    </class>
+
+    <class name="com.navis.vessel.business.operation.LineLoadList" table="vsl_line_loadlist" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.vessel.business.operation.LineLoadListHbr</meta>
+        <meta attribute="n4alias">linell</meta>
+        <meta attribute="class-description">Entity representing the Loadlist information as sent by Line Operator</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Line LoadList</meta>
+        <meta attribute="n4-entity-name-plural">Line LoadList</meta>
+
+        <id name="linellGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="linellActionCode" column="action_code" type="com.navis.argo.persistence.atoms.UserTypeEdiActionCodeEnum">
+            <meta attribute="field-description">Effect of Load list - Add/Remove etc.</meta>
+        </property>
+
+        <many-to-one name="linellLineOperator" column="line_operator" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Line Operator who sends the Load List</meta>
+        </many-to-one>
+
+        <property name="linellSenderId" column="sender_id" type="java.lang.String" length="30">
+            <meta attribute="field-description">Id of Load list Sender - value from EDI</meta>
+        </property>
+
+        <!-- Vessel Visit Information -->
+        <many-to-one name="linellVesselVisit" column="cv_gkey" class="com.navis.argo.business.model.CarrierVisit" not-null="true">
+            <meta attribute="field-description">Vessel Visit for which the Loadlist pertains to</meta>
+        </many-to-one>
+
+        <many-to-one name="linellComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which Loadlist info. belongs.</meta>
+        </many-to-one>
+        <!-- Container Information -->
+        <property name="linellCtrId" column="ctr_id" type="java.lang.String" length="30" not-null="true" index="linell_ctrid_idx">
+            <meta attribute="field-description">Container Id</meta>
+        </property>
+
+        <many-to-one name="linellCtrEquipType" column="ctr_eq_typ_gkey" class="com.navis.argo.business.reference.EquipType">
+            <meta attribute="field-description">Container ISO Type</meta>
+        </many-to-one>
+
+        <property name="linellCtrCategory" column="category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum">
+            <meta attribute="field-description">Container Category</meta>
+        </property>
+
+        <property name="linellCtrFreightKind" column="freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum">
+            <meta attribute="field-description">Container Freight Kind</meta>
+        </property>
+
+        <many-to-one name="linellCtrOperator" column="ctr_operator_gkey" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Container Operator</meta>
+        </many-to-one>
+
+        <many-to-one name="linellSpecialStow" column="special_stow_gkey" class="com.navis.argo.business.reference.SpecialStow">
+            <meta attribute="field-description">Special stow</meta>
+        </many-to-one>
+
+        <property name="linellOrderNbr" column="order_nbr" type="java.lang.String" length="30">
+            <meta attribute="field-description">Order Number</meta>
+        </property>
+
+        <many-to-one name="linellPOL" column="pol_gkey" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Port Of Load</meta>
+        </many-to-one>
+
+        <many-to-one name="linellPOD" column="pod_gkey" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Port Of Discharge</meta>
+        </many-to-one>
+
+        <property name="linellCtrGrossWeightKg" column="ctr_gross_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Container Gross Weight in Kg.</meta>
+        </property>
+
+        <property name="linellCtrWtKgVerfiedGross" column="ctr_verified_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Container Verified Weight in Kg.</meta>
+        </property>
+
+        <property name="linellVgmEntity" column="ctr_verified_entity" type="string" length="40" >
+            <meta attribute="field-description">Container Verified Entity </meta>
+        </property>
+
+        <!-- Temperature -->
+        <property name="linellTempRequiredC" column="temp_reqd_C" type="java.lang.Double">
+            <meta attribute="field-description">Preferred Temperature, degrees Centigrade</meta>
+        </property>
+
+        <property name="linellTempLimitMinC" column="temp_min_C" type="java.lang.Double">
+            <meta attribute="field-description">Min. Temperature, degrees Centigrade</meta>
+        </property>
+
+        <property name="linellTempLimitMaxC" column="temp_max_C" type="java.lang.Double">
+            <meta attribute="field-description">Max. Temperature, degrees Centigrade</meta>
+        </property>
+
+        <!-- OOG -->
+        <property name="linellOogBackCm" column="oog_back_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Back, in Centimeters</meta>
+        </property>
+
+        <property name="linellOogFrontCm" column="oog_front_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Front, in Centimeters</meta>
+        </property>
+
+        <property name="linellOogLeftCm" column="oog_left_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Left, in Centimeters</meta>
+        </property>
+
+        <property name="linellOogRightCm" column="oog_rignt_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Right, in Centimeters</meta>
+        </property>
+
+        <property name="linellOogTopCm" column="oog_top_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Top, in Centimeters</meta>
+        </property>
+
+        <!-- Container Seal Numbers  -->
+        <property name="linellSealNbr1" column="seal_nbr1" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 1</meta>
+        </property>
+
+        <property name="linellSealNbr2" column="seal_nbr2" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 2</meta>
+        </property>
+
+        <property name="linellSealNbr3" column="seal_nbr3" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 3</meta>
+        </property>
+
+        <property name="linellSealNbr4" column="seal_nbr4" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 4</meta>
+        </property>
+
+        <!-- Commodity -->
+        <many-to-one name="linellCommodity" column="commodity_gkey" class="com.navis.argo.business.reference.Commodity">
+            <meta attribute="field-description">Commodity</meta>
+        </many-to-one>
+
+        <many-to-one name="linellConsigneeBzu" column="consignee_bzu_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" cascade="none">
+            <meta attribute="field-description">Consignee ScopedBizUnit</meta>
+        </many-to-one>
+
+        <many-to-one name="linellHazards" column="hazards_gkey" class="com.navis.inventory.business.imdg.Hazards" cascade="all">
+            <meta attribute="field-description">Cargo Hazards</meta>
+        </many-to-one>
+
+        <property name="linellCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Created date of this record</meta>
+        </property>
+
+        <property name="linellCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Creator name of this record</meta>
+        </property>
+
+        <property name="linellChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="linellChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Changer name of this record</meta>
+        </property>
+
+        <!--2010-03-01 bbakthavachalam ARGO-23868 add Unit and UFV flex fields for line loadList-->
+        <!-- Unit Flex fields-->
+        <property name="linellUnitFlexString01" column="unit_flex_string01" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #01</meta>
+        </property>
+
+        <property name="linellUnitFlexString02" column="unit_flex_string02" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #02</meta>
+        </property>
+
+        <property name="linellUnitFlexString03" column="unit_flex_string03" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #03</meta>
+        </property>
+
+        <property name="linellUnitFlexString04" column="unit_flex_string04" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #04</meta>
+        </property>
+
+        <property name="linellUnitFlexString05" column="unit_flex_string05" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #05</meta>
+        </property>
+
+        <property name="linellUnitFlexString06" column="unit_flex_string06" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #06</meta>
+        </property>
+
+        <property name="linellUnitFlexString07" column="unit_flex_string07" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #07</meta>
+        </property>
+
+        <property name="linellUnitFlexString08" column="unit_flex_string08" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #08</meta>
+        </property>
+
+        <property name="linellUnitFlexString09" column="unit_flex_string09" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #09</meta>
+        </property>
+
+        <property name="linellUnitFlexString10" column="unit_flex_string10" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #10</meta>
+        </property>
+
+        <property name="linellUnitFlexString11" column="unit_flex_string11" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #11</meta>
+        </property>
+
+        <property name="linellUnitFlexString12" column="unit_flex_string12" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #12</meta>
+        </property>
+
+        <property name="linellUnitFlexString13" column="unit_flex_string13" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #13</meta>
+        </property>
+
+        <property name="linellUnitFlexString14" column="unit_flex_string14" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #14</meta>
+        </property>
+
+        <property name="linellUnitFlexString15" column="unit_flex_string15" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #15</meta>
+        </property>
+
+        <!-- Unit facility visit Flex fields-->
+        <property name="linellUfvFlexString01" column="ufv_flex_string01" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #01</meta>
+        </property>
+
+        <property name="linellUfvFlexString02" column="ufv_flex_string02" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #02</meta>
+        </property>
+
+        <property name="linellUfvFlexString03" column="ufv_flex_string03" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #03</meta>
+        </property>
+
+        <property name="linellUfvFlexString04" column="ufv_flex_string04" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #04</meta>
+        </property>
+
+        <property name="linellUfvFlexString05" column="ufv_flex_string05" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #05</meta>
+        </property>
+
+        <property name="linellUfvFlexString06" column="ufv_flex_string06" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #06</meta>
+        </property>
+
+        <property name="linellUfvFlexString07" column="ufv_flex_string07" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #07</meta>
+        </property>
+
+        <property name="linellUfvFlexString08" column="ufv_flex_string08" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #08</meta>
+        </property>
+
+        <property name="linellUfvFlexString09" column="ufv_flex_string09" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #09</meta>
+        </property>
+
+        <property name="linellUfvFlexString10" column="ufv_flex_string10" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #10</meta>
+        </property>
+
+        <property name="linellUfvFlexDate01" column="ufv_flex_date01" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #01</meta>
+        </property>
+
+        <property name="linellUfvFlexDate02" column="ufv_flex_date02" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #02</meta>
+        </property>
+
+        <property name="linellUfvFlexDate03" column="ufv_flex_date03" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #03</meta>
+        </property>
+
+        <property name="linellUfvFlexDate04" column="ufv_flex_date04" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #04</meta>
+        </property>
+
+        <property name="linellUfvFlexDate05" column="ufv_flex_date05" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #05</meta>
+        </property>
+
+        <property name="linellUfvFlexDate06" column="ufv_flex_date06" type="timestamp">
+            <meta attribute="field-description">Date UFV flex-field Date #06</meta>
+        </property>
+
+        <property name="linellUfvFlexDate07" column="ufv_flex_date07" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #07</meta>
+        </property>
+
+        <property name="linellUfvFlexDate08" column="ufv_flex_date08" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #08</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.vessel.business.operation.LineDischargeList" table="vsl_line_discharge_list" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.vessel.business.operation.LineDischargeListHbr</meta>
+        <meta attribute="n4alias">linedl</meta>
+        <meta attribute="class-description">Entity representing the Discharge List information as sent by Line Operator</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">Line Discharge List</meta>
+        <meta attribute="n4-entity-name-plural">Line Discharge List</meta>
+
+        <id name="linedlGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="linedlActionCode" column="action_code" type="com.navis.argo.persistence.atoms.UserTypeEdiActionCodeEnum" not-null="true">
+            <meta attribute="field-description">Effect of Discharge list - Add/Revoke</meta>
+        </property>
+
+        <many-to-one name="linedlLineOperator" column="line_operator" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Line Operator who sends the Discharge List</meta>
+        </many-to-one>
+
+        <property name="linedlSenderId" column="sender_id" type="java.lang.String" length="30">
+            <meta attribute="field-description">Id of Discharge list Sender from EDI</meta>
+        </property>
+
+        <!-- Inbound Vessel Visit Information -->
+        <many-to-one name="linedlIbVesselVisit" column="ib_cv_gkey" class="com.navis.argo.business.model.CarrierVisit" not-null="true">
+            <meta attribute="field-description">Vessel Visit for which the Discharge List pertains to</meta>
+        </many-to-one>
+
+        <!-- Outbound Vessel Visit Information -->
+        <many-to-one name="linedlObVesselVisit" column="ob_cv_gkey" class="com.navis.argo.business.model.CarrierVisit">
+            <meta attribute="field-description">Vessel Visit which carries Transship containers</meta>
+        </many-to-one>
+
+        <many-to-one name="linedlComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which Discharge list info. belongs.</meta>
+        </many-to-one>
+
+        <!-- Container Information -->
+        <property name="linedlCtrId" column="ctr_id" type="java.lang.String" length="30" index="linedl_ctrid_idx">
+            <meta attribute="field-description">Container Id</meta>
+        </property>
+
+        <many-to-one name="linedlCtrEquipType" column="ctr_eq_typ_gkey" class="com.navis.argo.business.reference.EquipType">
+            <meta attribute="field-description">Container ISO Type</meta>
+        </many-to-one>
+
+        <property name="linedlCtrCategory" column="category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum">
+            <meta attribute="field-description">Container Category</meta>
+        </property>
+
+        <property name="linedlCtrFreightKind" column="freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum">
+            <meta attribute="field-description">Container Freight Kind</meta>
+        </property>
+
+        <many-to-one name="linedlCtrOperator" column="ctr_operator_gkey" class="com.navis.argo.business.reference.ScopedBizUnit">
+            <meta attribute="field-description">Container Operator</meta>
+        </many-to-one>
+
+        <property name="linedlCtrIntendedObMode" column="ctr_intended_ob_mode" type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum">
+            <meta attribute="field-description">Container Intended Outbound Mode</meta>
+        </property>
+
+        <property name="linedlStowPosition" column="stow_position" type="java.lang.String" length="16">
+            <meta attribute="field-description">Stowage position on incoming vessel</meta>
+        </property>
+
+        <many-to-one name="linedlPOL" column="pol_gkey" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Container Port Of Load</meta>
+        </many-to-one>
+
+        <many-to-one name="linedlPOD" column="pod_gkey" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Container Port Of Discharge</meta>
+        </many-to-one>
+
+        <many-to-one name="linedlOPL" column="opl_gkey" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Original Port Of Load</meta>
+        </many-to-one>
+
+        <property name="linedlDest" column="destination" type="java.lang.String" length="30">
+            <meta attribute="field-description">Final Destination</meta>
+        </property>
+
+        <many-to-one name="linedlPOD2" column="pod2_gkey" class="com.navis.argo.business.reference.RoutingPoint">
+            <meta attribute="field-description">Container Second Port Of Discharge</meta>
+        </many-to-one>
+
+        <property name="linedlCtrGrossWeightKg" column="ctr_gross_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Container Gross Weight in Kg.</meta>
+        </property>
+
+        <property name="linedlCtrWtKgVerfiedGross" column="ctr_verified_weight_kg" type="java.lang.Double">
+            <meta attribute="field-description">Container Verified Weight in Kg.</meta>
+        </property>
+
+        <property name="linedlVgmEntity" column="ctr_verified_entity" type="string" length="40" >
+            <meta attribute="field-description">Container Verified Entity </meta>
+        </property>
+
+        <!-- Temperature -->
+        <property name="linedlTempRequiredC" column="temp_reqd_C" type="java.lang.Double">
+            <meta attribute="field-description">Preferred Temperature, degrees Centigrade</meta>
+        </property>
+
+        <property name="linedlTempLimitMinC" column="temp_min_C" type="java.lang.Double">
+            <meta attribute="field-description">Min. Temperature, degrees Centigrade</meta>
+        </property>
+
+        <property name="linedlTempLimitMaxC" column="temp_max_C" type="java.lang.Double">
+            <meta attribute="field-description">Max. Temperature, degrees Centigrade</meta>
+        </property>
+
+        <!-- OOG -->
+        <property name="linedlOogBackCm" column="oog_back_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Back, in Centimeters</meta>
+        </property>
+
+        <property name="linedlOogFrontCm" column="oog_front_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Front, in Centimeters</meta>
+        </property>
+
+        <property name="linedlOogLeftCm" column="oog_left_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Left, in Centimeters</meta>
+        </property>
+
+        <property name="linedlOogRightCm" column="oog_rignt_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Right, in Centimeters</meta>
+        </property>
+
+        <property name="linedlOogTopCm" column="oog_top_cm" type="java.lang.Long">
+            <meta attribute="field-description">OOG Top, in Centimeters</meta>
+        </property>
+
+        <!-- Container Seal Numbers  -->
+        <property name="linedlSealNbr1" column="seal_nbr1" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 1</meta>
+        </property>
+
+        <property name="linedlSealNbr2" column="seal_nbr2" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 2</meta>
+        </property>
+
+        <property name="linedlSealNbr3" column="seal_nbr3" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 3</meta>
+        </property>
+
+        <property name="linedlSealNbr4" column="seal_nbr4" type="java.lang.String" length="15">
+            <meta attribute="field-description">Container Seal Number 4</meta>
+        </property>
+
+        <!-- Commodity -->
+        <property name="linedlBlNbr" column="bl_nbr" type="java.lang.String" length="30">
+            <meta attribute="field-description">Bill of Lading Number</meta>
+        </property>
+
+        <many-to-one name="linedlCommodity" column="commodity_gkey" class="com.navis.argo.business.reference.Commodity">
+            <meta attribute="field-description">Commodity</meta>
+        </many-to-one>
+
+        <many-to-one name="linedlAgent1" column="agent1" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false" cascade="none">
+            <meta attribute="field-description">Agent of the Container</meta>
+        </many-to-one>
+
+        <many-to-one name="linedlAgent2" column="agent2" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false" cascade="none">
+            <meta attribute="field-description">Agent of the Container</meta>
+        </many-to-one>
+
+        <many-to-one name="linedlConsigneeBzu" column="consignee_bzu_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" cascade="none">
+            <meta attribute="field-description">Consignee ScopedBizUnit</meta>
+        </many-to-one>
+
+        <many-to-one name="linedlHazards" column="hazards_gkey" class="com.navis.inventory.business.imdg.Hazards" cascade="all">
+            <meta attribute="field-description">Cargo Hazards</meta>
+        </many-to-one>
+
+        <property name="linedlCreated" column="created" type="timestamp">
+            <meta attribute="field-description">Created date of this record</meta>
+        </property>
+
+        <property name="linedlCreator" column="creator" type="java.lang.String" length="30">
+            <meta attribute="field-description">Creator name of this record</meta>
+        </property>
+
+        <property name="linedlChanged" column="changed" type="timestamp">
+            <meta attribute="field-description">Record changed date</meta>
+        </property>
+
+        <property name="linedlChanger" column="changer" type="java.lang.String" length="30">
+            <meta attribute="field-description">Changer name of this record</meta>
+        </property>
+
+        <!--2010-03-01 bbakthavachalam ARGO-23868 add Unit and UFV flex fields for line dischargeList -->
+        <!-- Unit Flex fields-->
+        <property name="linedlUnitFlexString01" column="unit_flex_string01" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #01</meta>
+        </property>
+
+        <property name="linedlUnitFlexString02" column="unit_flex_string02" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #02</meta>
+        </property>
+
+        <property name="linedlUnitFlexString03" column="unit_flex_string03" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #03</meta>
+        </property>
+
+        <property name="linedlUnitFlexString04" column="unit_flex_string04" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #04</meta>
+        </property>
+
+        <property name="linedlUnitFlexString05" column="unit_flex_string05" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #05</meta>
+        </property>
+
+        <property name="linedlUnitFlexString06" column="unit_flex_string06" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #06</meta>
+        </property>
+
+        <property name="linedlUnitFlexString07" column="unit_flex_string07" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #07</meta>
+        </property>
+
+        <property name="linedlUnitFlexString08" column="unit_flex_string08" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #08</meta>
+        </property>
+
+        <property name="linedlUnitFlexString09" column="unit_flex_string09" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #09</meta>
+        </property>
+
+        <property name="linedlUnitFlexString10" column="unit_flex_string10" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #10</meta>
+        </property>
+
+        <property name="linedlUnitFlexString11" column="unit_flex_string11" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #11</meta>
+        </property>
+
+        <property name="linedlUnitFlexString12" column="unit_flex_string12" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #12</meta>
+        </property>
+
+        <property name="linedlUnitFlexString13" column="unit_flex_string13" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #13</meta>
+        </property>
+
+        <property name="linedlUnitFlexString14" column="unit_flex_string14" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #14</meta>
+        </property>
+
+        <property name="linedlUnitFlexString15" column="unit_flex_string15" type="string" length="255">
+            <meta attribute="field-description">Unit flex-field String #15</meta>
+        </property>
+
+        <!-- Unit facility visit Flex fields-->
+        <property name="linedlUfvFlexString01" column="ufv_flex_string01" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #01</meta>
+        </property>
+
+        <property name="linedlUfvFlexString02" column="ufv_flex_string02" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #02</meta>
+        </property>
+
+        <property name="linedlUfvFlexString03" column="ufv_flex_string03" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #03</meta>
+        </property>
+
+        <property name="linedlUfvFlexString04" column="ufv_flex_string04" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #04</meta>
+        </property>
+
+        <property name="linedlUfvFlexString05" column="ufv_flex_string05" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #05</meta>
+        </property>
+
+        <property name="linedlUfvFlexString06" column="ufv_flex_string06" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #06</meta>
+        </property>
+
+        <property name="linedlUfvFlexString07" column="ufv_flex_string07" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #07</meta>
+        </property>
+
+        <property name="linedlUfvFlexString08" column="ufv_flex_string08" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #08</meta>
+        </property>
+
+        <property name="linedlUfvFlexString09" column="ufv_flex_string09" type="string" length="255">
+            <meta attribute="field-description">flex-field String #09</meta>
+        </property>
+
+        <property name="linedlUfvFlexString10" column="ufv_flex_string10" type="string" length="255">
+            <meta attribute="field-description">UFV flex-field String #10</meta>
+        </property>
+
+        <property name="linedlUfvFlexDate01" column="ufv_flex_date01" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #01</meta>
+        </property>
+
+        <property name="linedlUfvFlexDate02" column="ufv_flex_date02" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #02</meta>
+        </property>
+
+        <property name="linedlUfvFlexDate03" column="ufv_flex_date03" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #03</meta>
+        </property>
+
+        <property name="linedlUfvFlexDate04" column="ufv_flex_date04" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #04</meta>
+        </property>
+
+        <property name="linedlUfvFlexDate05" column="ufv_flex_date05" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #05</meta>
+        </property>
+
+        <property name="linedlUfvFlexDate06" column="ufv_flex_date06" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #06</meta>
+        </property>
+
+        <property name="linedlUfvFlexDate07" column="ufv_flex_date07" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #07</meta>
+        </property>
+
+        <property name="linedlUfvFlexDate08" column="ufv_flex_date08" type="timestamp">
+            <meta attribute="field-description">UFV flex-field Date #08</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.vessel.business.operation.LoadListDiscrepancy" table="vsl_load_list_discrepancy" mutable="false">
+        <meta attribute="n4alias">loaddisc</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.LoadListDiscrepancyHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Faux View of Units and Line Loadlist discrepancies</meta>
+        <meta attribute="n4-entity-name">Loadlist Discrepancy</meta>
+        <meta attribute="n4-entity-name-plural">Loadlist Discrepancies</meta>
+
+        <meta attribute="carina-fk-index-disable">
+            (load_list_gkey);(ufv_gkey);(complex_gkey);(unit_line_op);(line_ctr_op);(unit_pol_gkey);(line_pol_gkey);(unit_pod_gkey);(line_pod_gkey);
+            (unit_commodity);(line_commodity);(line_hazard_item);(unit_hazard_item);(unit_eqtype_gkey);(line_eqtype_gkey);(unit_ob_visit_gkey);
+            (line_vv_gkey);(unit_booking);(line_booking)
+        </meta>
+
+        <!-- 2012-03-22 Eswendra Reddy ARGO-34652 re-written the query for performance improvement.
+         ARGO-35590 solved the problem of OOG and IMDG discrepancies when unit has a some value loadlist does not bring the value -->
+
+        <subselect>
+            select
+            case
+            when p.n = 1 and
+            line.ctr_operator_gkey is not null and
+            (unit.line_op is null or
+            line.ctr_operator_gkey != unit.line_op)
+            then
+            'LineOperator'
+            when p.n = 2 and
+            line.category is not null and
+            line.category != unit.category
+            then
+            'Category'
+            when p.n = 3 and
+            line.ctr_gross_weight_kg is not null and
+            (unit.goods_and_ctr_wt_kg is null or
+            line.ctr_gross_weight_kg != unit.goods_and_ctr_wt_kg)
+            then
+            'GrossWeight'
+            when p.n = 4 and
+            line.pol_gkey is not null and
+            (unit.pol_gkey is null or
+            line.pol_gkey != unit.pol_gkey)
+            then
+            'RtgPol'
+            when p.n = 5 and
+            line.pod_gkey is not null and
+            (unit.pod1_gkey is null or
+            line.pod_gkey != unit.pod1_gkey)
+            then
+            'RtgPod'
+            when p.n = 8 and
+            ((line.oog_back_cm is not null and
+            unit.oog_back_cm is null) or
+            (line.oog_back_cm is null and
+            unit.oog_back_cm is not null) or
+            line.oog_back_cm != unit.oog_back_cm)
+            then
+            'OogBack'
+            when p.n = 9 and
+            ((line.oog_front_cm is not null and
+            unit.oog_front_cm is null) or
+            (line.oog_front_cm is null and
+            unit.oog_front_cm is not null) or
+            line.oog_front_cm != unit.oog_front_cm)
+            then
+            'OogFront'
+            when p.n = 10 and
+            ((line.oog_top_cm is not null and
+            unit.oog_top_cm is null) or
+            (line.oog_top_cm is null and
+            unit.oog_top_cm is not null) or
+            line.oog_top_cm != unit.oog_top_cm)
+            then
+            'OogTop'
+            when p.n = 11 and
+            ((line.oog_rignt_cm is not null and
+            unit.oog_right_cm is null) or
+            (line.oog_rignt_cm is null and
+            unit.oog_right_cm is not null) or
+            line.oog_rignt_cm != unit.oog_right_cm)
+            then
+            'OogRight'
+            when p.n = 12 and
+            ((line.oog_left_cm is not null and
+            unit.oog_left_cm is null) or
+            (line.oog_left_cm is null and
+            unit.oog_left_cm is not null) or
+            line.oog_left_cm != unit.oog_left_cm)
+            then
+            'OogLeft'
+            when p.n = 14 and
+            line.freight_kind is not null and
+            line.freight_kind != unit.freight_kind
+            then
+            'FreightKind'
+            when p.n = 16 and
+            line.cv_gkey is not null and
+            line.cv_gkey != unit.cv_gkey
+            then
+            'OutboundVisit'
+            when p.n = 6 and
+            line.commodity_gkey is not null and
+            gds.gkey is not null and
+            (gds.commodity_gkey is null or
+            line.commodity_gkey != gds.commodity_gkey)
+            then
+            'Commodity'
+            when p.n = 7
+            then
+            'Hazards'
+            when p.n = 18
+            then
+            'Hazards'
+            when p.n = 13 and
+            gds.gkey is not null and
+            ((line.temp_reqd_C is not null and
+            gds.temp_reqd_C is null) or
+            (line.temp_reqd_C is null and
+            gds.temp_reqd_C is not null) or
+            (line.temp_reqd_C != gds.temp_reqd_C))
+            then
+            'TempRequired'
+            when p.n = 15 and
+            line.ctr_eq_typ_gkey is not null and
+            eq.eqtyp_gkey is not null and
+            line.ctr_eq_typ_gkey != eq.eqtyp_gkey
+            then
+            'CtrType'
+            when p.n = 17 and
+            line.order_nbr is not null and
+            ue.gkey is not null and
+            (ue.depart_order_item_gkey is null or
+            line.order_nbr != depart_order.nbr)
+            then
+            'Booking'
+            end
+            as field_id,
+            case
+            when p.n = 1 and
+            line.ctr_operator_gkey is not null and
+            (unit.line_op is null or
+            line.ctr_operator_gkey != unit.line_op)
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 1
+            when p.n = 2 and
+            line.category is not null and
+            line.category != unit.category
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 2
+            when p.n = 3 and
+            line.ctr_gross_weight_kg is not null and
+            (unit.goods_and_ctr_wt_kg is null or
+            line.ctr_gross_weight_kg != unit.goods_and_ctr_wt_kg)
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 3
+            when p.n = 4 and
+            line.pol_gkey is not null and
+            (unit.pol_gkey is null or
+            line.pol_gkey != unit.pol_gkey)
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 4
+            when p.n = 5 and
+            line.pod_gkey is not null and
+            (unit.pod1_gkey is null or
+            line.pod_gkey != unit.pod1_gkey)
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 5
+            when p.n = 8 and
+            ((line.oog_back_cm is not null and
+            unit.oog_back_cm is null) or
+            (line.oog_back_cm is null and
+            unit.oog_back_cm is not null) or
+            line.oog_back_cm != unit.oog_back_cm)
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 8
+            when p.n = 9 and
+            ((line.oog_front_cm is not null and
+            unit.oog_front_cm is null) or
+            (line.oog_front_cm is null and
+            unit.oog_front_cm is not null) or
+            line.oog_front_cm != unit.oog_front_cm)
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 9
+            when p.n = 10 and
+            ((line.oog_top_cm is not null and
+            unit.oog_top_cm is null) or
+            (line.oog_top_cm is null and
+            unit.oog_top_cm is not null) or
+            line.oog_top_cm != unit.oog_top_cm)
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 10
+            when p.n = 11 and
+            ((line.oog_rignt_cm is not null and
+            unit.oog_right_cm is null) or
+            (line.oog_rignt_cm is null and
+            unit.oog_right_cm is not null) or
+            line.oog_rignt_cm != unit.oog_right_cm)
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 11
+            when p.n = 12 and
+            ((line.oog_left_cm is not null and
+            unit.oog_left_cm is null) or
+            (line.oog_left_cm is null and
+            unit.oog_left_cm is not null) or
+            line.oog_left_cm != unit.oog_left_cm)
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 12
+            when p.n = 14 and
+            line.freight_kind is not null and
+            line.freight_kind != unit.freight_kind
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 14
+            when p.n = 16 and
+            line.cv_gkey is not null and
+            line.cv_gkey != unit.cv_gkey
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 16
+            when p.n = 6 and
+            gds.gkey is not null and
+            (gds.commodity_gkey is null or
+            line.commodity_gkey != gds.commodity_gkey)
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 6
+            when p.n = 7
+            then
+            unit.gkey
+            when p.n = 18
+            then
+            unit.gkey
+            when p.n = 13 and
+            gds.gkey is not null and
+            ((line.temp_reqd_C is not null and
+            gds.temp_reqd_C is null) or
+            (line.temp_reqd_C is null and
+            gds.temp_reqd_C is not null) or
+            (line.temp_reqd_C != gds.temp_reqd_C))
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 13
+            when p.n = 15 and
+            line.ctr_eq_typ_gkey is not null and
+            eq.eqtyp_gkey is not null and
+            line.ctr_eq_typ_gkey != eq.eqtyp_gkey
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 15
+            when p.n = 17 and
+            line.order_nbr is not null and
+            ue.gkey is not null and
+            (ue.depart_order_item_gkey is null or
+            line.order_nbr != depart_order.nbr)
+            then
+            (unit.gkey + line.cv_gkey) * 100 + 17
+            end
+            as gkey,
+            ufv.gkey as ufv_gkey,
+            line.gkey as load_list_gkey,
+            line.complex_gkey as complex_gkey,
+            unit.id as unit_id,
+            case
+            when p.n = 1 and
+            line.ctr_operator_gkey is not null and
+            (unit.line_op is null or
+            line.ctr_operator_gkey != unit.line_op)
+            then
+            unit.line_op
+            else
+            null
+            end
+            as unit_line_op,
+            case
+            when (p.n = 1 or
+            p.n = 17) and
+            line.ctr_operator_gkey is not null and
+            (unit.line_op is null or
+            line.ctr_operator_gkey != unit.line_op or
+            p.n = 17)
+            then
+            line.ctr_operator_gkey
+            else
+            null
+            end
+            as line_ctr_op,
+            case
+            when p.n = 3 and
+            line.ctr_gross_weight_kg is not null and
+            (unit.goods_and_ctr_wt_kg is null or
+            line.ctr_gross_weight_kg != unit.goods_and_ctr_wt_kg)
+            then
+            unit.goods_and_ctr_wt_kg
+            else
+            null
+            end
+            as unit_gross_wt_kg,
+            case
+            when p.n = 8 and
+            ((line.oog_back_cm is not null and
+            unit.oog_back_cm is null) or
+            (line.oog_back_cm is null and
+            unit.oog_back_cm is not null) or
+            line.oog_back_cm != unit.oog_back_cm)
+            then
+            unit.oog_back_cm
+            else
+            null
+            end
+            as unit_oog_back_cm,
+            case
+            when p.n = 9 and
+            ((line.oog_front_cm is not null and
+            unit.oog_front_cm is null) or
+            (line.oog_front_cm is null and
+            unit.oog_front_cm is not null) or
+            line.oog_front_cm != unit.oog_front_cm)
+            then
+            unit.oog_front_cm
+            else
+            null
+            end
+            as unit_oog_front_cm,
+            case
+            when p.n = 10 and
+            ((line.oog_top_cm is not null and
+            unit.oog_top_cm is null) or
+            (line.oog_top_cm is null and
+            unit.oog_top_cm is not null) or
+            line.oog_top_cm != unit.oog_top_cm)
+            then
+            unit.oog_top_cm
+            else
+            null
+            end
+            as unit_oog_top_cm,
+            case
+            when p.n = 11 and
+            ((line.oog_rignt_cm is not null and
+            unit.oog_right_cm is null) or
+            (line.oog_rignt_cm is null and
+            unit.oog_right_cm is not null) or
+            line.oog_rignt_cm != unit.oog_right_cm)
+            then
+            unit.oog_right_cm
+            else
+            null
+            end
+            as unit_oog_right_cm,
+            case
+            when p.n = 12 and
+            ((line.oog_left_cm is not null and
+            unit.oog_left_cm is null) or
+            (line.oog_left_cm is null and
+            unit.oog_left_cm is not null) or
+            line.oog_left_cm != unit.oog_left_cm)
+            then
+            unit.oog_left_cm
+            else
+            null
+            end
+            as unit_oog_left_cm,
+            case
+            when p.n = 4 and
+            line.pol_gkey is not null and
+            (unit.pol_gkey is null or
+            line.pol_gkey != unit.pol_gkey)
+            then
+            unit.pol_gkey
+            else
+            null
+            end
+            as unit_pol_gkey,
+            case
+            when p.n = 5 and
+            line.pod_gkey is not null and
+            (unit.pod1_gkey is null or
+            line.pod_gkey != unit.pod1_gkey)
+            then
+            unit.pod1_gkey
+            end
+            as unit_pod_gkey,
+            case
+            when p.n = 13 and
+            gds.gkey is not null and
+            ((line.temp_reqd_C is not null and
+            gds.temp_reqd_C is null) or
+            (line.temp_reqd_C is null and
+            gds.temp_reqd_C is not null) or
+            (line.temp_reqd_C != gds.temp_reqd_C))
+            then
+            gds.temp_reqd_C
+            else
+            null
+            end
+            as unit_temp_reqd_c,
+            case
+            when p.n = 2 and
+            line.category is not null and
+            line.category != unit.category
+            then
+            unit.category
+            else
+            null
+            end
+            as unit_category,
+            case
+            when p.n = 6 and
+            line.commodity_gkey is not null and
+            gds.gkey is not null and
+            (gds.commodity_gkey is null or
+            line.commodity_gkey != gds.commodity_gkey)
+            then
+            gds.commodity_gkey
+            else
+            null
+            end
+            as unit_commodity,
+            case
+            when p.n = 14 and
+            line.freight_kind is not null and
+            line.freight_kind != unit.freight_kind
+            then
+            unit.freight_kind
+            else
+            null
+            end
+            as unit_freight_kind,
+            case
+            when p.n = 15 and
+            line.ctr_eq_typ_gkey is not null and
+            eq.eqtyp_gkey is not null and
+            line.ctr_eq_typ_gkey != eq.eqtyp_gkey
+            then
+            eq.eqtyp_gkey
+            else
+            null
+            end
+            as unit_eqtype_gkey,
+            case
+            when p.n = 16 and
+            line.cv_gkey is not null and
+            line.cv_gkey != unit.cv_gkey
+            then
+            unit.cv_gkey
+            when p.n = 17 and
+            line.order_nbr is not null and
+            ue.gkey is not null and
+            (ue.depart_order_item_gkey is null or
+            line.order_nbr != depart_order.nbr)
+            then
+            unit.cv_gkey
+            else
+            null
+            end
+            as unit_ob_visit_gkey,
+            case
+            when p.n = 8 and
+            ((line.oog_back_cm is not null and
+            unit.oog_back_cm is null) or
+            (line.oog_back_cm is null and
+            unit.oog_back_cm is not null) or
+            line.oog_back_cm != unit.oog_back_cm)
+            then
+            line.oog_back_cm
+            else
+            null
+            end
+            as line_oog_back_cm,
+            case
+            when p.n = 9 and
+            ((line.oog_front_cm is not null and
+            unit.oog_front_cm is null) or
+            (line.oog_front_cm is null and
+            unit.oog_front_cm is not null) or
+            line.oog_front_cm != unit.oog_front_cm)
+            then
+            line.oog_front_cm
+            else
+            null
+            end
+            as line_oog_front_cm,
+            case
+            when p.n = 10 and
+            ((line.oog_top_cm is not null and
+            unit.oog_top_cm is null) or
+            (line.oog_top_cm is null and
+            unit.oog_top_cm is not null) or
+            line.oog_top_cm != unit.oog_top_cm)
+            then
+            line.oog_top_cm
+            else
+            null
+            end
+            as line_oog_top_cm,
+            case
+            when p.n = 11 and
+            ((line.oog_rignt_cm is not null and
+            unit.oog_right_cm is null) or
+            (line.oog_rignt_cm is null and
+            unit.oog_right_cm is not null) or
+            line.oog_rignt_cm != unit.oog_right_cm)
+            then
+            line.oog_rignt_cm
+            else
+            null
+            end
+            as line_oog_right_cm,
+            case
+            when p.n = 12 and
+            ((line.oog_left_cm is not null and
+            unit.oog_left_cm is null) or
+            (line.oog_left_cm is null and
+            unit.oog_left_cm is not null) or
+            line.oog_left_cm != unit.oog_left_cm)
+            then
+            line.oog_left_cm
+            else
+            null
+            end
+            as line_oog_left_cm,
+            case
+            when p.n = 4 and
+            line.pol_gkey is not null and
+            (unit.pol_gkey is null or
+            line.pol_gkey != unit.pol_gkey)
+            then
+            line.pol_gkey
+            end
+            as line_pol_gkey,
+            case
+            when p.n = 5 and
+            line.pod_gkey is not null and
+            (unit.pod1_gkey is null or
+            line.pod_gkey != unit.pod1_gkey)
+            then
+            line.pod_gkey
+            end
+            as line_pod_gkey,
+            case
+            when p.n = 3 and
+            line.ctr_gross_weight_kg is not null and
+            (unit.goods_and_ctr_wt_kg is null or
+            line.ctr_gross_weight_kg != unit.goods_and_ctr_wt_kg)
+            then
+            line.ctr_gross_weight_kg
+            else
+            null
+            end
+            as line_gross_wt_kg,
+            case
+            when p.n = 13 and
+            gds.gkey is not null and
+            ((line.temp_reqd_C is not null and
+            gds.temp_reqd_C is null) or
+            (line.temp_reqd_C is null and
+            gds.temp_reqd_C is not null) or
+            (line.temp_reqd_C != gds.temp_reqd_C))
+            then
+            line.temp_reqd_C
+            else
+            null
+            end
+            as line_temp_reqd_c,
+            cast( case when p.n = 7 then cast( null as char(30)) else cast( null as char(30)) end as char(30))
+            as line_hazard_item,
+            cast( case when p.n = 18 then cast( null as char(30)) else cast( null as char(30)) end as char(30))
+            as unit_hazard_item,
+            case
+            when p.n = 2 and
+            line.category is not null and
+            line.category != unit.category
+            then
+            line.category
+            else
+            null
+            end
+            as line_category,
+            case
+            when p.n = 6 and
+            line.commodity_gkey is not null and
+            gds.gkey is not null and
+            (gds.commodity_gkey is null or
+            line.commodity_gkey != gds.commodity_gkey)
+            then
+            line.commodity_gkey
+            else
+            null
+            end
+            as line_commodity,
+            case
+            when p.n = 14 and
+            line.freight_kind is not null and
+            line.freight_kind != unit.freight_kind
+            then
+            line.freight_kind
+            else
+            null
+            end
+            as line_freight_kind,
+            case
+            when p.n = 15 and
+            line.ctr_eq_typ_gkey is not null and
+            eq.eqtyp_gkey is not null and
+            line.ctr_eq_typ_gkey != eq.eqtyp_gkey
+            then
+            line.ctr_eq_typ_gkey
+            else
+            null
+            end
+            as line_eqtype_gkey,
+            case
+            when p.n = 16 and
+            line.cv_gkey is not null and
+            line.cv_gkey != unit.cv_gkey
+            then
+            line.cv_gkey
+            when p.n = 17 and
+            line.order_nbr is not null and
+            ue.gkey is not null and
+            (ue.depart_order_item_gkey is null or
+            line.order_nbr != depart_order.nbr)
+            then
+            line.cv_gkey
+            else
+            null
+            end
+            as line_vv_gkey,
+            case
+            when p.n = 17 and
+            line.order_nbr is not null and
+            ue.gkey is not null and
+            (ue.depart_order_item_gkey is null or
+            line.order_nbr != depart_order.nbr)
+            then
+            depart_order.nbr
+            else
+            null
+            end
+            as unit_booking_nbr,
+            case
+            when p.n = 17 and
+            line.order_nbr is not null and
+            ue.gkey is not null and
+            (ue.depart_order_item_gkey is null or
+            line.order_nbr != depart_order.nbr)
+            then
+            line.order_nbr
+            else
+            null
+            end
+            as line_booking_nbr
+            from
+            inv_unit unit
+            join inv_unit_fcy_visit ufv on unit.active_ufv = ufv.gkey
+            join argo_carrier_visit cv on ufv.fcy_gkey = cv.fcy_gkey
+            join vsl_line_loadlist line
+            on unit.id = line.ctr_id and
+            cv.gkey = line.cv_gkey
+            left outer join inv_goods gds on unit.goods = gds.gkey
+            left outer join inv_unit_equip ue on unit.primary_ue = ue.gkey
+            left outer join ref_equipment eq on ue.eq_gkey = eq.gkey
+            left outer join inv_eq_base_order_item depart_item
+            on ue.depart_order_item_gkey = depart_item.gkey
+            left outer join inv_eq_base_order depart_order
+            on depart_item.eqo_gkey = depart_order.gkey
+            left outer join (select 1 as n from frm_carina_dual
+            union all
+            select 2 as n from frm_carina_dual
+            union all
+            select 3 as n from frm_carina_dual
+            union all
+            select 4 as n from frm_carina_dual
+            union all
+            select 5 as n from frm_carina_dual
+            union all
+            select 8 as n from frm_carina_dual
+            union all
+            select 9 as n from frm_carina_dual
+            union all
+            select 10 as n from frm_carina_dual
+            union all
+            select 11 as n from frm_carina_dual
+            union all
+            select 12 as n from frm_carina_dual
+            union all
+            select 14 as n from frm_carina_dual
+            union all
+            select 16 as n from frm_carina_dual
+            union all
+            select 6 as n from frm_carina_dual
+            union all
+            select 13 as n from frm_carina_dual
+            union all
+            select 15 as n from frm_carina_dual
+            union all
+            select 17 as n from frm_carina_dual) p
+            on 1 = 1
+            where
+            unit.visit_state = '1ACTIVE' and
+            (p.n = 1 and
+            line.ctr_operator_gkey is not null and
+            (unit.line_op is null or
+            line.ctr_operator_gkey != unit.line_op) or
+            p.n = 2 and
+            line.category is not null and
+            line.category != unit.category or
+            p.n = 3 and
+            line.ctr_gross_weight_kg is not null and
+            (unit.goods_and_ctr_wt_kg is null or
+            line.ctr_gross_weight_kg != unit.goods_and_ctr_wt_kg) or
+            p.n = 4 and
+            line.pol_gkey is not null and
+            (unit.pol_gkey is null or
+            line.pol_gkey != unit.pol_gkey) or
+            p.n = 5 and
+            line.pod_gkey is not null and
+            (unit.pod1_gkey is null or
+            line.pod_gkey != unit.pod1_gkey) or
+            p.n = 8 and
+            ((line.oog_back_cm is not null and
+            unit.oog_back_cm is null) or
+            (line.oog_back_cm is null and
+            unit.oog_back_cm is not null) or
+            line.oog_back_cm != unit.oog_back_cm) or
+            p.n = 9 and
+            ((line.oog_front_cm is not null and
+            unit.oog_front_cm is null) or
+            (line.oog_front_cm is null and
+            unit.oog_front_cm is not null) or
+            line.oog_front_cm != unit.oog_front_cm) or
+            p.n = 10 and
+            ((line.oog_top_cm is not null and
+            unit.oog_top_cm is null) or
+            (line.oog_top_cm is null and
+            unit.oog_top_cm is not null) or
+            line.oog_top_cm != unit.oog_top_cm) or
+            p.n = 11 and
+            ((line.oog_rignt_cm is not null and
+            unit.oog_right_cm is null) or
+            (line.oog_rignt_cm is null and
+            unit.oog_right_cm is not null) or
+            line.oog_rignt_cm != unit.oog_right_cm) or
+            p.n = 12 and
+            ((line.oog_left_cm is not null and
+            unit.oog_left_cm is null) or
+            (line.oog_left_cm is null and
+            unit.oog_left_cm is not null) or
+            line.oog_left_cm != unit.oog_left_cm) or
+            p.n = 14 and
+            line.freight_kind is not null and
+            line.freight_kind != unit.freight_kind or
+            p.n = 16 and
+            line.cv_gkey is not null and
+            line.cv_gkey != unit.cv_gkey or
+            p.n = 6 and
+            line.commodity_gkey is not null and
+            gds.gkey is not null and
+            (gds.commodity_gkey is null or
+            line.commodity_gkey != gds.commodity_gkey) or
+            p.n = 13 and
+            gds.gkey is not null and
+            ((line.temp_reqd_C is not null and
+            gds.temp_reqd_C is null) or
+            (line.temp_reqd_C is null and
+            gds.temp_reqd_C is not null) or
+            (line.temp_reqd_C != gds.temp_reqd_C)) or
+            p.n = 15 and
+            line.ctr_eq_typ_gkey is not null and
+            eq.eqtyp_gkey is not null and
+            line.ctr_eq_typ_gkey != eq.eqtyp_gkey or
+            p.n = 17 and
+            line.order_nbr is not null and
+            ue.gkey is not null and
+            (ue.depart_order_item_gkey is null or
+            line.order_nbr != depart_order.nbr))
+            union all
+            SELECT
+            'Hazards' AS field_id,
+            (unit.gkey + line.cv_gkey) * 100 + gds_hi.gkey + 18 AS gkey,
+            ufv.gkey AS ufv_gkey,
+            line.gkey AS load_list_gkey,
+            line.complex_gkey AS complex_gkey,
+            unit.id AS unit_id,
+            null AS unit_line_op,
+            null AS line_ctr_op,
+            null AS unit_gross_wt_kg,
+            null AS unit_oog_back_cm,
+            null AS unit_oog_front_cm,
+            null AS unit_oog_top_cm,
+            null AS unit_oog_right_cm,
+            null AS unit_oog_left_cm,
+            null AS unit_pol_gkey,
+            null AS unit_pod_gkey,
+            null AS unit_temp_reqd_c,
+            null AS unit_category,
+            null AS unit_commodity,
+            null AS unit_freight_kind,
+            null AS unit_eqtype_gkey,
+            null AS unit_ob_visit_gkey,
+            null AS line_oog_back_cm,
+            null AS line_oog_front_cm,
+            null AS line_oog_top_cm,
+            null AS line_oog_right_cm,
+            null AS line_oog_left_cm,
+            null AS line_pol_gkey,
+            null AS line_pod_gkey,
+            null AS line_gross_wt_kg,
+            null AS line_temp_reqd_c,
+            cast( null as char(30)) AS line_hazard_item,
+            cast( gds_hi.gkey as char(30)) as unit_hazard_item,
+            null AS line_category,
+            null AS line_commodity,
+            null AS line_freight_kind,
+            null AS line_eqtype_gkey,
+            null AS line_vv_gkey,
+            null AS unit_booking_nbr,
+            null AS line_booking_nbr
+            FROM
+            inv_unit unit
+            JOIN inv_unit_fcy_visit ufv ON unit.active_ufv = ufv.gkey
+            JOIN argo_carrier_visit cv ON ufv.fcy_gkey = cv.fcy_gkey
+            JOIN vsl_line_loadlist line
+            ON unit.id = line.ctr_id AND
+            cv.gkey = line.cv_gkey
+            LEFT OUTER JOIN inv_goods gds ON unit.goods = gds.gkey
+            LEFT OUTER JOIN inv_hazard_items gds_hi
+            ON gds.hazards_gkey = gds_hi.hzrd_gkey
+            LEFT OUTER JOIN inv_unit_equip ue ON unit.primary_ue = ue.gkey
+            LEFT OUTER JOIN ref_equipment eq ON ue.eq_gkey = eq.gkey
+            LEFT OUTER JOIN inv_eq_base_order_item depart_item
+            ON ue.depart_order_item_gkey = depart_item.gkey
+            LEFT OUTER JOIN inv_eq_base_order depart_order
+            ON depart_item.eqo_gkey = depart_order.gkey
+            WHERE
+            unit.visit_state = '1ACTIVE' AND
+            gds.hazards_gkey IS NOT NULL AND
+            not exists
+            (select null
+            FROM inv_hazard_items sub_hi
+            WHERE sub_hi.hzrd_gkey = line.hazards_gkey
+            and gds_hi.imdg_class = sub_hi.imdg_class
+            )
+            union all
+            SELECT
+            'Hazards' AS field_id,
+            (unit.gkey + line.cv_gkey) * 100 + line_hi.gkey + 7 AS gkey,
+            ufv.gkey AS ufv_gkey,
+            line.gkey AS load_list_gkey,
+            line.complex_gkey AS complex_gkey,
+            unit.id AS unit_id,
+            null AS unit_line_op,
+            null AS line_ctr_op,
+            null AS unit_gross_wt_kg,
+            null AS unit_oog_back_cm,
+            null AS unit_oog_front_cm,
+            null AS unit_oog_top_cm,
+            null AS unit_oog_right_cm,
+            null AS unit_oog_left_cm,
+            null AS unit_pol_gkey,
+            null AS unit_pod_gkey,
+            null AS unit_temp_reqd_c,
+            null AS unit_category,
+            null AS unit_commodity,
+            null AS unit_freight_kind,
+            null AS unit_eqtype_gkey,
+            null AS unit_ob_visit_gkey,
+            null AS line_oog_back_cm,
+            null AS line_oog_front_cm,
+            null AS line_oog_top_cm,
+            null AS line_oog_right_cm,
+            null AS line_oog_left_cm,
+            null AS line_pol_gkey,
+            null AS line_pod_gkey,
+            null AS line_gross_wt_kg,
+            null AS line_temp_reqd_c,
+            cast( line_hi.gkey as char(30)) AS line_hazard_item,
+            null AS unit_hazard_item,
+            null AS line_category,
+            null AS line_commodity,
+            null AS line_freight_kind,
+            null AS line_eqtype_gkey,
+            null AS line_vv_gkey,
+            null AS unit_booking_nbr,
+            null AS line_booking_nbr
+            FROM
+            inv_unit unit
+            JOIN inv_unit_fcy_visit ufv ON unit.active_ufv = ufv.gkey
+            JOIN argo_carrier_visit cv ON ufv.fcy_gkey = cv.fcy_gkey
+            JOIN vsl_line_loadlist line
+            ON unit.id = line.ctr_id AND
+            cv.gkey = line.cv_gkey
+            LEFT OUTER JOIN inv_goods gds ON unit.goods = gds.gkey
+            LEFT OUTER JOIN inv_hazard_items line_hi
+            ON line.hazards_gkey = line_hi.hzrd_gkey
+            LEFT OUTER JOIN inv_unit_equip ue ON unit.primary_ue = ue.gkey
+            LEFT OUTER JOIN ref_equipment eq ON ue.eq_gkey = eq.gkey
+            LEFT OUTER JOIN inv_eq_base_order_item depart_item
+            ON ue.depart_order_item_gkey = depart_item.gkey
+            LEFT OUTER JOIN inv_eq_base_order depart_order
+            ON depart_item.eqo_gkey = depart_order.gkey
+            WHERE
+            unit.visit_state = '1ACTIVE' AND
+            line.hazards_gkey IS NOT NULL AND
+            not exists
+            (select null
+            FROM
+            inv_unit sub_unit,
+            inv_goods sub_gds,
+            inv_hazard_items sub_hi
+            WHERE
+            sub_unit.gkey = unit.gkey AND
+            sub_unit.goods = sub_gds.gkey AND
+            sub_gds.hazards_gkey = sub_hi.hzrd_gkey and
+            sub_hi.imdg_class = line_hi.imdg_class
+            )
+
+        </subselect>
+
+        <synchronize table="inv_unit"/>
+
+        <id name="loaddiscGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="loaddiscLoadList" class="com.navis.vessel.business.operation.LineLoadList">
+            <meta attribute="field-description">LineLoadList relationship</meta>
+            <column name="load_list_gkey" not-null="true"/>
+        </many-to-one>
+
+        <many-to-one name="loaddiscUfv" class="com.navis.inventory.business.units.UnitFacilityVisit">
+            <meta attribute="field-description">UnitFacilityVisit relationship</meta>
+            <column name="ufv_gkey" not-null="true"/>
+        </many-to-one>
+
+        <property name="loaddiscUnitId" column="unit_id" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Unit number</meta>
+        </property>
+
+        <many-to-one name="loaddiscComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which Load list belongs</meta>
+        </many-to-one>
+
+        <property name="loaddiscFieldId" column="field_id" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Hard coded name of the field of discrepancy</meta>
+        </property>
+
+        <property name="loaddiscUnitCategory" column="unit_category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum"
+                  not-null="false">
+            <meta attribute="field-description">Category of Unit in Inventory</meta>
+        </property>
+
+        <property name="loaddiscLineCategory" column="line_category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum"
+                  not-null="false">
+            <meta attribute="field-description">Category from Load list</meta>
+        </property>
+
+        <property name="loaddiscUnitFreightKind" column="unit_freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum"
+                  not-null="false">
+            <meta attribute="field-description">Freight Kind of Unit in Inventory</meta>
+        </property>
+
+        <property name="loaddiscLineFreightKind" column="line_freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum"
+                  not-null="false">
+            <meta attribute="field-description">Freight Kind from Load list</meta>
+        </property>
+
+        <many-to-one name="loaddiscUnitLineOp" column="unit_line_op" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Container Operator of Unit in Inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="loaddiscLineCtrOp" column="line_ctr_op" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Container Operator from Load list</meta>
+        </many-to-one>
+
+        <property name="loaddiscUnitGrossWtKg" column="unit_gross_wt_kg" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Gross Weight of Unit in Inventory</meta>
+        </property>
+
+        <property name="loaddiscLineGrossWtKg" column="line_gross_wt_kg" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Gross Weight from Load list</meta>
+        </property>
+
+        <property name="loaddiscUnitOogBackCm" column="unit_oog_back_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Back of Unit in Inventory</meta>
+        </property>
+
+        <property name="loaddiscLineOogBackCm" column="line_oog_back_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Back from Load list</meta>
+        </property>
+
+        <property name="loaddiscUnitOogFrontCm" column="unit_oog_front_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Front of Unit in Inventory</meta>
+        </property>
+
+        <property name="loaddiscLineOogFrontCm" column="line_oog_front_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Front from Load list</meta>
+        </property>
+
+        <property name="loaddiscUnitOogTopCm" column="unit_oog_top_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Top of Unit in Inventory</meta>
+        </property>
+
+        <property name="loaddiscLineOogTopCm" column="line_oog_top_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Top from Load list</meta>
+        </property>
+
+        <property name="loaddiscUnitOogRightCm" column="unit_oog_right_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Right of Unit in Inventory</meta>
+        </property>
+
+        <property name="loaddiscLineOogRightCm" column="line_oog_right_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Right from Load list</meta>
+        </property>
+
+        <property name="loaddiscUnitOogLeftCm" column="unit_oog_left_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Left of Unit in Inventory</meta>
+        </property>
+
+        <property name="loaddiscLineOogLeftCm" column="line_oog_left_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Left from Load list</meta>
+        </property>
+
+        <many-to-one name="loaddiscUnitPol" column="unit_pol_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="false">
+            <meta attribute="field-description">Port Of Load of Unit in Inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="loaddiscLinePol" column="line_pol_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="false">
+            <meta attribute="field-description">Port Of Load from Load list</meta>
+        </many-to-one>
+
+        <many-to-one name="loaddiscUnitPod" column="unit_pod_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="false">
+            <meta attribute="field-description">Port Of Discharge of Unit in Inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="loaddiscLinePod" column="line_pod_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="false">
+            <meta attribute="field-description">Port Of Discharge from Load list</meta>
+        </many-to-one>
+
+        <many-to-one name="loaddiscUnitCommodity" column="unit_commodity" class="com.navis.argo.business.reference.Commodity" not-null="false">
+            <meta attribute="field-description">Commodity of Unit in Inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="loaddiscLineCommodity" column="line_commodity" class="com.navis.argo.business.reference.Commodity" not-null="false">
+            <meta attribute="field-description">Commodity from Load list</meta>
+        </many-to-one>
+
+        <many-to-one name="loaddiscLineHazardItem" column="line_hazard_item" class="com.navis.inventory.business.imdg.HazardItem" not-null="false">
+            <meta attribute="field-description">Hazards from Load list - basically that are not present/advised in existing unit in inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="loaddiscUnitHazardItem" column="unit_hazard_item" class="com.navis.inventory.business.imdg.HazardItem" not-null="false">
+            <meta attribute="field-description">Hazards from Unit - basically that are present/advised in existing unit in inventory but NOT in Loadlist</meta>
+        </many-to-one>
+
+        <property name="loaddiscUnitTempReqdC" column="unit_temp_reqd_c" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Temp Required for Unit in Inventory</meta>
+        </property>
+
+        <property name="loaddiscLineTempReqdC" column="line_temp_reqd_c" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Temp Required from Load list</meta>
+        </property>
+
+        <many-to-one name="loaddiscUnitEqType" column="unit_eqtype_gkey" class="com.navis.argo.business.reference.EquipType" not-null="false">
+            <meta attribute="field-description">Equip type of Unit in Inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="loaddiscLineEqType" column="line_eqtype_gkey" class="com.navis.argo.business.reference.EquipType" not-null="false">
+            <meta attribute="field-description">Equip type from Load list</meta>
+        </many-to-one>
+        <many-to-one name="loaddiscUnitObVisit" column="unit_ob_visit_gkey" class="com.navis.argo.business.model.CarrierVisit" not-null="false">
+            <meta attribute="field-description">Declared Ob visit of Unit in inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="loaddiscLineVesselVisit" column="line_vv_gkey" class="com.navis.argo.business.model.CarrierVisit" not-null="false">
+            <meta attribute="field-description">Vessel visit from the Load list</meta>
+        </many-to-one>
+
+        <!--2011-01-19 spabbala v2.2.L ARGO-29831 Add booking to LOLL discrepancies-->
+        <property name="loaddiscUnitBookingNbr" column="unit_booking_nbr" type="java.lang.String" length="30" not-null="false">
+            <meta attribute="field-description">Order number of Unit in Inventory</meta>
+        </property>
+        <property name="loaddiscLineBookingNbr" column="line_booking_nbr" type="java.lang.String" length="30" not-null="false">
+            <meta attribute="field-description">Order number from Load list</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.vessel.business.operation.DischargeListDiscrepancy" table="vsl_discharge_list_discrepancy" mutable="false">
+        <meta attribute="n4alias">dldisc</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.DischargeListDiscrepancyHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Faux View of Units and Line Discharge list discrepancies</meta>
+        <meta attribute="n4-entity-name">Discharge list Discrepancy</meta>
+        <meta attribute="n4-entity-name-plural">Discharge list Discrepancies</meta>
+
+        <meta attribute="carina-fk-index-disable">
+            (discharge_list_gkey);(ufv_gkey);(complex_gkey);(unit_line_op);(line_ctr_op);(unit_pol_gkey);(line_pol_gkey);(unit_pod_gkey);
+            (line_pod_gkey);(unit_commodity);(line_commodity);(line_hazard_item);(unit_hazard_item);(unit_agent1);(unit_agent2);(line_agent1);
+            (line_agent2);(unit_eqtype_gkey);(line_eqtype_gkey)
+        </meta>
+
+        <subselect>
+            select
+            'LineOperator' as field_id, ((unit.gkey * 100) + 1) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, unit.line_op as unit_line_op, line.ctr_operator_gkey as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            line.ctr_operator_gkey is not null and
+            ( unit.line_op is null or line.ctr_operator_gkey != unit.line_op )
+
+            union all
+
+            select
+            'Category' as field_id, ((unit.gkey * 100) + 2) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, unit.category as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, line.category as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            line.category is not null and
+            line.category != unit.category
+
+            union all
+
+            select
+            'GrossWeight' as field_id, ((unit.gkey * 100) + 3) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            unit.goods_and_ctr_wt_kg as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, line.ctr_gross_weight_kg as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            line.ctr_gross_weight_kg is not null and
+            ( unit.goods_and_ctr_wt_kg is null or line.ctr_gross_weight_kg != unit.goods_and_ctr_wt_kg )
+
+            union all
+
+            select
+            'RtgPol' as field_id, ((unit.gkey * 100) + 4) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, unit.pol_gkey as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, line.pol_gkey as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            line.pol_gkey is not null and
+            ( unit.pol_gkey is null or line.pol_gkey != unit.pol_gkey )
+
+            union all
+
+            select
+            'RtgPod' as field_id, ((unit.gkey * 100) + 5) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, unit.pod1_gkey as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, line.pod_gkey as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            line.pod_gkey is not null and
+            ( unit.pod1_gkey is null or line.pod_gkey != unit.pod1_gkey )
+
+            union all
+
+            select
+            'Commodity' as field_id, ((unit.gkey * 100) + 6) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, gds.commodity_gkey as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, line.commodity_gkey as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv, inv_goods gds
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            unit.goods = gds.gkey and
+            line.commodity_gkey is not null and
+            ( gds.commodity_gkey is null or line.commodity_gkey != gds.commodity_gkey )
+
+            union all
+
+            select
+            'Hazards' as field_id, ((unit.gkey * 100) + hi.gkey + 7) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, hi.gkey as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv, inv_hazard_items hi
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            line.hazards_gkey = hi.hzrd_gkey and
+            hi.imdg_class not in
+            (
+            select
+            sub_hi.imdg_class
+            from inv_unit sub_unit, inv_goods sub_gds, inv_hazard_items sub_hi
+
+            where
+
+            sub_unit.gkey = unit.gkey and
+            sub_unit.goods = sub_gds.gkey and
+            sub_gds.hazards_gkey = sub_hi.hzrd_gkey
+            )
+
+            union all
+
+            select
+            'Hazards' as field_id, ((unit.gkey * 100) + hi.gkey + 7) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, hi.gkey as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv, inv_goods gds, inv_hazard_items hi
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            unit.goods = gds.gkey and
+            gds.hazards_gkey = hi.hzrd_gkey and
+            hi.imdg_class not in
+            (
+            select
+            sub_hi.imdg_class
+            from inv_hazard_items sub_hi
+
+            where
+
+            sub_hi.hzrd_gkey = line.hazards_gkey
+            )
+
+            union all
+
+            select
+            'OogBack' as field_id, ((unit.gkey * 100) + 8) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, unit.oog_back_cm as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            line.oog_back_cm as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            ((line.oog_back_cm is not null and unit.oog_back_cm is null) or
+            (line.oog_back_cm is null and unit.oog_back_cm is not null) or
+            (line.oog_back_cm != unit.oog_back_cm))
+
+            union all
+
+            select
+            'OogFront' as field_id, ((unit.gkey * 100) + 9) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, unit.oog_front_cm as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, line.oog_front_cm as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            ((line.oog_front_cm is not null and unit.oog_front_cm is null) or
+            (line.oog_front_cm is null and unit.oog_front_cm is not null) or
+            (line.oog_front_cm != unit.oog_front_cm))
+
+            union all
+
+            select
+            'OogTop' as field_id, ((unit.gkey * 100) + 10) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, unit.oog_top_cm as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, line.oog_top_cm as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            ((line.oog_top_cm is not null and unit.oog_top_cm is null) or
+            (line.oog_top_cm is null and unit.oog_top_cm is not null) or
+            (line.oog_top_cm != unit.oog_top_cm))
+
+            union all
+
+            select
+            'OogRight' as field_id, ((unit.gkey * 100) + 11) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, unit.oog_right_cm as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, line.oog_rignt_cm as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            ((line.oog_rignt_cm is not null and unit.oog_right_cm is null) or
+            (line.oog_rignt_cm is null and unit.oog_right_cm is not null) or
+            (line.oog_rignt_cm != unit.oog_right_cm))
+
+            union all
+
+            select
+            'OogLeft' as field_id, ((unit.gkey * 100) + 12) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, unit.oog_left_cm as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, line.oog_left_cm as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            ((line.oog_left_cm is not null and unit.oog_left_cm is null) or
+            (line.oog_left_cm is null and unit.oog_left_cm is not null) or
+            (line.oog_left_cm != unit.oog_left_cm))
+
+            union all
+
+            select
+            'TempRequired' as field_id, ((unit.gkey * 100) + 13) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, gds.temp_reqd_C as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, line.temp_reqd_C as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv, inv_goods gds
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            unit.goods = gds.gkey and
+            ((line.temp_reqd_C is not null and gds.temp_reqd_C is null) or
+            (line.temp_reqd_C is null and gds.temp_reqd_C is not null) or
+            (line.temp_reqd_C != gds.temp_reqd_C))
+
+            union all
+
+            select
+            'FreightKind' as field_id, ((unit.gkey * 100) + 14) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, unit.freight_kind as unit_freight_kind, null as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, line.freight_kind as line_freight_kind, null as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            line.freight_kind is not null and
+            line.freight_kind != unit.freight_kind
+
+            union all
+
+            select
+            'Agent1' as field_id, ((unit.gkey * 100) + 15) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, unit.agent1 as unit_agent1, null as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, line.agent1 as line_agent1, null as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            line.agent1 is not null and
+            ( unit.agent1 is null or line.agent1 != unit.agent1 )
+
+            union all
+
+            select
+            'Agent2' as field_id, ((unit.gkey * 100) + 16) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, unit.agent2 as unit_agent2, null as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, line.agent2 as line_agent2, null as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            line.agent2 is not null and
+            ( unit.agent2 is null or line.agent2 != unit.agent2 )
+
+            union all
+
+            select
+            'CtrType' as field_id, ((unit.gkey * 100) + 17) as gkey, ufv.gkey as ufv_gkey, line.gkey as discharge_list_gkey, line.complex_gkey as complex_gkey, unit.id as unit_id, null as unit_line_op, null as line_ctr_op,
+            null as unit_gross_wt_kg, null as unit_oog_back_cm, null as unit_oog_front_cm, null as unit_oog_top_cm, null as unit_oog_right_cm, null as unit_oog_left_cm, null as unit_pol_gkey, null as unit_pod_gkey, null as unit_temp_reqd_c, null as unit_category, null as unit_commodity, null as unit_freight_kind, null as unit_agent1, null as unit_agent2, eq.eqtyp_gkey as unit_eqtype_gkey,
+            null as line_oog_back_cm, null as line_oog_front_cm, null as line_oog_top_cm, null as line_oog_right_cm, null as line_oog_left_cm, null as line_pol_gkey, null as line_pod_gkey, null as line_gross_wt_kg, null as line_temp_reqd_c, null as line_hazard_item, null as unit_hazard_item, null as line_category, null as line_commodity, null as line_freight_kind, null as line_agent1, null as line_agent2, line.ctr_eq_typ_gkey as line_eqtype_gkey
+
+            from inv_unit unit, vsl_line_discharge_list line, inv_unit_fcy_visit ufv, argo_carrier_visit cv, inv_unit_equip ue, ref_equipment eq
+
+            where unit.id = line.ctr_id and
+            unit.visit_state = '1ACTIVE' and
+            unit.declrd_ib_cv = line.ib_cv_gkey and
+            unit.active_ufv = ufv.gkey and
+            cv.gkey = line.ib_cv_gkey and
+            ufv.fcy_gkey = cv.fcy_gkey and
+            unit.primary_ue = ue.gkey and
+            ue.eq_gkey = eq.gkey and
+            line.ctr_eq_typ_gkey is not null and
+            line.ctr_eq_typ_gkey != eq.eqtyp_gkey
+
+        </subselect>
+
+        <synchronize table="inv_unit"/>
+
+        <id name="dldiscGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="dldiscDischargeList" class="com.navis.vessel.business.operation.LineDischargeList">
+            <meta attribute="field-description">LineDischargeList relationship</meta>
+            <column name="discharge_list_gkey" not-null="true"/>
+        </many-to-one>
+
+        <many-to-one name="dldiscUfv" class="com.navis.inventory.business.units.UnitFacilityVisit">
+            <meta attribute="field-description">UnitFacilityVisit relationship</meta>
+            <column name="ufv_gkey" not-null="true"/>
+        </many-to-one>
+
+        <property name="dldiscUnitId" column="unit_id" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Unit number</meta>
+        </property>
+
+        <many-to-one name="dldiscComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which Discharge list belongs</meta>
+        </many-to-one>
+
+        <property name="dldiscFieldId" column="field_id" type="java.lang.String" not-null="false">
+            <meta attribute="field-description">Hard coded name of the field of discrepancy</meta>
+        </property>
+
+        <property name="dldiscUnitCategory" column="unit_category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum" not-null="false">
+            <meta attribute="field-description">Category of Unit in Inventory</meta>
+        </property>
+
+        <property name="dldiscLineCategory" column="line_category" type="com.navis.argo.persistence.atoms.UserTypeUnitCategoryEnum" not-null="false">
+            <meta attribute="field-description">Category from Discharge list</meta>
+        </property>
+
+        <property name="dldiscUnitFreightKind" column="unit_freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum"
+                  not-null="false">
+            <meta attribute="field-description">Freight Kind of Unit in Inventory</meta>
+        </property>
+
+        <property name="dldiscLineFreightKind" column="line_freight_kind" type="com.navis.argo.persistence.atoms.UserTypeFreightKindEnum"
+                  not-null="false">
+            <meta attribute="field-description">Freight Kind from Discharge list</meta>
+        </property>
+
+        <many-to-one name="dldiscUnitLineOp" column="unit_line_op" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Container Operator of Unit in Inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscLineCtrOp" column="line_ctr_op" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Container Operator from Discharge list</meta>
+        </many-to-one>
+
+        <property name="dldiscUnitGrossWtKg" column="unit_gross_wt_kg" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Gross Weight of Unit in Inventory</meta>
+        </property>
+
+        <property name="dldiscLineGrossWtKg" column="line_gross_wt_kg" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Gross Weight from Discharge list</meta>
+        </property>
+
+        <property name="dldiscUnitOogBackCm" column="unit_oog_back_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Back of Unit in Inventory</meta>
+        </property>
+
+        <property name="dldiscLineOogBackCm" column="line_oog_back_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Back from Discharge list</meta>
+        </property>
+
+        <property name="dldiscUnitOogFrontCm" column="unit_oog_front_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Front of Unit in Inventory</meta>
+        </property>
+
+        <property name="dldiscLineOogFrontCm" column="line_oog_front_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Front from Discharge list</meta>
+        </property>
+
+        <property name="dldiscUnitOogTopCm" column="unit_oog_top_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Top of Unit in Inventory</meta>
+        </property>
+
+        <property name="dldiscLineOogTopCm" column="line_oog_top_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Top from Discharge list</meta>
+        </property>
+
+        <property name="dldiscUnitOogRightCm" column="unit_oog_right_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Right of Unit in Inventory</meta>
+        </property>
+
+        <property name="dldiscLineOogRightCm" column="line_oog_right_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Right from Discharge list</meta>
+        </property>
+
+        <property name="dldiscUnitOogLeftCm" column="unit_oog_left_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Left of Unit in Inventory</meta>
+        </property>
+
+        <property name="dldiscLineOogLeftCm" column="line_oog_left_cm" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">OOG-Left from Discharge list</meta>
+        </property>
+
+        <many-to-one name="dldiscUnitPol" column="unit_pol_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="false">
+            <meta attribute="field-description">Port Of Load of Unit in Inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscLinePol" column="line_pol_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="false">
+            <meta attribute="field-description">Port Of Load from Discharge list</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscUnitPod" column="unit_pod_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="false">
+            <meta attribute="field-description">Port Of Discharge of Unit in Inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscLinePod" column="line_pod_gkey" class="com.navis.argo.business.reference.RoutingPoint" not-null="false">
+            <meta attribute="field-description">Port Of Discharge from Discharge list</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscUnitCommodity" column="unit_commodity" class="com.navis.argo.business.reference.Commodity" not-null="false">
+            <meta attribute="field-description">Commodity of Unit in Inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscLineCommodity" column="line_commodity" class="com.navis.argo.business.reference.Commodity" not-null="false">
+            <meta attribute="field-description">Commodity from Discharge list</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscLineHazardItem" column="line_hazard_item" class="com.navis.inventory.business.imdg.HazardItem" not-null="false">
+            <meta attribute="field-description">Hazards from Discharge list - basically that are not present/advised in existing unit in inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscUnitHazardItem" column="unit_hazard_item" class="com.navis.inventory.business.imdg.HazardItem" not-null="false">
+            <meta attribute="field-description">Hazards from Unit - basically that are present/advised in existing unit in inventory but NOT in Discharge list</meta>
+        </many-to-one>
+
+        <property name="dldiscUnitTempReqdC" column="unit_temp_reqd_c" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Temp Required for Unit in Inventory</meta>
+        </property>
+
+        <property name="dldiscLineTempReqdC" column="line_temp_reqd_c" type="java.lang.Double" not-null="false">
+            <meta attribute="field-description">Temp Required from Discharge list</meta>
+        </property>
+
+        <many-to-one name="dldiscUnitAgent1" column="unit_agent1" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Agent1 of Unit in Inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscLineAgent1" column="line_agent1" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Agent1 from Discharge list</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscUnitAgent2" column="unit_agent2" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Agent2 of Unit in Inventory</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscLineAgent2" column="line_agent2" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="false">
+            <meta attribute="field-description">Agent2 from Discharge list</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscUnitEqType" column="unit_eqtype_gkey" class="com.navis.argo.business.reference.EquipType" not-null="false">
+            <meta attribute="field-description">Commodity from Load list</meta>
+        </many-to-one>
+
+        <many-to-one name="dldiscLineEqType" column="line_eqtype_gkey" class="com.navis.argo.business.reference.EquipType" not-null="false">
+            <meta attribute="field-description">Commodity from Load list</meta>
+        </many-to-one>
+    </class>
+
+    <!-- 2009-10-30 pji Created to support persistent bin model. -->
+    <subclass name="com.navis.vessel.business.operation.ShipBinModel" extends="com.navis.spatial.business.model.AbstractBin"
+              discriminator-value="SHM" dynamic-update="true">
+        <meta attribute="n4alias">shm</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.ShipBinModelHbr</meta>
+        <meta attribute="class-description">Ship Bin Model</meta>
+        <meta attribute="n4-entity-name">Ship Bin Model Entity</meta>
+        <meta attribute="n4-entity-name-plural">Ship Bin Model Entities</meta>
+
+        <set name="sbyShipBaySet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Ship Bays belonging to this Ship Model</meta>
+            <key column="ship_model_gkey"/>
+            <one-to-many class="com.navis.vessel.business.operation.ShipBay"/>
+        </set>
+
+        <property name="lcgRefEnum" column="lcg_ref_enum" type="com.navis.vessel.persistence.atoms.UserTypeShipLcgsRefEnum">
+            <meta attribute="field-description">LCG Ref.</meta>
+        </property>
+
+        <property name="lcgModeEnum" column="lcg_mode_enum" type="com.navis.vessel.persistence.atoms.UserTypeShipLcgsModeEnum">
+            <meta attribute="field-description">LCG Mode</meta>
+        </property>
+
+        <property name="tcgModeEnum" column="tcg_mode_enum" type="com.navis.vessel.persistence.atoms.UserTypeShipTcgsModeEnum">
+            <meta attribute="field-description">TCG Mode</meta>
+        </property>
+
+    </subclass>
+
+    <!-- 2009-10-30 pji Created to support persistent bin model. -->
+    <subclass name="com.navis.vessel.business.operation.ShipBlock" extends="com.navis.spatial.business.model.block.AbstractBlock"
+              discriminator-value="SBK" dynamic-update="true">
+        <meta attribute="n4alias">sbk</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.ShipBlockHbr</meta>
+        <meta attribute="class-description">Ship Block</meta>
+        <meta attribute="n4-entity-name">Ship Block Entity</meta>
+        <meta attribute="n4-entity-name-plural">Ship Block Entities</meta>
+
+        <property name="sbkLevelLogicalIndex" column="level_logical_index" type="java.lang.Long">
+            <meta attribute="field-description">Logical index of ship level for Ship Block.</meta>
+        </property>
+
+    </subclass>
+
+    <!-- 2009-10-30 pji Created to support persistent bin model. -->
+    <subclass name="com.navis.vessel.business.operation.ShipSection" extends="com.navis.argo.business.model.AbstractCntrSection"
+              discriminator-value="SSN" dynamic-update="true">
+        <meta attribute="n4alias">ssn</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.ShipSectionHbr</meta>
+        <meta attribute="class-description">Ship Section</meta>
+        <meta attribute="n4-entity-name">Ship Section Entity</meta>
+        <meta attribute="n4-entity-name-plural">Ship Section Entities</meta>
+
+    </subclass>
+
+    <!-- 2009-10-30 pji Created to support persistent bin model. -->
+    <subclass name="com.navis.vessel.business.operation.CellSection" extends="com.navis.vessel.business.operation.ShipSection"
+              discriminator-value="CSN" dynamic-update="true">
+        <meta attribute="n4alias">csn</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.CellSectionHbr</meta>
+        <meta attribute="class-description">Cell Section</meta>
+        <meta attribute="n4-entity-name">Cell Section Entity</meta>
+        <meta attribute="n4-entity-name-plural">Cell Section Entities</meta>
+
+        <property name="csnHasCenterlineStack" column="has_centerline_stack" type="java.lang.Boolean">
+            <meta attribute="field-description">True if section has a centerline stack.</meta>
+        </property>
+
+        <!-- Denormalization to make join easier with ShipBays. -->
+        <many-to-one name="csnShipBay" column="ship_bay_gkey" class="com.navis.vessel.business.operation.ShipBay">
+            <meta attribute="field-description">ShipBay that applies to this CellSection.</meta>
+        </many-to-one>
+
+        <many-to-one name="csnConvIdTier" column="conv_gkey_tier_csn" class="com.navis.spatial.business.model.BinNameTable">
+            <meta attribute="field-description">Specifies the naming table that defines the tier labels for cell sections.
+                Supercedes ablConvIdTier.
+            </meta>
+        </many-to-one>
+
+    </subclass>
+
+    <!-- 2009-10-30 pji Created to support persistent bin model. -->
+    <subclass name="com.navis.vessel.business.operation.ShipStack" extends="com.navis.spatial.business.model.block.AbstractStack"
+              discriminator-value="SST" dynamic-update="true">
+        <meta attribute="n4alias">sst</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.ShipStackHbr</meta>
+        <meta attribute="class-description">Ship Stack</meta>
+        <meta attribute="n4-entity-name">Ship Stack Entity</meta>
+        <meta attribute="n4-entity-name-plural">Ship Stack Entities</meta>
+
+    </subclass>
+
+    <!-- 2009-10-30 pji Created to support persistent bin model. -->
+    <subclass name="com.navis.vessel.business.operation.CellStack" extends="com.navis.vessel.business.operation.ShipStack"
+              discriminator-value="CST" dynamic-update="true">
+        <meta attribute="n4alias">cst</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.CellStackHbr</meta>
+        <meta attribute="class-description">Cell Stack</meta>
+        <meta attribute="n4-entity-name">Cell Stack Entity</meta>
+        <meta attribute="n4-entity-name-plural">Cell Stack Entities</meta>
+
+        <property name="cstLidIndexFirst" column="lid_index_first" type="java.lang.Long">
+            <meta attribute="field-description">Index of first lid over or under stack.</meta>
+        </property>
+
+        <property name="cstLidIndexLast" column="lid_index_last" type="java.lang.Long">
+            <meta attribute="field-description">Index of last lid over or under stack.</meta>
+        </property>
+
+        <property name="cstGroove" column="groove" type="java.lang.Long">
+            <meta attribute="field-description">Groove of stack.</meta>
+        </property>
+
+    </subclass>
+
+    <!-- 2009-10-30 pji Created to support persistent bin model. -->
+    <class name="com.navis.vessel.business.operation.ShipBay" table="vsl_bays" dynamic-update="true">
+        <meta attribute="n4alias">sby</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.ShipBayHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Ship Bay Table.</meta>
+        <meta attribute="n4-entity-name">Ship Bay Entity</meta>
+        <meta attribute="n4-entity-name-plural">Ship Bay Entities</meta>
+
+        <id name="sbyGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="sbyShipModel" column="ship_model_gkey" class="com.navis.vessel.business.operation.ShipBinModel">
+            <meta attribute="field-description">The Ship Model to which this Ship Bay belongs.</meta>
+        </many-to-one>
+
+        <property name="sbyLogicalShipRow" column="logical_ship_row" type="java.lang.Long">
+            <meta attribute="field-description">Logical row index in ship bin model.</meta>
+        </property>
+
+        <property name="sbyBayName" column="user_name" type="string" length="3">
+            <meta attribute="field-description">The user name for the bay.</meta>
+        </property>
+
+        <property name="sbyDeckVcgCm" column="deck_vcg_cm" type="java.lang.Long">
+            <meta attribute="field-description">Deck VCG in cm.</meta>
+        </property>
+
+        <set name="sbyShipLidSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">ShipLids belonging to this Ship Bay</meta>
+            <key column="ship_bay_gkey"/>
+            <one-to-many class="com.navis.vessel.business.operation.ShipLid"/>
+        </set>
+
+        <!--  Denormalization to make join easier with CellSections. -->
+        <set name="sbyCellSectionSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">CellSections belonging to this Ship Bay</meta>
+            <key column="ship_bay_gkey"/>
+            <one-to-many class="com.navis.vessel.business.operation.CellSection"/>
+        </set>
+
+    </class>
+
+    <!-- 2009-10-30 pji Created to support persistent bin model. -->
+    <class name="com.navis.vessel.business.operation.ShipLid" table="vsl_lids" dynamic-update="true">
+        <meta attribute="n4alias">sld</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.ShipLidHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Ship Lid Table.</meta>
+        <meta attribute="n4-entity-name">Ship Lid Entity</meta>
+        <meta attribute="n4-entity-name-plural">Ship Lid Entities</meta>
+
+        <id name="sldGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="sldShipBay" column="ship_bay_gkey" class="com.navis.vessel.business.operation.ShipBay">
+            <meta attribute="field-description">The Ship Bay to which this Ship Lid belongs.</meta>
+        </many-to-one>
+
+        <property name="sldLogicalLidIndex" column="logical_lid_index" type="java.lang.Long">
+            <meta attribute="field-description">Logical lid index within ship bay.</meta>
+        </property>
+
+        <property name="sldGrooveFirst" column="groove_first" type="java.lang.Long">
+            <meta attribute="field-description">First groove overlapped by lid.</meta>
+        </property>
+
+        <property name="sldGrooveLast" column="groove_last" type="java.lang.Long">
+            <meta attribute="field-description">Last groove overlapped by lid.</meta>
+        </property>
+
+        <many-to-one name="sldJoinedLidFwd" column="fwd_joined_lid_fwd" class="com.navis.vessel.business.operation.ShipLid">
+            <meta attribute="field-description">Forward joined lid.</meta>
+        </many-to-one>
+
+        <many-to-one name="sldJoinedLidAft" column="aft_joined_lid_aft" class="com.navis.vessel.business.operation.ShipLid">
+            <meta attribute="field-description">Aft joined lid.</meta>
+        </many-to-one>
+
+    </class>
+
+   <class name="com.navis.vessel.business.operation.ShipBinCntrLengthDetails" table="ship_bin_cntr_length" dynamic-update="true">
+        <meta attribute="n4alias">cld</meta>
+        <meta attribute="generated-class">com.navis.vessel.business.operation.ShipBinCntrLengthDetailsHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Ship Bin Container Length Details Table.</meta>
+        <meta attribute="n4-entity-name">Ship Bin Container Length Details Entity</meta>
+        <meta attribute="n4-entity-name-plural">Ship Bin Container Length Details Entities</meta>
+
+        <id name="cldGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+             <generator class="native"/>
+        </id>
+
+        <many-to-one name="cldOwnerBin" column="abm_gkey" class="com.navis.spatial.business.model.AbstractBin">
+            <meta attribute="field-description">The bin that is associated with this object.
+                    It is expected that it will be either CellStack or CellSection.</meta>
+        </many-to-one>
+
+        <property name="cldLcg20Cm" column="lcg_20" type="java.lang.Double">
+            <meta attribute="field-description">LCG 20 standard (20' containers).</meta>
+        </property>
+
+        <property name="cldLcg40Cm" column="lcg_40" type="java.lang.Double">
+            <meta attribute="field-description">LCG 40 alternate (40' containers).</meta>
+        </property>
+
+        <!--For modern vessels the alternate 2 nominal length is always 45'. If we decide to support vessels that use different nominal
+            container lengths for alternate 2 and alternate 3 data, we should add modeling to the ship bin model to capture which nominal
+            lengths correspond to the two alternates. This information is provided in the binary ship file, but we currently ignore it.-->
+        <property name="cldLcgAlternate2Cm" column="lcg_alternate2" type="java.lang.Double">
+            <meta attribute="field-description">LCG alternate 2. For modern vessels the alternate 2 nominal length is always 45'.</meta>
+        </property>
+
+        <property name="cldLcgAlternate3Cm" column="lcg_alternate3" type="java.lang.Double">
+            <meta attribute="field-description">LCG alternate 3. For modern vessels there is generally no alternate 3 nominal container length.</meta>
+        </property>
+
+        <property name="cldBottomCntrWeightLimit20Kg" column="btm_cntr_wght_20" type="java.lang.Double">
+            <meta attribute="field-description">Bottom container weight limit standard (20' containers).</meta>
+        </property>
+
+        <property name="cldBottomCntrWeightLimit40Kg" column="btm_cntr_wght_40" type="java.lang.Double">
+            <meta attribute="field-description">Bottom container weight limit alternate (40' containers).</meta>
+        </property>
+
+        <property name="cldBottomCntrWeightLimitAlternate2Kg" column="btm_cntr_wght_alternate2" type="java.lang.Double">
+            <meta attribute="field-description">Bottom container weight limit alternate 2.
+                    For modern vessels the alternate 2 nominal length is always 45'.</meta>
+        </property>
+
+        <property name="cldBottomCntrWeightLimitAlternate3Kg" column="btm_cntr_wght_alternate3" type="java.lang.Double">
+            <meta attribute="field-description">Bottom container weight limit alternate 3.
+                    For modern vessels there is generally no alternate 3 nominal container length.</meta>
+        </property>
+
+        <property name="cldStackWeightLimit20Kg" column="stack_weight_20" type="java.lang.Double">
+            <meta attribute="field-description">Stack weight limit 20.</meta>
+        </property>
+
+        <property name="cldStackWeightLimit40Kg" column="stack_weight_40" type="java.lang.Double">
+            <meta attribute="field-description">Stack weight limit 40.</meta>
+        </property>
+
+        <property name="cldStackWeightLimitAlternate2Kg" column="stack_weight_alternate2" type="java.lang.Double">
+            <meta attribute="field-description">Stack weight limit alternate 2.</meta>
+        </property>
+
+        <property name="cldStackWeightLimitAlternate3Kg" column="stack_weight_alternate3" type="java.lang.Double">
+            <meta attribute="field-description">Stack weight limit alternate 3.</meta>
+        </property>
+
+       <property name="cldLifeCycleState" column="life_cycle_state"
+                 type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+           <meta attribute="scope-set">public</meta>
+       </property>
+
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.1.final using JasperReports Library version 6.1.1  -->
+<!-- 2016-06-23T18:48:11 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Dutch Harbor - Community Report" pageWidth="1100" pageHeight="792" orientation="Landscape" whenNoDataType="NoDataSection" columnWidth="1076" leftMargin="12" rightMargin="12" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" isIgnorePagination="true" uuid="81cdfbf8-5544-4daf-9ba0-3621ad94a4c0">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DEV"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+	<queryString>
+		<![CDATA[SELECT unit.id      as unitnbr,
+  equipmenttype.id  as equipmenttype,
+  equipmentgrade.id as equipmentgrade,
+  ufv.flex_string10 as minorlocation,
+  eqowner.id        as owner,
+  (select r.id
+  from ref_bizunit_scoped r
+  where r.role        = 'LINEOP'
+  and r.reference_set = 363
+  and r.gkey          = unit.line_op
+  )                 as lineoperator,
+  (extract (day from ((select sysdate from dual) - ufv.time_move)))  as dwellorageing,
+  unit.freight_kind as status,
+  unit.remark                           as unitnotes,
+  equipment.iso_group                   as equipmentisogroup,
+  unit.flex_string12                    as blips
+FROM inv_unit unit
+left outer join inv_unit_equip unitequipment
+on unit.primary_ue = unitequipment.gkey
+left outer join inv_eq_state equipmentstate
+on unitequipment.eqs_gkey = equipmentstate.gkey
+left outer join ref_bizunit_scoped eqowner
+on equipmentstate.eq_owner_gkey = eqowner.gkey
+left outer join argo_facility facility
+on equipmentstate.last_fcy_gkey = facility.gkey
+left outer join ref_equipment equipment
+on unitequipment.eq_gkey = equipment.gkey
+left outer join inv_eq_base_order_item orderitem
+on unitequipment.depart_order_item_gkey = orderitem.gkey
+left outer join inv_eq_base_order baseorder
+on orderitem.eqo_gkey = baseorder.gkey
+left outer join inv_goods goods
+on unit.goods = goods.gkey
+left outer join ref_bizunit_scoped shipper
+on goods.shipper_bzu = shipper.gkey
+left outer join ref_bizunit_scoped consignee
+on goods.consignee_bzu = consignee.gkey
+left outer join inv_unit_fcy_visit ufv
+on unit.active_ufv = ufv.gkey
+left outer join argo_carrier_visit carriervisit
+on ufv.actual_ob_cv = carriervisit.gkey
+left outer join ref_equip_type equipmenttype
+on equipment.eqtyp_gkey = equipmenttype.gkey
+left outer join ref_equip_grades equipmentgrade
+on equipmentgrade.gkey               = equipmentstate.grade_gkey
+left outer join ref_commodity commodity
+on goods.commodity_gkey = commodity.gkey
+WHERE FACILITY.id                      = 'KDK' and
+((UFV.VISIT_STATE = '1ACTIVE'
+and UNIT.category = 'EXPRT'
+and UFV.TRANSIT_STATE = 'S20_INBOUND'
+and UNIT.DRAY_STATUS is not null
+and EQOWNER.id 						!='SHOW') or
+(unit.time_state_change        >= equipmentstate.time_move
+and (equipmentstate.last_pos_loctype = 'TRUCK'
+and ufv.visit_state                  = '3DEPARTED'
+and CARRIERVISIT.CARRIER_MODE        = 'TRUCK'
+and EQOWNER.id 						!='SHOW')))
+order by  minorlocation, lineoperator]]>
+	</queryString>
+	<field name="UNITNBR" class="java.lang.String"/>
+	<field name="EQUIPMENTTYPE" class="java.lang.String"/>
+	<field name="EQUIPMENTGRADE" class="java.lang.String"/>
+	<field name="MINORLOCATION" class="java.lang.String"/>
+	<field name="OWNER" class="java.lang.String"/>
+	<field name="LINEOPERATOR" class="java.lang.String"/>
+	<field name="DWELLORAGEING" class="java.math.BigDecimal"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="UNITNOTES" class="java.lang.String"/>
+	<field name="EQUIPMENTISOGROUP" class="java.lang.String"/>
+	<field name="BLIPS" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="15">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<textField pattern="dd-MMM-yyyy h.mm a Z">
+				<reportElement x="0" y="0" width="1076" height="15" uuid="65de347a-db2d-4197-8c04-7159a37ee72b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["KODIAK SPOT REPORT             "+"        Report Date     "+new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="15" splitType="Immediate">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="113" height="15" backcolor="#CCCCCC" uuid="96d9d261-ae19-4159-8522-aacdf1b30e2a">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[Equipment Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="113" y="0" width="107" height="15" backcolor="#CCCCCC" uuid="d712a599-d4ab-4086-8511-9389cddff424">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[Equipment Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="220" y="0" width="107" height="15" backcolor="#CCCCCC" uuid="9f92b394-248a-452d-b364-56d70ee63c51">
+					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[Equipment Grade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="327" y="0" width="107" height="15" backcolor="#CCCCCC" uuid="f9d1670d-0ab3-40e4-a3c0-b99a1d9545d3">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[Owner]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="434" y="0" width="107" height="15" backcolor="#CCCCCC" uuid="3237e5cf-70a3-4f8e-9f49-91ac11da406b">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[Operator]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="541" y="0" width="107" height="15" backcolor="#CCCCCC" uuid="54fd1e46-81cd-41c3-8cc8-21cfba9b9b17">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[Status (Full/Empty)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="648" y="0" width="107" height="15" backcolor="#CCCCCC" uuid="7e3de4fd-4b2e-491d-b7d9-9d48ba3c6013">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[Minor Location]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="755" y="0" width="107" height="15" backcolor="#CCCCCC" uuid="f8c11ae0-c9d5-42a1-990d-0d8daf3fba55">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[Blips]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="862" y="0" width="107" height="15" backcolor="#CCCCCC" uuid="a33279cc-b849-48e4-9f54-d1df25d977cf">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[Dwell]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="969" y="0" width="107" height="15" backcolor="#CCCCCC" uuid="1ee122d0-0eed-4124-a1b9-a1dde989a2f5">
+					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<text><![CDATA[Comments]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.HorizontalRowLayout"/>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="113" height="15" uuid="cb64c1bc-5b92-44fa-becd-c8cdf9cfcb68">
+					<property name="com.jaspersoft.studio.unit.y" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{UNITNBR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="113" y="0" width="107" height="15" uuid="0e6e4a04-54be-4a5e-84b5-85f294a6eaec"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{EQUIPMENTTYPE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="220" y="0" width="107" height="15" uuid="bae6043b-61cb-4c4d-bfaa-f42d32448802"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{EQUIPMENTGRADE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="" stretchType="RelativeToBandHeight" x="327" y="0" width="107" height="15" uuid="6158acfd-8994-486b-acc4-10ea8e49cc8b"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{OWNER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="434" y="0" width="107" height="15" uuid="a9ec6fb2-b1d4-45a8-a2b7-9e462fb5342f"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{LINEOPERATOR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="541" y="0" width="107" height="15" uuid="72dccb9c-e7fa-4eca-8cd8-5320b19d13b8"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{STATUS}!=null && $F{STATUS}.equalsIgnoreCase("FCL")?"FULL":($F{STATUS}!=null && $F{STATUS}.equalsIgnoreCase("MTY")?"EMPTY":"")]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="648" y="0" width="107" height="15" uuid="0572191e-1aa8-4ce3-aff7-c00cecddd72d"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{MINORLOCATION}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="755" y="0" width="107" height="15" uuid="7a3a9911-7c20-4324-84d4-5e8fdfc10f2b"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{BLIPS}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="862" y="0" width="107" height="15" uuid="018d5069-ddf7-4b3b-9d5f-3169c7528ab8"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{DWELLORAGEING}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToBandHeight" x="969" y="0" width="107" height="15" uuid="77805ccb-8a39-4764-a2a6-255e1bac1399"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{UNITNOTES}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="19">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+		</band>
+	</pageFooter>
+	<noData>
+		<band height="50">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<staticText>
+				<reportElement x="0" y="0" width="1076" height="50" uuid="3a147fab-acb2-4022-8710-db71b30c2fa3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[No data found matching your search criteria]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>

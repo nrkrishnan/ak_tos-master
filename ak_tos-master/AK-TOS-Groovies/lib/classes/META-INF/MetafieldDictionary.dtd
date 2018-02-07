@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2011 Navis LLC. All Rights Reserved.
+  ~
+  -->
+<!--
+History:<br />
+6/06 HJK Remove deprecated unused tags
+2/05 AJP added measurement units and letter-case<br />
+4/04 AJP documented db-types<br />
+4/03 AJP created (?)<br />
+
+@root metafields
+  -->
+<!--  data-type can be used for business layer validation. Time-related fields granularity is to the minute.
+      The following are valid data-types which should be defined when migrating to .xsd.
+ 	  int | float | alpha | alpha-space | alpha-numeric | alpha-numeric-space | text | date | date-time | time | CDATA
+-->
+<!ELEMENT data-type (#PCDATA)>
+<!-- See class ValidationDataTypeStrings. -->
+<!ELEMENT entry-help-text (#PCDATA)>
+<!ELEMENT extra-entry (#PCDATA)>
+<!ELEMENT soap-type (#PCDATA)>
+<!ELEMENT gui (height | widget | width)*>
+<!ELEMENT height (#PCDATA)>
+<!ELEMENT help (entry-help-text)>
+<!ELEMENT soap (soap-type)>
+<!ELEMENT integer EMPTY>
+<!ELEMENT labels (label-long?, label-short?)>
+<!ELEMENT label-short (#PCDATA)>
+<!ELEMENT label-long (#PCDATA)>
+<!ELEMENT lov-collection (#PCDATA)>
+<!-- maximum length allowed; overrides value of db-size -->
+<!ELEMENT max-length (#PCDATA)>
+<!ELEMENT max-value (#PCDATA)>
+
+
+<!-- Group definition which gets used in building submenus in listviews. each group id must be globally unique.-->
+<!ELEMENT groups (group)* >
+<!-- group category controls which groups belong to a view. -->
+<!ATTLIST groups category CDATA #REQUIRED>
+<!-- label-short is used only for property generation and not direct feeding into the java objects-->
+<!ELEMENT label-menu (#PCDATA)>
+<!ELEMENT group (label-menu)*>
+<!ATTLIST group id CDATA #REQUIRED>
+
+<!-- attributes related to display of metafields in tables.
+  An image metafield needs to specify that it is so, in order to render it properly.
+ -->
+<!ELEMENT table (attributes? | image?)>
+<!ATTLIST table hAlignment (left|center|right) #IMPLIED>
+<!ATTLIST table maxFractionalDigits CDATA #IMPLIED>
+<!--  This attribute applies to numeric fields with decimal widgets. It does not apply to measured fields.
+ It is used for display purposes only.
+ When set to true, it scales and rounds the number accordingly.  The FrameworkConfig setting used is DECIMAL_FIELD_ROUNDING_MODE.
+ Any other numeric scaling/rounding uses the application default (see aApplicationModuleSettings: HALF_UP).
+ -->
+<!ATTLIST table allowCustomDecimalRounding (true | false) "false">
+
+<!ELEMENT metafield  (gui | table | help | labels | measure | validation | soap | customField | visibility | synthetic | security | fieldgroups)* >
+  <!-- Note for the customField default settings to work right, visibility must be after customField. -->
+
+<!ATTLIST metafield id ID #REQUIRED>
+<!ATTLIST metafield aliases CDATA #IMPLIED >
+<!ATTLIST metafield group CDATA #IMPLIED >
+
+<!-- need to differentiate from the core definition of groups -->
+<!ELEMENT fieldgroups (fieldgroup)+ >
+<!-- default group id to use when no category matches-->
+<!ATTLIST fieldgroups default CDATA #REQUIRED >
+<!ELEMENT fieldgroup EMPTY>
+<!ATTLIST fieldgroup id CDATA #REQUIRED>
+
+<!-- define fieldgroups for non DB fields, see javadoc for Metafield.getValueClass-->
+<!ATTLIST metafield value-class (String | Double | Long | Integer | Date| Boolean | AtomizedEnum | PropertyKey | array.Serializable | ValueHolder | array.ValueHolder | app-defined) #IMPLIED>
+
+<!-- Only if value-class=app-defined, this field will be read and should hold the fully qualified java class name.
+     This field now allows any arbitrary java class to be returned between presentation tier to the back end.
+     You are responsible for making sure your hibernating entity and widget handles this class.-->
+<!ATTLIST metafield app-defined-value-class CDATA #IMPLIED >
+
+<!-- 2005-07-20 JJS define only for non database backed fields,i.e. biz metafield, so we can know the entity they belong to.
+     Define only on the BizMetafield files.  This field gets registered in the Hibercache.
+     This value will be most often a legitimate value-->
+<!ATTLIST metafield entity-name CDATA #IMPLIED >
+
+<!-- field is DEPRECATED since 2.2.  Use metafield element -->
+<!ELEMENT field (validation?, measure?)*>
+<!ATTLIST field
+id ID #REQUIRED
+>
+
+<!ELEMENT metafields (metafield | field | groups)*>
+
+<!-- "UPPER"|"lower"|"Mixed"  -->
+<!ELEMENT letter-case (#PCDATA)>
+<!ELEMENT min-length (#PCDATA)>
+<!ELEMENT min-value (#PCDATA)>
+<!ELEMENT pattern (#PCDATA)>
+<!ATTLIST pattern errorMsg CDATA #IMPLIED>
+<!-- Required and optional are opposites.
+If not specified, then the logic will look towards db-type/nullable attribute
+and use that. If that is not specified, then the field is, by default, optional.
+If both are set, the required takes precedence.
+-->
+<!ELEMENT required EMPTY>
+<!ELEMENT optional EMPTY>
+<!ELEMENT validation (letter-case | data-type | integer | max-length | max-value | min-length | min-value | pattern | required | optional)*>
+
+<!ELEMENT widget (lov-collection?, extra-entry?, chart?, widget-attribute*, attributes*)>
+
+<!-- generic map of widget attributes. -->
+<!ELEMENT attributes (attribute*)>
+<!ELEMENT attribute EMPTY>
+<!ATTLIST attribute key CDATA #REQUIRED>
+<!ATTLIST attribute value CDATA #REQUIRED>
+
+<!--  Image metafields need to specify its width and height for the table cell rendering.  -->
+<!ELEMENT image ( width, height, attributes?)>
+<!-- Image metafields need to specify their type as image and specify the chart properties.  -->
+<!ELEMENT chart (variformId, filterRef?, attributes?)>
+<!ELEMENT variformId (#PCDATA)>
+<!-- image/chart filter of the form: targetFilterField1=sourceField1[,targetField2=sourceField2]...
+     If the source and target field are the same metafield, just the name can be specified in the ,-separated list.
+     field1[,field2]...
+     The source field has to exist in the current table view/form.
+-->
+<!ELEMENT filterRef (#PCDATA)>
+
+<!-- attributes which apply to specific widget types
+    fileContentsEditable    by default false.
+                            This attribute only applies to files with text contents. Do not turn it on for binary files, like images,...
+-->
+<!ELEMENT widget-attribute (#PCDATA)>
+<!ATTLIST widget-attribute type (lovLookupMaxRowCount | lovAllowNewEntries | lovAllowNewEntriesSecondMetafield | lovIncludeObsoletes | fileUploadMaxSize | fileUploadFormat | fileUploadExtensions | fileDownloadExtensions | fileUploadLabel | fileUploadChooserTitle | fileDownloadLabel | fileDownloadChooserTitle | fileClearLabel | fileEditContentsLabel | fileContentsEditable | predicateParameterizable) #REQUIRED >
+
+<!--
+     yesno/yesNoRadio only available for struts web
+-->
+<!ATTLIST widget
+type (text | date | dateTime | time | lov | price |  decimal | integer | yesno | yesNoRadio | checkbox | password  | anyType | percent | xml | predicate | child | custom | mobileButton | mobileLabel | mobileArea | mobileTable | mobileLink | mobileList | image) #REQUIRED
+>
+<!-- See GuiWidgetTypeStrings class.
+   searchMultiAssignment, multiAssignmentPopup currently will show default widget by the framework, used by scheduler.
+-->
+
+<!ATTLIST widget subType (short | medium | long | accuracyYear | accuracyHourMinute | accuracyMonthDay | 1 |
+  radios | verified |
+  search |  singlePopup | singleSelect |
+  searchMultiAssignment | multiAssignmentPopup |
+  lookupMultiAssignment| lookupMultiAssignmentSorted |
+  multiAssignment | multiAssignmentSorted |
+  chart | hourMinuteOnly
+ ) #IMPLIED
+>
+
+<!-- See GuiWidgetSubtypeStrings class. -->
+<!-- deprecated: accuracyMonthDay -> use short instead; 1 -> use fractionalDigits  -->
+<!-- The following allow control of the digits to the right of the decimal point. -->
+<!-- Note on fractional digits behavior
+  If only fractionalDigits is set, the fractionalDigitsMin and fractionalDigitsMax are set to the same value
+  fractionalDigitsMin if specified and different from fractionalDigitsMax , only works for ULC and not in Zk
+  It refers to the number of places displayed to the right of decimal. If the value is a whole number it will show zeroes in those places.
+  For Example, a definition like
+  <widget type="decimal" fractionalDigitsMin="1" fractionalDigitsMax="3">
+  will display different values as follows
+  Value     ULC       ZK
+  243       243.0     243.000 (Zk ignores min value)
+  243.12    243.12    243.120
+  243.123   243.123   243.123
+  243.1237  243.124   243.124 (if digits entered to the right of decimal are more than the max fractional digits then the value is rounded, based
+                               on the fractionalDigitsMax and rounding mode before it is sent to business tier. The display on the widget also changes
+                               to the rounded value when user tabs out of the widget)
+-->
+<!ATTLIST widget
+fractionalDigits CDATA #IMPLIED
+fractionalDigitsMin CDATA #IMPLIED
+fractionalDigitsMax CDATA #IMPLIED
+>
+<!-- You have to have a bean or a variformId defined, but not both (maybe move to ELEMENT status to enforce this?). -->
+<!ATTLIST widget bean CDATA #IMPLIED>
+<!ATTLIST widget variformId CDATA #IMPLIED>
+
+<!ATTLIST widget imagePath CDATA #IMPLIED>
+
+<!ELEMENT width (#PCDATA)>
+
+<!ELEMENT measure (length | area | volume | mass | time | temperature | dataStorage ) >
+<!-- Values representing a 1-dimensional length, width, height, circumference, radius, etc. -->
+<!ELEMENT length EMPTY><!--fully supported. km removed -->
+<!ATTLIST length dataUnit (mm|cm|m|in|ft|yd|dynamic) #REQUIRED >
+<!ATTLIST length dataUnitField IDREF #IMPLIED>
+<!ATTLIST length userUnit (mm|cm|m|in|ft|yd|dynamic) #REQUIRED >
+<!ATTLIST length userUnitField IDREF #IMPLIED>
+
+<!-- Values representing a 2-dimensional area. -->
+<!ELEMENT area EMPTY>
+<!ATTLIST area dataUnit (m2|cm2|ft2|in2|yd2|dynamic) #REQUIRED >
+<!ATTLIST area dataUnitField IDREF #IMPLIED>
+<!ATTLIST area userUnit (m2|cm2|ft2|in2|yd2|dynamic) #REQUIRED >
+<!ATTLIST area userUnitField IDREF #IMPLIED>
+
+<!-- Values representing a 3-dimensional volume. -->
+<!ELEMENT volume EMPTY>
+<!ATTLIST volume dataUnit (M3|CM3|l|FT3|CUI|GAL|FLOZ|dynamic) #REQUIRED >
+<!ATTLIST volume dataUnitField IDREF #IMPLIED>
+<!ATTLIST volume userUnit (M3|CM3|l|FT3|CUI|GAL|FLOZ|dynamic) #REQUIRED >
+<!ATTLIST volume userUnitField IDREF #IMPLIED>
+
+<!-- Values representing the mass or weight of an item. The scientific distinction is not made here. -->
+<!ELEMENT mass EMPTY> <!-- fully supported-->
+<!-- Not included: dg = quintals; Mg = metric ton -->
+<!ATTLIST mass dataUnit (g|kg|lb|quintals|long-ton|short-ton|tonne|dynamic) #REQUIRED >
+<!-- Refers to another field in the table that holds the unit for this field. -->
+<!ATTLIST mass dataUnitField IDREF #IMPLIED>
+<!ATTLIST mass userUnit (g|kg|lb|quintals|long-ton|short-ton|tonne|dynamic) #REQUIRED >
+<!-- Refers to another field in the table that holds the unit for this field. -->
+<!ATTLIST mass userUnitField IDREF #IMPLIED>
+
+<!-- "Time" is really duration in time. See "Date fields" for storing times. -->
+<!ELEMENT time EMPTY>
+<!ATTLIST time dataUnit (ms|secs|mins|hrs|days|dynamic) #REQUIRED >
+<!ATTLIST time dataUnitField IDREF #IMPLIED>
+<!-- Refers to another field in the table that holds the unit for this field. -->
+<!ATTLIST time userUnit (ms|s|minutes|hours|days|dynamic) #REQUIRED >
+<!ATTLIST time userUnitField IDREF #IMPLIED>
+<!-- Refers to another field in the table that holds the unit for this field. -->
+
+<!ELEMENT temperature EMPTY>
+<!ATTLIST temperature dataUnit (F|C|dynamic) #REQUIRED >
+<!ATTLIST temperature dataUnitField IDREF #IMPLIED>
+<!ATTLIST temperature userUnit (F|C|dynamic) #REQUIRED >
+<!ATTLIST temperature userUnitField IDREF #IMPLIED>
+
+<!-- Values representing data stored in memory or on disk. -->
+<!ELEMENT dataStorage EMPTY>
+<!ATTLIST dataStorage dataUnit (bytes|KB|MB|GB|dynamic) #REQUIRED >
+<!ATTLIST dataStorage dataUnitField IDREF #IMPLIED>
+<!ATTLIST dataStorage userUnit (bytes|KB|MB|GB|dynamic) #REQUIRED >
+<!ATTLIST dataStorage userUnitField IDREF #IMPLIED>
+<!-- electric current (ampere), luminous intensity (eg. candela), quantity (mole) -->
+
+<!-- Controls whether a field is used in the presentation tier-->
+<!ELEMENT visibility EMPTY>
+<!ATTLIST visibility state (hidden | shown) "shown">
+<!ATTLIST visibility clientConfigurable (true | false) "false">
+
+<!-- Add security element to to create a deny access privilege.
+     A user with this deny privilege should not be able to access
+     this field anywhere in the UI.
+     -->
+<!ELEMENT security (context*)>
+<!ELEMENT context EMPTY>
+<!ATTLIST context entity CDATA #REQUIRED>
+
+<!-- 2006-09-25 CAR-1105 JJS define a synthetic field, incl. other fields that this field depends on-->
+<!ELEMENT synthetic (depends+)>
+<!ATTLIST synthetic source-bean CDATA #REQUIRED >
+<!ELEMENT depends EMPTY>
+<!ATTLIST depends field CDATA #REQUIRED>
+
+<!-- Custom field definition -->
+<!ELEMENT customField EMPTY>
+<!ATTLIST customField mapsTo CDATA #IMPLIED >
+<!ATTLIST customField groupCategory CDATA #IMPLIED >
+

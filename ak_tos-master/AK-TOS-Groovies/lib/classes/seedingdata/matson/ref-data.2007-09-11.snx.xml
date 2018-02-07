@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+
+    <routing-point id="ADL" unloc-code="AUADL" actual-pod-id="ADL" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="ANT" unloc-code="USANC" actual-pod-id="ANT" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="API" unloc-code="WSAPW" actual-pod-id="API" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="AUC" unloc-code="NZAKL" actual-pod-id="AUC" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="BRI" unloc-code="AUBNE" actual-pod-id="BRI" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="EBY" unloc-code="MHEBY" actual-pod-id="EBY" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="GUM" unloc-code="GUGUM" actual-pod-id="GUM" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="HAK" unloc-code="JPHKT" actual-pod-id="HAK" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="HIL" unloc-code="USITO" actual-pod-id="HIL" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="HNC" unloc-code="USHNL" actual-pod-id="HNC" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="HON" unloc-code="USHNL" actual-pod-id="HON" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="JIS" unloc-code="USJIS" actual-pod-id="JIS" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="JUN" unloc-code="USJNU" actual-pod-id="JUN" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="KAH" unloc-code="USOGG" actual-pod-id="KAH" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="KEN" unloc-code="USENA" actual-pod-id="KEN" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="KHI" unloc-code="USKWH" actual-pod-id="KHI" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="KMI" unloc-code="FMKSA" actual-pod-id="KMI" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="KWJ" unloc-code="MHKWA" actual-pod-id="KWJ" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="LAX" unloc-code="USLAX" actual-pod-id="LAX" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="LBC" unloc-code="USLGB" actual-pod-id="LBC" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="LNI" unloc-code="USLNY" actual-pod-id="LNI" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="LOG" unloc-code="USLOG" actual-pod-id="LOG" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="LYT" unloc-code="NZLYT" actual-pod-id="LYT" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="MAJ" unloc-code="MHMAJ" actual-pod-id="MAJ" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="MEL" unloc-code="AUMEL" actual-pod-id="MEL" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="MHT" unloc-code="USOAK" actual-pod-id="MHT" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="MNZ" unloc-code="MXZLO" actual-pod-id="MNZ" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="MOL" unloc-code="USKUA" actual-pod-id="MOL" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="NAH" unloc-code="JPNAH" actual-pod-id="NAH" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="NAW" unloc-code="USNWL" actual-pod-id="NAW" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="NAX" unloc-code="USNAX" actual-pod-id="NAX" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="NGB" unloc-code="CNNGB" actual-pod-id="NGB" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="OAC" unloc-code="USOAK" actual-pod-id="OAC" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="OAK" unloc-code="USOAK" actual-pod-id="OAK" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="OPT" unloc-code="USOPT" actual-pod-id="OPT" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="PAG" unloc-code="ASPPG" actual-pod-id="PAG" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="PAP" unloc-code="PFPPT" actual-pod-id="PAP" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="PDX" unloc-code="USPQD" actual-pod-id="PDX" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="PNP" unloc-code="FMPNI" actual-pod-id="PNP" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="PUS" unloc-code="KRPUS" actual-pod-id="PUS" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="PUX" unloc-code="PWROR" actual-pod-id="PUX" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="RCH" unloc-code="USRCH" actual-pod-id="RCH" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="SAPE" unloc-code="USSPQ" actual-pod-id="SAPE" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="SEA" unloc-code="USSEA" actual-pod-id="SEA" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="SFO" unloc-code="USSFO" actual-pod-id="SFO" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="SHA" unloc-code="CNSHA" actual-pod-id="SHA" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="SPE" unloc-code="USSPQ" actual-pod-id="SPE" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="SPN" unloc-code="MPSPN" actual-pod-id="SPN" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="SUV" unloc-code="FJSUV" actual-pod-id="SUV" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="SYD" unloc-code="AUSYD" actual-pod-id="SYD" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="TAT" unloc-code="USTIW" actual-pod-id="TAT" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="TCC" unloc-code="USTIW" actual-pod-id="TCC" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="TRG" unloc-code="NZTRG" actual-pod-id="TRG" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="TSI" unloc-code="CNTAO" actual-pod-id="TSI" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="UUK" unloc-code="FMUUK" actual-pod-id="UUK" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="VAN" unloc-code="CAVAN" actual-pod-id="VAN" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="VCV" unloc-code="CAVAN" actual-pod-id="VCV" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="WAK" unloc-code="UMAWK" actual-pod-id="WAK" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="YAP" unloc-code="FMYAP" actual-pod-id="YAP" schedule-d-code="0" schedule-k-code="0"/>
+    <routing-point id="YOK" unloc-code="JPYOK" actual-pod-id="YOK" schedule-d-code="0" schedule-k-code="0"/>
+
+    <carrier-itinerary owner-cv-mode="VESSEL" id="GCS-STD">
+        <call scan-code="L" point-id="LAX"/>
+        <call scan-code="H" point-id="HON"/>
+        <call scan-code="G" point-id="GUM"/>
+        <call scan-code="B" point-id="NGB"/>
+        <call scan-code="A" point-id="SHA"/>
+    </carrier-itinerary>
+
+    <carrier-itinerary owner-cv-mode="VESSEL" id="PNW-STD">
+        <call scan-code="S" point-id="SEA"/>
+        <call scan-code="H" point-id="HON"/>
+    </carrier-itinerary>
+
+    <carrier-itinerary owner-cv-mode="VESSEL" id="LAX-STD">
+        <call scan-code="L" point-id="LAX"/>
+        <call scan-code="H" point-id="HON"/>
+    </carrier-itinerary>
+
+    <carrier-itinerary owner-cv-mode="VESSEL" id="OAK-STD">
+        <call scan-code="O" point-id="OAK"/>
+        <call scan-code="H" point-id="HON"/>
+    </carrier-itinerary>
+
+    <carrier-itinerary owner-cv-mode="VESSEL" id="BI-STD">
+        <call scan-code="H" point-id="HIL"/>
+        <call scan-code="I" point-id="KHI"/>
+    </carrier-itinerary>
+
+    <carrier-itinerary owner-cv-mode="VESSEL" id="KAH-STD">
+        <call scan-code="K" point-id="KAH"/>
+        <call scan-code="H" point-id="HON"/>
+    </carrier-itinerary>
+
+    <carrier-itinerary owner-cv-mode="VESSEL" id="NAW-STD">
+        <call scan-code="N" point-id="NAW"/>
+        <call scan-code="H" point-id="HON"/>
+    </carrier-itinerary>
+
+    <carrier-itinerary owner-cv-mode="VESSEL" id="LOH-STD">
+        <call scan-code="L" point-id="LAX"/>
+        <call scan-code="O" point-id="OAK"/>
+        <call scan-code="H" point-id="HON"/>
+    </carrier-itinerary>
+
+    <carrier-service id="BI" carrier-mode="VESSEL" itinerary-id="BI-STD"/>
+    <carrier-service id="GCS" carrier-mode="VESSEL" itinerary-id="GCS-STD"/>
+    <carrier-service id="KAH" carrier-mode="VESSEL" itinerary-id="KAH-STD"/>
+    <carrier-service id="LAX" carrier-mode="VESSEL" itinerary-id="LAX-STD"/>
+    <carrier-service id="LOH" carrier-mode="VESSEL" itinerary-id="LOH-STD"/>
+    <carrier-service id="NAW" carrier-mode="VESSEL" itinerary-id="NAW-STD"/>
+    <carrier-service id="OAK" carrier-mode="VESSEL" itinerary-id="OAK-STD"/>
+    <carrier-service id="PNW" carrier-mode="VESSEL" itinerary-id="PNW-STD"/>
+
+    <vessel id="ALE" lloyds-id="978516" name="WAIALEALE" vessel-class="ALE" owner="MAT" radio-call-sign="NONE2" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="AUK" lloyds-id="9236236" name="AUCKLAND" vessel-class="AUK" owner="MAE" radio-call-sign="A8AU6" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="BON" lloyds-id="9128477" name="COLUMBUS BONDI" vessel-class="BON" owner="HSD" radio-call-sign="ELWS5" country-id="LR"
+            unit-system="BRITISH" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="CAM" lloyds-id="7109374" name="COLUMBUS AMERICA" vessel-class="CAM" owner="HSD" radio-call-sign="ELSX2" country-id="LR"
+            unit-system="BRITISH" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="CDO" lloyds-id="9151852" name="DIRECT CONDOR" vessel-class="CDO" owner="HSD" radio-call-sign="ELWY4" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="CHL" lloyds-id="6812211" name="CHALLENGER" vessel-class="CHL" owner="CSX" radio-call-sign="WZJC" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="CNS" lloyds-id="7224306" name="CONSUMER" vessel-class="CNS" owner="HRZ" radio-call-sign="WCHF" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="CRU" lloyds-id="6905252" name="CRUSADER" vessel-class="CRU" owner="CSX" radio-call-sign="WZJF" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="DIS" lloyds-id="6820579" name="DISCOVERY" vessel-class="DIS" owner="HRZ" radio-call-sign="WZJD" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="DUS" lloyds-id="9147215" name="STADT DUSSELDORF" vessel-class="DUS" owner="MAE" radio-call-sign="DGDO" country-id="DE"
+            unit-system="BRITISH" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="EGL" lloyds-id="9314997" name="EAGLE" vessel-class="EGL" owner="HRZ" radio-call-sign="WDD6309" country-id="US" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="ENT" lloyds-id="7617905" name="ENTERPRISE" vessel-class="ENT" owner="HRZ" radio-call-sign="KRGB" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="EWA" lloyds-id="7125316" name="EWA" vessel-class="EWA" owner="MAT" radio-call-sign="WEZM" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="EXP" lloyds-id="7218462" name="EXPEDITION" vessel-class="EXP" owner="HRZ" radio-call-sign="WPGJ" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="FAL" lloyds-id="9150406" name="DIRECT FALCON" vessel-class="FAL" owner="HSD" radio-call-sign="ELYT5" country-id="LR"
+            unit-system="BRITISH" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="FCN" lloyds-id="9315927" name="FALCON" vessel-class="FCN" owner="HRZ" radio-call-sign="WDD6040" country-id="US" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="FDR" lloyds-id="7819371" name="ROOSEVELT" vessel-class="FDR" owner="MAT" radio-call-sign="KRJF" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="FEL" lloyds-id="9162277" name="SANTA FELICITA" vessel-class="FEL" owner="HSD" radio-call-sign="A8IQ2" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="FIO" lloyds-id="9162253" name="SANTA FIORENZA" vessel-class="FIO" owner="HSD" radio-call-sign="A8AJ4" country-id="LR"
+            unit-system="BRITISH" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="FRB" lloyds-id="UNKNOWN" name="FAIRBANKS" vessel-class="FRB" owner="HRZ" radio-call-sign="NONE3" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="GDO" lloyds-id="7114185" name="CHIEF GADAO" vessel-class="GDO" owner="MAT" radio-call-sign="WEZD" country-id="US"
+            unit-system="BRITISH" temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="GTL" lloyds-id="7420493" name="GREAT LAND" vessel-class="GTL" owner="MAT" radio-call-sign="WFDP" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="HAL" lloyds-id="676972" name="HALEAKALA" vessel-class="HAL" owner="MAT" radio-call-sign="NONE" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="HAW" lloyds-id="7233278" name="HAWAII" vessel-class="HAW" owner="CSX" radio-call-sign="KIRF" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="HGW" lloyds-id="8219841" name="HELGA WEHR" vessel-class="HGW" owner="MAE" radio-call-sign="DHWK" country-id="DE" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="HNB" lloyds-id="0935701" name="HANEBURG" vessel-class="HNB" owner="PUX" radio-call-sign="V2AF9" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="HNR" lloyds-id="9303807" name="HUNTER" vessel-class="HNR" owner="HRZ" radio-call-sign="WDD6038" country-id="US" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="HOV" lloyds-id="8710716" name="HOOVER" vessel-class="HOV" owner="MAT" radio-call-sign="9VOW" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="ISO"/>
+    <vessel id="HWK" lloyds-id="9303819" name="HAWK" vessel-class="HWK" owner="HRZ" radio-call-sign="WDD6033" country-id="US" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="IKE" lloyds-id="7819369" name="EISENHOWER" vessel-class="IKE" owner="MAT" radio-call-sign="KRJG" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="ISO"/>
+    <vessel id="ILR" lloyds-id="9012771" name="ISLANDER" vessel-class="ILR" owner="PUX" radio-call-sign="V2NH" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="ISL" lloyds-id="933804" name="ISLANDER I" vessel-class="ISL" owner="MAT" radio-call-sign="ISLI" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="KAU" lloyds-id="7802718" name="KAUAI" vessel-class="KAU" owner="MAT" radio-call-sign="WSRH" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="KMU" lloyds-id="7506015" name="KAIMOKU" vessel-class="KMU" owner="MAT" radio-call-sign="WGJT" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="KNL" lloyds-id="7367445" name="KAINALU" vessel-class="KNL" owner="MAT" radio-call-sign="KCGH" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="KPT" lloyds-id="9130133" name="KAPITAN AFANASYEV" vessel-class="KPT" owner="HSD" radio-call-sign="UFIL" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="KSL" lloyds-id="9155389" name="DIRECT KESTREL" vessel-class="KSL" owner="HSD" radio-call-sign="ELYQ9" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="LHE" lloyds-id="7105471" name="LIHUE" vessel-class="LHE" owner="MAT" radio-call-sign="WTST" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="LOA" lloyds-id="676973" name="MAUNA LOA" vessel-class="LOA" owner="MAT" radio-call-sign="NONE1" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="LUR" lloyds-id="7321087" name="LURLINE" vessel-class="LUR" owner="MAT" radio-call-sign="WLVD" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="MAS" lloyds-id="9130157" name="KAPITAN MASLOV" vessel-class="MAS" owner="HSD" radio-call-sign="UBRO" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="MAT" lloyds-id="7334204" name="MATSONIA" vessel-class="MAT" owner="MAT" radio-call-sign="KHRC" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="MAU" lloyds-id="7602338" name="MAUI" vessel-class="MAU" owner="MAT" radio-call-sign="WSLH" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="MHI" lloyds-id="7907996" name="MAHIMAHI" vessel-class="MHI" owner="MAT" radio-call-sign="WHRN" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="MKA" lloyds-id="7908005" name="MOKIHANA" vessel-class="MKA" owner="MAT" radio-call-sign="WNRD" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="ISO"/>
+    <vessel id="MKI" lloyds-id="9244130" name="MANUKAI" vessel-class="MKI" owner="MAT" radio-call-sign="WRGD" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="ISO"/>
+    <vessel id="MLE" lloyds-id="9273686" name="MAUNALEI" vessel-class="MLE" owner="MAT" radio-call-sign="KFMV" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="ISO"/>
+    <vessel id="MLI" lloyds-id="9273674" name="MANULANI" vessel-class="MLI" owner="MAT" radio-call-sign="WDC46" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="ISO"/>
+    <vessel id="MNA" lloyds-id="7907984" name="MANOA" vessel-class="MNA" owner="MAT" radio-call-sign="KDBG" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="MWI" lloyds-id="9268538" name="MAUNAWILI" vessel-class="MWI" owner="MAT" radio-call-sign="WDB7104" country-id="US"
+            unit-system="BRITISH" temperature-units="F" stowage-scheme="ISO"/>
+    <vessel id="NAV" lloyds-id="7116315" name="NAVIGATOR" vessel-class="NAV" owner="HRZ" radio-call-sign="WPGK" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="NOV" lloyds-id="9127540" name="MAERSK NOVAZZANO" vessel-class="NOV" owner="MAE" radio-call-sign="ELZK4" country-id="LR"
+            unit-system="BRITISH" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="OHI" lloyds-id="9046215" name="COLUMBUS OHIO" vessel-class="OHI" owner="HSD" radio-call-sign="ELUT5" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="PAC" lloyds-id="7617890" name="PACIFIC" vessel-class="PAC" owner="HRZ" radio-call-sign="WSRL" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="PNL" lloyds-id="7811484" name="P&amp;O L.A." vessel-class="PNL" owner="MAE" radio-call-sign="PGDH" country-id="NL"
+            unit-system="BRITISH" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="POL" lloyds-id="9127109" name="POLYNESIA" vessel-class="POL" owner="POL" radio-call-sign="D5NZ" country-id="LR" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="PRO" lloyds-id="7366312" name="PRODUCER" vessel-class="PRO" owner="HRZ" radio-call-sign="WJBJ" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="PSF" lloyds-id="9182631" name="P&amp;ONL SAN FRANCISCO" vessel-class="PSF" owner="MAE" radio-call-sign="ELWR3" country-id="LR"
+            unit-system="BRITISH" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="REL" lloyds-id="7729461" name="RELIANCE" vessel-class="REL" owner="HRZ" radio-call-sign="WFLH" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="RJP" lloyds-id="9002037" name="RJ PFEIFFER" vessel-class="RJP" owner="MAT" radio-call-sign="WRJP" country-id="US"
+            unit-system="BRITISH" temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="SIU" lloyds-id="UNK113" name="SIUSLAW" vessel-class="SIU" owner="MAT" radio-call-sign="WAM65" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="SPI" lloyds-id="7729459" name="SPIRIT" vessel-class="SPI" owner="HRZ" radio-call-sign="WFLG" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="SUN" lloyds-id="9064334" name="MV CAP SUNION" vessel-class="SUN" owner="HSD" radio-call-sign="ELVL8" country-id="LR"
+            unit-system="BRITISH" temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="TGR" lloyds-id="9303792" name="TIGER" vessel-class="TGR" owner="HRZ" radio-call-sign="WDD6042" country-id="US" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="TRD" lloyds-id="7326233" name="TRADER" vessel-class="TRD" owner="HRZ" radio-call-sign="KIRH" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="VCI" lloyds-id="9208356" name="P&amp;O NEDLLOYD SUVA" vessel-class="VCI" owner="MAE" radio-call-sign="ELXU7" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="VIL" lloyds-id="7383906" name="CAP VILANO" vessel-class="VIL" owner="HSD" radio-call-sign="SZKT" country-id="GR" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="VLA" lloyds-id="9130145" name="VLADIVOSTOK" vessel-class="VLA" owner="MAE" radio-call-sign="UBXP" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="UNKNOWN"/>
+    <vessel id="WLN" lloyds-id="8802909" name="WILSON" vessel-class="WLN" owner="MAT" radio-call-sign="9VOS" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="ISO"/>
+    <vessel id="WTO" lloyds-id="9134593" name="COLUMBUS WAIKATO" vessel-class="WTO" owner="CLL" radio-call-sign="PJWZ" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+    <vessel id="YB1" lloyds-id="YB1 UNKN" name="YOUNG BROS" vessel-class="YB" owner="MAT" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="YB2" lloyds-id="YB2 UNKN" name="YOUNG BROS" vessel-class="YB" owner="MAT" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="YB3" lloyds-id="YB3 UNKN" name="YOUNG BROS" vessel-class="YB" owner="MAT" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="YB4" lloyds-id="YB4 UNKN" name="YOUNG BROS" vessel-class="YB" owner="MAT" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="YB5" lloyds-id="YB5 UNKN" name="YOUNG BROS" vessel-class="YB" owner="MAT" country-id="US" unit-system="BRITISH"
+            temperature-units="F" stowage-scheme="UNKNOWN"/>
+    <vessel id="YOR" lloyds-id="9102502" name="CAP YORK" vessel-class="YOR" owner="HSD" radio-call-sign="DIKV" unit-system="BRITISH"
+            temperature-units="C" stowage-scheme="ISO"/>
+
+    <trucking-company id="ACME" name="Acme Trucking, INC">
+        <line-agreements>
+            <line-agreement shipping-line="MAT" truck-line-status="OK" expiration-date="2009-10-30"/>
+            <line-agreement shipping-line="APL" truck-line-status="OK" expiration-date="2009-10-30"/>
+        </line-agreements>
+    </trucking-company>
+
+    <trucking-company id="BUD" name="ANHEUSER BUSCH SALES OF HAWAII, INC"/>
+
+    <trucking-company id="COVA" name="COVAN WORLD-WIDE MOVING, INC."/>
+
+    <trucking-company id="DHXI" name="DHX, INC. (DEPENDABLE HAWAIIAN EXP.)"/>
+
+    <trucking-company id="ETS" name="ELITE TRUCKING &amp; SERVICES, LLC"/>
+
+    <trucking-company id="FDTD" name="U.P.S. SUPPLY CHAIN SOLUTIONS, INC."/>
+
+    <trucking-company id="FOMC" name="JACK IN THE BOX"/>
+
+    <trucking-company id="HTC" name="HAWAII TRANSFER CO., LTD."/>
+
+    <trucking-company id="HWAI" name="HONOLULU FREIGHT SERVICE"/>
+
+    <trucking-company id="INTE" name="INTERNATIONAL EXPRESS, INC."/>
+
+    <trucking-company id="KANT" name="KANO TRUCKING SERVICE, LTD."/>
+
+    <trucking-company id="MARW" name="MARTIN TRANSPORTATION SERVICES MCB INC."/>
+
+    <trucking-company id="PACT" name="PACIFIC TRANSFER LLC"/>
+
+    <trucking-company id="QMI" name="QUICK MOVE, INC."/>
+
+    <trucking-company id="RHIM" name="ROYAL HAWAIIAN MOVERS/HI PROFESSIONAL MOV"/>
+
+    <trucking-company id="RPM" name="RPM TRANSPORTATION (HAWAII), INC."/>
+
+    <trucking-company id="WEPK" name="WESTPAC MOVING &amp; STORAGE, INC."/>
+
+    <trucking-company id="WWMS" name="WORLD WIDE MOVING &amp; STORAGE, INC."/>
+
+    <trucking-company id="XPTI" name="XPRESS TRUCKING, INC."/>
+
+    <trucking-company id="ZAHI" name="ZAHIIR TRUCKING CORP."/>
+
+    <trucking-company id="ZAJT" name="JOE ZAPUTIL TRUCKING, INC."/>
+
+    <trucking-company id="ZAKY" name="ZACKY FOODS"/>
+
+    <trucking-company id="ZAMC" name="ZAM TRANSPORTATION CO., INC."/>
+
+    <trucking-company id="ZAMO" name="ZAMORA TRUCKING"/>
+
+    <trucking-company id="ZAXT" name="ZAX TRUCKING, INC."/>
+
+    <trucking-company id="ZBBL" name="ZAMBELLI FIREWORKS MFG. CO. INC."/>
+
+    <trucking-company id="ZBTN" name="ZEBRA TRANSPORTATION LLC"/>
+
+    <trucking-company id="ZCSU" name="ZIM CONTAINER SERVIC"/>
+
+    <trucking-company id="ZDTG" name="ZAID TRUCKING, INC."/>
+
+    <trucking-company id="ZEEL" name="ZEELAND FARM SERVICES, INC."/>
+
+    <trucking-company id="ZEGR" name="ZEG EXPRESS"/>
+
+    <trucking-company id="ZENT" name="ZENITH TRANSPORT 1982, INC."/>
+
+    <trucking-company id="ZFRT" name="Z-FREIGHT"/>
+
+    <trucking-company id="ZGIC" name="ZYGO GROUP, INC."/>
+
+    <trucking-company id="ZHQC" name="ZHQ CORP."/>
+
+    <trucking-company id="ZIPO" name="ZIP TRUCK LINES, INC."/>
+
+    <trucking-company id="ZLHQ" name="ZILLAH HAULING SERVICE"/>
+
+    <trucking-company id="ZMCO" name="ZAMCO TRANSPORT SPECIALIST, INC."/>
+
+    <trucking-company id="ZMTL" name="ZIMMERMAN TRUCK LINES, INC."/>
+
+    <trucking-company id="ZMTS" name="ZOOM TRANSPORT SERVICES LLC"/>
+
+    <trucking-company id="ZNHC" name="ZEN-NOH HAY, INC."/>
+
+    <trucking-company id="ZOCI" name="ZOCALO IMPORTS INC."/>
+
+    <trucking-company id="ZOGJ" name="ZOT LUXURY LOGISTICS"/>
+
+    <trucking-company id="ZORF" name="ZORIA FARMS, INC."/>
+
+    <trucking-company id="ZOZB" name="ZOZZARO BROS., INC."/>
+
+    <trucking-company id="ZPHY" name="ZEPHYR TRUCKING INC."/>
+
+    <trucking-company id="ZPTN" name="ZP TRANSPORT, INC."/>
+
+    <trucking-company id="ZRAT" name="ZARATE, AURELIO TRUCKING"/>
+
+    <trucking-company id="ZRCA" name="ZR CARRIERS"/>
+
+    <trucking-company id="ZSSR" name="MACSTEEL SERVICE CENTERS"/>
+
+    <trucking-company id="ZTAL" name="ZECO TRANSPORT &amp; LOGISTICS L.P."/>
+
+    <trucking-company id="ZTAO" name="ZULETA EXPRESS, INC."/>
+
+    <trucking-company id="ZTIO" name="ZION TRUCKING, INC."/>
+
+    <trucking-company id="ZTRN" name="Z TRANS, INC."/>
+
+    <trucking-company id="ZTXP" name="Z TRANS EXPRESS"/>
+
+    <trucking-company id="ZUNG" name="ZUNIGA'S TRUCKING"/>
+
+    <trucking-company id="ZUNI" name="ZUNIGA SPECIALIZED CARRIERS, LC."/>
+
+    <trucking-company id="ZURI" name="ZURITAS TRUCKING"/>
+
+    <trucking-company id="ZZZZ" name="MATSON"/>
+
+</argo:snx>

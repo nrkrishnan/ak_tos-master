@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+Copyright (c) 1989-2006 Navis LLC. All rights reserved.
+-->
+
+<hibernate-mapping default-lazy="false">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">ArgoForms</meta>
+
+    <class name="com.navis.argo.variform.DynaForm" table="config_forms" dynamic-update="true">
+        <meta attribute="class-description">Dynamic Form Definition</meta>
+        <meta attribute="generated-class">com.navis.argo.variform.DynaFormHbr</meta>
+        <meta attribute="n4alias">dform</meta>
+        <meta attribute="n4-entity-name">Dynamic Form Definition</meta>
+        <meta attribute="n4-entity-name-plural">Dynamic Form Definitions</meta>
+
+        <id name="dformGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <!--discriminator column="entity_name" not-null="false" type="string" length="20"/-->
+        <property name="dformId" type="java.lang.String" column="id" length="12" not-null="true"/>
+        <property name="dformPrimaryKeyField" type="java.lang.String" column="primary_key_field" length="60"/>
+        <property name="dformAllowedActions" type="java.lang.String" column="allowed_actions" length="30"/>
+        <property name="dformDescription" type="java.lang.String" column="description" not-null="true" length="35"/>
+        <property name="dformCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="dformCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="dformChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="dformChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="dformLifeCycleState" column="life_cycle_state"
+            type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <set name="dformFields" order-by="gkey" inverse="true" table="config_form_fields" cascade="all-delete-orphan">
+            <key column="dform_gkey"/>
+            <one-to-many class="com.navis.argo.variform.DynaFormField"/>
+        </set>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.argo.variform.DynaFormField" table="config_form_fields" dynamic-update="true">
+        <meta attribute="class-description">Dynamic Form field definition (child entity of DynaForm)</meta>
+        <meta attribute="generated-class">com.navis.argo.variform.DynaFormFieldHbr</meta>
+        <meta attribute="n4alias">dfield</meta>
+        <meta attribute="n4-entity-name">Dynamic Form Field Definition</meta>
+        <meta attribute="n4-entity-name-plural">Dynamic Form Field Definitions</meta>
+
+        <id name="dfieldGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="dfieldForm" column="dform_gkey" class="com.navis.argo.variform.DynaForm" not-null="true" cascade="none">
+            <meta attribute="field-description">Fields for the dyna form.</meta>
+        </many-to-one>
+        <property name="dfieldId" type="java.lang.String" column="id" length="60" not-null="true"/>
+        <property name="dfieldDescription" type="java.lang.String" column="description" length="100"/>
+        <property name="dfieldActions" type="java.lang.String" column="actions" length="30"/>
+        <property name="dfieldMode" type="com.navis.argo.persistence.atoms.UserTypeDisplayModeEnum" column="field_mode" not-null="true" length="12"/>
+        <property name="dfieldRequired" type="java.lang.Boolean" not-null="true" column="is_required"/>
+        <property name="dfieldLovKey" type="java.lang.String" column="lov_key" length="60"/>
+        <property name="dfieldCreated" type="java.sql.Timestamp" column="created"/>
+        <property name="dfieldCreator" type="java.lang.String" column="creator" length="30"/>
+        <property name="dfieldChanged" type="java.sql.Timestamp" column="changed"/>
+        <property name="dfieldChanger" type="java.lang.String" column="changer" length="30"/>
+        <property name="dfieldLifeCycleState" column="life_cycle_state"
+            type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+</hibernate-mapping>
+

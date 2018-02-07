@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<gate id="ANK GATE" description="Anchorage Gate" facility-id="ANK" gate-config-id="ANK_1_STAGE" life-cycle-state="ACT">
+  <gate-lanes>
+    <gate-lane id="LANE 2" class="INOUT" description="LANE 2" needs-appointment="N" status="OPEN" life-cycle-state="ACT">
+      <gate-lane-printers />
+    </gate-lane>
+    <gate-lane id="LANE 1" class="INOUT" description="LANE 1" needs-appointment="N" status="OPEN" life-cycle-state="ACT">
+      <gate-lane-printers />
+    </gate-lane>
+    <gate-lane id="LANE 4" class="INOUT" description="LANE 4" needs-appointment="N" status="OPEN" life-cycle-state="ACT">
+      <gate-lane-printers />
+    </gate-lane>
+    <gate-lane id="LANE 5" class="INOUT" description="Trouble Desk" needs-appointment="Y" status="OPEN" life-cycle-state="ACT">
+      <gate-lane-printers />
+    </gate-lane>
+    <gate-lane id="LANE 3" class="INOUT" description="LANE 3" needs-appointment="N" status="OPEN" life-cycle-state="ACT">
+      <gate-lane-printers />
+    </gate-lane>
+    <gate-lane id="LINE HAUL" class="INOUT" description="Line Haul Lane" needs-appointment="Y" status="OPEN" life-cycle-state="ACT">
+      <gate-lane-printers />
+    </gate-lane>
+    <gate-lane id="LANE 6" class="INOUT" description="Gate House" needs-appointment="Y" status="OPEN" life-cycle-state="ACT">
+      <gate-lane-printers />
+    </gate-lane>
+    <gate-lane id="DONOTUSE" class="INOUT" description="DONOTUSE" needs-appointment="Y" status="RESERVED" life-cycle-state="OBS">
+      <gate-lane-printers />
+    </gate-lane>
+  </gate-lanes>
+  <gate-yards>
+    <gate-yard id="ANK" facility-id="ANK">
+      <gate-yard-blocks />
+    </gate-yard>
+  </gate-yards>
+  <gate-consoles>
+    <gate-console hardware-id="AGING" life-cycle-state="ACT" />
+    <gate-console hardware-id="EQCTRL" life-cycle-state="ACT" />
+    <gate-console hardware-id="LEFT" life-cycle-state="ACT" />
+    <gate-console hardware-id="RIGHT" life-cycle-state="ACT" />
+    <gate-console hardware-id="MIDDLE" life-cycle-state="ACT" />
+  </gate-consoles>
+  <gate-exchange-areas />
+</gate>
+</argo:snx>
+

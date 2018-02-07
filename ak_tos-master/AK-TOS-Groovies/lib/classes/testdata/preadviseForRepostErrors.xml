@@ -1,0 +1,11 @@
+<edi:preadviseTransactions xmlns:edi="http://www.navis.com/argo"><edi:preadviseTransaction edi:facilityId="FCY111" edi:msgClass="PREADVISE" edi:msgFunction="R">
+    	<edi:Interchange edi:InterchangeNumber="ARGO16548001" edi:InterchangeReceipient="MAT" edi:InterchangeSender="MAT"/>
+        <edi:ediCommodity edi:commodityCode="3U"/>
+        <edi:ediContainer edi:containerCategory="EXPRT" edi:containerISOcode="2000" edi:containerNbr="SVCU1912007" edi:containerRemark="DETTRAILV  MI" edi:containerStatus="FCL">
+         	<edi:containerOperator edi:operator="MAT" edi:operatorCodeAgency=""/>
+        </edi:ediContainer>
+        <edi:ediOutboundVisit>
+        	<edi:ediVesselVisit edi:outVoyageNbr="1912" edi:vesselId="KURNOOL" edi:vesselIdConvention="LLOYDS">
+            	</edi:ediVesselVisit>
+        </edi:ediOutboundVisit>
+    </edi:preadviseTransaction></edi:preadviseTransactions>

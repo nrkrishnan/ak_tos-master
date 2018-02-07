@@ -1,0 +1,9 @@
+<classloading xmlns="urn:jboss:classloading:1.0"
+              parent-first="false"
+              domain="tosEjb.jar"
+              top-level-classloader="true"
+              parent-domain="tos.ear"
+              export-all="NON_EMPTY"
+              import-all="true"
+     >
+</classloading>

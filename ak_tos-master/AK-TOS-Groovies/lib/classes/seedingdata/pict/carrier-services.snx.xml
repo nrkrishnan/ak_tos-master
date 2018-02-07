@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- PICT Existing data in xml.Created by Adnan Memon  -->
+<SNXDATA>
+<carrier-service carrier-mode="VESSEL" id="USGS" itinerary-id="USGS-STD" name="WaterMan">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="HOLD" itinerary-id="USGS-STD" name="HOLD CONTAINER">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="RDX" itinerary-id="USGS-STD" name="REGULAR DEPENDABLE XPRESS">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="GEN" itinerary-id="USGS-STD" name="GENERAL">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="FRD" itinerary-id="USGS-STD" name="FRIENDS">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="KEX" itinerary-id="USGS-STD" name="KEX">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="MECL" itinerary-id="USGS-STD" name="Middle East Container Line">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="IAX" itinerary-id="USGS-STD" name="INDO ARAB EXPRESS SERVICE">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="PAK" itinerary-id="USGS-STD" name="PAK">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="CSG" itinerary-id="USGS-STD" name="CHINA STRAITS GULF">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="SWAX" itinerary-id="USGS-STD" name="SWAHILI EXPRESS">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="WES" itinerary-id="USGS-STD" name="WEEKLY EXPRESS SERVICE">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="HALAL" itinerary-id="USGS-STD" name="HALAL EXPRESS">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="IMEX" itinerary-id="USGS-STD" name="INDIA MIDDLE EAST EUROPE XPRES">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="ASX" itinerary-id="USGS-STD" name="ARABIAN SEA EXPRESS">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="EGIA" itinerary-id="USGS-STD" name="Gulf Indian Sub Continent Afri">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="FMS" itinerary-id="USGS-STD" name="Far east - Middle east Service">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="MEX" itinerary-id="USGS-STD" name="MIDDLE EAST EXPRESS SERVICE">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="IOS" itinerary-id="USGS-STD" name="Indian Ocean Service">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="GPX" itinerary-id="USGS-STD" name="Gulf Pakistan Express">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="FDMES" itinerary-id="USGS-STD" name="Farrell Med-Middle East Servic">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="RGF" itinerary-id="USGS-STD" name="REGIONAL GULF FEEDER SERVICE">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="IPG" itinerary-id="USGS-STD" name="INDIA PAKISTAN GULF EXPRESS">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="SGX" itinerary-id="USGS-STD" name="Super Galex Service">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="RTW" itinerary-id="USGS-STD" name="ROUND THE WORLD">
+</carrier-service>
+<carrier-service carrier-mode="VESSEL" id="MIX" itinerary-id="USGS-STD" name="MIDDLE EAST INDIA EXPRESS">
+</carrier-service>
+</SNXDATA>

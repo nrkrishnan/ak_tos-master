@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE navigationTree PUBLIC "" "NavigationTree.dtd">
+
+<navigationTree nodeRefId="APEX_APP">
+    <appUnit nodeRefId="APEX_APP">
+        <bizUnit nodeRefId="TOP1_OPERATIONS">
+            <funcMod nodeRefId="MID_CAP">
+                <funcSubMod nodeRefId="NODE_REFERENCE_COUNTRIES"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_UNIT">
+                <funcSubMod nodeRefId="UnitQuery"/>
+                <funcSubMod nodeRefId="MyUfvList"/>
+                <funcSubMod nodeRefId="UnitEquipmentStateTable"/>
+                <funcSubMod nodeRefId="TbdUnits"/>
+                <separator/>
+                <funcSubMod nodeRefId="SealUnit"/>
+                <funcSubMod nodeRefId="SlotCorrection"/>
+                <funcSubMod nodeRefId="Dlvryreq"/>
+                <funcSubMod nodeRefId="BillOfLading"/>
+                <funcSubMod nodeRefId="ImportDeliveryOrder"/>
+                <!-- 2008-09-12 dkannadasan ARGO-14050 Manage Unit Documents-->
+                <separator/>
+                <funcSubMod nodeRefId="CustomsDocuments"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_GATE">
+                <funcSubMod nodeRefId="PreadviseExport"/>
+                <!--<funcSubMod nodeRefId="PreadviseExportAgnostic"/>Not complete yet-->
+                <funcSubMod nodeRefId="PreadviseStorageEmpty"/>
+                <funcSubMod nodeRefId="PreadvisedUnits"/>
+                <funcSubMod nodeRefId="Appointments"/>
+                <funcSubMod nodeRefId="TruckVisitAppointments"/>
+                <funcSubMod nodeRefId="TimeSlots"/>
+                <funcSubMod nodeRefId="GateLanes"/>
+                <funcSubMod nodeRefId="RoadInspections"/>
+                <!-- 2007-03-29 lbarman v1.3.0 ARGO-6686: fix dynamic gate menu separators;
+                separator not needed here: if there is a dynamic menu it will add the needed separators. <separator/>-->
+                <!-- ARGO-4394 cpallapo June-16-2006 Removed gate menu nodes here and adding them dynamically as
+                the gate is configurable and the user can create his own stages -->
+                <separator/>
+                <funcSubMod nodeRefId="TruckVisitList"/>
+                <!-- 2006-08-17 Shan v1.2.A ARGO-4846, trouble stage is now added dynamically -->
+                <!--funcSubMod nodeRefId="GateTroubleFormTrouble"/-->
+                <funcSubMod nodeRefId="RodTruckTranQueryList"/>
+                <funcSubMod nodeRefId="TruckVisitStatistics"/>
+                <!-- 2007-01-26 lbarman v1.3.A ARGO-6028: implement appointment system -->
+                <separator/>
+                <funcSubMod nodeRefId="MaintainBookings"/>
+                <funcSubMod nodeRefId="EquipmentDeliveryOrder"/>
+                <funcSubMod nodeRefId="EquipmentReceiveOrder"/>
+                <funcSubMod nodeRefId="InterFacilityTransfer"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_BI_GATE_DASHBOARD"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_YARD">
+                <funcSubMod nodeRefId="WorkInstructionQuery"/>
+                <funcSubMod nodeRefId="MoveHistoryTable"/>
+                <funcSubMod nodeRefId="YardMove"/>
+                <!-- 2009-04-13 Shan v1.9.D ARGO-17866 Moved Service order to Yard menu -->
+                <funcSubMod nodeRefId="ServiceOrders"/>
+                <funcSubMod nodeRefId="ChargeableUnitEvent"/>
+                <funcSubMod nodeRefId="GUARANTEES"/>
+                <separator/>
+                <funcSubMod nodeRefId="YardBlocks"/>
+                <separator/>
+                <funcSubMod nodeRefId="PointsOfWork"/>
+                <funcSubMod nodeRefId="WorkShifts"/>
+                <funcSubMod nodeRefId="Ches"/>
+                <funcSubMod nodeRefId="WorkAssignments"/>
+                <funcSubMod nodeRefId="ChePools"/>
+                <funcSubMod nodeRefId="WorkQueues"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_BI_YARD_DASHBOARD"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_VESSEL">
+                <funcSubMod nodeRefId="VesselSchedule"/>
+                <funcSubMod nodeRefId="MaintainBookingsVesselMenu"/>
+                <funcSubMod nodeRefId="EmptyLoadoutOrder"/>
+                <funcSubMod nodeRefId="ChargeableMarineEvent"/>
+                <separator/>
+                <funcSubMod nodeRefId="VesselInboundUnitFlag"/>
+                <funcSubMod nodeRefId="EnterStowPlan"/>
+                <funcSubMod nodeRefId="BargeStowPlan"/>
+                <funcSubMod nodeRefId="VesselDischarge"/>
+                <funcSubMod nodeRefId="VesselLoad"/>
+                <separator/>
+                <funcSubMod nodeRefId="EDI_UPLOAD"/>
+                <funcSubMod nodeRefId="EDI_STOWPLAN_BATCHES"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_BI_VESSEL_DASHBOARD"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_RAIL">
+                <!-- <funcSubMod nodeRefId="OutboundPreAdvisedTrainContainers"/> -->
+                <funcSubMod nodeRefId="RailSchedule"/>
+                <separator/>
+                <funcSubMod nodeRefId="InboundPreAdvisedTrainContainers"/>
+                <separator/>
+                <funcSubMod nodeRefId="RailDischarge"/>
+                <funcSubMod nodeRefId="RailLoad"/>
+                <funcSubMod nodeRefId="InboundRailInventory"/>
+                <funcSubMod nodeRefId="AdvancedInboundRailInventory"/>
+                <separator/>
+                <funcSubMod nodeRefId="RailcarSchedule"/>
+                <funcSubMod nodeRefId="RailOrder"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_CARGO">
+                <!-- <funcSubMod nodeRefId="OutboundPreAdvisedTrainContainers"/> -->
+                <funcSubMod nodeRefId="BillOfLading"/>
+                <funcSubMod nodeRefId="DeliveryOrder"/>
+                <funcSubMod nodeRefId="CargoLot"/>
+                <separator/>
+                <funcSubMod nodeRefId="PreAdvisedCargoLot"/>
+            </funcMod>
+            <funcMod nodeRefId="NODE_DASHBOARD">
+                <funcSubMod nodeRefId="NODE_DASHBOARDS"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_REPORTS">
+                <!-- 2012.07.03 ramacke v2.4.N ARGO-39487, Disable Unit Notices in CAP and N4-->
+                <!-- 2013.02.22 prabhat v2.5.R ARGO-45383 Add Container Notices screen back to N4 -->
+                <funcSubMod nodeRefId="CtrNoticeRequest"/>
+                <funcSubMod nodeRefId="NoticeRequest"/>
+                <separator/>
+                <funcSubMod nodeRefId="ReportDesigns"/>
+                <funcSubMod nodeRefId="ReportDefinitions"/>
+                <funcSubMod nodeRefId="MediaAssets"/>
+            </funcMod>
+            <funcMod nodeRefId="NODE_BI" >
+                <funcSubMod nodeRefId="NODE_BI_PORTAL"/>
+            </funcMod>
+        </bizUnit>
+
+        <!--
+                <bizUnit nodeRefId="TOP1_ANALYSIS">
+                    <funcMod nodeRefId="MID_REPORTS">
+                        <funcSubMod nodeRefId="ReportDesigns"/>
+                        <funcSubMod nodeRefId="ReportDefinitions"/>
+                    </funcMod>
+                </bizUnit>
+        -->
+
+        <bizUnit nodeRefId="TOP1_ADMINISTRATION">
+            <!--funcMod nodeRefId="MID_GENERAL">
+                <funcSubMod nodeRefId="XpsCacheMonitor"/>
+                <funcSubMod nodeRefId="QuartzJobsMonitor"/>
+                <funcSubMod nodeRefId="ArgoCalendar"/>
+                <separator/>
+                <funcSubMod nodeRefId="AllEventsTable"/>
+                <separator/>
+                <funcSubMod nodeRefId="DbaPanel"/>
+                <funcSubMod nodeRefId="DatabaseSetUp"/>
+                <funcSubMod nodeRefId="NODE_CARINA_DB_META_DATA"/>
+            </funcMod-->
+            <funcMod nodeRefId="MID_EDI">
+                <funcSubMod nodeRefId="EDI_INTERCHANGE"/>
+                <funcSubMod nodeRefId="EDI_BATCH"/>
+                <funcSubMod nodeRefId="EDI_TRANSACTION"/>
+                <funcSubMod nodeRefId="EDI_EVENT"/>
+                <separator/>
+                <funcSubMod nodeRefId="EDI_SESSION"/>
+                <funcSubMod nodeRefId="EDI_MAILBOX"/>
+                <funcSubMod nodeRefId="EDI_CONFIG"/>
+                <funcSubMod nodeRefId="EDI_TRADING_PARTNER"/>
+                <funcSubMod nodeRefId="EDI_MESSAGE_TYPE"/>
+                <funcSubMod nodeRefId="EDI_FILTER"/>
+                <funcSubMod nodeRefId="EDI_POSTING_RULES"/>
+                <separator/>
+                <funcSubMod nodeRefId="EDI_UPLOAD"/>
+                <funcSubMod nodeRefId="EDI_JOB_DEFINITION"/>
+                <funcSubMod nodeRefId="EDI_ERRORS"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_ARCHIVE">
+                <funcSubMod nodeRefId="ArchiveUnit"/>
+                <funcSubMod nodeRefId="ArchiveGateTransaction"/>
+                <funcSubMod nodeRefId="ArchiveTruckVisits"/>
+                <funcSubMod nodeRefId="ArchiveBookings"/>
+                <funcSubMod nodeRefId="ArchiveEDOs"/>
+                <funcSubMod nodeRefId="ArchiveELOs"/>
+                <funcSubMod nodeRefId="ArchiveIDOs"/>
+                <funcSubMod nodeRefId="ArchiveBillOfLading"/>
+                <funcSubMod nodeRefId="ArchiveVesselVisits"/>
+                <funcSubMod nodeRefId="ArchiveRailcarVisits"/>
+                <funcSubMod nodeRefId="ArchiveTrainVisits"/>
+                <funcSubMod nodeRefId="PurgedFailedEntities"/>
+                <funcSubMod nodeRefId="ArchivedPurgedEntities"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_SYSTEM">
+                <funcSubMod nodeRefId="XpsCachedObject"/>
+                <funcSubMod nodeRefId="ARG_CHECK_INTEGRITY"/>
+                <funcSubMod nodeRefId="AllEventsTable"/>
+                <separator/>
+                <funcSubMod nodeRefId="QuartzJobsMonitor"/>
+                <funcSubMod nodeRefId="QuartzJobExecutionLog"/>
+                <funcSubMod nodeRefId="ReportingJobDefinition"/>
+                <separator/>
+                <funcSubMod nodeRefId="GroovyPlugins"/>
+                <funcSubMod nodeRefId="GroovyJobs"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_EXTENSION_TYPE_REGISTRY"/>
+                <funcSubMod nodeRefId="NODE_CODE_EXTENSIONS"/>
+                <funcSubMod nodeRefId="NODE_EXTENSION_AUDITOR"/>
+                <funcSubMod nodeRefId="NODE_EXTENSION_TRIGGERS"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_CUSTOM_NODES"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_SYSTEM_PERFORMANCE_CHARTS"/>
+                <funcSubMod nodeRefId="NODE_SYSTEM_PERFORMANCE_CHARTS_CONFIG"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_DBA">
+                <funcSubMod nodeRefId="HQLWindow"/>
+                <funcSubMod nodeRefId="DbaPanel"/>
+                <funcSubMod nodeRefId="DatabaseSetUp"/>
+                <funcSubMod nodeRefId="NODE_CARINA_DB_META_DATA"/>
+                <funcSubMod nodeRefId="SnxImport"/>
+                <!-- 2008-04-01 rsatish v1.5.N ARGO-10761 one-click SNX export of all the reference data and configuration entities -->
+                <funcSubMod nodeRefId="SnxRefExport"/>
+                <separator/>
+                <funcSubMod nodeRefId="EntitySet"/>
+                <funcSubMod nodeRefId="EntitySetUse"/>
+                <separator/>
+                <funcSubMod nodeRefId="Operator"/>
+                <funcSubMod nodeRefId="TopologyTree"/>
+                <!--2008-10-25 rsatish v1.8.B ARGO-14328 add Snx Mail box and job definition for batch processing -->
+                <funcSubMod nodeRefId="SnxMailboxes"/>
+                <funcSubMod nodeRefId="SnxJobs"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_DB_PERF_PARAMETERS"/>
+                <funcSubMod nodeRefId="NODE_DB_PERF_INDEXES"/>
+                <funcSubMod nodeRefId="NODE_DB_PERF_TABLES"/>
+                <funcSubMod nodeRefId="NODE_DB_PERF_DATAFILES"/>
+                <funcSubMod nodeRefId="NODE_DB_PERF_TOPSQL"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_ADM_SECURITY">
+                <funcSubMod nodeRefId="NODE_SECURITY_USERS"/>
+                <funcSubMod nodeRefId="NODE_SECURITY_BUSINESS_GROUPS"/>
+                <funcSubMod nodeRefId="NODE_SECURITY_ROLES"/>
+                <funcSubMod nodeRefId="NODE_SECURITY_PRIVILEGES"/>
+                <funcSubMod nodeRefId="NODE_SECURITY_IP_WHITELIST"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_DB_LICENSES"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_CURRENT_USERS_MONITOR"/>
+                <funcSubMod nodeRefId="NODE_AUTHENTICATION_HISTORY"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_CARINA_MSG_BROADCAST"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_ANNOUNCEMENTS"/>
+            </funcMod>
+            <!--funcMod nodeRefId="MID2_ADM_TOPOLOGY">
+                <separator/>
+                <funcSubMod nodeRefId="Complex"/>
+                <funcSubMod nodeRefId="Facility"/>
+                <funcSubMod nodeRefId="Yard"/>
+                <funcSubMod nodeRefId="FacilityRelay"/>
+            </funcMod-->
+            <funcMod nodeRefId="MID_CONFIG">
+                <funcSubMod nodeRefId="NODE_ARGO_CONFIG_SETTINGS"/>
+                <funcSubMod nodeRefId="NODE_INTEGRATION_SERVICES"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_CARINA_LOCALIZATION_RESOURCE_BUNDLE"/>
+                <funcSubMod nodeRefId="NODE_ARGO_METAFIELD_CONFIG"/>
+                <funcSubMod nodeRefId="NODE_CARINA_ESB_CONFIGURATIONS"/>
+                <funcSubMod nodeRefId="NODE_CARINA_DB_VARIFORMS"/>
+                <funcSubMod nodeRefId="NODE_DIAGNOSTICS_VARIFORM"/>
+                <funcSubMod nodeRefId="NODE_CARINA_MODULE_VERSIONS"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_DIAGNOSTICS_LOGGING"/>
+                <funcSubMod nodeRefId="NODE_APPLICATION_LOG"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_DEBUG">
+                <funcSubMod nodeRefId="NODE_INFO_DESK"/>
+                <funcSubMod nodeRefId="NODE_RELOAD_VARIFORMS"/>
+                <funcSubMod nodeRefId="NODE_DIAGNOSTICS_SESSION_FACTORY"/>
+                <funcSubMod nodeRefId="NODE_CARINA_METAFIELD_DIAGNOSTICS"/>
+                <funcSubMod nodeRefId="NODE_CARINA_METAFIELD_DIAGNOSTICS_ULC"/>
+                <funcSubMod nodeRefId="NODE_CARINA_PRIVATE_FILTERS"/>
+                <separator/>
+                <funcSubMod nodeRefId="NODE_DEBUG_SITEMAP"/>
+                <separator/>
+                <!--2009-07-28 vkotha v2.0.E ARGO-19672 Allow defining Yard Block supplements when logged in at Yard scope-->
+                <funcSubMod nodeRefId="NODE_YARD_BLOCK_SUPPLEMENT"/>
+                <!-- 2007-08-24 svijayakumar ARGO-8109 Webservice UI to test webservice using generic webservice api -->
+                <funcSubMod nodeRefId="Webservice"/>
+                <funcSubMod nodeRefId="NODE_ARGO_INTERGRATION_ERRORS"/>
+            </funcMod>
+        </bizUnit>
+
+        <bizUnit nodeRefId="TOP1_CONFIGURATION">
+            <funcMod nodeRefId="MID_EQUIPMENT">
+                <funcSubMod nodeRefId="Container"/>
+                <funcSubMod nodeRefId="Chassis"/>
+                <funcSubMod nodeRefId="Trailer"/>
+                <funcSubMod nodeRefId="Accessory"/>
+                <separator/>
+                <funcSubMod nodeRefId="EquipType"/>
+                <funcSubMod nodeRefId="EquipFeature"/>
+                <funcSubMod nodeRefId="EquipGrade"/>
+                <!-- jwang 2008-04-21 ARGO-10960: add additional fields for EDO -->
+                <funcSubMod nodeRefId="EquipCondition"/>
+                <!-- jwang 2008-05-01 ARGO-11406: add MnR Status field -->
+                <funcSubMod nodeRefId="MnrStatus"/>
+                <funcSubMod nodeRefId="EquipPrefix"/>
+                <funcSubMod nodeRefId="EquipDamageType"/>
+                <funcSubMod nodeRefId="EqComponent"/>
+                <funcSubMod nodeRefId="EquipSerialRange"/>
+                <funcSubMod nodeRefId="EquipTypeEquivalent"/>
+                <funcSubMod nodeRefId="EquipPool"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_ROUTING">
+                <funcSubMod nodeRefId="UnLocCode"/>
+                <funcSubMod nodeRefId="RoutingPoint"/>
+                <funcSubMod nodeRefId="Group"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_CARGO">
+                <funcSubMod nodeRefId="Commodity"/>
+                <funcSubMod nodeRefId="SpecialStow"/>
+                <funcSubMod nodeRefId="HazardPlacard"/>
+                <funcSubMod nodeRefId="HazardFireCode"/>
+                <funcSubMod nodeRefId="PackageType"/>
+                <funcSubMod nodeRefId="ProductType"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_CARRIERS">
+                <funcSubMod nodeRefId="Vessel"/>
+                <funcSubMod nodeRefId="VesselClass"/>
+                <funcSubMod nodeRefId="CarrierService"/>
+                <separator/>
+                <!-- 2007-12-18 lbarman v1.5.B ARGO-9134, ARGO-9133: refactor operaional data for railcars and corresponding UIs -->
+                <funcSubMod nodeRefId="Railcars"/>
+                <!-- 2007-12-4 lbarman v1.5.A ARGO-9132: add UI for RailcarType-->
+                <funcSubMod nodeRefId="RailcarTypes"/>
+                <!-- 2008-4-22 KA route restrictions -->
+                <funcSubMod nodeRefId="RouteRestrictions"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_SERVICE">
+                <funcSubMod nodeRefId="ServiceType"/>
+                <funcSubMod nodeRefId="FlagType"/>
+                <funcSubMod nodeRefId="ServiceRule"/>
+                <funcSubMod nodeRefId="AutoUpdateRule"/>
+                <funcSubMod nodeRefId="StorageRule"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_ORGANIZATIONS">
+                <funcSubMod nodeRefId="MasterBizUnitsNode"/>
+                <!-- 2007-08-20 lbarman v1.4.I ARGO-7798: rename all usages of Shipping Line to Line Operator -->
+                <funcSubMod nodeRefId="LineOperator"/>
+                <funcSubMod nodeRefId="RodTruckingCompany"/>
+                <funcSubMod nodeRefId="Shipper"/>
+                <funcSubMod nodeRefId="Agents"/>
+                <funcSubMod nodeRefId="RailRoad"/>
+                <funcSubMod nodeRefId="ScopedBizUnits"/>
+                <!--funcSubMod nodeRefId="AllBizUnits"/-->
+                <!--2007-07 Shan V1.4.F ARGO-7714, included countries node in the menu -->
+                <separator/>
+                <funcSubMod nodeRefId="Countries"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_GATE_CONFIG">
+                <funcSubMod nodeRefId="RodGateDetails"/>
+                <!--ARGO- cpallapo adding new menu item for gate configuration.-->
+                <funcSubMod nodeRefId="RodGateConfigDetails"/>
+                <!-- 2007-01-30 lbarman v1.3.A ARGO-6066: add appointment rules UI -->
+                <funcSubMod nodeRefId="AppointmentRuleSet"/>
+                <!--2011-02-09 spabbala v2.2.M ARGO-30318 Appointment Priority Groups now Agnostic-->
+                <funcSubMod nodeRefId="AppointmentPriorityGroups"/>
+                <funcSubMod nodeRefId="RodTruck"/>
+                <funcSubMod nodeRefId="RodDriver"/>
+                <funcSubMod nodeRefId="RodChassisProfiles"/>
+                <funcSubMod nodeRefId="RodDocType"/>
+                <funcSubMod nodeRefId="RodPrinter"/>
+                <funcSubMod nodeRefId="RodConsole"/>
+                <separator/>
+                <funcSubMod nodeRefId="RodCancelReason"/>
+                <separator/>
+                <funcSubMod nodeRefId="ExchangeAreas"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_MODELS">
+                <funcSubMod nodeRefId="BerthModels"/>
+                <funcSubMod nodeRefId="YardModels"/>
+            </funcMod>
+            <funcMod nodeRefId="MID_OTHER_CONFIG">
+                <funcSubMod nodeRefId="ArgoCalendar"/>
+                <!-- 2007-05-24 ramsatish v1.4.0 ARGO-6591 export route resolver rules-->
+                <funcSubMod nodeRefId="RouteResolver"/>
+                <!-- jwang 2008-11-13 ARGO-15205 Need new entity "Order Purpose" to support Inter Facility Transfers for ANTGWY. -->
+                <funcSubMod nodeRefId="OrderPurpose"/>
+                <funcSubMod nodeRefId="GeneralReference"/>
+                <!-- bshrinevas 2009-05-26 ARGO-18647 crane delay types -->
+                <funcSubMod nodeRefId="CraneDelayTypes"/>
+            </funcMod>
+
+            <funcMod nodeRefId="NODE_OPTIMIZATION">
+                <funcSubMod nodeRefId="NODE_PROBLEM_TYPES"/>
+                <funcSubMod nodeRefId="NODE_PROBLEM_SOLUTION"/>
+            </funcMod>
+            <funcMod nodeRefId="NODE_WORKFLOW">
+                <funcSubMod nodeRefId="NODE_RESOURCE"/>
+                <funcSubMod nodeRefId="NODE_RESOURCE_GROUP"/>
+            </funcMod>
+            <funcMod nodeRefId="NODE_CONTROL">
+                <funcSubMod nodeRefId="JobStepConfiguration"/>
+                <funcSubMod nodeRefId="ControlSimulation"/>
+            </funcMod>
+        </bizUnit>
+    </appUnit>
+</navigationTree>
+

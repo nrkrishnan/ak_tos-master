@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2013 Navis LLC. All Rights Reserved.
+  ~
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Workflow</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.workflow.business.model.WorkflowProcessInstance" table="wfor_process_instance" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.workflow.business.model.WorkflowProcessInstanceHbr</meta>
+        <meta attribute="n4alias">wpi</meta>
+        <meta attribute="n4-entity-name">WorkflowProcessInstance</meta>
+
+        <id name="wpiGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="wpiProcessId" column="proces_id" type="java.lang.Long" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">Workflow process instance ID.</meta>
+        </property>
+
+        <property name="wpiProcessName" column="process_name" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Workflow process definition name.</meta>
+        </property>
+
+        <property name="wpiSessionId" column="session_id" type="java.lang.Integer" not-null="true">
+            <meta attribute="field-description">ID of the session that this workflow Instance running in</meta>
+        </property>
+
+        <property name="wpiEntityType" column="entity_type" type="string" length="30" not-null="true">
+            <meta attribute="field-description">Entity type.</meta>
+        </property>
+
+        <property name="wpiEntityGkey" column="entity_gkey" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">Entity Gkey.</meta>
+        </property>
+
+        <many-to-one name="wpiCompiledResource" class="com.navis.workflow.business.model.CompiledResource" column="compiled_resources_id"
+                     not-null="true" />
+
+        <property name="wpiCreator" column="created_by" type="string" length="30" not-null="true">
+            <meta attribute="field-description">Created By.</meta>
+        </property>
+        <property name="wpiCreated" column="date_created" type="timestamp" not-null="true">
+            <meta attribute="field-description">Date created.</meta>
+        </property>
+        <property name="wpiChanger" column="updated_by" type="string" length="30">
+            <meta attribute="field-description">Updated By.</meta>
+        </property>
+        <property name="wpiChanged" column="date_updated" type="timestamp">
+            <meta attribute="field-description">Date Updated.</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.workflow.business.model.CompiledResource" table="wfor_resource_compiled" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.workflow.business.model.CompiledResourceHbr</meta>
+        <meta attribute="n4alias">cr</meta>
+        <meta attribute="n4-entity-name">CompiledResource</meta>
+
+        <id name="crGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="crVersionNumber" column="version_number" type="java.lang.Integer" not-null="true" unique-key="uniqueComposite">
+            <meta attribute="field-description">Resource Group version number indicating the version from which these compiled resources were \
+                compiled</meta>
+        </property>
+
+        <property name="crCompiledResourceData" column="compiled_resource_data" type="com.navis.framework.persistence.util.BlobUserType"
+                  length="1000000"
+                  not-null="true">
+            <meta attribute="field-description">The compiled resources for use in rules or workflow</meta>
+        </property>
+
+        <many-to-one name="crResourceGroup" class="com.navis.workflow.business.model.ResourceGroup" column="resource_group_id"
+                     not-null="true" unique-key="uniqueComposite" />
+
+        <property name="crCreator" column="created_by" type="string" length="30" not-null="true">
+            <meta attribute="field-description">Created By.</meta>
+        </property>
+        <property name="crCreated" column="date_created" type="timestamp" not-null="true">
+            <meta attribute="field-description">Date created.</meta>
+        </property>
+        <property name="crChanger" column="updated_by" type="string" length="30">
+            <meta attribute="field-description">Updated By.</meta>
+        </property>
+        <property name="crChanged" column="date_updated" type="timestamp">
+            <meta attribute="field-description">Date Updated.</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.workflow.business.model.ResourceGroup" table="wfor_group" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.workflow.business.model.ResourceGroupHbr</meta>
+        <meta attribute="n4alias">resgrp</meta>
+        <meta attribute="n4-entity-name">ResourceGroup</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+
+        <id name="resgrpGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="resgrpName" column="name" type="string" length="100" unique-key="uniqueComposite" not-null="true">
+            <meta attribute="field-description">Resource Group Name.</meta>
+        </property>
+
+        <property name="resgrpDescription" column="description" type="string" length="256" not-null="true">
+            <meta attribute="field-description">Resource Group Description.</meta>
+        </property>
+        <!--  Scoping  -->
+        <property name="resgrpScopeLevel" type="java.lang.Long" not-null="true" unique-key="uniqueComposite">
+            <meta attribute="field-description">Resource Group Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+            <column name="scope_level" default="1"/>
+        </property>
+
+        <property name="resgrpScopeGkey" column="scope_gkey" type="string" length="50" unique-key="uniqueComposite">
+            <meta attribute="field-description">Resource Scope Gkey</meta>
+        </property>
+
+        <property name="resgrpSystemProvided" column="system_provided" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">The resource group is provided by the system.</meta>
+        </property>
+
+        <property name="resgrpVersionNumber" type="java.lang.Integer">
+            <meta attribute="field-description">The resource group version number.</meta>
+            <column name="version_number" default="0" not-null="true"/>
+        </property>
+
+        <set name="resgrpResourcesToGroups" table="wfor_group_resource" inverse="false" lazy="true">
+            <key column="group_gkey"/>
+            <many-to-many column="resource_gkey" class="com.navis.workflow.business.model.Resource"/>
+        </set>
+
+        <list name="associatedCompiledResourceInstances" table="wfor_resource_compiled" inverse="true" cascade="all-delete-orphan" lazy="true">
+            <key>
+                <column name="resource_group_id" not-null="true" />
+            </key>
+            <index column="version_number" />
+            <one-to-many class="com.navis.workflow.business.model.CompiledResource" />
+        </list>
+
+        <property name="resgrpCreator" column="created_by" type="string" length="30" not-null="true">
+            <meta attribute="field-description">Created By.</meta>
+        </property>
+
+        <property name="resgrpCreated" column="date_created" type="timestamp" not-null="true">
+            <meta attribute="field-description">Date created.</meta>
+        </property>
+
+        <property name="resgrpChanger" column="updated_by" type="string" length="30">
+            <meta attribute="field-description">Updated By.</meta>
+        </property>
+        <property name="resgrpChanged" column="date_updated" type="timestamp">
+            <meta attribute="field-description">Date Updated.</meta>
+        </property>
+    </class>
+
+    <class name="com.navis.workflow.business.model.Resource" table="wfor_resource" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.workflow.business.model.ResourceHbr</meta>
+        <meta attribute="n4alias">res</meta>
+        <meta attribute="n4-entity-name">Resource</meta>
+
+        <id name="resGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="resName" column="name" type="string" length="200" not-null="true">
+            <meta attribute="field-description">Workflow Resource Name</meta>
+        </property>
+
+        <property name="resType" column="type" type="string" length="64" not-null="true">
+            <meta attribute="field-description">Resource Type</meta>
+        </property>
+
+        <property name="resFileName" column="file_name" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Resource File Name Without Path</meta>
+        </property>
+
+        <property name="resContent" column="content" type="com.navis.framework.persistence.util.BlobUserType" length="1000000" not-null="true">
+            <meta attribute="field-description">Resource Content</meta>
+        </property>
+
+        <property name="resSystemProvided" column="system_provided" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Indicated if provided by Navis or not.</meta>
+        </property>
+
+        <set name="resResourcesToGroups" table="wfor_group_resource" inverse="false" lazy="true">
+            <key column="resource_gkey"/>
+            <many-to-many column="group_gkey" class="com.navis.workflow.business.model.ResourceGroup"/>
+        </set>
+
+        <property name="resCreator" column="created_by" type="string" length="30" not-null="true">
+            <meta attribute="field-description">Created By.</meta>
+        </property>
+        <property name="resCreated" column="date_created" type="timestamp" not-null="true">
+            <meta attribute="field-description">Date created.</meta>
+        </property>
+        <property name="resChanger" column="updated_by" type="string" length="30">
+            <meta attribute="field-description">Updated By.</meta>
+        </property>
+        <property name="resChanged" column="date_updated" type="timestamp" >
+            <meta attribute="field-description">Date Updated.</meta>
+        </property>
+    </class>
+
+</hibernate-mapping>

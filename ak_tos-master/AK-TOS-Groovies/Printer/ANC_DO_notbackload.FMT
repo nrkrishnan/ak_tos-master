@@ -1,0 +1,14 @@
+P;E17;F17;
+L39;D0;
+H0,Equipment;o500,100;f0;r0;c25;k18;b0;d0,;
+D39;
+H1,Text1;o100,200;f0;r0;c25;k45;b0;d3,DO NOT BACKLOAD;
+H2,lblTrSig;o100,450;f0;r0;c25;k10;b0;d3,Shipper:;
+H3,lblInSig;o100,500;f0;r0;c25;k10;b0;d3,Consignee:;
+H4,lblInSig;o100,550;f0;r0;c25;k10;b0;d3,AgentCode:;
+H5,Shipper;o300,450;f0;r0;c25;k12;b0;d0,;
+H6,Consignee;o300,500;f0;r0;c25;k12;b0;d0,;
+H7,Trucker;o300,550;f0;r0;c25;k12;b0;d0,;
+H8,Text46;o900,400;f0;r0;c25;k10;b0;d3,Matson Customer Service;
+H9,Text47;o950,450;f0;r0;c25;k10;b0;d3,(907)263-5002;
+R

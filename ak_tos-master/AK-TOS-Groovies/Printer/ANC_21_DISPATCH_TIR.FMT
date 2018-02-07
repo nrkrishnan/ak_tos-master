@@ -1,0 +1,53 @@
+C
+P
+E21;F21;
+L39;D0;
+H0,Text0;o396,51;f0;r0;c25;k11;b0;d0,45;
+D39;
+H1,Chas_No;o278,142;f0;r0;c25;k8;b0;d0,15;
+H2,Chas_T;o278,106;f0;r0;c25;k7;b0;d3,Chassis#:;
+H3,Terms1_T;o451,563;f0;r0;c25;k5;b0;d3,SUBJECT TO TERMS AND CONDITION OF THE MASTER CONTRACT FOR THE SERVICE INDICATED;
+H4,Terms2_T;o500,579;f0;r0;c25;k5;b0;d3,ABOVE BETWEEN CARRIER SHOWN ABOVE AND Matson Navigation Company OF ALASKA, LLC.;
+L5,Line7;o4,553;f0;l1423;w7;
+L6,Line9;o0,98;f0;l1431;w4;
+L7,Line12;o4,476;f0;l1423;w4;
+H8,Cmmnt_t;o14,346;f0;r0;c25;k7;b0;d3,Comments;
+H9,Comments;o14,380;f0;r0;c25;k7;b0;d0,115;
+H10,Trail_T;o14,108;f0;r0;c25;k7;b0;d3,Trailer#:;
+H11,Trail_No;o14,142;f0;r0;c25;k8;b0;d0,15;
+H12,ShipperT;o539,187;f0;r0;c25;k7;b0;d3,Shipper;
+H13,ConsignT;o803,187;f0;r0;c25;k7;b0;d3,Consignee;
+H14,FBillT;o14,187;f0;r0;c25;k7;b0;d3,Freight Bill;
+H15,CarrierT;o803,108;f0;r0;c25;k7;b0;d3,Carrier;
+H16,BlTypeT;o278,187;f0;r0;c25;k7;b0;d3,Bill Type;
+H17,DtTm_T;o974,18;f0;r0;c25;k7;b0;d3,Date/Time;
+H18,DtTm_V;o1089,14;f0;r0;c25;k8;b0;d0,20;
+H19,Gear_T;o14,421;f0;r0;c25;k7;b0;d3,Gear;
+H20,Gear_V;o14,455;f0;r0;c25;k7;b0;d0,115;
+H21,Hz_Tx;o535,8;f0;r0;c25;k11;b0;d3,Matson Navigation Company;
+H22,ShipperV;o539,222;f0;r0;c25;k8;b0;d0,15;
+H23,ConsignV;o803,222;f0;r0;c25;k8;b0;d0,15;
+H24,FBillV;o14,222;f0;r0;c25;k8;b0;d0,15;
+H25,CarrierV;o803,142;f0;r0;c25;k8;b0;d0,15;
+H26,BlTypeV;o278,222;f0;r0;c25;k8;b0;d0,15;
+H27,Origin_T;o14,266;f0;r0;c25;k7;b0;d3,Origin;
+H28,Dest_T;o278,266;f0;r0;c25;k7;b0;d3,Dest.;
+H29,Seal_T;o537,266;f0;r0;c25;k7;b0;d3,Seal#;
+H30,From_V;o14,301;f0;r0;c25;k8;b0;d0,10;
+H31,To_V;o278,301;f0;r0;c25;k8;b0;d0,10;
+H32,Seal_V;o539,301;f0;r0;c25;k7;b0;d0,10;
+H33,ParkL_T;o803,266;f0;r0;c25;k7;b0;d3,Parking Location;
+H34,ParkL_V;o803,301;f0;r0;c25;k8;b0;d0,10;
+H35,CarBy_T;o1047,108;f0;r0;c25;k7;b0;d3,Driver;
+H36,CarBy_V;o1047,142;f0;r0;c25;k8;b0;d0,20;
+H37,HLBy_T;o550,508;f0;r0;c25;k7;b0;d3,Matson Navigation Company of Alaska, LLC By;
+H38,HLBy_V;o1057,508;f0;r0;c25;k8;b0;d0,20;
+H39,Getset_T;o539,108;f0;r0;c25;k7;b0;d3,Genset#;
+H40,Genset_V;o539,142;f0;r0;c25;k8;b0;d0,15;
+H41,Temp_T;o1047,266;f0;r0;c25;k7;b0;d3,Temp.;
+H42,Temp_V;o1047,301;f0;r0;c25;k8;b0;d0,8;
+H43,Weight_T;o1199,266;f0;r0;c25;k7;b0;d3,Weight;
+H44,Weight_V;o1199,301;f0;r0;c25;k8;b0;d0,8;
+R
+E21
+

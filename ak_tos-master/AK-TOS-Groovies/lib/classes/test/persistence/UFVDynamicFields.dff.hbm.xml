@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2011 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+ For testing N4 Data Model Extension Integration
+-->
+
+<hibernate-mapping>
+    <!-- example dynamic fields which will be stored in some form in the database, only
+    dynamic-components are applied-->
+<class name="com.navis.inventory.business.units.UnitFacilityVisit">
+        <id/>
+        <dynamic-component name="customFlexFields">
+            <property name="ufvCustomDFFString1" column="custdff_ufv_string1" type="string" length="255"/>
+            <property name="ufvCustomDFFString2" column="custdff_ufv_string2" type="string" length="255"/>
+
+            <property name="ufvCustomDFFDateTime1" column="custdff_ufv_datetime1" type="timestamp"/>
+            <property name="ufvCustomDFFDateTime2" column="custdff_ufv_datetime2" type="timestamp"/>
+
+            <property name="ufvCustomDFFDate1" column="custdff_ufv_date1" type="date"/>
+
+            <property name="ufvCustomDFFLong1" column="custdff_ufv_long1" type="java.lang.Long"/>
+            <property name="ufvCustomDFFLong2" column="custdff_ufv_long2" type="java.lang.Long"/>
+
+            <property name="ufvCustomDFFDouble1" column="custdff_ufv_double1" type="java.lang.Double"/>
+            <property name="ufvCustomDFFDouble2" column="custdff_ufv_double2" type="java.lang.Double"/>
+
+            <property name="ufvCustomDFFSecondaryPosLocType" column="custdff_ufv_second_pos_loctype"
+                      type="com.navis.argo.persistence.atoms.UserTypeLocTypeEnum" length="16">
+            </property>
+
+            <many-to-one name="ufvCustomDFFUfv" class="com.navis.inventory.business.units.UnitFacilityVisit" column="custdff_ufv_ufv"/>
+            <many-to-one name="ufvCustomDFFMostImportantDamage" class="com.navis.inventory.business.units.UnitEquipDamages"
+                         column="custdff_ufv_damage"/>
+
+            <many-to-one name="ufvCustomDFFCarrierVisit" class="com.navis.argo.business.model.CarrierVisit" column="custdff_ufv_visit"/>
+            <many-to-one name="ufvCustomDFFAnotherShipper" class="com.navis.argo.business.reference.Shipper"
+                         column="custdff_ufv_another_shipper"/>
+
+        </dynamic-component>
+    </class>
+ 
+</hibernate-mapping>

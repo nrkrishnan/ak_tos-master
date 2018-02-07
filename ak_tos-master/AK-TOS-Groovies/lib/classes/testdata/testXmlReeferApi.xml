@@ -1,0 +1,50 @@
+<argo:reefer-monitor xmlns:argo="http://www.navis.com/argo">
+    <update-reefers>
+
+        <!-- 1 or more repetitions: -->
+        <reefer-monitoring>
+            <unit-identity id="CUEU6434001"/>
+            <position loc-type="YARD" location="X" slot="111" orientation="F" carrier-id="string"/>
+
+            <reefer
+                    temp-reqd-c="110.00"
+                    o2-pct="100.00"
+                    co2-pct="0.01"
+                    humidity-pct="10.00"
+                    vent-required-value="10.00"
+                    vent-required-unit="PERCENTAGE"
+                    temp-min-c="10.00"
+                    temp-max-c="110.00"
+                    temp-display-unit="C"
+                    is-power="N"
+                    wanted-is-power="N"
+                    time-latest-on-power="2012-01-07T11:42:56"
+                    time-monitor-1="2014-10-27T02:44:59"
+                    time-monitor-2="2013-06-17T10:14:58"
+                    time-monitor-3="2005-09-12T01:55:02-07:00"
+                    time-monitor-4="2006-11-29T09:20:00"/>
+
+            <reefer-recording-histories>
+                <!--1 or more repetitions: -->
+                <reefer-recording-history
+                        time-of-recording="2005-09-12T01:55:02-07:00"
+                        return-temp-c="100.00"
+                        vent-setting="100.00"
+                        vent-unit="PERCENTAGE"
+                        humidity-pct="100.00"
+                        o2-pct="100.00"
+                        co2-pct="100.00"
+                        rec-fault-code="N"
+                        max_mtr_tmp="100.00"
+                        min_mtr_tmp="100.00"
+                        defrost-temp="100.00"
+                        tmp-set-pt="100.00"
+                        supply-tmp="100.00"
+                        fuel-lvl="100.00"
+                        reefer-hours="100.00"
+                        remark="100.00"/>
+            </reefer-recording-histories>
+        </reefer-monitoring>
+    </update-reefers>
+</argo:reefer-monitor>
+

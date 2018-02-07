@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+
+    <flag-type id="DERMP_HOLDV" applies-to="UNIT" type="HOLD" is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT"/>
+    <flag-type id="HOLD_WITH_RULE" applies-to="UNIT" type="HOLD" description="HOLD_WITH_RULE" is-ref-id-required="N" is-unique-by-ref-id="N"
+               life-cycle-state="ACT"/>
+    <flag-type id="PERMISSION" applies-to="UNIT" type="PERMISSION" description="PERMISSION"
+               is-ref-id-required="N" is-unique-by-ref-id="N" life-cycle-state="ACT"/>
+    <service-rule name="RULE_FOR_HOLD" flag-type="HOLD_WITH_RULE" rule-type="SIMPLE_HOLD" service-type="UNIT_BUNDLE" life-cycle-state="ACT"/>
+
+    <container eqid="EHPU0002789" type="2200" class="CTR" life-cycle-state="ACT">
+        <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                  material="UNKNOWN" strength-code="FB" tare-weight-kg="1900.0" width-mm="2438"/>
+        <ownership owner="POPEYE" operator="POPEYE"/>
+        <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                      stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+        <transponder/>
+    </container>
+
+    <unit id="EHPU0002789" category="IMPORT" transit-state="YARD" freight-kind="FCL" line="POPEYE" unique-key="EHPU0002789">
+        <equipment eqid="EHPU0002789" type="2200" class="CTR" life-cycle-state="ACT" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="FB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="POPEYE" operator="POPEYE"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="YARD" location="YRD1111"/>
+        <routing>
+            <carrier direction="IB" qualifier="DECLARED" mode="VESSEL" id="VK007"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="VESSEL" id="VK007"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="VESSEL" id="VK007"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="UNKNOWN"/>
+        </routing>
+        <flags>
+            <hold id="DERMP_HOLDV" time-applied="2009-02-11T04:01:31"/>/>
+            <permission id="PERMISSION" time-applied="2009-02-11T04:01:32"/>/>
+            <hold id="HOLD_WITH_RULE" time-applied="2009-02-11T04:01:33"/>/>
+        </flags>
+        <unit-etc category="IMPORT" line="POPEYE"/>
+        <timestamps time-in="2009-02-11T04:01:35" time-last-move="2009-02-11T04:01:35"/>
+        <timestamps time-in="2009-02-11T04:01:35" time-last-move="2009-02-11T04:01:35"/>
+    </unit>
+
+</argo:snx>
+

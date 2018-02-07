@@ -1,0 +1,14 @@
+atom.TranSubTypeEnum.RI.Description=Receive Work Order
+gate.ambient_required=Booking {1} requires Ambient temperature. Must enter AMB in Temp. Setting.
+gate.reefer_temp_not_allowed=Temperature is not allowed on non-reefer equipment type {1}.
+atom.TranSubTypeEnum.DE.Description=Delivery Work Order
+gate.reefer_temp_invalid={0} must be 'AMB' or 'KFF' or a numerical value, and must match the booking temperature requirements.
+gate.user_message_4=Cannot gate out container that is not for this facility. The Port of Discharge (POD) of the container must be same location where the gate is at.
+gate.keep_from_freezing_required=Booking {1} requires Keep From Freezing. Must enter KFF in Temp. Setting.
+gate.user_message_3=Cannot receive an Unit of dual temperature grade against this booking with single or no temperature
+CUSTOM_ACTION=Pick Lane
+gate.user_message_2=Unit not of type dual temp, cannot be received against this booking
+gate.user_message_1=Set temperature required to receiving live reefer
+gate.reefer_temp_required=Temperature must be entered for reefer equipment type {1}. // Booking Requirements: {2}.
+ImdgDescriptionY=No Class
+ImdgDescriptionX=N/A

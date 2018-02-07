@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<gate id="KDK_MASSGATE" description="Kodiak Mass Gate" facility-id="KDK" gate-config-id="KDK_MASSGATE" life-cycle-state="ACT">
+  <gate-lanes>
+    <gate-lane id="1" class="INOUT" description="1" needs-appointment="Y" status="OPEN" life-cycle-state="ACT">
+      <gate-lane-printers />
+    </gate-lane>
+  </gate-lanes>
+  <gate-yards>
+    <gate-yard id="ANK" facility-id="ANK">
+      <gate-yard-blocks />
+    </gate-yard>
+  </gate-yards>
+  <gate-exchange-areas />
+</gate>
+</argo:snx>
+

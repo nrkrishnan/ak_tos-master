@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <!-- The reason for this overrides.hbm.xml is to avoid a problem in hbm2java conversion process.  This subclass, DbVariform, from
+    Carina will not be processed in normal argoXXX.hbm.xml unless it's put in a file that is alphabetically ordered last.  -->
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">Overrides</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <subclass name="com.navis.argo.business.model.AbstractCntrStack" extends="com.navis.spatial.business.model.block.AbstractStack"
+              discriminator-value="ACK" dynamic-update="true">
+        <meta attribute="n4alias">acnsk</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.AbstractCntrStackHbr</meta>
+        <meta attribute="class-description">Abstract Container Stack</meta>
+        <meta attribute="n4-entity-name">Abstract Container Stack Entity</meta>
+        <meta attribute="n4-entity-name-plural">Abstract Container Stack Entities</meta>
+
+        <property name="acnskAllows20s" column="allows_20s" type="java.lang.Boolean">
+            <meta attribute="field-description">Stack allows 20' containers.</meta>
+        </property>
+
+        <property name="acnskAllows24s" column="allows_24s" type="java.lang.Boolean">
+            <meta attribute="field-description">Stack allows 24' containers.</meta>
+        </property>
+
+        <property name="acnskAllows30s" column="allows_30s" type="java.lang.Boolean">
+            <meta attribute="field-description">Stack allows 30' containers.</meta>
+        </property>
+
+        <property name="acnskAllows35s" column="allows_35s" type="java.lang.Boolean">
+            <meta attribute="field-description">Stack allows 35' containers.</meta>
+        </property>
+
+        <property name="acnskAllows40s" column="allows_40s" type="java.lang.Boolean">
+            <meta attribute="field-description">Stack allows 40' containers.</meta>
+        </property>
+
+        <property name="acnskAllows45s" column="allows_45s" type="java.lang.Boolean">
+            <meta attribute="field-description">Stack allows 45' containers.</meta>
+        </property>
+
+        <property name="acnskAllows48s" column="allows_48s" type="java.lang.Boolean">
+            <meta attribute="field-description">Stack allows 48' containers.</meta>
+        </property>
+
+        <property name="acnskAllows53s" column="allows_53s" type="java.lang.Boolean">
+            <meta attribute="field-description">Stack allows 53' containers.</meta>
+        </property>
+
+    </subclass>
+
+    <subclass name="com.navis.argo.business.model.AbstractCntrSection" extends="com.navis.spatial.business.model.block.AbstractSection"
+              discriminator-value="ACN" dynamic-update="true">
+        <meta attribute="n4alias">acnsn</meta>
+        <meta attribute="generated-class">com.navis.argo.business.model.AbstractCntrSectionHbr</meta>
+        <meta attribute="class-description">Abstract Container Section</meta>
+        <meta attribute="n4-entity-name">Abstract Container Section Entity</meta>
+        <meta attribute="n4-entity-name-plural">Abstract Container Section Entities</meta>
+
+        <property name="acnsnDefaultDoorDirections" column="default_doors" type="com.navis.argo.persistence.atoms.UserTypeSectionDoorDirectionEnum">
+            <meta attribute="field-description">Default container door directions for section.</meta>
+        </property>
+
+        <property name="acnsnLengthsAllowed" column="lengths_allowed" type="com.navis.argo.persistence.atoms.UserTypeSectionLengthsAllowedEnum">
+            <meta attribute="field-description">Only containers of lengths specified will be allowed be stowed in this section.</meta>
+        </property>
+    </subclass>
+
+</hibernate-mapping>

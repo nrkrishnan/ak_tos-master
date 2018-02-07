@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">CustomNode</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.framework.navigation.business.CustomNode" table="frm_custom_node">
+        <meta attribute="generated-class">com.navis.framework.navigation.CustomNodeHbr</meta>
+        <meta attribute="n4alias">custnode</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-entity-name">Custom Navigation Node</meta>
+        <meta attribute="n4-entity-name-plural">Custom Navigation Nodes</meta>
+        <meta attribute="n4-uniqueness-description">By custnode_id</meta>
+
+        <id name="custnodeGkey" column="custnodenodecfg_gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="custnodeId" column="custnode_id" type="string" length="50" not-null="true" unique-key="unique_node_id">
+            <meta attribute="field-description">Custom Navigation Menu Text Label</meta>
+        </property>
+
+        <property name="custnodeLabel" column="custnode_label" type="string" length="30" not-null="true">
+            <meta attribute="field-description">Custom Navigation Menu Text Label</meta>
+        </property>
+
+        <property name="custnodeParentId" column="custnode_parent_id" type="string" length="50" not-null="true">
+            <meta attribute="field-description">Custom Navigation Menu Parent Id</meta>
+        </property>
+
+        <property name="custnodeDescription" column="custnode_description" type="string" length="100">
+            <meta attribute="field-description">Custom Navigation Menu Description</meta>
+        </property>
+
+        <property name="custnodePrecedingId" column="custnode_preceding_id" type="string" length="50">
+            <meta attribute="field-description">Custom Navigation Menu Preceding Node Id</meta>
+        </property>
+
+        <property name="custnodeVariformId" column="custnode_variform_id" type="string" length="50">
+            <meta attribute="field-description">Custom Navigation Menu Variform Id</meta>
+        </property>
+
+        <property name="custnodeDestination" column="custnode_destination" type="string" length="50">
+            <meta attribute="field-description">Custom Navigation Menu Destination</meta>
+        </property>
+
+        <property name="custnodeMenuContext" column="custnode_menu_context" type="string" length="50" not-null="true">
+            <meta attribute="field-description">Custom Navigation Menu Tree Context</meta>
+        </property>
+
+        <property name="custnodeScopeLevel" type="java.lang.Long">
+            <meta attribute="field-description">Custom Navigation Menu Scope Level, from 1..[1-X], where 1 is the highest level (GLOBAL)</meta>
+            <column name="custnode_scope_level" default="1" not-null="true"/>
+        </property>
+
+        <property name="custnodeScopeGkey" column="custnode_scope_gkey" type="string" length="50">
+            <meta attribute="field-description">Custom Navigation Menu Scope Gkey</meta>
+        </property>        
+
+        <property name="custnodeEnabled" column="custnode_enabled" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">Custom Navigation Enabled</meta>
+        </property>
+
+        <property name="custnodePosition" type="com.navis.framework.persistence.atoms.UserTypeCustomNodePositionEnum">
+            <meta attribute="field-description">The position of the new item in the menu.</meta>
+            <column name="custnode_position_enum" length="20"/>
+        </property>
+
+        <!--  Audit Data -->
+        <property name="custnodeCreated" column="custnode_created" type="timestamp"/>
+        <property name="custnodeCreator" column="custnode_creator" type="string" length="30"/>
+        <property name="custnodeChanged" column="custnode_updated" type="timestamp"/>
+        <property name="custnodeChanger" column="custnode_updater" type="string" length="30"/>
+
+    </class>
+
+</hibernate-mapping>
+

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+    <equipment eqid="EDOU2227777" type="2200" class="CTR">
+        <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                  material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+        <ownership owner="NYK" operator="NYK"/>
+        <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                      stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+        <transponder/>
+    </equipment>
+    <unit id="EDOU2227777" category="STORAGE" transit-state="YARD" freight-kind="MTY" line="NYK" unique-key="EDOU2227777">
+        <equipment eqid="EDOU2227777" type="2200" class="CTR" role="PRIMARY">
+            <physical has-wheels="N" height-mm="2591" is-insulated="N" is-permanently-out-of-service="N" iso-group="GP" length-mm="6068"
+                      material="UNKNOWN" strength-code="TB" tare-weight-kg="1900.0" width-mm="2438"/>
+            <ownership owner="NYK" operator="NYK"/>
+            <restrictions is-open="N" is-unsealable="N" no-top_stow-if-empty="N" no-top-stow-if-full="N" out-of-gauge-ok="N" safe-weight-kg="0.0"
+                          stow-above-deck="N" stow-below-deck="N" uses-accessories="N"/>
+            <transponder/>
+            <damages/>
+        </equipment>
+        <position loc-type="YARD" location="YRD1111"/>
+        <routing>
+            <carrier direction="IB" qualifier="DECLARED" mode="TRUCK"/>
+            <carrier direction="IB" qualifier="ACTUAL" mode="TRUCK"/>
+            <carrier direction="OB" qualifier="DECLARED" mode="TRAIN" id="TRAIN1234"/>
+            <carrier direction="OB" qualifier="ACTUAL" mode="TRAIN" id="TRAIN1234"/>
+        </routing>
+        <edo id="A123EDO5"/>
+        <contents weight-kg="1900.0"/>
+        <unit-etc category="STORAGE" line="NYK"/>
+        <timestamps time-in="2008-11-28T01:12:48" time-last-move="2008-11-28T01:12:48"/>
+        <non-move-history>
+            <event id="UNIT_CREATE" note="test" time-event-applied="2008-11-28T01:12:47" user-id="-system-" is-billable="N"/>
+            <event id="UNIT_ACTIVATE" time-event-applied="2008-11-28T01:12:47" user-id="-system-" is-billable="N"/>
+            <event id="UNIT_RESERVE" time-event-applied="2008-11-28T01:27:15" user-id="admin" is-billable="Y"/>
+        </non-move-history>
+    </unit>
+</argo:snx>
+

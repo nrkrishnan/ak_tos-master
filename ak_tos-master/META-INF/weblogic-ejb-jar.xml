@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<weblogic-ejb-jar
+  xmlns="http://www.bea.com/ns/weblogic/90" xmlns:j2ee="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.bea.com/ns/weblogic/90 http://www.bea.com/ns/weblogic/90/weblogic-ejb-jar.xsd">
+  
+  <weblogic-enterprise-bean>
+    <ejb-name>MdbGemsTos</ejb-name>
+    <message-driven-descriptor>
+      <pool>
+        <max-beans-in-free-pool>1</max-beans-in-free-pool>
+        <initial-beans-in-free-pool>1</initial-beans-in-free-pool>
+      </pool>
+      <destination-jndi-name>gems.tos.n4.formatted</destination-jndi-name>
+      <initial-context-factory>weblogic.jndi.WLInitialContextFactory</initial-context-factory>
+      <provider-url>t3://tosJmsServer:9301</provider-url>
+      <connection-factory-jndi-name>jms/WLQueueConnectionFactory</connection-factory-jndi-name>
+    </message-driven-descriptor>
+    <jndi-name>MdbGemsTos</jndi-name>
+  </weblogic-enterprise-bean>
+  <weblogic-enterprise-bean>
+    <ejb-name>MdbSn4Out</ejb-name>
+    <message-driven-descriptor>
+      <pool>
+        <max-beans-in-free-pool>1</max-beans-in-free-pool>
+        <initial-beans-in-free-pool>1</initial-beans-in-free-pool>
+      </pool>
+      <destination-jndi-name>jms.distqueue.tdp.N4QueueOut</destination-jndi-name>
+      <initial-context-factory>weblogic.jndi.WLInitialContextFactory</initial-context-factory>
+      <provider-url>t3://localhost:9321</provider-url>
+      <connection-factory-jndi-name>jms/WLQueueConnectionFactory</connection-factory-jndi-name>
+    </message-driven-descriptor>
+    <jndi-name>MdbSn4Out</jndi-name>
+  </weblogic-enterprise-bean>
+
+  <weblogic-enterprise-bean>
+    <ejb-name>ManifestReport</ejb-name>
+    <message-driven-descriptor>
+      <pool>
+        <max-beans-in-free-pool>1</max-beans-in-free-pool>
+        <initial-beans-in-free-pool>1</initial-beans-in-free-pool>
+      </pool>
+      <destination-jndi-name>jms.topic.tdp.newVesselHon</destination-jndi-name>
+      <initial-context-factory>weblogic.jndi.WLInitialContextFactory</initial-context-factory>
+      <provider-url>t3://tosJmsServer:9301</provider-url>
+      <connection-factory-jndi-name>jms/WLQueueConnectionFactory</connection-factory-jndi-name>
+    </message-driven-descriptor>
+    <jndi-name>manifest.report.agridept</jndi-name>
+  </weblogic-enterprise-bean>
+ 
+  
+    <weblogic-enterprise-bean>
+    <ejb-name>FSSPublish</ejb-name>
+    <message-driven-descriptor>
+      <pool>
+        <max-beans-in-free-pool>1</max-beans-in-free-pool>
+        <initial-beans-in-free-pool>1</initial-beans-in-free-pool>
+      </pool>
+      <destination-jndi-name>jms.topic.fss</destination-jndi-name>
+      <initial-context-factory>weblogic.jndi.WLInitialContextFactory</initial-context-factory>
+      <provider-url>t3://weblogic1:8001</provider-url>
+      <connection-factory-jndi-name>jms.cf.fss</connection-factory-jndi-name>
+    </message-driven-descriptor>
+    <jndi-name>MdbFss</jndi-name>
+  </weblogic-enterprise-bean>
+ 
+</weblogic-ejb-jar>
+

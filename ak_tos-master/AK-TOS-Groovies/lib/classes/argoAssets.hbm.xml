@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">ArgoAssets</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- Digital Assets -->
+    <class name="com.navis.argo.business.reports.DigitalAsset" table="argo_digital_assets" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.argo.business.reports.DigitalAssetHbr</meta>
+        <meta attribute="class-description">A digital asset with its associated meta-information</meta>
+        <meta attribute="n4alias">da</meta>
+        <meta attribute="n4-entity-name">Digital Asset</meta>
+        <meta attribute="n4-entity-name-plural">Digital Assets</meta>
+
+        <id name="daGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- based on Dublin Core metadata fields http://dublincore.org/documents/dces/ -->
+        <property name="daId" column="id" type="java.lang.String" length="255" not-null="true" index="digital_assets_id_idx">
+            <meta attribute="field-description">An unambiguous reference to the asset</meta>
+        </property>
+
+        <property name="daShortDescription" column="short_description" type="java.lang.String" length="255" not-null="true">
+            <meta attribute="field-description">A short account of the asset</meta>
+        </property>
+
+        <property name="daDescription" column="description" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">An account of the asset, or keywords</meta>
+        </property>
+
+        <!-- Could this be an enum?  Might be better to let the UI do its best guess as to the mime type based on file extension. -->
+        <!-- 2008-02-19 JJS now an enum -->
+        <property name="daFormat" column="format" type="com.navis.argo.persistence.atoms.UserTypeDigitalAssetTypeEnum" not-null="false">
+            <meta attribute="field-description">The Type of media asset: image, groovy code, etc.</meta>
+        </property>
+
+        <property name="daSource" column="source" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">The artist, publisher of, or vendor for the asset</meta>
+        </property>
+
+        <property name="daTitle" column="title" type="java.lang.String" length="255" not-null="false">
+            <meta attribute="field-description">A name given to the asset</meta>
+        </property>
+
+        <!-- the length attribute is not enforced in the database for blobs -->
+        <!-- it is only used at column creation time -->
+        <property name="daByteArray" column="byte_array" type="com.navis.framework.persistence.util.BlobUserType" length="10000000" not-null="true">
+            <meta attribute="field-description">The digital asset data</meta>
+        </property>
+
+        <!--2009-07-29 rkasindula ARGO-19934 v2.0.E - Update pre-deployed column to not nullable.-->
+        <property name="daPreDeployed" column="pre_deployed" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">This is a uploaded groovy, if this value is true.</meta>
+        </property>
+
+        <many-to-one name="daOperator" column="operator_gkey" class="com.navis.argo.business.model.Operator" not-null="true">
+            <meta attribute="field-description">The Operator to which this Digital Asset belongs.</meta>
+        </many-to-one>
+
+        <property name="daCreated" column="created" type="timestamp"/>
+        <property name="daCreator" column="creator" type="string" length="30"/>
+        <property name="daChanged" column="changed" type="timestamp"/>
+        <property name="daChanger" column="changer" type="string" length="30"/>
+
+    </class>
+
+</hibernate-mapping>

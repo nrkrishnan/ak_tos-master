@@ -1,0 +1,369 @@
+def _msgType=u.getFieldValue("msgType")
+def _time=u.getFieldValue("unitCreateTime")
+def _eventCreator='TESTER'
+def _unitId=u.getFieldValue("unitId")
+def _category=u.getFieldValue("unitCategory")
+    _category = _category.getKey() 
+def _transitState=u.getFieldValue("unitActiveUfv.ufvTransitState")
+   if(_transitState!= null)
+    _transitState = _transitState.getKey() 
+def _freightkind=u.getFieldValue("unitFreightKind")
+    _freightkind = _freightkind.getKey()
+def _lineOperator=u.getFieldValue("unitLineOperator.bzuId")
+def _weightKg=u.getFieldValue("unitGoodsAndCtrWtKg")
+def _remark=u.getFieldValue("unitRemark")
+def _drayStatus=u.getFieldValue("unitDrayStatus")
+    if(_drayStatus!= null)
+    _drayStatus = _drayStatus.getKey()
+def _deckRequirement=u.getFieldValue("unitDeckRqmnt")
+    if(_deckRequirement != null)
+    _deckRequirement = _deckRequirement.getKey()
+def _requiresPower=u.getFieldValue("unitRequiresPower")
+def _blNbr=u.getFieldValue("unitGoods.gdsBlNbr")
+def _ufvFlex1=u.getFieldValue("unitActiveUfv.ufvFlexString01")
+def _ufvFlex2=u.getFieldValue("unitActiveUfv.ufvFlexString02")
+def _ufvFlex3=u.getFieldValue("unitActiveUfv.ufvFlexString03")
+def _ufvFlex4=u.getFieldValue("unitActiveUfv.ufvFlexString04")
+def _ufvFlex5=u.getFieldValue("unitActiveUfv.ufvFlexString05")
+def _ufvFlex6=u.getFieldValue("unitActiveUfv.ufvFlexString06")
+def _ufvFlex7=u.getFieldValue("unitActiveUfv.ufvFlexString07")
+def _ufvFlex8=u.getFieldValue("unitActiveUfv.ufvFlexString08")
+def _ufvFlex9=u.getFieldValue("unitActiveUfv.ufvFlexString09")
+def _ufvFlex10=u.getFieldValue("unitActiveUfv.ufvFlexString10")
+def _ufvFlexDate1=u.getFieldValue("unitActiveUfv.ufvFlexDate01")
+def _ufvFlexDate2=u.getFieldValue("unitActiveUfv.ufvFlexDate02")
+def _ufvFlexDate3=u.getFieldValue("unitActiveUfv.ufvFlexDate03")
+def _ufvFlexDate4=u.getFieldValue("unitActiveUfv.ufvFlexDate04")
+def _ufvFlexDate5=u.getFieldValue("unitActiveUfv.ufvFlexDate05")
+def _ufvFlexDate6=u.getFieldValue("unitActiveUfv.ufvFlexDate06")
+def _ufvFlexDate7=u.getFieldValue("unitActiveUfv.ufvFlexDate07")
+def _ufvFlexDate8=u.getFieldValue("unitActiveUfv.ufvFlexDate08")
+def _specialStow=u.getFieldValue("unitSpecialStow.stwId")
+def _commodityId=u.getFieldValue("unitGoods.gdsCommodity.cmdyId")
+def _commodityName=u.getFieldValue("unitGoods.gdsCommodity.cmdyShortName")
+def _timeIn=u.getFieldValue("unitActiveUfv.ufvTimeIn")
+def _timeOut=u.getFieldValue("unitActiveUfv.ufvTimeOut")
+def _timeLoad=u.getFieldValue("unitActiveUfv.ufvTimeOfLoading")
+def _unitFlex1=u.getFieldValue("unitFlexString01")
+def _unitFlex2=u.getFieldValue("unitFlexString02")
+def _unitFlex3=u.getFieldValue("unitFlexString03")
+def _unitFlex4=u.getFieldValue("unitFlexString04")
+def _unitFlex5=u.getFieldValue("unitFlexString05")
+def _unitFlex6=u.getFieldValue("unitFlexString06")
+def _unitFlex7=u.getFieldValue("unitFlexString07")
+def _unitFlex8=u.getFieldValue("unitFlexString08")
+def _unitFlex9=u.getFieldValue("unitFlexString09")
+def _unitFlex10=u.getFieldValue("unitFlexString10")
+def _unitFlex11=u.getFieldValue("unitFlexString11")
+def _unitFlex12=u.getFieldValue("unitFlexString12")
+def _unitFlex13=u.getFieldValue("unitFlexString13")
+def _unitFlex14=u.getFieldValue("unitFlexString14")
+def _unitFlex15=u.getFieldValue("unitFlexString15")
+def _consigneeId=u.getFieldValue("unitGoods.gdsConsigneeBzu")
+def _consigneeName=u.getFieldValue("unitGoods.gdsConsigneeBzu.bzuName")
+def _shipperId=u.getFieldValue("unitGoods.gdsShipperBzu.bzuId")
+def _shipperName=u.getFieldValue("unitGoods.gdsShipperBzu.bzuName")
+def _departureOrderNbr=u.getFieldValue("unitPrimaryUe.ueDepartureOrderItem.eqboiOrder.eqboNbr")
+def _lastFreeDay=u.getFieldValue("unitActiveUfv.ufvCalculatedLastFreeDay")
+def _seal1=u.getFieldValue("unitSealNbr1")
+def _seal2=u.getFieldValue("unitSealNbr2")
+def _seal3=u.getFieldValue("unitSealNbr3")
+def _seal4=u.getFieldValue("unitSealNbr4")
+def _equiClass =u.getFieldValue("unitPrimaryUe.ueEquipment.eqEquipType.eqtypClass")
+   if(_equiClass != null)
+    _equiClass = _equiClass.getKey()
+def _equiTareKg=u.getFieldValue("unitPrimaryUe.ueEquipment.eqTareWeightKg")
+def _equiType=u.getFieldValue("unitPrimaryUe.ueEquipment.eqEquipType.eqtypId")
+def _equiHeightmm=u.getFieldValue("unitPrimaryUe.ueEquipment.eqHeightMm")
+def _equiStrengthCode=u.getFieldValue("unitPrimaryUe.ueEquipment.eqStrengthCode")
+def _equiOwner =u.getFieldValue("unitPrimaryUe.ueEquipmentState.eqsEqOwner.bzuId")
+def _equiOperator=u.getFieldValue("unitPrimaryUe.ueEquipmentState.eqsEqOperator.bzuId")
+def _equiMaterial=u.getFieldValue("unitPrimaryUe.ueEquipment.eqMaterial")
+    if(_equiMaterial != null)
+    _equiMaterial = _equiMaterial.getKey()
+def _holdId=u.getFieldValue("unitAppliedHoldOrPermName")
+def _severity=u.getFieldValue("unitPrimaryUe.ueEquipmentState.eqsDamageSeverity")
+    if(_severity != null)
+    _severity = _severity.getKey()
+def _isHazardous=u.getFieldValue("unitGoods.gdsIsHazardous")
+def _hazImdgList=u.getFieldValue("unitGoods.goodsThreeMainHazardCodes")
+def _hazImdg = _hazImdg.substring(0, _hazImdg.indexOf(','))
+def _hazUnNumList=u.getFieldValue("unitGoods.goodsThreeMainHazardUNNumbers")
+def _hazUnNum = _hazUnNum.substring(0, _hazUnNum.indexOf(','))
+def _backcm=u.getFieldValue("unitOogBackCm")
+def _frontcm=u.getFieldValue("unitOogFrontCm")
+def _leftcm=u.getFieldValue("unitOogLeftCm")
+def _rightcm=u.getFieldValue("unitOogRightCm")
+def _topcm=u.getFieldValue("unitOogTopCm")
+def _lkpCarrierId=u.getFieldValue("unitActiveUfv.ufvLastKnownPosition.posLocId")
+def _lkpLocType=u.getFieldValue("unitActiveUfv.ufvLastKnownPosition.posLocType")
+    if(_lkpLocType != null) 
+    _lkpLocType = _lkpLocType.getKey()
+def _lkpLocation=u.getFieldValue("unitActiveUfv.ufvLastKnownPosition.posName")
+def _lkpOrientation=u.getFieldValue("unitActiveUfv.ufvLastKnownPosition.posOrientation")
+def _lkpSlot=u.getFieldValue("unitActiveUfv.ufvLastKnownPosition.posSlot")
+def _tempReqdC=u.getFieldValue("unitGoods.gdsReeferRqmnts.rfreqTempRequiredC")
+def _o2Pct=u.getFieldValue("unitGoods.gdsReeferRqmnts.rfreqO2Pct")
+def _co2Pct=u.getFieldValue("unitGoods.gdsReeferRqmnts.rfreqCO2Pct")
+def _humidityPct=u.getFieldValue("unitGoods.gdsReeferRqmnts.rfreqHumidityPct")
+def _ventRequiredValue=u.getFieldValue("unitGoods.gdsReeferRqmnts.rfreqVentRequired")
+def _ventRequiredUnit=u.getFieldValue("unitGoods.gdsReeferRqmnts.rfreqVentUnit")
+def _tempMinC=u.getFieldValue("unitGoods.gdsReeferRqmnts.rfreqTempLimitMaxC")
+def _tempMaxC=u.getFieldValue("unitGoods.gdsReeferRqmnts.rfreqTempLimitMinC")
+def _timeLatestOnPower=u.getFieldValue("unitGoods.gdsReeferRqmnts.rfreqLatestOnPowerTime")
+def _group=u.getFieldValue("unitRouting.rtgGroup.grpId")
+def _opl=u.getFieldValue("unitRouting.rtgOPL.pointId")
+def _pod1=u.getFieldValue("unitRouting.rtgPOD1.pointId")
+def _pod2=u.getFieldValue("unitRouting.rtgPOD2.pointId")
+def _pol=u.getFieldValue("unitRouting.rtgPOL.pointId")
+def _origin=u.getFieldValue("unitGoods.gdsOrigin")
+def _destination=u.getFieldValue("unitGoods.gdsDestination")
+def _designatedTrucker=u.getFieldValue("unitRouting.rtgTruckingCompany")
+def _dibcarrierId=u.getFieldValue("unitDeclaredIbCv.cvId")
+def _dibMode=u.getFieldValue("unitDeclaredIbCv.cvCarrierMode")
+    _dibMode = _dibMode.getKey()
+def _aibcarrierId=u.getFieldValue("unitActiveUfv.ufvActualIbCv.cvId")
+def _aibMode=u.getFieldValue("unitActiveUfv.ufvActualIbCv.cvCarrierMode")
+    _aibMode = _aibMode.getKey()
+def _dobcarrierId=u.getFieldValue("unitRouting.rtgDeclaredCv.cvId")
+def _dobMode=u.getFieldValue("unitRouting.rtgDeclaredCv.cvCarrierMode")
+    _dobMode = _dobMode.getKey()
+def _aobcarrierId=u.getFieldValue("unitActiveUfv.ufvActualObCv.cvId") 
+def _aobMode=u.getFieldValue("unitActiveUfv.ufvActualObCv.cvCarrierMode")
+    _aobMode = _aobMode.getKey() 
+
+
+def writer = new StringWriter()
+def builder = new groovy.xml.MarkupBuilder(writer)
+def container = builder.GroovyMsg()
+def xml = writer.toString()
+api.sendXml(xml)
+api.log("After Processing")
+
+-------- Groovy Xml MSG KeyValue -------------
+
+msgType:_msgType,
+time:_time,   
+eventCreator:_eventCreator,
+unitId:_unitId,
+category:_category,
+transitState:_transitState,
+freightkind:_freightkind,
+lineOperator:_lineOperator,
+weightKg:_weightKg,
+remark:_remark,
+drayStatus:_drayStatus,
+deckRequirement:_deckRequirement,
+requiresPower:_requiresPower,
+blNbr:_blNbr,
+ufvFlex1:_ufvFlex1,
+ufvFlex2:_ufvFlex2,
+ufvFlex3:_ufvFlex3,
+ufvFlex4:_ufvFlex4,
+ufvFlex5:_ufvFlex5,
+ufvFlex6:_ufvFlex6,
+ufvFlex7:_ufvFlex7,
+ufvFlex8:_ufvFlex8,
+ufvFlex9:_ufvFlex9,
+ufvFlex10:_ufvFlex10,
+ufvFlexDate1:_ufvFlexDate1,
+ufvFlexDate2:_ufvFlexDate2,
+ufvFlexDate3:_ufvFlexDate3,
+ufvFlexDate4:_ufvFlexDate4,
+ufvFlexDate5:_ufvFlexDate5,
+ufvFlexDate6:_ufvFlexDate6,
+ufvFlexDate7:_ufvFlexDate7,
+ufvFlexDate8:_ufvFlexDate8,
+specialStow:_specialStow,
+commodityId:_commodityId,
+commodityName:_commodityName,
+timeIn:_timeIn,
+timeOut:_timeOut,
+timeLoad:_timeLoad,
+unitFlex1:_unitFlex1,
+unitFlex2:_unitFlex2,
+unitFlex3:_unitFlex3,
+unitFlex4:_unitFlex4,
+unitFlex5:_unitFlex5,
+unitFlex6:_unitFlex6,
+unitFlex7:_unitFlex7,
+unitFlex8:_unitFlex8,
+unitFlex9:_unitFlex9,
+unitFlex10:_unitFlex10,
+unitFlex11:_unitFlex11,
+unitFlex12:_unitFlex12,
+unitFlex13:_unitFlex13,
+unitFlex14:_unitFlex14,
+unitFlex15:_unitFlex15,
+consigneeId:_consigneeId,
+consigneeName:_consigneeName,
+shipperId:_shipperId,
+shipperName:_shipperName,
+departureOrderNbr:_departureOrderNbr,
+lastFreeDay:_lastFreeDay,
+seal1:_seal1,
+seal2:_seal2,
+seal3:_seal3,
+seal4:_seal4,
+equiClass:_equiClass,
+equiTareKg:_equiTareKg,
+equiType:_equiType,
+equiHeightmm:_equiHeightmm,
+equiStrengthCode:_equiStrengthCode,
+equiOwner:_equiOwner,
+equiOperator:_equiOperator,
+equiMaterial:_equiMaterial,
+holdId:_holdId,
+severity:_severity,
+isHazardous:_isHazardous,
+hazImdg:_hazImdg,
+hazUnNum:_hazUnNum,
+backcm:_backcm,
+frontcm:_frontcm,
+leftcm:_leftcm,
+rightcm:_rightcm,
+topcm:_topcm,
+lkpCarrierId:_lkpCarrierId,
+lkpLocType:_lkpLocType,
+lkpLocation:_lkpLocation,
+lkpOrientation:_lkpOrientation,
+lkpSlot:_lkpSlot,
+tempReqdC:_tempReqdC,
+o2Pct:_o2Pct,
+co2Pct:_co2Pct,
+humidityPct:_humidityPct,
+ventRequiredValue:_ventRequiredValue,
+ventRequiredUnit:_ventRequiredUnit,
+tempMinC:_tempMinC,
+tempMaxC:_tempMaxC,
+timeLatestOnPower:_timeLatestOnPower,
+group:_group,
+opl:_opl,
+pod1:_pod1,
+pod2:_pod2,
+pol:_pol,
+origin:_origin,
+destination:_destination,
+designatedTrucker:_designatedTrucker,
+dibcarrierId:_dibcarrierId,
+dibMode:_dibMode,
+aibcarrierId:_aibcarrierId,
+aibMode:_aibMode,
+dobcarrierId:_dobcarrierId,
+dobMode:_dobMode,
+aobcarrierId:_aobcarrierId,
+aobMode:_aobMode
+
+-------------------- API Log -------------------------
+api.log("msgType: "+_msgType)                       
+api.log("time: "+_time)                             
+api.log("eventCreator: "+_eventCreator)             
+api.log("unitId: "+_unitId)                         
+api.log("category: "+_category) 
+api.log("transitState: "+_transitState)
+api.log("freightkind: "+_freightkind)               
+api.log("lineOperator: "+_lineOperator)             
+api.log("weightKg: "+_weightKg)            
+api.log("remark: "+_remark)
+api.log("drayStatus: "+_drayStatus)                 
+api.log("deckRequirement: "+_deckRequirement)       
+api.log("requiresPower: "+_requiresPower)           
+api.log("blNbr: "+_blNbr)                           
+api.log("ufvFlex1: "+_ufvFlex1)                     
+api.log("ufvFlex2: "+_ufvFlex2)                    
+api.log("ufvFlex3: "+_ufvFlex3)                    
+api.log("ufvFlex4: "+_ufvFlex4)                    
+api.log("ufvFlex5: "+_ufvFlex5)                    
+api.log("ufvFlex6: "+_ufvFlex6)                     
+api.log("ufvFlex7: "+_ufvFlex7)                     
+api.log("ufvFlex8: "+_ufvFlex8)                     
+api.log("ufvFlex9: "+_ufvFlex9)                     
+api.log("ufvFlex10: "+_ufvFlex10)                   
+api.log("ufvFlexDate1: "+_ufvFlexDate1)             
+api.log("ufvFlexDate2: "+_ufvFlexDate2)            
+api.log("ufvFlexDate3: "+_ufvFlexDate3)             
+api.log("ufvFlexDate4: "+_ufvFlexDate4)             
+api.log("ufvFlexDate5: "+_ufvFlexDate5)             
+api.log("ufvFlexDate6: "+_ufvFlexDate6)             
+api.log("ufvFlexDate7: "+_ufvFlexDate7)             
+api.log("ufvFlexDate8: "+_ufvFlexDate8)             
+api.log("specialStow: "+_specialStow)               
+api.log("commodityId: "+_commodityId)               
+api.log("commodityName: "+_commodityName)           
+api.log("timeIn: "+_timeIn)                         
+api.log("timeOut: "+_timeOut)                       
+api.log("timeLoad: "+_timeLoad)                     
+api.log("unitFlex1: "+_unitFlex1)                   
+api.log("unitFlex2: "+_unitFlex2)                   
+api.log("unitFlex3: "+_unitFlex3)                   
+api.log("unitFlex4: "+_unitFlex4)                   
+api.log("unitFlex5: "+_unitFlex5)                   
+api.log("unitFlex6: "+_unitFlex6)                   
+api.log("unitFlex7: "+_unitFlex7)                   
+api.log("unitFlex8: "+_unitFlex8)                   
+api.log("unitFlex9: "+_unitFlex9)                   
+api.log("unitFlex10: "+_unitFlex10)                 
+api.log("unitFlex11: "+_unitFlex11)                 
+api.log("unitFlex12: "+_unitFlex12)                 
+api.log("unitFlex13: "+_unitFlex13)                 
+api.log("unitFlex14: "+_unitFlex14)                 
+api.log("unitFlex15: "+_unitFlex15)                 
+api.log("consigneeId: "+_consigneeId)               
+api.log("consigneeName: "+_consigneeName)           
+api.log("shipperId: "+_shipperId)                   
+api.log("shipperName: "+_shipperName)               
+api.log("departureOrderNbr: "+_departureOrderNbr)   
+api.log("lastFreeDay: "+_lastFreeDay)               
+api.log("seal1: "+_seal1)                           
+api.log("seal2: "+_seal2)                           
+api.log("seal3: "+_seal3)                          
+api.log("seal4: "+_seal4)                           
+api.log("equiClass: "+_equiClass)                   
+api.log("equiTareKg: "+_equiTareKg)                 
+api.log("equiType: "+_equiType)                     
+api.log("equiHeightmm: "+_equiHeightmm)             
+api.log("equiStrengthCode: "+_equiStrengthCode)     
+api.log("equiOwner: "+_equiOwner)                   
+api.log("equiOperator: "+_equiOperator)             
+api.log("equiMaterial: "+_equiMaterial)             
+api.log("holdId: "+_holdId)                         
+api.log("severity: "+_severity)                     
+api.log("isHazardous: "+_isHazardous)               
+api.log("hazImdg: "+_hazImdg)                       
+api.log("hazUnNum: "+_hazUnNum)                     
+api.log("backcm: "+_backcm)                         
+api.log("frontcm: "+_frontcm)                       
+api.log("leftcm: "+_leftcm)                         
+api.log("rightcm: "+_rightcm)                       
+api.log("topcm: "+_topcm)                           
+api.log("lkpCarrierId: "+_lkpCarrierId)             
+api.log("lkpLocType: "+_lkpLocType)                 
+api.log("lkpLocation: "+_lkpLocation)               
+api.log("lkpOrientation: "+_lkpOrientation)         
+api.log("lkpSlot: "+_lkpSlot)                       
+api.log("tempReqdC: "+_tempReqdC)                   
+api.log("o2Pct: "+_o2Pct)                           
+api.log("co2Pct: "+_co2Pct)                         
+api.log("humidityPct: "+_humidityPct)               
+api.log("ventRequiredValue: "+_ventRequiredValue)   
+api.log("ventRequiredUnit: "+_ventRequiredUnit)     
+api.log("tempMinC: "+_tempMinC)                     
+api.log("tempMaxC: "+_tempMaxC)                     
+api.log("timeLatestOnPower: "+_timeLatestOnPower)   
+api.log("group: "+_group)                           
+api.log("opl: "+_opl)                               
+api.log("pod1: "+_pod1)                             
+api.log("pod2: "+_pod2)                             
+api.log("pol: "+_pol)                               
+api.log("origin: "+_origin)                         
+api.log("destination: "+_destination)               
+api.log("designatedTrucker: "+_designatedTrucker)   
+api.log("dibcarrierId: "+_dibcarrierId)             
+api.log("dibMode: "+_dibMode)                       
+api.log("aibcarrierId: "+_aibcarrierId)             
+api.log("aibMode: "+_aibMode)                       
+api.log("dobcarrierId: "+_dobcarrierId)             
+api.log("dobMode: "+_dobMode)                       
+api.log("aobcarrierId: "+_aobcarrierId)             
+api.log("aobMode: "+_aobMode)                       
+----------------------------------------------------------------

@@ -1,0 +1,37 @@
+import com.navis.argo.ContextHelper;
+import com.navis.argo.business.atoms.LocTypeEnum;
+import com.navis.argo.business.model.Position;
+import com.navis.argo.business.model.Yard;
+import com.navis.inventory.business.units.Unit;
+import com.navis.inventory.business.units.UnitFacilityVisit;
+import com.navis.road.business.workflow.TransactionAndVisitHolder;
+import com.navis.road.business.util.RoadBizUtil;
+import com.navis.framework.util.BizViolation;
+import com.navis.framework.util.message.MessageLevel;
+import com.navis.framework.util.internationalization.PropertyKey;
+import com.navis.framework.util.internationalization.PropertyKeyFactory;
+
+public class PlaceUnitIntoSkipYard {
+
+    public static final String BEAN_ID = "placeUnitIntoSkipYard";
+    public static PropertyKey PLACE_UNIT_INTO_SKIP_YARD = PropertyKeyFactory.valueOf("gate.place_unit_into_skip_yard");
+
+    public void execute(TransactionAndVisitHolder dao, api) {
+
+        UnitFacilityVisit ufv = dao.getTran().getTranUfv();
+        Position currentPos = ufv.getUfvLastKnownPosition();
+        if (LocTypeEnum.VESSEL.equals(currentPos.getPosLocType())) {
+            Yard moveYard = ContextHelper.getThreadYard();
+            Position skipYardPos = Position.resolvePosition(ufv.getUfvFacility(),
+                    LocTypeEnum.YARD, moveYard.getYrdId(), SKIP_YARD_BLOCK_NAME, null, ufv.getBasicLength());
+            Unit unit = dao.getTran().getTranUnit();
+            try {
+                unit.move(skipYardPos);
+            } catch (BizViolation bv) {
+                RoadBizUtil.appendMessage(MessageLevel.SEVERE, PLACE_UNIT_INTO_SKIP_YARD, null);
+            }
+        }
+    }
+
+    private static final String SKIP_YARD_BLOCK_NAME = "SKPYRD";
+}

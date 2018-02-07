@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd"
+        >
+<hibernate-mapping default-lazy="true">
+
+    <!-- 03.09.10 JJS put 'unique' constraint on natural keys (see individual comments below) -->
+    <!-- 03.09.11 JJS WalMart required 'userid' as part of name of any column containing user id -->
+
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="JavaClassPrefix">Security</meta>
+
+    <class name="com.navis.security.business.organization.Organization" table="organization">
+        <meta attribute="generated-class">com.navis.security.business.organization.OrganizationHbr</meta>
+        <meta attribute="n4alias">org</meta>
+        <meta attribute="n4-entity-name">Organization</meta>
+        <meta attribute="n4-entity-name-plural">Organizations</meta>
+        <meta attribute="n4-business-key">orgCode</meta>
+        <meta attribute="n4-scope-description">subclass</meta>
+        <meta attribute="n4-uniqueness-description">by org code per country</meta>
+        <meta attribute="carina-index">(orgParentOrgGkey)</meta>
+
+        <id name="orgGkey" column="org_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!--This is self-referential/cyclical relation for parent child organizations-->
+        <!--        <property name="orgParentOrgGkey" column="org_parnt_org_gkey" type="java.lang.Long" length="10"/>-->
+        <!--        <many-to-one name="orgParentOrg" class="com.navis.security.business.organization.Organization" column="orgParentOrgGkey"/>-->
+        <set name="orgChildList" inverse="true" lazy="true">
+            <key column="orgParentOrgGkey"/>
+            <one-to-many class="com.navis.security.business.organization.Organization"/>
+        </set>
+
+        <!-- 03.09.10 JJS require org_name to be unique -->
+        <!-- 04.04.02 HJK- org_name no longer unique due to Walmart needs, unique by orgcode/type enforced at biz tier -->
+        <property name="orgName" column="org_name" type="string" length="64" not-null="true"/>
+        <property name="orgCode" column="org_code" type="string" length="64" not-null="true"/>
+        <property name="orgDescription" column="org_description" type="string" length="64"/>
+
+        <property name="orgType" column="org_type" type="string" length="64" not-null="true"/>
+
+        <property name="orgActive" column="org_active" type="string" length="1"/>
+        <property name="orgAddressLine1" column="org_address_line1" type="string" length="35"/>
+        <property name="orgAddressLine2" column="org_address_line2" type="string" length="35"/>
+        <property name="orgAddressLine3" column="org_address_line3" type="string" length="35"/>
+        <property name="orgCity" column="org_city" type="string" length="20"/>
+        <property name="orgState" column="org_state" type="string" length="3"/>
+        <property name="orgCountryId" column="org_country_id" type="string" length="2"/>
+
+        <!--Probably could infer this from address, but set this explicitly.-->
+        <property name="orgTimeZone" column="org_time_zone" type="string" length="35"/>
+        <property name="orgMailCode" column="org_mail_code" type="string" length="10"/>
+
+        <property name="orgTel" column="org_tel" type="string" length="20"/>
+        <property name="orgFax" column="org_fax" type="string" length="20"/>
+        <property name="orgContact" column="org_contact" type="string" length="35"/>
+        <property name="orgTitle" column="org_title" type="string" length="35"/>
+        <property name="orgCreated" column="org_create_time" type="timestamp"/>
+        <property name="orgCreator" column="org_create_userid" type="string" length="30"/>
+        <property name="orgChanged" column="org_change_time" type="timestamp"/>
+        <property name="orgChanger" column="org_change_userid" type="string" length="30"/>
+
+        <!-- FTP-->
+        <property name="orgFtpHostname" column="org_hostname" type="string" length="50"/>
+        <property name="orgFtpUser" column="org_ftp_user" type="string" length="50"/>
+        <property name="orgFtpPassword" column="org_ftp_password" type="string" length="50"/>
+        <property name="orgFtpDirectory" column="org_ftp_directory" type="string" length="50"/>
+
+        <property name="orgIpAddress" column="org_ip_address" type="string" length="20"/>
+        <property name="orgPortAddress" column="org_port_address" type="string" length="10"/>
+
+        <set name="orgPrimaryBuserList" inverse="true" lazy="true">
+            <key column="buser_prim_org_id"/>
+            <one-to-many class="com.navis.security.business.user.BaseUser"/>
+        </set>
+
+        <set name="orgEmployeeBuserList" inverse="true" lazy="true">
+            <key column="buser_employer_id"/>
+            <one-to-many class="com.navis.security.business.user.BaseUser"/>
+        </set>
+        <set name="orgGrpList" table="org_group_org_map" inverse="true" lazy="true">
+            <key column="grfacm_org_gkey"/>
+            <many-to-many column="grfacm_grp_gkey" class="com.navis.security.business.organization.OrgGroup"/>
+        </set>
+
+    </class>
+
+    <class name="com.navis.security.business.organization.OrgGroup" table="org_group">
+        <meta attribute="generated-class">com.navis.security.business.organization.OrgGroupHbr</meta>
+        <meta attribute="n4alias">grp</meta>
+        <meta attribute="n4-entity-name">Organization Group</meta>
+        <meta attribute="n4-entity-name-plural">Organization Groups</meta>
+        <meta attribute="n4-scope-description">subclass responsible</meta>
+
+        <id name="grpGkey" column="grp_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <!-- 03.09.10 JJS require grp_name to be unique -->
+        <property name="grpName" column="grp_name" type="string" length="64" not-null="true" unique="true"/>
+        <property name="grpDescription" column="grp_description" type="string" length="64"/>
+        <property name="grpType" column="grp_type" type="com.navis.framework.persistence.atoms.UserTypeGroupTypeEnum"/>
+
+        <set name="grpOrgList" table="org_group_org_map" inverse="false" lazy="true">
+            <key column="grfacm_grp_gkey"/>
+            <many-to-many column="grfacm_org_gkey" class="com.navis.security.business.organization.Organization"/>
+        </set>
+
+        <set name="grpBuserList" table="sec_user_group_map" inverse="true" lazy="true">
+            <key column="usrgrpm_grp_gkey"/>
+            <many-to-many column="usrgrpm_user_gkey" class="com.navis.security.business.user.BaseUser"/>
+        </set>
+
+    </class>
+
+    <class name="com.navis.security.business.user.BaseUser" table="base_user" discriminator-value="null" lazy="true">
+        <meta attribute="generated-class">com.navis.security.business.user.BaseUserHbr</meta>
+        <meta attribute="n4alias">buser</meta>
+        <meta attribute="n4-scope-description">subclass responsible</meta>
+        <meta attribute="n4-entity-name">User</meta>
+        <meta attribute="n4-entity-name-plural">Users</meta>
+        <meta attribute="n4-business-key">buserUid</meta>
+        <meta attribute="n4-uniqueness-description">buserUid</meta>
+        <meta attribute="carina-fk-index-disable">(buser_option_gkey)</meta>
+        <meta attribute="ui-default-lov">com.navis.security.lov.USERS.SEARCH</meta>
+
+        <id name="buserGkey" column="buser_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <discriminator column="buser_subclass" not-null="false" type="string" length="1"/>
+        <!-- 03.09.10 JJS require buser_uid to be unique -->   <!-- Walmart insists on 10 chars-->
+        <property name="buserUid" column="buser_userid" type="string" length="30" not-null="true" unique="true"/>
+        <!-- 2003.10.29  HJK DO NOT break into sub element as defined below as the unique constraint will not be generated!!!
+        <property name="buserUid" type="string" length="20" not-null="true" unique="true">
+            <column nsame="buser_userid" sql-type="varchar(20)"/>
+        </property>
+        -->
+        <property name="buserPassword" column="buser_password" type="string" length="40" not-null="true"/>
+        <property name="buserFirstName" column="buser_firstName" type="string" length="20" not-null="true"/>
+        <property name="buserLastName" column="buser_lastName" type="string" length="20" not-null="true"/>
+        <property name="buserMiddleName" column="buser_middle_name" type="string" length="1"/>
+        <property name="buserSalutation" column="buser_salutation" type="com.navis.framework.persistence.atoms.UserTypeSalutationEnum"/>
+
+        <property name="buserEMail" column="buser_eMail" type="string" length="40"/>
+        <property name="buserTelephone" column="buser_telephone" type="string" length="15"/>
+        <property name="buserPager" column="buser_pager" type="string" length="15"/>
+        <property name="buserSms" column="buser_sms" type="string" length="15"/>
+        <property name="buserFax" column="buser_fax" type="string" length="15"/>
+
+        <!-- locale, 2 digit2 ISO codes  -->
+        <property name="buserLocaleLanguage" column="buser_locLanguage" type="string" length="2"/>
+        <property name="buserLocaleCountry" column="buser_locCountry" type="string" length="2"/>
+
+        <!--TimeZone javadocs say do not use short 3 letter abbr since their use is deprecated -->
+        <property name="buserTimeZone" column="buser_time_zone" type="string" length="35"/>
+
+        <property name="buserActive" column="buser_active" type="string" length="1"/>
+
+        <property name="buserAuthMethod" type="com.navis.framework.persistence.atoms.UserTypeUserAuthenticationMethodEnum" length="20">
+            <meta attribute="field-description">Authentication Method: INTERNAL, EXTERNAL, DEFAULT</meta>
+            <column name="buser_auth_method" default="&apos;INTERNAL&apos;" not-null="true"/>
+        </property>
+
+        <property name="buserComments" column="buser_comments" type="string" length="255"/>
+        <property name="buserCreated" column="buser_create_time" type="timestamp"/>
+        <property name="buserCreator" column="buser_creat_userid" type="string" length="30"/>
+        <property name="buserChanged" column="buser_change_time" type="timestamp"/>
+        <property name="buserChanger" column="buser_chg_userid" type="string" length="30"/>
+        <property name="buserPasswordExpiryOverrideDays" column="buser_passwd_expr_ovrride_dys" type="java.lang.Long"/>
+
+        <!-- actually these lazy=proxy elements are redundant
+              but Hibernate will still left outer join on buserOption and buserAuthenticationProfile-->
+        <many-to-one name="buserEmployerOrg" class="com.navis.security.business.organization.Organization" column="buser_employer_id" lazy="proxy"
+                     index="buser_employer_id_fki"/>
+
+        <many-to-one name="buserPrimaryOrg" class="com.navis.security.business.organization.Organization" column="buser_prim_org_id" lazy="proxy"
+                     index="buser_buser_prim_org_id_fki"/>
+
+        <many-to-one name="buserOption" class="com.navis.security.business.user.UserOption" column="buser_option_gkey"
+                     cascade="all" unique="true" lazy="proxy"/>
+
+        <one-to-one name="buserAuthenticationProfile" class="com.navis.security.business.authentication.UserAuthenticationProfile"
+                    cascade="all" lazy="proxy"/>
+
+        <many-to-one name="buserManagedByRole" class="com.navis.security.business.user.SecRole" column="buser_managed_by_role"
+                     index="buser_managed_by_role_fki"/>
+
+        <set name="buserRoleList" table="sec_user_role_map" inverse="false" lazy="true">
+            <key column="usrrolm_user_gkey"/>
+            <many-to-many column="usrrolm_role_gkey" class="com.navis.security.business.user.SecRole"/>
+        </set>
+
+        <set name="buserGroupList" table="sec_user_group_map" inverse="false" lazy="true">
+            <key column="usrgrpm_user_gkey"/>
+            <many-to-many column="usrgrpm_grp_gkey" class="com.navis.security.business.organization.OrgGroup"/>
+        </set>
+
+        <list name="buserMessageBundleList" table="sec_user_bundle_map" lazy="true">
+            <key column="usrbndl_user_gkey"/>
+            <index column="usrbndl_index"/>
+            <many-to-many class="com.navis.framework.configuration.localization.business.PersistentResourceBundle">
+                <column name="usrbndl_bundle_gkey" index="sec_usr_bmap_bundle_gkey_fki"></column>
+            </many-to-many>
+        </list>
+
+        <!-- ***** PLEASE DON'T ADD USER PREFERENCES OR OPTIONS HERE, USE UserOption OBJECT INSTEAD ***********-->
+        <!-- added 2008-02-27 JJS to support new UI -->
+        <property name="buserSleepDelaySecs" column="sleep_delay_secs" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">Idle time in seconds, after which the N4 screen-saver kicks-in</meta>
+        </property>
+
+        <property name="buserMaxTableRows" column="max_table_rows" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The max number of query results to return for a table (null indicates to use config setting).</meta>
+        </property>
+
+        <property name="buserExpiryDateTime" column="buser_expiry_date_time" type="timestamp"/>
+    </class>
+
+    <class name="com.navis.security.business.user.SecRole" table="sec_role" discriminator-value="null">
+        <meta attribute="generated-class">com.navis.security.business.user.SecRoleHbr</meta>
+        <meta attribute="n4alias">role</meta>
+        <meta attribute="n4-entity-name">Role</meta>
+        <meta attribute="n4-entity-name-plural">Roles</meta>
+        <meta attribute="n4-business-key">roleSecName</meta>
+        <meta attribute="n4-uniqueness-description">role name</meta>
+        <meta attribute="n4-scope-description">subclass responsible</meta>
+
+        <id name="roleGkey" column="role_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <discriminator column="role_subclass" not-null="false" type="string" length="1"/>
+
+        <!-- 03.09.10 JJS require role_name to be unique -->
+        <!-- Changed the property name roleName as roleSecName since it already exist in XpeRole -->
+        <property name="roleSecName" column="role_name" type="string" length="64" not-null="true" unique="true"/>
+        <property name="roleDescription" column="role_description" type="string" length="100"/>
+
+        <!-- 2007/2/8 EYU Delegated Security feature -->
+        <property name="roleCreated" column="role_create_time" type="timestamp"/>
+        <property name="roleCreator" column="role_creat_userid" type="string" length="30"/>
+        <property name="roleChanged" column="role_change_time" type="timestamp"/>
+        <property name="roleChanger" column="role_chg_userid" type="string" length="30"/>
+
+        <property name="roleIsDelegated" column="role_is_delegated" type="boolean"/>
+        <many-to-one name="roleParent" class="com.navis.security.business.user.SecRole" column="role_parent" index="sec_role_parent_fki"/>
+
+        <!--  mapping to Privileges   -->
+        <bag name="rolePrivilegesList" lazy="true" inverse="false" cascade="all-delete-orphan">
+            <key column="rlprivm_role_gkey"/>
+            <one-to-many class="com.navis.security.business.user.SecRolePrivilegeMapping"/>
+        </bag>
+
+        <set name="roleBuserList" table="sec_user_role_map" inverse="true" lazy="true">
+            <key column="usrrolm_role_gkey"/>
+            <many-to-many column="usrrolm_user_gkey" class="com.navis.security.business.user.BaseUser"/>
+        </set>
+
+    </class>
+
+    <class name="com.navis.security.business.user.SecRolePrivilegeMapping" table="sec_role_priv_map">
+        <meta attribute="generated-class">com.navis.security.business.user.SecRolePrivilegeMappingHbr</meta>
+        <meta attribute="n4alias">rlprivm</meta>
+        <meta attribute="n4-entity-name">Privilege</meta>
+        <meta attribute="n4-entity-name-plural">Privileges</meta>
+
+        <id name="rlprivmGkey" column="rlprivm_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!-- Make it larger since we are generating more complicated strings-->
+        <property name="rlprivmPrivId" column="rlprivm_priv_id" type="string" length="200"/>
+
+        <many-to-one name="rlprivmRoleGkey" class="com.navis.security.business.user.SecRole" column="rlprivm_role_gkey"
+                     index="secrolpm_rlprivm_role_gkey_fki"/>
+    </class>
+
+    <class name="com.navis.security.business.user.UserOption" table="user_option" lazy="true">
+        <meta attribute="generated-class">com.navis.security.business.user.UserOptionHbr</meta>
+        <meta attribute="n4alias">useropt</meta>
+        <meta attribute="n4-entity-name">User Option</meta>
+        <meta attribute="n4-entity-name-plural">User Options</meta>
+        <meta attribute="n4-scope-description">relational to BaseUser</meta>
+        <id name="useroptGKey" column="useropt_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <!--All UI based user options should be here -->
+
+        <!-- list views will automatically refresh after an update, default false -->
+        <property name="userOptAutoRefresh" column="user_option_auto_refresh" type="boolean"/>
+
+        <property name="userOptFetchRowLimit" column="user_option_fetch_row_lim" type="java.lang.Long" not-null="false">
+            <meta attribute="field-description">The maximum number of rows to display on a table (null indicates to use config setting).</meta>
+        </property>
+
+        <list name="useroptWndOpenNodes" lazy="true" table="user_option_open_nodes">
+            <key column="open_node_gkey"/>
+            <index column="open_node_position"/>
+            <element type="string" column="open_node_id" not-null="true"/>
+        </list>
+
+        <list name="useroptWndFavoriteNodes" lazy="true" table="user_option_favorite_nodes">
+            <key column="favorite_node_gkey"/>
+            <index column="favorite_node_position"/>
+            <element type="string" column="favorite_node_id" not-null="true"/>
+        </list>
+
+        <map name="useroptWndViewBounds" lazy="true" table="user_option_view_bounds">
+            <key column="view_bounds_gkey"/>
+            <index column="view_id" type="string" length="50"/>
+            <composite-element class="com.navis.security.business.user.ViewBounds">
+                <meta attribute="generated-class">com.navis.security.business.user.ViewBoundsHbr</meta>
+                <property name="useroptWndPosX" column="useropt_wnd_pos_x" type="java.lang.Long" not-null="true"/>
+                <property name="useroptWndPosY" column="useropt_wnd_pos_y" type="java.lang.Long" not-null="true"/>
+                <property name="useroptWndWidth" column="useropt_wnd_width" type="java.lang.Long" not-null="true"/>
+                <property name="useroptWndHeight" column="useropt_wnd_height" type="java.lang.Long" not-null="true"/>
+            </composite-element>
+        </map>
+    </class>
+
+    <class name="com.navis.security.business.authentication.UserAuthenticationProfile" table="sec_user_auth_profile" lazy="true">
+        <meta attribute="generated-class">com.navis.security.business.authentication.UserAuthenticationProfileHbr</meta>
+        <meta attribute="n4alias">usrauth</meta>
+        <meta attribute="n4-entity-name">User Authentication Profile</meta>
+        <meta attribute="n4-entity-name-plural">User Authentication Profiles</meta>
+        <id name="usrauthGkey" column="usrauth_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="foreign">
+                <param name="property">usrauthUser</param>
+            </generator>
+        </id>
+        <one-to-one name="usrauthUser" class="com.navis.security.business.user.BaseUser" constrained="true"/>
+        <property name="usrauthLocked" column="usrauth_locked" type="java.lang.Boolean" not-null="true"/>
+        <property name="usrauthFailedLogins" column="usrauth_failed_logins" type="java.lang.Long"/>
+        <!-- First failed login when the count starts-->
+        <property name="usrauthFirstFailedLogin" column="usrauth_first_failed_login" type="timestamp"/>
+        <property name="usrauthLastFailedLogin" column="usrauth_last_failed_login" type="timestamp"/>
+
+        <property name="usrauthLastSuccessfulLogin" column="usrauth_last_login" type="timestamp"/>
+
+        <!-- password history-->
+        <property name="usrauthPasswordLastChanged" column="usrauth_password_last_changed" type="timestamp"/>
+        <!-- 400 is sufficient for 10 old passwords since each can be 128bits or 32 hex digits + divider-->
+        <property name="usrauthPreviousPasswords" column="usrauth_previous_passwords" type="string" length="400"/>
+    </class>
+
+    <class name="com.navis.security.business.authentication.AuthenticationHistory" table="sec_authentication_history">
+        <meta attribute="generated-class">com.navis.security.business.authentication.AuthenticationHistoryHbr</meta>
+        <meta attribute="n4alias">authhist</meta>
+        <meta attribute="n4-entity-name">Authentication History</meta>
+        <meta attribute="n4-entity-name-plural">Authentication Histories</meta>
+
+        <id name="authhistGkey" column="authhist_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="authhistStatus" column="authhist_status"
+                  type="com.navis.framework.persistence.atoms.UserTypeAuthenticationStatusEnum" length="15"/>
+
+        <property name="authhistIpAddress" column="authhist_ip_address" type="string" length="15"/>
+
+        <many-to-one name="authhistUser" class="com.navis.security.business.user.BaseUser"
+                     column="authhist_user" index="sec_authhist_authhist_user_fki"/>
+
+        <!-- TPM: Can't be unique for SQL Server as we insert NULL on fail -->
+        <property name="authhistSecureSessionId" column="authhist_secure_session_id" index="authist_secure_session_id_idx"
+                  type="java.lang.Long" unique="false"/>
+
+        <!-- compound index may be required on Oracle: (authhist_login_time, '1') -->
+        <property name="authhistLoginTime" column="authhist_login_time" type="timestamp" index="authhist_login_idx"/>
+        <property name="authhistLogoutTime" column="authhist_logout_time" type="timestamp"/>
+
+        <property name="authhistSessionType" column="authhist_session_type"
+                  type="com.navis.framework.persistence.atoms.UserTypeSessionTypeEnum"/>
+        <!-- Denormalized dot-notation of scope. Applications are responsible for providing this field-->
+        <property name="authhistScope" column="authhist_scope" type="string" length="100"/>
+        <property name="authhistNote" column="authhist_note" type="string" length="100"/>
+        <property name="authhistNode" column="authhist_node" type="string" length="255"/>
+    </class>
+
+    <!--  Table used for creating login tokens for cross-application login  -->
+    <class name="com.navis.security.business.authentication.PersistentLogin" table="sec_persistent_login">
+        <meta attribute="generated-class">com.navis.security.business.authentication.PersistentLoginHbr</meta>
+        <meta attribute="n4alias">plogin</meta>
+        <meta attribute="n4-entity-name">Persistent Login</meta>
+        <meta attribute="n4-entity-name-plural">Persistent Logins</meta>
+        <meta attribute="n4-scope-description">global</meta>
+        <meta attribute="n4-uniqueness-description">by nodeName, secureSessionId, token</meta>
+
+        <id name="ploginGkey" column="plogin_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="ploginNodeName" column="plogin_node_name" type="string" length="100" not-null="true" unique-key="plogin_UK"/>
+        <property name="ploginSecureSessionId" column="plogin_secure_session_id" type="java.lang.Long" length="10" not-null="true"
+                  unique-key="plogin_UK"/>
+        <property name="ploginToken" column="plogin_token" type="string" length="128" not-null="true" unique-key="plogin_UK"/>
+
+        <many-to-one name="ploginUser" column="plogin_buser_gkey" class="com.navis.security.business.user.BaseUser" not-null="true"
+                     index="sec_plogin_buser_userid_fki"/>
+        <property name="ploginScopeAddress" column="plogin_scope_addr" type="string" length="256"/>
+        <property name="ploginExpiryDateTime" column="plogin_exp_date_time" type="timestamp" not-null="true"/>
+        <property name="ploginCreated" column="plogin_created" type="timestamp" not-null="true"/>
+        <property name="ploginCreator" column="plogin_creator" type="string" length="30"/>
+
+    </class>
+
+    <class name="com.navis.security.business.license.DbLicense" table="frm_license">
+        <meta attribute="n4alias">lic</meta>
+        <meta attribute="generated-class">com.navis.security.business.license.DbLicenseHbr</meta>
+        <meta attribute="n4-entity-name">License</meta>
+        <meta attribute="n4-entity-name-plural">Licenses</meta>
+        <meta attribute="n4-scope-description">flexible</meta>
+
+        <id name="licGkey" column="lic_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="licScope" column="lic_scope" type="java.lang.Long" not-null="true">
+            <meta attribute="field-description">scope level, from 0..[1-X], where 0 is the highest level.</meta>
+        </property>
+
+        <property name="licScopeGkey" column="lic_scope_gkey" type="string" length="50">
+            <meta attribute="field-description">gkey of the scope level</meta>
+        </property>
+
+        <property name="licXml" column="lic_xml" type="text">
+            <meta attribute="field-description">xml representation of the license</meta>
+        </property>
+
+        <property name="licChanged" column="lic_update_date" type="timestamp">
+            <meta attribute="field-description">when the license was updated</meta>
+        </property>
+
+        <property name="licChanger" column="lic_update_user" type="string" length="30">
+            <meta attribute="field-description">who updated the license</meta>
+        </property>
+
+        <property name="licCreated" column="lic_create_date" type="timestamp">
+            <meta attribute="field-description">when the license was created</meta>
+        </property>
+
+        <property name="licCreator" column="lic_create_user" type="string" length="30">
+            <meta attribute="field-description">who created the license</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.security.business.whitelist.IPWhitelist" table="sec_ipwhitelist">
+        <meta attribute="generated-class">com.navis.security.business.whitelist.IPWhitelistHbr</meta>
+        <meta attribute="n4alias">ipwhitelist</meta>
+        <meta attribute="n4-entity-name">IP Whitelist</meta>
+        <meta attribute="n4-entity-name-plural">IP Whitelists</meta>
+        <meta attribute="n4-scope-description">global</meta>
+
+        <id name="ipwhitelistGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="ipWhitelistRange" column="ip_whitelist_range" type="string" length="1024" not-null="true"/>
+        <many-to-one name="ipWhitelistRole" class="com.navis.security.business.user.SecRole" column="ip_whitelist_role" not-null="false"
+                     index="sec_role_whitelist_role_fki"/>
+    </class>
+
+</hibernate-mapping>

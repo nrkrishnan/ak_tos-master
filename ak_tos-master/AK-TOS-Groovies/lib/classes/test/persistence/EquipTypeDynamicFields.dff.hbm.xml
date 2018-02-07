@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2011 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!--
+ For testing N4 extension integration
+-->
+
+<hibernate-mapping>
+    <!-- example dynamic fields which will be stored in some form in the database, only
+    dynamic-components are applied-->
+    <class name="com.navis.argo.business.reference.EquipType">
+        <id/>
+        <!-- not used but makes it a valid hbm file to do full validation against dtd-->
+        <dynamic-component name="customFlexFields">
+            <property name="eqtypCustomDFFString1" column="custdff_eqtyp_string1" type="string" length="255"/>
+            <property name="eqtypCustomDFFString2" column="custdff_eqtyp_string2" type="string" length="255"/>
+
+            <property name="eqtypCustomDFFDateTime1" column="custdff_eqtyp_datetime1" type="timestamp"/>
+            <property name="eqtypCustomDFFDateTime2" column="custdff_eqtyp_datetime2" type="timestamp"/>
+
+            <property name="eqtypCustomDFFLong1" column="custdff_eqtyp_long1" type="java.lang.Long"/>
+            <property name="eqtypCustomDFFLong2" column="custdff_eqtyp_long2" type="java.lang.Long"/>
+
+            <property name="eqtypCustomDFFDouble1" column="custdff_eqtyp_double1" type="java.lang.Double"/>
+            <property name="eqtypCustomDFFDouble2" column="custdff_eqtyp_double2" type="java.lang.Double"/>
+
+        </dynamic-component>
+    </class> 
+
+</hibernate-mapping>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:snx xmlns:ns2="http://www.navis.com/argo">
+	<unit snx-update-note="NewVes Data" line="CSX" freight-kind="FCL"
+		category="IMPORT" id="TTNU9640814">
+		<equipment role="PRIMARY" eq-flex-01="MAT" material="STEEL"
+			operator="CSX" owner="CSXU" strength-code="BC" height-mm="2895"
+			tare-kg="3840.11" type="D40H" class="CTR" eqid="TTNU9640814" />
+		<position slot="420208" location="RJP339" loc-type="VESSEL" />
+		<routing group="PASSPASS" destination="HON" opl="LAX" pod-1="HON"
+			pol="LAX">
+			<carrier id="RJP339" mode="VESSEL" qualifier="DECLARED"
+				direction="IB" />
+			<carrier id="RJP339" mode="VESSEL" qualifier="ACTUAL"
+				direction="IB" />
+			<carrier id="GEN_TRUCK" mode="TRUCK" qualifier="DECLARED"
+				direction="OB" />
+			<carrier id="GEN_TRUCK" mode="TRUCK" qualifier="ACTUAL"
+				direction="OB" />
+		</routing>
+		<handling last-free-day="2009-01-23" remark=" " />
+		<contents shipper-name="HORIZON LINES LLC" shipper-id="0000009051"
+			consignee-name="HORIZON LINES LLC" consignee-id="0000009051" bl-nbr="5483212000"
+			weight-kg="15458.43" />
+		<seals seal-1="38109" />
+		<unit-etc dray-status="RETURN" />
+		<unit-flex unit-flex-3="$ULWEI" />
+		<ufv-flex ufv-flex-date-3="2009-01-27T00:00:00.000"
+			ufv-flex-date-2="2009-01-13T00:00:00.000" />
+	</unit>
+</ns2:snx>

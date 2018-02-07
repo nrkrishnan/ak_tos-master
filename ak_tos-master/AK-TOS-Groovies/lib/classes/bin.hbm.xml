@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2010 Zebra Technologies Corp. All Rights Reserved.
+  ~ $Id: $
+  -->
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Bin</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- 2009.10.22 pji ARGO-21942 -->
+    <!-- PJI091002: Created to support persistent bin model. -->
+    <!-- PJI091022: Eliminated bntLocation. -->
+    <class name="com.navis.spatial.business.model.BinNameTable" table="spatial_bin_name_tables" dynamic-update="true">
+        <meta attribute="n4alias">bnt</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.BinNameTableHbr</meta>
+        <meta attribute="class-description">Bin Name Table.</meta>
+        <meta attribute="n4-entity-name">Bin Name Table Entity</meta>
+        <meta attribute="n4-entity-name-plural">Bin Name Entities</meta>
+
+        <id name="bntGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="bntOwningBin" column="owning_bin_gkey" class="com.navis.spatial.business.model.AbstractBin">
+             <meta attribute="field-description">The bin to which this BinNameTable belongs.</meta>
+        </many-to-one>
+
+        <property name="bntTableIndex" column="table_index" type="java.lang.Long">
+	    <meta attribute="field-description">The table number specific to the bin location.</meta>
+        </property>
+
+        <property name="bntTableName" column="table_name" type="string" length="15">
+	    <meta attribute="field-description">The table name specific to the bin location.</meta>
+        </property>
+
+        <set name="bntBinNameSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">BinNames belong to this BinNameTable</meta>
+            <key column="bin_name_table_gkey"/>
+            <one-to-many class="com.navis.spatial.business.model.BinName"/>
+        </set>
+
+        <property name="bntLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <!-- 2009.10.02 pji ARGO-21942 -->
+    <!-- PJI091002: Created to support persistent bin model. -->
+    <class name="com.navis.spatial.business.model.BinName" table="spatial_bin_names" dynamic-update="true">
+        <meta attribute="n4alias">bnm</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.BinNameHbr</meta>
+        <meta attribute="class-description">Bin Name.</meta>
+        <meta attribute="n4-entity-name">Bin Name Entity</meta>
+        <meta attribute="n4-entity-name-plural">Bin Name Entities</meta>
+
+        <id name="bnmGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="bnmNameTable" column="bin_name_table_gkey" class="com.navis.spatial.business.model.BinNameTable">
+            <meta attribute="field-description">The Bin Name Table to which this Bin Name belongs.</meta>
+        </many-to-one>
+
+        <property name="bnmLogicalPosition" column="logical_position" type="java.lang.Long">
+	    <meta attribute="field-description">The logical index in the internal yard model.</meta>
+        </property>
+
+        <property name="bnmUserName" column="user_name" type="string" length="4">
+	    <meta attribute="field-description">The name you want to map to each logical number in each data line..</meta>
+        </property>
+
+        <property name="bnmLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <!-- 2009.10.02 pji ARGO-21942 Created to support persistent bin model.-->
+    <class name="com.navis.spatial.business.model.AbstractBin" table="spatial_bins" discriminator-value="null" dynamic-update="true">
+        <meta attribute="n4alias">abn</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.AbstractBinHbr</meta>
+        <meta attribute="class-description">Abstract Bin.</meta>
+        <meta attribute="carina-oracle-index">
+            create index bin_polygon_idx on spatial_bins(bin_polygon) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+            create index bin_centerline_idx on spatial_bins(bin_centerline) INDEXTYPE IS MDSYS.SPATIAL_INDEX;
+        </meta>
+        <meta attribute="carina-sqlserver-index">
+            create spatial index bin_polygon_idx on spatial_bins(bin_polygon) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+            create spatial index bin_centerline_idx on spatial_bins(bin_centerline) with ( bounding_box = ( 0, 0, 1000000, 1000000 ) );
+        </meta>
+        <meta attribute="n4-entity-name">Abstract Bin Entity</meta>
+        <meta attribute="n4-entity-name-plural">Abstract Bin Entities</meta>
+
+        <id name="abnGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+             <generator class="native"/>
+        </id>
+
+        <discriminator column="bin_subclass" type="string" length="3"/>
+
+        <property name="abnSubType" column="bin_subclass" insert="false" update="false" type="string" index="abn_discriminator_index">
+            <meta attribute="field-description">AbstractBin subtype, so  we can query invisible descriminator</meta>
+        </property>
+
+        <!-- No "20s" in primary name to keep it general enough for non-container usages.-->
+        <property name="abnName" column="internal_pos_name" type="string" length="18" index="abn_internal_pos_name_idx">
+	        <meta attribute="field-description">Cached internal bin name (20s by default).</meta>
+        </property>
+
+        <property name="abnNameAlt" column="internal_pos_name_alt" type="string" length="18" index="abn_internal_pos_name_alt_idx">
+	        <meta attribute="field-description">Alternate cached internal bin name (40s in container model).</meta>
+        </property>
+
+        <property name="abnLongName" column="long_name" type="string" length="50">
+            <meta attribute="field-description">Long name or title for bin</meta>
+        </property>
+
+        <many-to-one name="abnParentBin" column="parent_bin_gkey" class="com.navis.spatial.business.model.AbstractBin">
+             <meta attribute="field-description">The parent bin to which this bin belongs.</meta>
+        </many-to-one>
+
+        <set name="abnAbstractBinSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">AbstractBins owned by this AbstractBin</meta>
+            <key column="parent_bin_gkey"/>
+            <one-to-many class="com.navis.spatial.business.model.AbstractBin"/>
+        </set>
+
+        <!-- Note that cascade="none". This seems to help with model deletion. -->
+        <!-- See http://www.jroller.com/larrywilliams/entry/net_sf_hibernate_objectdeletedexception#comments -->
+        <set name="abnBinAncestorSet" inverse="true" lazy="true" cascade="none">
+            <meta attribute="field-description">BinAncestors that belong to this AbstractBin</meta>
+            <key column="bin_gkey"/>
+            <one-to-many class="com.navis.spatial.business.model.BinAncestor"/>
+        </set>
+
+        <property name="abnPolygon" column="bin_polygon" type="org.hibernatespatial.GeometryUserType">
+	        <meta attribute="field-description">Polygon that describes bin shape.</meta>
+        </property>
+
+        <property name="abnCenterline" column="bin_centerline" type="org.hibernatespatial.GeometryUserType">
+	        <meta attribute="field-description">Linestring that defines bin's longitudinal centerline</meta>
+        </property>
+
+        <property name="abnGeodeticAnchorLatitude" column="anchor_latitude" type="java.lang.Double">
+            <meta attribute="field-description">Latitude of anchor point.</meta>
+        </property>
+
+        <property name="abnGeodeticAnchorLongitude" column="anchor_longitude" type="java.lang.Double">
+            <meta attribute="field-description">Longitude of anchor point.</meta>
+        </property>
+
+        <property name="abnGeodeticAnchorOrientation" column="anchor_geodetic_orientation" type="java.lang.Double">
+            <meta attribute="field-description">Angle in degrees clockwise from the nearest line of longitude to the positive y-axis of local coordinate system.</meta>
+        </property>
+
+        <!-- abnBinLevel is a denormalization since abnBinType has this information already.-->
+        <!-- We may want to remove this field since a level check w/o checking bin context is a bad idea.-->
+        <property name="abnBinLevel" column="bin_level" type="java.lang.Long" index="abn_bin_level_idx">
+            <meta attribute="field-description">Bin level.</meta>
+            <meta attribute="scope-get">protected</meta>
+        </property>
+
+        <property name="abnZIndexMin" column="z_index_first" type="java.lang.Long">
+            <meta attribute="field-description">First active z index (tier) in bin.</meta>
+        </property>
+
+        <property name="abnZIndexMax" column="z_index_last" type="java.lang.Long">
+            <meta attribute="field-description">Last active z index (tier) in bin.</meta>
+        </property>
+
+        <property name="abnVerticalMin" column="vertical_min" type="java.lang.Double">
+            <meta attribute="field-description">Minimum vertical coordinate for bin.</meta>
+        </property>
+
+        <property name="abnVerticalMax" column="vertical_max" type="java.lang.Double">
+            <meta attribute="field-description">Maximum vertical coordinate for bin.</meta>
+        </property>
+
+        <property name="abnLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <many-to-one name="abnBinType" column="bin_type" class="com.navis.spatial.business.model.BinType">
+             <meta attribute="field-description">BinType for this AbstractBin.</meta>
+        </many-to-one>
+
+        <set name="abnBinNameTableSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">BinNameTables that belong to this AbstractBin</meta>
+            <key column="owning_bin_gkey"/>
+            <one-to-many class="com.navis.spatial.business.model.BinNameTable"/>
+        </set>
+
+        <property name="abnCreated" column="created" type="timestamp"/>
+        <property name="abnCreator" column="creator" type="string" length="30"/>
+        <property name="abnChanged" column="changed" type="timestamp"/>
+        <property name="abnChanger" column="changer" type="string" length="30"/>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <class name="com.navis.spatial.business.model.BinAncestor" table="spatial_bin_ancestors" dynamic-update="true">
+        <meta attribute="n4alias">ban</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.BinAncestorHbr</meta>
+        <meta attribute="carina-index">
+            spatial_ban_abg_gkey_bg_idx(ancestor_bin_gkey,gkey,bin_gkey);
+            spatial_ban_bg_bl_abl_abg_idx(bin_gkey,bin_level,ancestor_bin_level,ancestor_bin_gkey)
+        </meta>
+        <meta attribute="class-description">Bin Ancestor.</meta>
+        <meta attribute="n4-entity-name">Bin Ancestor Entity</meta>
+        <meta attribute="n4-entity-name-plural">Bin Ancestor Entities</meta>
+
+        <id name="banGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="banBin" column="bin_gkey" class="com.navis.spatial.business.model.AbstractBin">
+            <meta attribute="field-description">The Abstract Bin to which this Bin Ancestor belongs.</meta>
+        </many-to-one>
+
+        <property name="banBinLevel" column="bin_level" type="java.lang.Long">
+	        <meta attribute="field-description">Level of bin.</meta>
+        </property>
+
+        <property name="banAncestorLevel" column="ancestor_bin_level" type="java.lang.Long">
+	        <meta attribute="field-description">Level of ancestor bin.</meta>
+        </property>
+
+        <many-to-one name="banAncestorBin" column="ancestor_bin_gkey" class="com.navis.spatial.business.model.AbstractBin">
+	        <meta attribute="field-description">The Abstract Bin of the ancestor at the specified level.</meta>
+        </many-to-one>
+
+        <property name="banLifeCycleState" column="life_cycle_state" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"
+                  length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+
+    </class>
+
+    <class name="com.navis.spatial.business.model.BinContext" table="spatial_bin_contexts" dynamic-update="true">
+        <meta attribute="n4alias">bcx</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.BinContextHbr</meta>
+        <meta attribute="class-description">Bin Context.</meta>
+        <meta attribute="n4-entity-name">Bin Context Entity</meta>
+        <meta attribute="n4-entity-name-plural">Bin Context Entities</meta>
+
+        <id name="bcxGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="bcxId" column="id" type="string" length="20" >
+	        <meta attribute="field-description">Id of BinContext.</meta>
+        </property>
+
+        <property name="bcxDescription" column="description" type="string" length="80">
+	        <meta attribute="field-description">Description of BinContext.</meta>
+        </property>
+
+        <property name="bcxSystemDefined" column="system_defined" type="java.lang.Boolean">
+	        <meta attribute="field-description">Is system-provided BinContext?</meta>
+        </property>
+
+    </class>
+
+    <class name="com.navis.spatial.business.model.BinType" table="spatial_bin_types" dynamic-update="true">
+        <meta attribute="n4alias">btp</meta>
+        <meta attribute="generated-class">com.navis.spatial.business.model.BinTypeHbr</meta>
+        <meta attribute="class-description">Bin Type.</meta>
+        <meta attribute="n4-entity-name">Bin Type Entity</meta>
+        <meta attribute="n4-entity-name-plural">Bin Type Entities</meta>
+
+        <id name="btpGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="btpId" column="id" type="string" length="20" >
+	        <meta attribute="field-description">Id of BinType.</meta>
+        </property>
+
+        <property name="btpDescription" column="description" type="string" length="80">
+	        <meta attribute="field-description">Description of BinType.</meta>
+        </property>
+
+        <property name="btpSystemDefined" column="system_defined" type="java.lang.Boolean">
+	        <meta attribute="field-description">Is system-provided BinType?</meta>
+        </property>
+
+        <property name="btpLevelRestriction" column="level_restriction" type="java.lang.Long">
+	        <meta attribute="field-description">Level that BinType is restricted to.</meta>
+        </property>
+
+        <many-to-one name="btpContext" column="context" class="com.navis.spatial.business.model.BinContext">
+            <meta attribute="field-description">Specifies the BinContext for this BinType.</meta>
+        </many-to-one>
+
+    </class>
+
+</hibernate-mapping>

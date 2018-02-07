@@ -1,0 +1,1130 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="true">
+
+    <meta attribute="JavaClassPrefix">Edi</meta>
+    <meta attribute="scope-set">protected</meta>
+
+    <!-- Reference tables mapping -->
+    <class name="com.navis.edi.business.entity.EdiTradingPartner" table="edi_trading_partners" dynamic-update="true">
+        <meta attribute="n4alias">ediptnr</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiTradingPartnerHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Trading Partners.
+            The EDI partners are any business organization; line operators, railroads, government agencies, trucking companies, etc
+        </meta>
+        <meta attribute="n4-entity-name">EDI Trading Partner</meta>
+        <meta attribute="n4-entity-name-plural">EDI Trading Partners</meta>
+
+        <id name="ediptnrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="ediptnrName" column="name" type="string" length="20" not-null="true">
+            <meta attribute="field-description">Name of the EDI Trading Partner</meta>
+        </property>
+        <many-to-one name="ediptnrBusinessUnit" column="bizu_gkey" class="com.navis.argo.business.reference.ScopedBizUnit" not-null="true">
+            <meta attribute="field-description">Organizations using EDI</meta>
+        </many-to-one>
+        <many-to-one name="ediptnrComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">Partners are set up by complex.</meta>
+            <meta attribute="use-in-tostring">true</meta>
+        </many-to-one>
+        <property name="ediptnrIsRetired" column="is_retired" type="java.lang.Boolean">
+            <meta attribute="field-description">The column denotes whether the partner is retired or not</meta>
+        </property>
+        <set name="ediptnrMailboxes" inverse="true" lazy="true">
+            <key column="ediptnr_gkey"/>
+            <one-to-many class="com.navis.edi.business.entity.EdiMailbox"/>
+        </set>
+        <property name="ediptnrCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="ediptnrCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="ediptnrChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="ediptnrChanger" column="changer" type="java.lang.String" length="30"/>
+        <property name="ediptnrLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.edi.business.entity.EdiMailbox" table="edi_mailbox" discriminator-value="null" dynamic-update="true">
+        <meta attribute="n4alias">edimlbx</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiMailboxHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">
+            Domain entity representing EDI Mailboxes of the trading partners. It stores communication details to be used for data post/extract
+        </meta>
+        <meta attribute="n4-entity-name">EDI Mailbox</meta>
+        <meta attribute="n4-entity-name-plural">EDI Mailboxes</meta>
+
+        <id name="edimlbxGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <discriminator column="sub_type" not-null="false" type="string" length="10"/>
+
+        <many-to-one name="edimlbxComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">Mailboxes are set up by complex.</meta>
+            <meta attribute="use-in-tostring">true</meta>
+        </many-to-one>
+
+        <property name="edimlbxName" column="name" type="string" length="20" not-null="true">
+            <meta attribute="field-description">Name of this EDI Mailbox</meta>
+        </property>
+
+        <property name="edimlbxSenderQualifier" column="sender_qualifier" type="string" length="20">
+            <meta attribute="field-description">EDI Mailbox Sender Qualifier</meta>
+        </property>
+
+        <property name="edimlbxSenderId" column="sender_id" type="string" length="20">
+            <meta attribute="field-description">EDI Mailbox Sender Id</meta>
+        </property>
+
+        <property name="edimlbxReceiverQualifier" column="receiver_qualifier" type="string" length="20">
+            <meta attribute="field-description">EDI Mailbox Receiver Qualifier</meta>
+        </property>
+
+        <property name="edimlbxReceiverId" column="receiver_id" type="string" length="20">
+            <meta attribute="field-description">EDI Mailbox Receiver Id</meta>
+        </property>
+
+        <property name="edimlbxLastInterchange" column="last_interchange" type="java.lang.Long" length="5">
+            <meta attribute="field-description">Sequence of the Last Interchange sent/received from this EDI Mailbox</meta>
+        </property>
+
+        <property name="edimlbxLastMessageNbr" column="last_msg_nbr" type="java.lang.Long" length="5">
+            <meta attribute="field-description">Last Message Reference Number</meta>
+        </property>
+
+        <property name="edimlbxDirection" column="direction" type="com.navis.edi.persistence.atoms.UserTypeEdiMessageDirectionEnum" length="50"
+                  not-null="true">
+            <meta attribute="field-description">Direction of this EDI Mailbox</meta>
+        </property>
+
+        <property name="edimlbxDirectory" column="directory" type="string" length="100" not-null="true">
+            <meta attribute="field-description">Directory of this EDI Mailbox</meta>
+        </property>
+        <property name="edimlbxCommType" column="comm_type" type="com.navis.edi.persistence.atoms.UserTypeEdiCommunicationTypeEnum" length="50"
+                  not-null="true">
+            <meta attribute="field-description">Communication Type used by the Trading Partner for this EDI Mailbox</meta>
+        </property>
+
+        <!--  2007-Jan-10 svaitheas ARGO-5920 v1.2.0 v1.1.21 Long email address (over 35 chars) causes failure in notifications in CAP.Hence increase the email address column size to 255 chars -->
+        <property name="edimlbxCommAddr" column="comm_address" type="string" length="255">
+            <meta attribute="field-description">Communication Address (IP/email) used by the Trading Partner for this EDI Mailbox</meta>
+        </property>
+
+        <!-- 2012-04-29 ramupr ARGO-37361 Increased the column size to 60 for comm_user_id column in edi_mailbox table -->
+        <property name="edimlbxCommUserId" column="comm_user_id" type="string" length="60">
+            <meta attribute="field-description">Communication User ID used by the Trading Partner for this EDI Mailbox</meta>
+        </property>
+
+        <property name="edimlbxCommPasswd" column="comm_password" type="string" length="20">
+            <meta attribute="field-description">Communication Password used by the Trading Partner for this EDI Mailbox</meta>
+        </property>
+        <property name="edimlbxCommFolder" column="comm_folder" type="string" length="100">
+            <meta attribute="field-description">Communication Folder given by the Trading Partner for this EDI Mailbox</meta>
+        </property>
+        <many-to-one name="edimlbxTradingPartner" class="com.navis.edi.business.entity.EdiTradingPartner">
+            <meta attribute="field-description">Trading Partner Gkey</meta>
+            <column name="ediptnr_gkey" not-null="true"></column>
+        </many-to-one>
+        <set name="ediQueuedInterchangeSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Queued Interchange of the mailbox</meta>
+            <key column="edi_mailbox_gkey"/>
+            <one-to-many class="com.navis.edi.business.entity.EdiQueuedInterchange"/>
+        </set>
+        <property name="edimlbxCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edimlbxCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edimlbxChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edimlbxChanger" column="changer" type="java.lang.String" length="30"/>
+        <property name="edimlbxLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <subclass name="com.navis.edi.business.portal.communication.Inbox" extends="com.navis.edi.business.entity.EdiMailbox" discriminator-value="INB"
+              dynamic-update="true">
+        <meta attribute="generated-class">com.navis.edi.business.portal.communication.InboxHbr</meta>
+    </subclass>
+
+    <subclass name="com.navis.edi.business.portal.communication.Outbox" extends="com.navis.edi.business.entity.EdiMailbox" discriminator-value="OUT"
+              dynamic-update="true">
+        <meta attribute="generated-class">com.navis.edi.business.portal.communication.OutboxHbr</meta>
+    </subclass>
+
+    <class name="com.navis.edi.business.entity.EdiSession" table="edi_session" dynamic-update="true">
+        <meta attribute="n4alias">edisess</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiSessionHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Sessions</meta>
+        <meta attribute="n4-entity-name">EDI Session</meta>
+        <meta attribute="n4-entity-name-plural">EDI Sessions</meta>
+
+        <id name="edisessGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="edisessName" column="name" type="string" length="20" not-null="true" index="edi_session_sess_name_idx">
+            <meta attribute="field-description">Name of this EDI Session</meta>
+        </property>
+
+        <many-to-one name="edisessComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">Sessions are set up by complex.</meta>
+            <meta attribute="use-in-tostring">true</meta>
+        </many-to-one>
+
+        <property name="edisessDesc" column="description" type="string" length="50">
+            <meta attribute="field-description">Description of the EDI Session</meta>
+        </property>
+
+         <property name="edisessMessageClass" column="msg_class" type="com.navis.argo.persistence.atoms.UserTypeEdiMessageClassEnum" length="50">
+            <meta attribute="field-description">Basic EDI Message Class</meta>
+        </property>
+
+        <property name="edisessDirection" column="direction" type="com.navis.edi.persistence.atoms.UserTypeEdiMessageDirectionEnum" length="50"
+                  not-null="true">
+            <meta attribute="field-description">Direction of this EDI Session</meta>
+        </property>
+
+        <property name="edisessLastRunTimestamp" column="last_run_datetime" type="java.sql.Timestamp">
+            <meta attribute="field-description">Date time of the last run for this EDI Session</meta>
+        </property>
+
+        <property name="edisessLastRunStatus" column="last_run_status" type="com.navis.edi.persistence.atoms.UserTypeEdiStatusEnum" length="50">
+            <meta attribute="field-description">Status of the Last Run for this EDI Session</meta>
+        </property>
+        <property name="edisessFileExt" column="file_extension" type="string" length="20">
+            <meta attribute="field-description">Extension of the file generated by this EDI Session</meta>
+        </property>
+        <property name="edisessDelimeter" column="delimeter" type="string" length="10">
+            <meta attribute="field-description">Delimiter of the edi file used in this EDI Session</meta>
+        </property>
+        <property name="edisessTranCntlNbr" column="tran_ctr_nbr" type="java.lang.Long">
+            <meta attribute="field-description">Last Transaction Set Control number used in this EDI Session</meta>
+        </property>
+
+        <!-- ARGO-15909 v 1.8 skumaravel : interducing interchange message sequence number -->
+        <property name="edisessMsgSeqNbr" column="msg_seq_nbr" type="java.lang.Long">
+            <meta attribute="field-description">EDI message sequence number which gets incremented for every extract of this session</meta>
+        </property>
+        <!-- ARGO-16550 v 1.8 skumaravel : Adding column for Interchange number check flag -->
+        <property name="edisessInterNumChkFlag" column="inter_num_chk_flag" type="java.lang.Boolean">
+            <meta attribute="field-description">A flag which says whether Interchange number should be validated or not for Inbound EDI</meta>
+        </property>
+        <!-- ARGO-27636 v 2.2.B kjeyapandian : Renamed the existing column name from “extension_gkey” to “load_extension_gkey”
+                                               and Added a new column “post_extension_gkey” in edi.hbm.xml -->
+        <many-to-one name="edisessLoadExtension" class="com.navis.extension.business.Extension" column="load_extension_gkey" not-null="false">
+            <meta attribute="field-description">Reference to load extension (groovy)</meta>
+        </many-to-one>
+        <many-to-one name="edisessPostExtension" class="com.navis.extension.business.Extension" column="post_extension_gkey" not-null="false">
+            <meta attribute="field-description">Reference to post extension (groovy)</meta>
+        </many-to-one>
+
+        <!--2012-10-04 lakshra ARGO-41733 v2.5.E, added new column for extract extension-->
+        <many-to-one name="edisessExtractExtension" class="com.navis.extension.business.Extension" column="extract_extension_gkey" not-null="false">
+            <meta attribute="field-description">Reference to extract extension (groovy)</meta>
+        </many-to-one>
+        <many-to-one name="edisessPredicate" class="com.navis.framework.query.business.SavedPredicate" column="predicate_gkey" not-null="false" cascade="all">
+            <meta attribute="field-description">Predicate defining entities processed by this EDI Session</meta>
+        </many-to-one>
+        <many-to-one name="edisessTradingPartner" class="com.navis.edi.business.entity.EdiTradingPartner">
+            <meta attribute="field-description">Primary Trading Partner Gkey</meta>
+            <column name="ediptnr_gkey" not-null="true"></column>
+        </many-to-one>
+        <many-to-one name="edisessMsgMap" class="com.navis.edi.business.entity.EdiMessageMap">
+            <meta attribute="field-description">Message Map</meta>
+            <column name="edimap_gkey"></column>
+        </many-to-one>
+
+        <set name="edisessSettings" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Settings for this Session</meta>
+            <key column="session_gkey"/>
+            <one-to-many class="com.navis.edi.business.entity.EdiSetting"/>
+        </set>
+
+        <property name="edisessCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edisessCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edisessChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edisessChanger" column="changer" type="java.lang.String" length="30"/>
+        <property name="edisessIsAutoPosted" column="is_auto_posted" type="java.lang.Boolean">
+            <meta attribute="field-description">The column denotes whether this link is AutoPosted or not</meta>
+        </property>
+        <property name="edisessLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.edi.business.entity.EdiSetting" table="edi_setting" dynamic-update="true">
+        <meta attribute="n4alias">edistg</meta>
+        <!--meta attribute="generated-class">com.navis.edi.business.entity.EdiSettingHbr</meta-->
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing a configured Setting for an EDI Session</meta>
+        <meta attribute="n4-entity-name">EDI Setting</meta>
+        <meta attribute="n4-entity-name-plural">EDI Settings</meta>
+
+        <id name="edistngGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="edistngConfigId" column="config_id" type="string" length="50" not-null="true">
+            <meta attribute="field-description">ConfigId of the Config associated with this setting</meta>
+        </property>
+
+        <many-to-one name="edistngSession" class="com.navis.edi.business.entity.EdiSession">
+            <meta attribute="field-description">EDI Session to which this EdiSetting pertains</meta>
+            <column name="session_gkey" not-null="true"/>
+        </many-to-one>
+
+        <property name="edistngValue" column="cnfig_value" type="string" length="255">
+            <meta attribute="field-description">Config setting value, encoded into a String</meta>
+        </property>
+
+        <property name="edistngCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edistngCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edistngChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edistngChanger" column="changer" type="java.lang.String" length="30"/>
+    </class>
+
+    <class name="com.navis.edi.business.entity.EdiFilter" table="edi_filter" dynamic-update="true">
+        <meta attribute="n4alias">edifltr</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiFilterHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="class-description">Scoped EDI Filter</meta>
+        <meta attribute="n4-entity-name">EDI Filter</meta>
+        <meta attribute="n4-entity-name-plural">EDI Filters</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">edifltrName</meta>
+
+        <id name="edifltrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="edifltrScope" class="com.navis.argo.business.reference.EntitySet" unique-key="unique_key">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true"/>
+        </many-to-one>
+
+        <property name="edifltrName" column="name" type="string" length="30" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">Scoped EDI Filter name</meta>
+        </property>
+        <property name="edifltrDirection" column="direction" type="com.navis.edi.persistence.atoms.UserTypeEdiMessageDirectionEnum" length="50"
+                  not-null="true">
+            <meta attribute="field-description">Direction of this EDI Filter</meta>
+        </property>
+
+        <set name="edifltrFltrEn" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Filter Entry for this Filter</meta>
+            <key column="edifilter_gkey"/>
+            <one-to-many class="com.navis.edi.business.entity.EdiFilterEntry"/>
+        </set>
+
+        <property name="edifltrCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edifltrCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edifltrChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edifltrChanger" column="changer" type="java.lang.String" length="30"/>
+    </class>
+
+    <class name="com.navis.edi.business.entity.EdiFilterEntry" table="edi_filter_entry" dynamic-update="true">
+        <meta attribute="n4alias">edifltren</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiFilterEntryHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI EdiFilter Entry</meta>
+        <meta attribute="n4-entity-name">EDI Filter Entry</meta>
+        <meta attribute="n4-entity-name-plural">EDI Filter Entries</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">edifltrenGkey</meta>
+
+        <id name="edifltrenGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="edifltrenScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set"/>
+        </many-to-one>
+
+        <property name="edifltrenFieldId" column="field_id" type="com.navis.edi.persistence.atoms.UserTypeEdiFilterFieldIdEnum" length="100"
+                  not-null="true">
+            <meta attribute="field-description">EDI Filter Entry Field Id</meta>
+        </property>
+        <property name="edifltrenFromValue" column="from_value" type="string" length="30">
+            <meta attribute="field-description">EDI Filter Entry From Value</meta>
+        </property>
+        <property name="edifltrenToValue" column="to_value" type="string" length="30">
+            <meta attribute="field-description">EDI Filter Entry To Value</meta>
+        </property>
+
+        <many-to-one name="edifltrenFilter" class="com.navis.edi.business.entity.EdiFilter">
+            <meta attribute="field-description">Edi Scoped Filter Gkey</meta>
+            <column name="edifilter_gkey" not-null="true"></column>
+        </many-to-one>
+
+        <property name="edifltrenCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edifltrenCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edifltrenChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edifltrenChanger" column="changer" type="java.lang.String" length="30"/>
+
+    </class>
+
+    <class name="com.navis.edi.business.entity.EdiSessionFilter" table="edi_session_filter" dynamic-update="true">
+        <meta attribute="n4alias">edisessfltr</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiSessionFilterHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Session Filter</meta>
+        <meta attribute="n4-entity-name">EDI Session Filter</meta>
+        <meta attribute="n4-entity-name-plural">EDI Session Filters</meta>
+
+        <id name="edisessfltrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="edisessfltrScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set"/>
+        </many-to-one>
+
+        <many-to-one name="edisessfltrSession" class="com.navis.edi.business.entity.EdiSession">
+            <meta attribute="field-description">Edi Session Gkey</meta>
+            <column name="edisess_gkey" not-null="true"></column>
+        </many-to-one>
+
+        <many-to-one name="edisessfltrFilter" class="com.navis.edi.business.entity.EdiFilter">
+            <meta attribute="field-description">Edi Session Gkey</meta>
+            <column name="edifilter_gkey" not-null="true"></column>
+        </many-to-one>
+
+        <property name="edisessfltrCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edisessfltrCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edisessfltrChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edisessfltrChanger" column="changer" type="java.lang.String" length="30"/>
+    </class>
+    <class name="com.navis.edi.business.entity.EdiMessageMap" table="edi_message_map" dynamic-update="true">
+        <meta attribute="n4alias">edimap</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiMessageMapHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Message Map</meta>
+        <meta attribute="n4-entity-name">EDI Message Map</meta>
+        <meta attribute="n4-entity-name-plural">EDI Message Maps</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">edimapId</meta>
+
+        <id name="edimapGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="edimapScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true" unique-key="unique_key"/>
+        </many-to-one>
+
+        <property name="edimapId" column="id" type="string" length="20" not-null="true" unique-key="unique_key">
+            <meta attribute="field-description">EDI Message Map ID</meta>
+        </property>
+        <property name="edimapDirection" column="direction" type="com.navis.edi.persistence.atoms.UserTypeEdiMessageDirectionEnum" length="50"
+                  not-null="true">
+            <meta attribute="field-description">Direction of this EDI Message Map</meta>
+        </property>
+        <!-- 2007-05-21 jkathir v1.4.A ARGO-6366 added two new columns (edimapDic, edimapIsBuiltIn) to support user defined EDI Dictionaries -->
+        <property name="edimapDic" column="dic_file" type="text" length="1048576">
+            <meta attribute="field-description">EDI Message Map Dictionary File</meta>
+        </property>
+        <property name="edimapIsBuiltIn" column="is_built_in" type="java.lang.Boolean">
+            <meta attribute="field-description">True if this is a built-in map</meta>
+        </property>
+        <property name="edimapFile" column="map_file" type="text" length="1048576" not-null="true">
+            <meta attribute="field-description">EDI Message Map File</meta>
+        </property>
+        <property name="edimapDesc" column="description" type="string" length="50">
+            <meta attribute="field-description">Description of this EDI Message Map</meta>
+        </property>
+
+        <many-to-one name="edimapEdiMsgType" class="com.navis.edi.business.entity.EdiMessageType">
+            <meta attribute="field-description">Edi Message Type Gkey</meta>
+            <column name="edimsg_gkey" not-null="true"></column>
+        </many-to-one>
+
+        <property name="edimapCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edimapCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edimapChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edimapChanger" column="changer" type="java.lang.String" length="30"/>
+        <property name="edimapLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.edi.business.entity.EdiMessageType" table="edi_message_type" dynamic-update="true">
+        <meta attribute="n4alias">edimsg</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiMessageTypeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.ReferenceEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Message Type</meta>
+        <meta attribute="n4-entity-name">EDI Message Type</meta>
+        <meta attribute="n4-entity-name-plural">EDI Message Types</meta>
+        <!-- 2006-06-07 eyu v1.1.2 ARGO-3843 silent re-installment of reference entity -->
+        <meta attribute="n4-business-key">edimsgIdVerRel</meta>
+
+        <id name="edimsgGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="edimsgIdVerRel" column="short_id" type="string" length="30">
+            <meta attribute="field-description">EDI Message Type ID, Version, Release Nbr</meta>
+        </property>
+
+        <property name="edimsgId" column="id" type="string" length="15" not-null="true">
+            <meta attribute="field-description">EDI Message Type ID</meta>
+        </property>
+        <property name="edimsgClass" column="msg_class" type="com.navis.argo.persistence.atoms.UserTypeEdiMessageClassEnum" length="50"
+                  not-null="true">
+            <meta attribute="field-description">EDI Message Type class</meta>
+        </property>
+        <property name="edimsgStandard" column="standard" type="com.navis.edi.persistence.atoms.UserTypeEdiMessageStandardEnum" length="50"
+                  not-null="true">
+            <meta attribute="field-description">EDI Message Type standard</meta>
+        </property>
+        <property name="edimsgVersion" column="version" type="string" length="8" not-null="true">
+            <meta attribute="field-description">EDI Message Type version</meta>
+        </property>
+        <property name="edimsgReleaseNbr" column="release_nbr" type="string" length="8" not-null="true">
+            <meta attribute="field-description">EDI Message Type release nbr</meta>
+        </property>
+        <property name="edimsgAgency" column="agency" type="com.navis.edi.persistence.atoms.UserTypeEdiMessageAgencyEnum" length="50" not-null="true">
+            <meta attribute="field-description">EDI Message Type responsible agency</meta>
+        </property>
+        <property name="edimsgDescription" column="description" type="string" length="80">
+            <meta attribute="field-description">EDI Message Type description</meta>
+        </property>
+        <property name="edimsgLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+            <meta attribute="field-description">The column denotes whether the message type is active</meta>
+        </property>
+        <many-to-one name="edimsgScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set" not-null="true"/>
+        </many-to-one>
+        <property name="edimsgCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edimsgCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edimsgChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edimsgChanger" column="changer" type="java.lang.String" length="30"/>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.edi.business.entity.EdiReleaseMap" table="edi_release_maps" dynamic-update="true">
+        <meta attribute="n4alias">edirelmap</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiReleaseMapHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Release Map</meta>
+        <meta attribute="n4-entity-name">EDI Release Map</meta>
+        <meta attribute="n4-entity-name-plural">EDI Release Maps</meta>
+
+        <id name="edirelmapGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="edirelmapEdiCode" column="release_code" type="string" length="20" not-null="true">
+            <meta attribute="field-description">EDI Release Map ID</meta>
+        </property>
+
+        <property name="edirelmapIsHold" column="is_hold" type="java.lang.Boolean" not-null="true">
+            <meta attribute="field-description">The column denotes whether the Map is hold or not</meta>
+        </property>
+
+        <!-- JJS ARGO-4717 - Add configuration parm re: match Unit when posting releases
+        <property name="edirelmapIsByCarrier" column="is_by_carrier" type="java.lang.Boolean">
+            <meta attribute="field-description">The column denotes whether the Map is by Carrier</meta>
+        </property>
+        -->
+
+        <property name="edirelmapUnitMatch" column="unit_match" type="com.navis.argo.persistence.atoms.UserTypeEdiReleaseMapUnitMatchEnum">
+            <meta attribute="field-description">The column denotes how the correct Unit is matched when posting the EDI</meta>
+        </property>
+        <!-- JJS ARGO-4717 - end changes -->
+
+        <property name="edirelmapReleaseCarrierMatch" column="cv_match" type="com.navis.argo.persistence.atoms.UserTypeEdiReleaseMapCarrierMatchEnum">
+            <meta attribute="field-description">The column denotes whether the Map is matched by Carrier name or carrier voyage number</meta>
+        </property>
+
+        <property name="edirelmapMatchQty" column="match_quantity" type="com.navis.argo.persistence.atoms.UserTypeEdiReleaseMapQuantityMatchEnum">
+            <meta attribute="field-description">The column denotes how to match Quantity for BL release</meta>
+        </property>
+
+        <property name="edirelmapModifyQty" column="modify_quantity" type="com.navis.argo.persistence.atoms.UserTypeEdiReleaseMapModifyQuantityEnum">
+            <meta attribute="field-description">Whether the quantity received in release message refers to released/held quantity</meta>
+        </property>
+
+        <many-to-one name="edirelmapScope" class="com.navis.argo.business.reference.EntitySet">
+            <meta attribute="field-description">Scope of this instance</meta>
+            <column name="reference_set"/>
+        </many-to-one>
+
+        <many-to-one name="edirelmapEdiMsgType" class="com.navis.edi.business.entity.EdiMessageType">
+            <meta attribute="field-description">Edi Message Type Gkey</meta>
+            <column name="edimsg_gkey" not-null="true"></column>
+        </many-to-one>
+
+        <property name="edirelmapFlagType" column="flag_gkey" type="java.lang.Long" not-null="true"/>
+
+        <property name="edirelmapFlagTypeId" type="string"
+                  formula="(SELECT flgtyp.id FROM srv_flag_types flgtyp WHERE flgtyp.gkey = flag_gkey)">
+            <meta attribute="field-description">flag type Id</meta>
+        </property>
+        <!-- 2013-07-01 kasinra v2.6.G ARGO-48104 new check box for negative indicator and new assignment widget for dependent disposition codes -->
+        <property name="edirelmapIsQuantityNegative" column="is_qty_negative" type="java.lang.Boolean">
+            <meta attribute="field-description">The column indicates whether the Quantity is to be considered negative or not</meta>
+        </property>
+
+        <set name="edirelmapDependentCodeList" inverse="false" lazy="true" table="edi_rel_dep_codes_map">
+            <key column="rel_gkey"/>
+            <many-to-many column="dependent_rel_gkey" class="com.navis.edi.business.entity.EdiReleaseMap"/>
+        </set>
+
+        <property name="edirelmapCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edirelmapCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edirelmapChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edirelmapChanger" column="changer" type="java.lang.String" length="30"/>
+        <property name="edirelmapLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+
+    <class name="com.navis.edi.business.entity.EdiSessionMailbox" table="edi_session_mailbox" dynamic-update="true">
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiSessionMailboxHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">EDI Session Mailbox</meta>
+        <meta attribute="n4-entity-name-plural">EDI Session Mailboxes</meta>
+
+        <id name="edisessmlbxGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="edisessmlbxSession" class="com.navis.edi.business.entity.EdiSession">
+            <meta attribute="field-description">Edi Session Gkey</meta>
+            <column name="edisess_gkey" not-null="true"></column>
+        </many-to-one>
+
+        <many-to-one name="edisessmlbxMailbox" class="com.navis.edi.business.entity.EdiMailbox">
+            <meta attribute="field-description">Edi Mailbox Gkey</meta>
+            <column name="edimlbx_gkey" not-null="true"></column>
+        </many-to-one>
+        <property name="edisessmlbxIsPrimary" column="is_primary" type="java.lang.Boolean">
+            <meta attribute="field-description">The column denotes whether this link is Primary or not</meta>
+        </property>
+        <property name="edisessmlbxCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edisessmlbxCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edisessmlbxChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edisessmlbxChanger" column="changer" type="java.lang.String" length="30"/>
+        <property name="edisessmlbxLifeCycleState" column="life_cycle_state"
+                  type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum" length="3" not-null="true">
+            <meta attribute="scope-set">public</meta>
+        </property>
+        <filter name="obsoleteableFilter" condition="(:lifeCycleState = life_cycle_state)"/>
+    </class>
+    <class name="com.navis.edi.business.entity.EdiInterchange" table="edi_interchange" dynamic-update="true">
+        <meta attribute="n4alias">ediint</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiInterchangeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Interchange</meta>
+        <meta attribute="n4-entity-name">EDI Interchange</meta>
+        <meta attribute="n4-entity-name-plural">EDI Interchanges</meta>
+
+        <id name="ediintGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="ediintInterchangeNbr" column="interchange_nbr" type="string" length="100">
+        </property>
+        <property name="ediintDelimiters" column="delimiters" type="java.lang.String" length="20">
+        </property>
+        <property name="ediintDirection" column="direction" type="com.navis.edi.persistence.atoms.UserTypeEdiMessageDirectionEnum" length="50">
+        </property>
+        <property name="ediintReceived" column="received" type="java.sql.Timestamp">
+        </property>
+        <property name="ediintFileName" column="file_name" type="java.lang.String" length="100">
+        </property>
+        <set name="ediBatchSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Batches of the Interchange</meta>
+            <key column="ediint_gkey"/>
+            <one-to-many class="com.navis.edi.business.entity.EdiBatch"/>
+        </set>
+        <set name="ediintSegmentSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Segments of the Interchange</meta>
+            <key column="ediint_gkey"/>
+            <one-to-many class="com.navis.edi.business.entity.EdiSegment"/>
+        </set>
+        <many-to-one name="ediintTradingPartner" class="com.navis.edi.business.entity.EdiTradingPartner">
+            <meta attribute="field-description">Primary Trading Partner Gkey</meta>
+            <column name="ediptnr_gkey" not-null="true"></column>
+        </many-to-one>
+        <many-to-one name="ediintMailbox" class="com.navis.edi.business.entity.EdiMailbox">
+            <meta attribute="field-description">Mailbox Gkey</meta>
+            <column name="edimailbox_gkey" not-null="true"></column>
+        </many-to-one>
+        <property name="ediintStatus" column="status" type="com.navis.edi.persistence.atoms.UserTypeEdiStatusEnum" length="50" not-null="true">
+        </property>
+        <property name="ediintCreated" column="created" type="java.sql.Timestamp" index="ediint_created_idx"/>
+        <property name="ediintCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="ediintChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="ediintChanger" column="changer" type="java.lang.String" length="30"/>
+    </class>
+    <class name="com.navis.edi.business.entity.EdiBatch" table="edi_batch" dynamic-update="true">
+        <meta attribute="n4alias">edibatch</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiBatchHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Batch</meta>
+        <meta attribute="n4-entity-name">EDI Batch</meta>
+        <meta attribute="n4-entity-name-plural">EDI Batches</meta>
+
+        <id name="edibatchGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <!--2011-12-09 kjeyapandian v2.3.G, ARGO-35375 Added a new index for edi batch number -->
+        <property name="edibatchNbr" column="nbr" type="java.lang.Long" index="edi_batch_nbr_ind">
+            <meta attribute="field-description">Batch Number</meta>
+        </property>
+        <property name="edibatchMsgRefNbr" column="msg_ref_nbr" type="string" index="edi_batch_msg_ref_mbr_idx">
+            <meta attribute="field-description">Message reference number received in inbound message.</meta>
+        </property>
+        <property name="edibatchDirection" column="direction" type="com.navis.edi.persistence.atoms.UserTypeEdiMessageDirectionEnum" length="50"
+                  not-null="true">
+        </property>
+        <property name="edibatchState" column="state" type="com.navis.edi.persistence.atoms.UserTypeEdiProcessEnum" length="50" not-null="true">
+            <meta attribute="field-description">State of this EDI Batch (loaded, parsed, posted, extracted, unloaded, sent, etc.)</meta>
+        </property>
+        <property name="edibatchStatus" column="status" type="com.navis.edi.persistence.atoms.UserTypeEdiStatusEnum" length="50">
+            <meta attribute="field-description">Status of this EDI Batch (complete, warnings, errors)</meta>
+        </property>
+        <property name="edibatchSegmentCount" column="segment_count" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Number of edi_segments found in interchange for this batch</meta>
+        </property>
+        <property name="edibatchReprocessCount" column="reprocess_count" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Number of edi_reprocess jobs executed for this batch</meta>
+        </property>
+        <property name="edibatchTransactionCount" column="transaction_count" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Number of bookings, bls, containers, etc. found in interchange</meta>
+        </property>
+        <!--2011-01-27 rkasindula v2.2.L, ARGO-27708 notes field is added to EDI batches table.-->
+        <property name="edibatchNotes" type="java.lang.String" column="notes" length="255">
+            <meta attribute="field-description">Notes describing this batch</meta>
+        </property>
+        <property name="edibatchAdditionsOnly" type="java.lang.Boolean" column="additions_only">
+            <meta attribute="field-description">Additions Only for Manual Stowplan posting</meta>
+        </property>
+        <property name="edibatchPositionsOnly" type="java.lang.Boolean" column="positions_only">
+            <meta attribute="field-description">Positions Only for Manual Stowplan posting</meta>
+        </property>
+        <set name="ediSegmentSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Segments of the Batch</meta>
+            <key column="edibatch_gkey"/>
+            <one-to-many class="com.navis.edi.business.entity.EdiSegment"/>
+        </set>
+        <set name="ediBatchProcessSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Batch process for the Batch</meta>
+            <key column="edibat_gkey"/>
+            <one-to-many class="com.navis.edi.business.entity.EdiBatchProcess"/>
+        </set>
+        <set name="ediTransactionSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Transactions for the Batch</meta>
+            <key column="edibat_gkey"/>
+            <one-to-many class="com.navis.edi.business.entity.EdiTransaction"/>
+        </set>
+        <many-to-one name="edibatchInterchange" class="com.navis.edi.business.entity.EdiInterchange">
+            <meta attribute="field-description">EDI Interchange Gkey</meta>
+            <column name="ediint_gkey"></column>
+        </many-to-one>
+        <many-to-one name="edibatchSession" class="com.navis.edi.business.entity.EdiSession">
+            <meta attribute="field-description">EDI Session Gkey</meta>
+            <column name="edisess_gkey" not-null="true"></column>
+        </many-to-one>
+        <many-to-one name="edibatchCarrierVisit" class="com.navis.argo.business.model.CarrierVisit">
+            <meta attribute="field-description">Carrier Visit Gkey</meta>
+            <column name="cv_gkey"></column>
+        </many-to-one>
+        <property name="edibatchCreated" column="created" type="java.sql.Timestamp" index="edibat_created_idx"/>
+        <property name="edibatchCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edibatchChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edibatchChanger" column="changer" type="java.lang.String" length="30"/>
+    </class>
+    <class name="com.navis.edi.business.entity.EdiSegment" table="edi_segment" dynamic-update="true">
+        <meta attribute="n4alias">ediseg</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiSegmentHbr</meta>
+        <meta attribute="class-description">Domain entity representing EDI Segment</meta>
+        <meta attribute="n4-entity-name">EDI Segment</meta>
+        <meta attribute="n4-entity-name-plural">EDI Segments</meta>
+
+        <id name="edisegGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="edisegSeq" column="seq" type="java.lang.Long" length="6" not-null="true" index="ediseg_seq_idx">
+            <meta attribute="field-description">Edi Sequence</meta>
+        </property>
+        <property name="edisegStatus" column="status" type="com.navis.edi.persistence.atoms.UserTypeEdiProcessEnum" length="50" not-null="true">
+            <meta attribute="field-description">Edi Status</meta>
+        </property>
+        <property name="edisegSegment" column="segment" type="string" length="3500">
+            <meta attribute="field-description">Edi Segment</meta>
+        </property>
+        <property name="edisegMsgSeq" column="msg_seq" type="java.lang.Long" length="6" index="ediseg_msg_seq_idx">
+            <meta attribute="field-description">Message sequence within interchange</meta>
+        </property>
+        <many-to-one name="edisegBatch" class="com.navis.edi.business.entity.EdiBatch">
+            <meta attribute="field-description">EDI Batch Gkey</meta>
+            <column name="edibatch_gkey" not-null="true"></column>
+        </many-to-one>
+        <many-to-one name="edisegInterchange" class="com.navis.edi.business.entity.EdiInterchange">
+            <meta attribute="field-description">EDI Interchange Gkey</meta>
+            <column name="ediint_gkey" not-null="true"></column>
+        </many-to-one>
+        <property name="edisegCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edisegCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edisegChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edisegChanger" column="changer" type="java.lang.String" length="30"/>
+    </class>
+    <class name="com.navis.edi.business.entity.EdiBatchProcess" table="edi_batch_process" dynamic-update="true">
+        <meta attribute="n4alias">ediproc</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiBatchProcessHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Batch Process</meta>
+        <meta attribute="n4-entity-name">EDI Batch Process</meta>
+        <meta attribute="n4-entity-name-plural">EDI Batch Processes</meta>
+
+        <id name="ediprocGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="ediprocSequence" column="seq" type="java.lang.Long" length="3" not-null="true">
+            <meta attribute="field-description">Sequence that increments monotonically</meta>
+        </property>
+        <property name="ediprocId" column="process_id" type="com.navis.edi.persistence.atoms.UserTypeEdiProcessEnum" length="50">
+            <meta attribute="field-description">Process ID (extract, load, post, parse, etc.)</meta>
+        </property>
+        <property name="ediprocStatus" column="status" type="com.navis.edi.persistence.atoms.UserTypeEdiStatusEnum" length="50" not-null="true">
+            <meta attribute="field-description">Status of this EDI Batch Process (complete, warnings, errors)</meta>
+        </property>
+
+        <property name="ediprocRecordsActual" column="records_actual" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Actual number of segments or transactions processed depending on nature of process</meta>
+        </property>
+
+        <property name="ediprocRecordsTotal" column="records_total" type="java.lang.Long" length="8">
+            <meta attribute="field-description">Total number of segments or transactions to be processed depending on nature of process</meta>
+        </property>
+
+        <!-- 2009-04-13 jkathir v1.9.D ARGO-17830 Added a new column "execution_node" to display the node, so that it will be easy to locate the logs
+        when a user manually posts a BAPLIE and forgot the node they ran. -->
+        <property name="ediprocExecutionNode" column="execution_node" type="string" length="255">
+            <meta attribute="field-description">The unique name used to define the node in the cluster that will execute the process.</meta>
+        </property>
+
+        <set name="ediErrorSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Errors of the process</meta>
+            <key column="ediproc_gkey"/>
+            <one-to-many class="com.navis.edi.business.entity.EdiError"/>
+        </set>
+        <many-to-one name="ediprocBatch" class="com.navis.edi.business.entity.EdiBatch">
+            <meta attribute="field-description">EDI Batch Gkey</meta>
+            <column name="edibat_gkey" not-null="true"></column>
+        </many-to-one>
+        <property name="ediprocStartTimestamp" column="start_datetime" type="java.sql.Timestamp"/>
+        <property name="ediprocEndTimestamp" column="end_datetime" type="java.sql.Timestamp"/>
+        <property name="ediprocCreated" column="created" type="java.sql.Timestamp" index="edipro_created_idx"/>
+        <property name="ediprocCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="ediprocChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="ediprocChanger" column="changer" type="java.lang.String" length="30"/>
+    </class>
+    <class name="com.navis.edi.business.entity.EdiTransaction" table="edi_transaction" dynamic-update="true">
+        <meta attribute="n4alias">editran</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiTransactionHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Transaction</meta>
+        <meta attribute="n4-entity-name">EDI Transaction</meta>
+        <meta attribute="n4-entity-name-plural">EDI Transactions</meta>
+        <meta attribute="carina-sqlserver-index">
+            CREATE INDEX edi_tran_crststat_edib_idx on edi_transaction (created, status) include (edibat_gkey);
+        </meta>
+
+        <id name="editranGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="editranSeqWithinInterchange" column="seq_within_interchange" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Sequence within Interchange, Helpful to get post entire Interchange in order</meta>
+        </property>
+        <property name="editranSeqWithinBatch" column="seq_within_batch" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Sequence within Batch</meta>
+        </property>
+        <property name="editranDoc" column="edi_doc" type="text" length="16777215">
+            <meta attribute="field-description">XML document containing one commitable EDI transaction</meta>
+        </property>
+        <property name="editranMsgAfter" column="message_after" type="java.lang.String" length="25">
+        </property>
+        <property name="editranMsgBefore" column="message_before" type="java.lang.String" length="20">
+        </property>
+        <property name="editranStatus" column="status" type="com.navis.edi.persistence.atoms.UserTypeEdiStatusEnum" length="50">
+        </property>
+        <set name="ediKeywordSet" inverse="true" lazy="true" cascade="all-delete-orphan">
+            <meta attribute="field-description">Search keywords of this Transaction</meta>
+            <key column="editran_gkey"/>
+            <one-to-many class="com.navis.edi.business.entity.EdiKeyword"/>
+        </set>
+        <many-to-one name="editranBatch" class="com.navis.edi.business.entity.EdiBatch">
+            <meta attribute="field-description">EDI Batch Gkey</meta>
+            <column name="edibat_gkey" not-null="true"></column>
+        </many-to-one>
+        <property name="editranCreated" column="created" type="java.sql.Timestamp" index="editrn_created_idx"/>
+        <property name="editranCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="editranChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="editranChanger" column="changer" type="java.lang.String" length="30"/>
+        <!--2011-12-09 kjeyapandian v2.3.G, ARGO-35375 Added a new index for transaction primary keyword value -->
+        <property name="editranPrimaryKeywordValue" column="primary_keyword_value" type="java.lang.String" length="80" index="edi_tran_pk_value_ind"/>
+        <property name="editranKeywordValue2" column="keyword_value_2" type="java.lang.String" length="80"/>
+        <property name="editranKeywordValue3" column="keyword_value_3" type="java.lang.String" length="80"/>
+        <property name="editranKeywordValue4" column="keyword_value_4" type="java.lang.String" length="80"/>
+        <!-- 2007-06-02 smahesh v1.4.B ARGO-6262 Properties for the edi acknowledgements used for both in and out edi ack-->
+        <property name="editranAckType" column="ack_type" type="com.navis.edi.persistence.atoms.UserTypeEdiAcknowledgementTypeEnum">
+            <meta attribute="field-description">The column denotes whether the ack is ACCEPTED/REJECTED </meta>
+        </property>
+        <property name="editranAckCount" column="ack_count" type="java.lang.Long" length="3">
+            <meta attribute="field-description">Acknowledgement Count, Integer to track count</meta>
+        </property>
+        <property name="editranAckDirection" column="ack_direction" type="com.navis.edi.persistence.atoms.UserTypeEdiMessageDirectionEnum" length="50" />
+        <property name="editranAckErrMessage" column="ack_error" type="java.lang.String" length="1000"/>
+        <property name="editranAckDate" column="ack_date" type="java.sql.Timestamp" />
+        <property name="editranAckRefNbr" column="ack_ref_nbr" type="java.lang.String" length="255"/>
+        <property name="editranMsgUniqueId" column="msg_unique_id" type="java.lang.String" length="255"/>
+        <property name="editranMsgProducedDate" column="msg_produced_date" type="java.sql.Timestamp"/>
+        <property name="editranControlNbr" column="control_nbr" type="java.lang.Long" index="edi_tran_control_nbr_idx">
+        <meta attribute="field-description">Transaction control number incremented for each outbound transaction bound to respective edi session</meta>
+        </property>
+        <property name="editranSetNbr" column="tran_set_nbr" type="string">
+            <meta attribute="field-description">Transaction control number received in inbound message.</meta>
+        </property>
+    </class>
+    <class name="com.navis.edi.business.entity.EdiKeyword" table="edi_transaction_keyword" dynamic-update="true">
+        <meta attribute="n4alias">edikeyword</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiKeywordHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Transaction Keyword</meta>
+        <meta attribute="n4-entity-name">EDI Transaction Keyword</meta>
+        <meta attribute="n4-entity-name-plural">EDI Transaction Keywords</meta>
+
+        <id name="edikeywordGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="edikeywordAttrType" column="attr_type" type="java.lang.String" length="25">
+        </property>
+        <property name="edikeywordAttrValue" column="attr_value" type="java.lang.String" length="80">
+        </property>
+        <many-to-one name="edikeywordTransaction" class="com.navis.edi.business.entity.EdiTransaction" cascade="all">
+            <meta attribute="field-description">EDI Transaction Gkey</meta>
+            <column name="editran_gkey" not-null="true"></column>
+        </many-to-one>
+        <property name="edikeywordCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edikeywordCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edikeywordChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edikeywordChanger" column="changer" type="java.lang.String" length="30"/>
+    </class>
+
+    <class name="com.navis.edi.business.entity.EdiError" table="edi_error" dynamic-update="true">
+        <meta attribute="n4alias">edierr</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiErrorHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Domain entity representing EDI Process Error</meta>
+        <meta attribute="n4-entity-name">EDI Process Error</meta>
+        <meta attribute="n4-entity-name-plural">EDI Process Errors</meta>
+
+        <id name="edierrGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <many-to-one name="edierrBatchProcess" class="com.navis.edi.business.entity.EdiBatchProcess">
+            <meta attribute="field-description">EDI Batch Process Gkey</meta>
+            <column name="ediproc_gkey" not-null="true"></column>
+        </many-to-one>
+        <many-to-one name="edierrTransaction" class="com.navis.edi.business.entity.EdiTransaction">
+            <meta attribute="field-description">EDI Transaction Gkey</meta>
+            <column name="editran_gkey"></column>
+        </many-to-one>
+
+        <!-- added 2005-04-21 JJS -->
+        <component name="edierrMessage" class="com.navis.argo.business.portal.PersistedMessage">
+            <property name="msgPropertyKey" column="msg_key" type="string" length="255"/>
+            <property name="msgParms" column="msg_parms" type="text"/>
+            <property name="msgParmsString" column="msg_parms_string" type="string" length="4000"/>
+            <property name="msgMetafieldId" column="msg_field" type="string" length="255"/>
+        </component>
+
+        <property name="edierrSeverity" column="severity" type="com.navis.edi.persistence.atoms.UserTypeEdiSeverityEnum" length="50" not-null="true"/>
+
+        <property name="edierrCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edierrCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edierrChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edierrChanger" column="changer" type="java.lang.String" length="30"/>
+    </class>
+    <class name="com.navis.edi.business.entity.EdiJobSchedule" table="edi_job_schedule" dynamic-update="true">
+        <meta attribute="n4alias">edijobsch</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiJobScheduleHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">EDI Job Schedule</meta>
+        <meta attribute="n4-entity-name-plural">EDI Job Schedules</meta>
+
+        <id name="edijobschGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="edijobschName" column="name" type="string" length="50" not-null="true"/>
+        <property name="edijobschClassname" column="class_name" type="com.navis.edi.persistence.atoms.UserTypeEdiSchedulerClassNameEnum" length="100"
+                  not-null="true"/>
+        <many-to-one name="edijobschSession" class="com.navis.edi.business.entity.EdiSession">
+            <meta attribute="field-description">EDI Session Gkey</meta>
+            <column name="edi_session_gkey"></column>
+        </many-to-one>
+        <many-to-one name="edijobschMailbox" class="com.navis.edi.business.entity.EdiMailbox">
+            <meta attribute="field-description">EDI Mailbox Gkey</meta>
+            <column name="edi_mailbox_gkey"></column>
+        </many-to-one>
+        <many-to-one name="edijobschComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex">
+            <meta attribute="field-description">EDI Job schedule is set up by complex.</meta>
+            <meta attribute="use-in-tostring">true</meta>
+        </many-to-one>
+        <property name="edijobschFromMinute" column="from_minute" type="java.lang.Long" length="8" not-null="true"/>
+        <property name="edijobschFromHour" column="from_hour" type="java.lang.Long" length="8"/>
+        <property name="edijobschToHour" column="to_hour" type="java.lang.Long" length="8"/>
+        <property name="edijobschForEvery" column="for_every" type="java.lang.Long" length="8"/>
+        <property name="edijobschHourOrMinute" column="hour_or_minute" type="com.navis.edi.persistence.atoms.UserTypeEdiSchedulerTriggerEnum"
+                  length="100" not-null="true"/>
+        <property name="edijobschDayofweek" column="dow" type="java.lang.String" length="30" not-null="true"/>
+        <property name="edijobschExpression" column="cron_expression" type="java.lang.String" length="50"/>
+        <property name="edijobschIsScheduled" column="is_scheduled" type="java.lang.Boolean">
+            <meta attribute="field-description">The column denotes whether the job is scheduled or not</meta>
+        </property>
+        <property name="edijobschCreated" column="created" type="java.sql.Timestamp"/>
+        <property name="edijobschCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="edijobschChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="edijobschChanger" column="changer" type="java.lang.String" length="30"/>
+    </class>
+    <class name="com.navis.edi.business.entity.EdiQueuedInterchange" table="edi_queued_interchange" dynamic-update="true">
+        <meta attribute="n4alias">ediquin</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiQueuedInterchangeHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="n4-entity-name">EDI Queued Interchange</meta>
+        <meta attribute="n4-entity-name-plural">EDI Queued Interchanges</meta>
+
+        <id name="ediquinGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+        <property name="ediquinFileName" column="edi_file_name" type="string" length="100"/>
+        <many-to-one name="ediquinMlbx" class="com.navis.edi.business.entity.EdiMailbox" column="edi_mailbox_gkey" not-null="true"/>
+        <property name="ediquinCreated" column="created" type="java.sql.Timestamp" index="ediqun_created_idx"/>
+        <property name="ediquinCreator" column="creator" type="java.lang.String" length="30"/>
+        <property name="ediquinChanged" column="changed" type="java.sql.Timestamp"/>
+        <property name="ediquinChanger" column="changer" type="java.lang.String" length="30"/>
+    </class>
+
+    <!--
+    PostingRule new 2007-02-14 JJS
+    -->
+    <class name="com.navis.edi.business.entity.EdiPostingRule" table="edi_posting_rules" dynamic-update="true" lazy="false">
+        <meta attribute="n4alias">prul</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiPostingRuleHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Describes the Posting Logic for a particular MessageClass and PropertyGroup</meta>
+        <meta attribute="n4-entity-name">Edi Posting Rule</meta>
+        <meta attribute="n4-entity-name-plural">Edi Posting Rules</meta>
+
+        <id name="prulGkey" column="gkey" type="java.lang.Long" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <many-to-one name="prulComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">The Complex to which this PostingRule belongs.</meta>
+        </many-to-one>
+
+        <property name="prulEdiMessageClass" column="message_class" type="com.navis.argo.persistence.atoms.UserTypeEdiMessageClassEnum"
+                  not-null="true">
+            <meta attribute="field-description">Message Class to which this rule applies</meta>
+        </property>
+
+        <property name="prulPropertyGroup" column="property_group" type="com.navis.argo.persistence.atoms.UserTypePropertyGroupEnum" not-null="true">
+            <meta attribute="field-description">Property Group to which this rule applies</meta>
+        </property>
+
+        <many-to-one name="prulMapping" class="com.navis.argo.business.model.EntityMappingPredicate" column="mapping_rules" not-null="false"
+                     cascade="all">
+            <meta attribute="field-description">Top node in a EntityMappingPredicate tree defining the rules.</meta>
+        </many-to-one>
+
+        <property name="prulChanged" column="changed" type="timestamp"/>
+        <property name="prulChanger" column="changer" type="string" length="30"/>
+
+    </class>
+    <!--
+    EDI samples for testing
+    -->
+    <class name="com.navis.edi.business.entity.EdiSample" table="edi_sample" dynamic-update="true">
+
+        <meta attribute="n4alias">edismpl</meta>
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiSampleHbr</meta>
+        <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+        <meta attribute="class-description">Argo-standard EDI XML data for testing purposes</meta>
+
+        <id name="edismplId" column="id" type="string" length="50" unsaved-value="null">
+            <generator class="assigned"/>
+        </id>
+
+        <property name="edismplMsgClass" column="msg_class" type="com.navis.argo.persistence.atoms.UserTypeEdiMessageClassEnum" length="20"
+                  not-null="true">
+            <meta attribute="field-description">Message Class (STOWPLAN, etc.)</meta>
+        </property>
+
+        <property name="edismplXml" column="xml_data" type="text">
+            <meta attribute="field-description">XML payload</meta>
+        </property>
+
+    </class>
+
+
+    <!-- 2007-06-12 Shan v1.4.B ARGO-7104 Edi Scheduler implementation using new scheduler framework  -->
+    <joined-subclass name="com.navis.edi.business.entity.EdiJobDefinition" table="edi_job_definition"
+                     extends="com.navis.argo.business.job.AbstractJobDefinition" dynamic-update="true">
+
+        <meta attribute="generated-class">com.navis.edi.business.entity.EdiJobDefinitionHbr</meta>
+        <meta attribute="n4alias">edijob</meta>
+        <meta attribute="class-description">Job definition for Edi scheduler </meta>
+        <meta attribute="n4-entity-name">Edi Job Definition</meta>
+        <meta attribute="n4-entity-name-plural">Edi Job Definitions</meta>
+
+        <key column="edijob_gkey"/>
+
+        <property name="edijobClassName" column="class_name" type="com.navis.edi.persistence.atoms.UserTypeEdiSchedulerClassNameEnum" length="100"
+                  not-null="true"/>
+
+       <many-to-one name="edijobSession" class="com.navis.edi.business.entity.EdiSession">
+            <meta attribute="field-description">EDI Session Gkey</meta>
+            <column name="edi_session_gkey"></column>
+        </many-to-one>
+
+        <many-to-one name="edijobMailbox" class="com.navis.edi.business.entity.EdiMailbox">
+            <meta attribute="field-description">EDI Mailbox Gkey</meta>
+            <column name="edi_mailbox_gkey"></column>
+        </many-to-one>
+
+        <many-to-one name="edijobComplex" column="complex_gkey" class="com.navis.argo.business.model.Complex" not-null="true">
+            <meta attribute="field-description">EDI Job schedule is set up by complex.</meta>
+        </many-to-one>
+
+        <property name="edijobReprocessCount" column="reprocess_count" type="java.lang.Long">
+            <meta attribute="field-description">Number of times the reprocess job runs</meta>
+        </property>
+
+    </joined-subclass>
+
+</hibernate-mapping>

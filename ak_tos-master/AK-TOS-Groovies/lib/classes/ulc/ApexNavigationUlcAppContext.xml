@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+
+    <bean id="navigationTreeProvider" class="com.navis.argo.ulc.server.application.navigation.LoginScopedNavigationTreeProvider"
+          scope="prototype">
+        <property name="defaultProvider">
+            <ref bean="standardNavigationTreeProvider"/>
+        </property>
+        <property name="providerMapping">
+            <!-- this map defines which navigation tree provider to use, depending on the scope at which the user has logged in -->
+            <!-- if no mapping is specified for a certain scope level, the default mapping is applied -->
+            <!-- note: different scope levels can be mapped to the same navigation tree provider bean -->
+            <map>
+                <entry key="glb" value-ref="monitorNavigationTreeProvider"/>
+                <entry key="opr" value-ref="monitorNavigationTreeProvider"/>
+                <entry key="cpx" value-ref="complexNavigationTreeProvider"/>
+                <entry key="fcy" value-ref="standardNavigationTreeProvider"/>
+                <entry key="yrd" value-ref="standardNavigationTreeProvider"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- the navigation tree provider for the global & operator scope -->
+    <bean id="monitorNavigationTreeProvider" class="com.navis.framework.ulc.server.application.navigation.XMLNavigationTreeProvider"
+          scope="prototype">
+        <constructor-arg index="0">
+            <value>/ulc/ApexNavigationTree_glb.xml</value>
+        </constructor-arg>
+        <!-- the securedPath property defines whether intermediate nodes between a given node and the root node must be granted by security or not -->
+        <property name="securedPath" value="false"/>
+        <property name="navigationTemplateProvider">
+            <ref bean="navigationTemplateProvider"/>
+        </property>
+    </bean>
+
+    <!-- the navigation tree provider for the complex scope -->
+    <bean id="complexNavigationTreeProvider" class="com.navis.framework.ulc.server.application.navigation.XMLNavigationTreeProvider"
+          scope="prototype">
+        <constructor-arg index="0">
+            <value>/ulc/ApexNavigationTree_cpx.xml</value>
+        </constructor-arg>
+        <!-- the securedPath property defines whether intermediate nodes between a given node and the root node must be granted by security or not -->
+        <property name="securedPath" value="false"/>
+        <property name="navigationTemplateProvider">
+            <ref bean="navigationTemplateProvider"/>
+        </property>
+    </bean>
+
+    <!-- the STANDARD navigation tree provider (used at facility and yard scope) -->
+    <bean id="standardNavigationTreeProvider" class="com.navis.framework.ulc.server.application.navigation.XMLNavigationTreeProvider"
+          scope="prototype">
+        <constructor-arg index="0">
+            <value>/ulc/ApexNavigationTree.xml</value>
+        </constructor-arg>
+        <!-- the securedPath property defines whether intermediate nodes between a given node and the root node must be granted by security or not -->
+        <property name="securedPath" value="false"/>
+        <property name="navigationTemplateProvider">
+            <ref bean="navigationTemplateProvider"/>
+        </property>
+    </bean>
+
+    <bean id="navigationTemplateProvider" class="com.navis.framework.ulc.server.application.navigation.CompositeNavigationTemplateProvider"
+          scope="singleton">
+        <property name="providers">
+            <list>
+                <ref bean="frameworkNavigationTemplates"/>
+                <ref bean="optimizationNavigationTemplates"/>
+                <ref bean="argoNavigationTemplates"/>
+                <ref bean="inventoryNavigationTemplates"/>
+                <ref bean="vesselNavigationTemplates"/>
+                <ref bean="railNavigationTemplates"/>
+                <ref bean="ordersNavigationTemplates"/>
+                <ref bean="roadNavigationTemplates"/>
+                <ref bean="apexNavigationTemplates"/>
+                <ref bean="servicesNavigationTemplates"/>
+                <ref bean="cargoNavigationTemplates"/>
+                <ref bean="ediNavigationTemplates"/>
+                <ref bean="yardNavigationTemplates"/>
+                <ref bean="controlNavigationTemplates"/>
+                <ref bean="workflowNavigationTemplates"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="apexNavigationTemplates" class="com.navis.framework.ulc.server.application.navigation.XMLNavigationTemplateProvider"
+          scope="singleton">
+        <constructor-arg index="0">
+            <value>/ulc/ApexNavigationNodes.xml</value>
+        </constructor-arg>
+    </bean>
+
+    <bean id="xpsCacheMonitorController"
+          class="com.navis.apex.ulc.server.application.controller.form.XpsAndClusterFormViewController"
+          scope="prototype">
+    </bean>
+
+    <bean id="apexDbaPanelController"
+          class="com.navis.apex.ulc.server.application.controller.ApexDbaPanelController"
+          scope="prototype">
+    </bean>
+
+    <bean id="databaseSetupController"
+          class="com.navis.apex.ulc.server.application.controller.form.DatabaseSetupFormViewController"
+          scope="prototype">
+    </bean>
+
+    <!-- 2008-04-01 rsatish v1.5.N ARGO-10761 one-click SNX export of all the reference data and configuration entities -->
+    <bean id="snxRefExport"
+          class="com.navis.apex.ulc.server.application.controller.form.SnxReferenceEntitiesExportCommand"
+          scope="prototype"/>
+
+    <!-- 2009-03-20 dkannadasan v1.9 ARGO-17404 Inspector panel for Service Order management -->
+    <bean id="serviceOrdersTableViewController"
+          class="com.navis.orders.ulc.server.application.controller.table.ServiceOrdersTableViewController"
+          scope="prototype">
+        <constructor-arg index="0">
+            <value>ORD055</value>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <value>ORD056</value>
+        </constructor-arg>
+    </bean>
+    <!-- 2010-04-06 dkannadasan 2.1.L ARGO-23583 User Interface for Vessel Visit Service Order -->
+    <bean id="vesselVisitServiceOrdersTableViewController"
+          class="com.navis.orders.ulc.server.application.controller.table.CarrierVisitServiceOrdersTableViewController"
+          scope="prototype">
+        <constructor-arg index="0">
+            <value>ORD072</value>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <value>ORD073</value>
+        </constructor-arg>
+    </bean>
+
+    <!-- 2010-04-27 dkannadasan v2.1.N ARGO-23584 UI to create Service Order from Train Visits  -->
+    <bean id="trainVisitServiceOrdersTableViewController"
+          class="com.navis.orders.ulc.server.application.controller.table.CarrierVisitServiceOrdersTableViewController"
+          scope="prototype">
+        <constructor-arg index="0">
+            <value>ORD072</value>
+        </constructor-arg>
+        <constructor-arg index="1">
+            <value>ORD073</value>
+        </constructor-arg>
+    </bean>
+
+</beans>

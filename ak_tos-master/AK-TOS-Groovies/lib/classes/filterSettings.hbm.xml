@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false">
+
+    <meta attribute="JavaClassPrefix">FilterSettings</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <!-- Defines the hibernate 3 filters -->
+    <!-- obsolete filter -->
+    <filter-def name="obsoleteableFilter">
+           <filter-param name="lifeCycleState" type="com.navis.framework.persistence.atoms.UserTypeLifeCycleStateEnum"/>
+    </filter-def>
+
+</hibernate-mapping>

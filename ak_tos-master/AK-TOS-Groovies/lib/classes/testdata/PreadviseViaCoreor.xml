@@ -1,0 +1,11 @@
+<edi:releaseTransactions xmlns:edi="http://www.navis.com/argo">
+    <edi:releaseTransaction edi:ediCode="RELEASE" edi:msgClass="RELEASE" edi:msgFunction="9" edi:msgReferenceNbr="3" edi:msgTypeId="COREOR" edi:releaseIdentifierCategory="IMPRT" edi:releaseIdentifierType="UNITRELEASE">
+        <edi:Interchange edi:InterchangeNumber="3" edi:InterchangeReceipient="XVW" edi:InterchangeSender="XVW"/>
+        <edi:ediVesselVisit edi:estimatedTimeArrival="20080812" edi:outVoyageNbr="OBVYG" edi:inVoyageNbr="IBVYG" edi:vesselId="VESSEL_ID" edi:vesselIdConvention="VESID" edi:vesselName="VESSEL">
+            <edi:shippingLine edi:shippingLineCode="XVW" edi:shippingLineCodeAgency="SCAC" edi:shippingLineName="MAT"/>
+        </edi:ediVesselVisit>
+        <edi:vesselCallFacility edi:facilityId="FCY111"/>
+        <edi:ediReleaseIdentifier edi:releaseIdentifierNbr="CONTAINER_ID"/>
+        <!--<edi:ediTruckingCompany edi:truckingCompanyCode="XVW" edi:truckingCompanyCodeAgency="SCAC"/>-->
+    </edi:releaseTransaction>
+</edi:releaseTransactions>

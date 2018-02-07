@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p:ManifestWSRequest xmlns:p="http://tempuri.org/ManifestWSRequest.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://tempuri.org/ManifestWSRequest.xsd ManifestWSRequest.xsd ">
+  <p:Header>
+    <p:Transporter>Matson Navigation Lines</p:Transporter>
+    <p:VesselName>p:VesselName</p:VesselName>
+    <p:Voyage>p:Voyage</p:Voyage>
+    <p:PortOfDischarge>PIO</p:PortOfDischarge>
+    <p:ATD>2001-12-31T12:00:00</p:ATD>
+    <p:ETA>2001-12-31T12:00:00</p:ETA>
+    <p:ManifestType>C</p:ManifestType>
+    <p:TransmitDateTime>2001-12-31T12:00:00</p:TransmitDateTime>
+    <p:TransmitCount>0</p:TransmitCount>
+  </p:Header>
+</p:ManifestWSRequest>

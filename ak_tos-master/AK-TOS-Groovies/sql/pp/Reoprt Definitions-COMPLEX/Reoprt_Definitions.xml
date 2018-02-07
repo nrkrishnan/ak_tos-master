@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<argo:snx xmlns:argo="http://www.navis.com/argo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.navis.com/argo snx.xsd">
+<report-definition name="UNPLUG REEFER REQUEST" report-design="UNPLUG REEFER REQUEST" output-type="PDF" reporting-entity="Unit" description="List of reefer units to unplug" report-type="N4HQL">
+  <roles>
+    <role name="Customer Support" />
+    <role name="Reeferman" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvUnit.unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" order="ASCENDING" />
+    <sort-field-2 field-id="ufvLastKnownPosition.posName" order="ASCENDING" />
+    <sort-field-3 field-id="ufvUnit.unitId" order="DESCENDING" />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="AND" order="0" negated="false" parm-type="NO_PARM">
+        <predicate verb="AFTER" metafield="ufvUnit.unitGoods.gdsReeferRqmnts.rfreqRequestedOffPowerTime" order="0" negated="false" parm-type="REQUIRED_PARM" parm-label="Begin Date" parm-internal-name="984110267200837286" />
+        <predicate verb="BEFORE" metafield="ufvUnit.unitGoods.gdsReeferRqmnts.rfreqRequestedOffPowerTime" order="1" negated="false" parm-type="REQUIRED_PARM" parm-label="End Date" parm-internal-name="-2972149716704529513" />
+      </predicate>
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="XMAS TREE IN YARD BY LOC" report-design="XMAS TREE IN YARD BY LOC" output-type="PDF" reporting-entity="Unit" description="XMAS tree in yard by location" display-title="XMAS tree in yard by location" report-type="N4HQL">
+  <roles>
+    <role name="Customer Support" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+    <sort-field-2 field-id="ufvActualIbCv.cvCvd.cvdService.srvcId" order="ASCENDING" />
+    <sort-field-3 field-id="ufvUnit.unitId" order="ASCENDING" />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="ufvUnit.unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="MATCHES" metafield="ufvUnit.unitAppliedHoldOrPermName" value="XT" ui-value="XT" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="ufvActualIbCv" order="2" negated="false" parm-type="REQUIRED_PARM" parm-label="INBOUND VV" parm-internal-name="-9068514230717917499" />
+      <predicate verb="OR" order="3" negated="false" parm-type="NO_PARM">
+        <predicate verb="EQ" metafield="ufvTransitState" value="S20_INBOUND" ui-value="Inbound - Incoming and certain to arrive (ACTIVE)" order="0" negated="false" parm-type="NO_PARM" />
+        <predicate verb="EQ" metafield="ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="1" negated="false" parm-type="NO_PARM" />
+      </predicate>
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="TAG INSPECTION FOR CY" report-design="TAG INSPECTION FOR CY YARD" output-type="PDF" reporting-entity="Unit" description="Tag Inspection Report - Containers in the Yard" display-title="Tag Inspection Report - Containers in the Yard" report-type="N4HQL">
+  <roles>
+    <role name="Container Yard" />
+    <role name="Customer Support" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvUnit.unitGoods.gdsCommodity.cmdyId" order="DESCENDING" />
+    <sort-field-2 field-id="ufvLastKnownPosition.posSlot" order="ASCENDING" />
+    <sort-field-3 />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="ufvUnit.unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="ufvUnit.unitAppliedHoldOrPermName" value="TI" ui-value="TI" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="IN" metafield="ufvTransitState" value=":S40_YARD|" ui-value="Yard" order="2" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="ufvLastKnownPosition.posLocType" value="YARD" ui-value="Yard" order="3" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="XMAS TREE IN YARD BY PORT WITH XT HOLDS" report-design="XMAS TREE IN YARD BY PORT" output-type="PDF" reporting-entity="Unit" description="XMAS tree in yard by port" display-title="XMAS tree in yard by port" report-type="N4HQL">
+  <roles>
+    <role name="Customer Support" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvUnit.unitGoods.gdsDestination" order="ASCENDING" />
+    <sort-field-2 field-id="ufvActualIbCv.cvCvd.cvdService.srvcId" order="ASCENDING" />
+    <sort-field-3 field-id="ufvUnit.unitId" order="ASCENDING" />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="ufvUnit.unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="ufvTransitState" value="S40_YARD" ui-value="Yard - Currently in the yard (ACTIVE)" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="ufvUnit.unitGoods.gdsCommodity" value="^XMASTREE" ui-value="XMASTREE (CHRISTMAS TREE CTR)" order="2" negated="false" parm-type="NO_PARM" />
+      <predicate verb="MATCHES" metafield="ufvUnit.unitAppliedHoldOrPermName" value="XT" ui-value="XT" order="3" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="ufvActualIbCv" order="4" negated="false" parm-type="REQUIRED_PARM" parm-label="INBOUND VV" parm-internal-name="-4038229033950983740" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="MAERSK DUT INVENTORY REPORT NON EMPTIES" report-design="DUT INVENTORY REPORT NON EMPTIES" output-type="XLS" reporting-entity="Unit" description="Non-empties MAE containers in yard" display-title="Maersk Non-Empty Containers in Yard at DUT" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_dut_gate_supervisor" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="ufvUnit.unitLineOperator" value="^MAE/LINEOP" ui-value="MAE" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="XMAS TREE ON VESSEL BY TYPE CODE" report-design="XMAS TREE ON VESSEL BY TYPE CODE" output-type="PDF" reporting-entity="Unit" description="XMAS tree on vessel by type code" display-title="XMAS tree on vessel by type code" report-type="N4HQL">
+  <roles>
+    <role name="Customer Support" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 field-id="ufvUnit.unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" order="ASCENDING" />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="ufvUnit.unitCategory" value="IMPRT" ui-value="Import" order="0" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="ufvTransitState" value="S70_DEPARTED" ui-value="Departed - Departed on the outbound carrier" order="1" negated="false" parm-type="NO_PARM" />
+      <predicate verb="MATCHES" metafield="ufvUnit.unitPrimaryUe.ueEquipment.eqEquipType.eqtypId" value="R*" ui-value="R*" order="2" negated="false" parm-type="NO_PARM" />
+      <predicate verb="MATCHES" metafield="ufvUnit.unitAppliedHoldOrPermName" value="XT" ui-value="XT" order="3" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="ufvLastKnownPosition.posLocType" value="VESSEL" ui-value="Vessel" order="4" negated="false" parm-type="NO_PARM" />
+      <predicate verb="EQ" metafield="ufvActualIbCv" order="5" negated="false" parm-type="OPTIONAL_PARM" parm-label="Inbound Vessel" parm-internal-name="4442342493340882440" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="KDK  INVENTORY REPORT NON EMPTIES FOR MAE" report-design="KDK  INVENTORY REPORT NON EMPTIES FOR MAE" output-type="XLS" reporting-entity="Unit" description="KDK INVENTORY REPORT NON EMPTIES FOR MAE" display-title="KDK  INVENTORY REPORT NON EMPTIES FOR MAE" report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_kdk_marine" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="SDP COMMUNITY REPORT - DO NOT USE - UNDER REVIEW" report-design="SDP COMMUNITY REPORT - DO NOT USE - UNDER REVIEW" output-type="XLS" reporting-entity="Unit" description="SDP COMMUNITY REPORT - DO NOT USE - UNDER REVIEW" display-title="SANDPOINT COMMUNITY REPORT " report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="NYK KDK COMMUNITY REPORT" report-design="KDK NYK  COMMUNITY REPORT" output-type="XLS" reporting-entity="UnitComplexVisit" description="NYK KDK COMMUNITY REPORT" display-title="NYK KDK COMMUNITY REPORT" report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="NYK COMMUNITY REPORT" report-design="NYK COMMUNITY REPORT" output-type="PDF" reporting-entity="UnitComplexVisit" report-type="SQL">
+  <roles>
+    <role name="ak_dut_general_user" />
+    <role name="Client NYK" />
+    <role name="ak_dut_gate_supervisor" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="AKUTAN COMMUNITY REPORT" report-design="AKUTAN COMMUNITY REPORT" output-type="XLS" reporting-entity="Unit" report-type="SQL">
+  <roles>
+    <role name="ak_dut_general_user" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="SANDPOINT COMMUNITY REPORT" report-design="SANDPOINT COMMUNITY REPORT" output-type="XLS" reporting-entity="Unit" description="SANDPOINT COMMUNITY REPORT" display-title="SANDPOINT COMMUNITY REPORT" report-type="SQL">
+  <roles>
+    <role name="ak_dut_general_user" />
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="DUTCH MAE EMPTIES" report-design="MAE DUTCH EMPTIES" output-type="XLS" reporting-entity="Unit" description="MAE empties for the dutch harbor" report-type="SQL">
+  <roles>
+    <role name="DevTeam" />
+    <role name="ak_dut_gate_supervisor" />
+    <role name="ak_dut_gate_dispatch" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="NYK KDK INVENTORY REPORT NON EMPTIES" report-design="KDK NYK INVENTORY REPORT NON EMPTIES" output-type="PDF" reporting-entity="Unit" description="NYK KDK INVENTORY REPORT NON EMPTIES" display-title="NYK KDK INVENTORY REPORT NON EMPTIES" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter>
+    <predicate verb="AND" order="1" negated="false" parm-type="NO_PARM">
+      <predicate verb="EQ" metafield="ufvUnit.unitLineOperator" value="^NYK/LINEOP" ui-value="NYK" order="0" negated="false" parm-type="NO_PARM" />
+    </predicate>
+  </filter>
+</report-definition>
+<report-definition name="NYK KDK REEFER REPORT" report-design="NYK KDK REEFER REPORT" output-type="XLS" reporting-entity="Unit" description="NYK KDK REEFER REPORT" display-title="NYK KDK REEFER REPORT" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="KODIAK MAE COMMUNITY REPORT" report-design="KODIAK MAE COMMUNITY REPORT" output-type="XLS" reporting-entity="Unit" report-type="SQL">
+  <roles>
+    <role name="ak_kdk_gate" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="MAERSK KDK NON-EMPTY INVENTORY REPORT" report-design="MAERSK KDK INVENTORY REPORT NON EMPTIES" output-type="PDF" reporting-entity="Unit" description="MAERSK KDK NON-EMPTY INVENTORY REPORT" display-title="MAERSK KDK NON-EMPTY INVENTORY REPORT" report-type="N4HQL">
+  <roles>
+    <role name="DevTeam" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+<report-definition name="MAERSK KDK INVENTORY FULL UNITS REPORT" report-design="MAERSK KDK INVENTORY REPORT NON EMPTIES" output-type="XLS" reporting-entity="Unit" description="Non-empties MAE containers in yard" display-title="Maersk Non-Empty Containers in Yard at KDK" report-type="N4HQL">
+  <roles>
+    <role name="ak_kdk_gate" />
+    <role name="DevTeam" />
+    <role name="ak_dut_gate_supervisor" />
+  </roles>
+  <sort-fields>
+    <sort-field-1 />
+    <sort-field-2 />
+    <sort-field-3 />
+  </sort-fields>
+  <filter />
+</report-definition>
+</argo:snx>
+

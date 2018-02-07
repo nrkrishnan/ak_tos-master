@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false">
+
+    <meta attribute="JavaClassPrefix">Quartz</meta>
+    <meta attribute="extends">com.navis.framework.persistence.HibernatingEntity</meta>
+
+    <class name="com.navis.framework.quartz.business.JobGroup" table="frm_job_group">
+        <meta attribute="generated-class">com.navis.framework.quartz.business.JobGroupHbr</meta>
+        <meta attribute="n4alias">jobgroup</meta>
+        <meta attribute="n4-entity-name">Job Group</meta>
+        <meta attribute="n4-entity-name-plural">Job Groups</meta>
+        <meta attribute="class-description">Node Group</meta>
+
+        <id name="jobgroupGkey" column="jobgrp_gkey" type="java.lang.Long" length="10" unsaved-value="null">
+            <generator class="native"/>
+        </id>
+
+        <property name="jobgroupName" column="jobgrp_name" type="string" length="250" unique="true" not-null="true"/>
+        <property name="jobgroupDescription" column="jobgrp_description" type="string" length="250"/>
+        <property name="jobgroupLoadBalanceScheme" type="com.navis.framework.persistence.atoms.UserTypeJobGroupLoadBalancerSchemeEnum" not-null="true">
+            <meta attribute="field-description">The load balance scheme to use for this group</meta>
+            <column name="jobgrp_scheme" length="100"/>
+        </property>
+
+        <set name="jobgroupNodes" table="frm_job_group_node" inverse="false" lazy="true">
+            <key column="jobgroupGkey"/>
+            <many-to-many column="clusterServiceGkey" class="com.navis.carina.diagnostic.business.ClusterService"/>
+        </set>
+    </class>
+
+    <class name="com.navis.framework.quartz.business.JobDetail" table="qrtz_job_details">
+        <meta attribute="generated-class">com.navis.framework.quartz.business.JobDetailHbr</meta>
+        <meta attribute="n4alias">qrtzJD</meta>
+        <meta attribute="n4-entity-name">Quartz Job Detail</meta>
+        <meta attribute="n4-entity-name-plural">Quartz Job Details</meta>
+        <meta attribute="class-description">Quartz Job Details</meta>
+        <meta attribute="carina-index">IDX_QRTZ_J_REQ_RECOVERY(JOB_CLASS_NAME,REQUESTS_RECOVERY);IDX_QRTZ_J_GRP(SCHED_NAME,JOB_GROUP)</meta>
+
+        <composite-id name="qrtzJobDetailPrimaryKey" class="com.navis.framework.quartz.business.JobDetailPk">
+            <meta attribute="generated-class">com.navis.framework.quartz.business.JobDetailPkHbr</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+            <key-property name="qrtzJDSchedulerName" column="SCHED_NAME" type="string" length="120" />
+            <key-property name="qrtzJDJobName" column="JOB_NAME" type="string" length="200" />
+            <key-property name="qrtzJDJobGroup" column="JOB_GROUP" type="string" length="200" />
+        </composite-id>
+
+        <property name="qrtzJDDescription" column="DESCRIPTION" type="string" length="250" />
+        <property name="qrtzJDJobClassName" column="JOB_CLASS_NAME" type="string" length="250" not-null="true" />
+        <property name="qrtzJDDurable" column="IS_DURABLE" type="string" length="1" not-null="true"/>
+        <property name="qrtzJDNonConcurrent" column="IS_NONCONCURRENT" type="string" length="1" not-null="true"/>
+        <property name="qrtzJDUpdateData" column="IS_UPDATE_DATA" type="string" length="1" not-null="true"/>
+        <property name="qrtzJDRequestsRecovery" column="REQUESTS_RECOVERY" type="string" length="1" not-null="true"/>
+        <property name="qrtzJDJobData" column="JOB_DATA" type="com.navis.framework.persistence.util.BlobUserType"/>
+    </class>
+
+
+    <class name="com.navis.framework.quartz.business.Calendar" table="qrtz_calendars">
+        <meta attribute="generated-class">com.navis.framework.quartz.business.CalendarHbr</meta>
+        <meta attribute="n4alias">qrtzCal</meta>
+        <meta attribute="n4-entity-name">Quartz Calendar</meta>
+        <meta attribute="n4-entity-name-plural">Quartz Calendars</meta>
+        <meta attribute="class-description">Quartz Calendar</meta>
+
+        <composite-id name="qrtzCalendarPrimaryKey" class="com.navis.framework.quartz.business.CalendarPk">
+            <meta attribute="generated-class">com.navis.framework.quartz.business.CalendarPkHbr</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+            <key-property name="qrtzCalSchedulerName" column="SCHED_NAME" type="string" length="120"/>
+            <key-property name="qrtzCalCalendarName" column="CALENDAR_NAME" type="string" length="200"/>
+        </composite-id>
+
+        <property name="qrtzCalCalendar" column="CALENDAR" type="com.navis.framework.persistence.util.BlobUserType" not-null="true"/>
+    </class>
+
+
+    <class name="com.navis.framework.quartz.business.FiredTrigger" table="qrtz_fired_triggers">
+        <meta attribute="generated-class">com.navis.framework.quartz.business.FiredTriggerHbr</meta>
+        <meta attribute="n4alias">qrtzFT</meta>
+        <meta attribute="n4-entity-name">Quartz Fired Trigger</meta>
+        <meta attribute="n4-entity-name-plural">Quartz Fired Triggers</meta>
+        <meta attribute="class-description">Quartz Fired Trigger</meta>
+        <meta attribute="carina-index">IDX_QRTZ_FT_TRIG_INST_NAME(SCHED_NAME,INSTANCE_NAME);IDX_QRTZ_FT_INST_JOB_REQ_RCVRY(SCHED_NAME,INSTANCE_NAME,REQUESTS_RECOVERY);IDX_QRTZ_FT_J_G(SCHED_NAME,JOB_NAME,JOB_GROUP);IDX_QRTZ_FT_JG(SCHED_NAME,JOB_GROUP);IDX_QRTZ_FT_T_G(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP);IDX_QRTZ_FT_TG(SCHED_NAME,TRIGGER_GROUP)</meta>
+
+        <composite-id name="qrtzFiredTriggerPrimaryKey" class="com.navis.framework.quartz.business.FiredTriggerPk">
+            <meta attribute="generated-class">com.navis.framework.quartz.business.FiredTriggerPkHbr</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+            <key-property name="qrtzFTSchedulerName" column="SCHED_NAME" type="string" length="120"/>
+            <key-property name="qrtzFTEntryID" column="ENTRY_ID" type="string" length="95"/>
+        </composite-id>
+
+        <property name="qrtzFTTriggerName" column="TRIGGER_NAME" type="string" length="200" not-null="true"/>
+        <property name="qrtzFTTriggerGroup" column="TRIGGER_GROUP" type="string" length="200" not-null="true"/>
+        <property name="qrtzFTInstanceName" column="INSTANCE_NAME" type="string" length="200" not-null="true"/>
+        <property name="qrtzFTFiredTime" column="FIRED_TIME" type="long" not-null="true"/>
+        <property name="qrtzFTPriority" column="PRIORITY" type="integer" not-null="true"/>
+        <property name="qrtzFTState" column="STATE" type="string" length="16" not-null="true"/>
+        <property name="qrtzFTJobName" column="JOB_NAME" type="string" length="200" />
+        <property name="qrtzFTJobGroup" column="JOB_GROUP" type="string" length="200" />
+        <property name="qrtzFTIsNonConcurrent" column="IS_NONCONCURRENT" type="string" length="1" />
+        <property name="qrtzFTRequestsRecovery" column="REQUESTS_RECOVERY" type="string" length="1" />
+    </class>
+
+    <class name="com.navis.framework.quartz.business.Lock" table="qrtz_locks">
+        <meta attribute="generated-class">com.navis.framework.quartz.business.LockHbr</meta>
+        <meta attribute="n4alias">qrtzLock</meta>
+        <meta attribute="n4-entity-name">Quartz Lock</meta>
+        <meta attribute="n4-entity-name-plural">Quartz Locks</meta>
+        <meta attribute="class-description">Quartz Lock</meta>
+
+        <composite-id name="qrtzLockPrimaryKey" class="com.navis.framework.quartz.business.LockPk">
+            <meta attribute="generated-class">com.navis.framework.quartz.business.LockPkHbr</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+            <key-property name="qrtzLockSchedulerName" column="SCHED_NAME" type="string" length="120"/>
+            <key-property name="qrtzLockCalendarName" column="LOCK_NAME" type="string" length="40"/>
+        </composite-id>
+    </class>
+
+    <class name="com.navis.framework.quartz.business.PausedTriggerGroup" table="qrtz_paused_trigger_grps">
+        <meta attribute="generated-class">com.navis.framework.quartz.business.PausedTriggerGroupHbr</meta>
+        <meta attribute="n4alias">qrtzPTG</meta>
+        <meta attribute="n4-entity-name">Quartz Paused Trigger Group</meta>
+        <meta attribute="n4-entity-name-plural">Quartz Paused Trigger Groups</meta>
+        <meta attribute="class-description">Quartz Paused Trigger Group</meta>
+
+        <composite-id name="qrtzPTGPrimaryKey" class="com.navis.framework.quartz.business.PausedTriggerGroupPk">
+            <meta attribute="generated-class">com.navis.framework.quartz.business.PausedTriggerGroupPkHbr</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+            <key-property name="qrtzPTGSchedulerName" column="SCHED_NAME" type="string" length="120"/>
+            <key-property name="qrtzPTGTriggerGroup" column="TRIGGER_GROUP" type="string" length="200"/>
+        </composite-id>
+    </class>
+
+    <class name="com.navis.framework.quartz.business.SchedulerState" table="qrtz_scheduler_state">
+        <meta attribute="generated-class">com.navis.framework.quartz.business.SchedulerStateHbr</meta>
+        <meta attribute="n4alias">qrtzState</meta>
+        <meta attribute="n4-entity-name">Quartz Scheduler State</meta>
+        <meta attribute="n4-entity-name-plural">Quartz Scheduler States</meta>
+        <meta attribute="class-description">Quartz Scheduler State</meta>
+
+        <composite-id name="qrtzStatePrimaryKey" class="com.navis.framework.quartz.business.SchedulerStatePk">
+            <meta attribute="generated-class">com.navis.framework.quartz.business.SchedulerStatePkHbr</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+            <key-property name="qrtzStateSchedulerName" column="SCHED_NAME" type="string" length="120"/>
+            <key-property name="qrtzStateInstanceName" column="INSTANCE_NAME" type="string" length="200"/>
+        </composite-id>
+
+        <property name="qrtzStateCheckinTime" column="LAST_CHECKIN_TIME" type="long" not-null="true"/>
+        <property name="qrtzStateCheckinInterval" column="CHECKIN_INTERVAL" type="long" not-null="true"/>
+    </class>
+
+
+    <class name="com.navis.framework.quartz.business.Trigger" table="qrtz_triggers">
+        <meta attribute="generated-class">com.navis.framework.quartz.business.TriggerHbr</meta>
+        <meta attribute="n4alias">qrtzTrig</meta>
+        <meta attribute="n4-entity-name">Quartz Trigger</meta>
+        <meta attribute="n4-entity-name-plural">Quartz Triggers</meta>
+        <meta attribute="class-description">Quartz Trigger</meta>
+        <meta attribute="carina-index">IDX_QRTZ_T_J(SCHED_NAME,JOB_NAME,JOB_GROUP);IDX_QRTZ_T_JG(SCHED_NAME,JOB_GROUP);IDX_QRTZ_T_C(SCHED_NAME,CALENDAR_NAME);
+            IDX_QRTZ_T_G(SCHED_NAME,TRIGGER_GROUP);IDX_QRTZ_T_STATE(SCHED_NAME,TRIGGER_STATE);IDX_QRTZ_T_N_STATE(SCHED_NAME,TRIGGER_NAME,TRIGGER_GROUP,TRIGGER_STATE);
+            IDX_QRTZ_T_N_G_STATE(SCHED_NAME,TRIGGER_GROUP,TRIGGER_STATE);IDX_QRTZ_T_NEXT_FIRE_TIME(SCHED_NAME,NEXT_FIRE_TIME);
+            IDX_QRTZ_T_NFT_ST(SCHED_NAME,TRIGGER_STATE,NEXT_FIRE_TIME);IDX_QRTZ_T_NFT_MISFIRE(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME);
+            IDX_QRTZ_T_NFT_ST_MISFIRE(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_STATE);
+            IDX_QRTZ_T_NFT_ST_MISFIRE_GRP(SCHED_NAME,MISFIRE_INSTR,NEXT_FIRE_TIME,TRIGGER_GROUP,TRIGGER_STATE);
+            QRTZ_TRG_NAME_JOB_STATE_IDX(SCHED_NAME, JOB_NAME, JOB_GROUP, TRIGGER_STATE)
+        </meta>
+        <!--meta attribute="carina-sqlserver-index">
+            CREATE INDEX QRTZ_TRG_NAME_JOB_STATE_IDX ON QRTZ_TRIGGERS(SCHED_NAME, JOB_NAME, JOB_GROUP, TRIGGER_STATE);
+        </meta-->
+        <composite-id name="qrtzTriggerPrimaryKey" class="com.navis.framework.quartz.business.TriggerPk">
+            <meta attribute="generated-class">com.navis.framework.quartz.business.TriggerPkHbr</meta>
+            <meta attribute="extends">com.navis.framework.persistence.HibernatingComponent</meta>
+            <key-property name="qrtzTrigSchedulerName" column="SCHED_NAME" type="string" length="120"/>
+            <key-property name="qrtzTrigTriggerName" column="TRIGGER_NAME" type="string" length="200"/>
+            <key-property name="qrtzTrigTriggerGroup" column="TRIGGER_GROUP" type="string" length="200"/>
+        </composite-id>
+
+        <property name="qrtzTrigJobName" column="JOB_NAME" type="string" length="200" not-null="true"/>
+        <property name="qrtzTrigJobGroup" column="JOB_GROUP" type="string" length="200" not-null="true"/>
+        <property name="qrtzTrigDescription" column="DESCRIPTION" type="string" length="250"/>
+        <property name="qrtzTrigNextFireTime" column="NEXT_FIRE_TIME" type="long"/>
+        <property name="qrtzTrigPrevFireTime" column="PREV_FIRE_TIME" type="long"/>
+        <property name="qrtzTrigPriority" column="PRIORITY" type="integer"/>
+        <property name="qrtzTrigTriggerState" column="TRIGGER_STATE" type="string" length="16" not-null="true"/>
+        <property name="qrtzTrigTriggerType" column="TRIGGER_TYPE" type="string" length="8" not-null="true"/>
+        <property name="qrtzTrigStartTime" column="START_TIME" type="long" not-null="true"/>
+        <property name="qrtzTrigEndTime" column="END_TIME" type="long"/>
+        <property name="qrtzTrigCalendarName" column="CALENDAR_NAME" type="string" length="200"/>
+        <property name="qrtzTrigMisfireInstruction" column="MISFIRE_INSTR" type="short" />
+        <property name="qrtzTrigJobData" column="JOB_DATA" type="com.navis.framework.persistence.util.BlobUserType"/>
+
+        <joined-subclass name="com.navis.framework.quartz.business.SimpropTrigger" table="qrtz_simprop_triggers">
+            <meta attribute="generated-class">com.navis.framework.quartz.business.SimpropTriggerHbr</meta>
+            <meta attribute="n4alias">qrtzSpT</meta>
+            <meta attribute="n4-entity-name">Quartz Simprop Trigger</meta>
+            <meta attribute="n4-entity-name-plural">Quartz Simprop Triggers</meta>
+            <meta attribute="class-description">Quartz Simprop Trigger</meta>
+            <meta attribute="carina-index"/>
+
+            <key>
+                <column name="SCHED_NAME"/>
+                <column name="TRIGGER_NAME"/>
+                <column name="TRIGGER_GROUP"/>
+            </key>
+            <property name="qrtzSpTStrProp1" column="STR_PROP_1" type="string" length="512"/>
+            <property name="qrtzSpTStrProp2" column="STR_PROP_2" type="string" length="512"/>
+            <property name="qrtzSpTStrProp3" column="STR_PROP_3" type="string" length="512"/>
+            <property name="qrtzSpTIntProp1" column="INT_PROP_1" type="integer"/>
+            <property name="qrtzSpTIntProp2" column="INT_PROP_2" type="integer"/>
+            <property name="qrtzSpTLongProp1" column="LONG_PROP_1" type="long"/>
+            <property name="qrtzSpTLongProp2" column="LONG_PROP_2" type="long"/>
+            <property name="qrtzSpTDecProp1" column="DEC_PROP_1" type="big_decimal" precision="13" scale="4"/>
+            <property name="qrtzSpTDecProp2" column="DEC_PROP_2" type="big_decimal" precision="13" scale="4"/>
+            <property name="qrtzSpTBoolProp1" column="BOOL_PROP_1" type="string" length="1"/>
+            <property name="qrtzSpTBoolProp2" column="BOOL_PROP_2" type="string" length="1"/>
+        </joined-subclass>
+
+        <joined-subclass name="com.navis.framework.quartz.business.SimpleTrigger" table="qrtz_simple_triggers">
+            <meta attribute="generated-class">com.navis.framework.quartz.business.SimpleTriggerHbr</meta>
+            <meta attribute="n4alias">qrtzST</meta>
+            <meta attribute="n4-entity-name">Quartz Simple Trigger</meta>
+            <meta attribute="n4-entity-name-plural">Quartz Simple Triggers</meta>
+            <meta attribute="class-description">Quartz Simple Trigger</meta>
+            <meta attribute="carina-index"/>
+
+            <key>
+                <column name="SCHED_NAME"/>
+                <column name="TRIGGER_NAME"/>
+                <column name="TRIGGER_GROUP"/>
+            </key>
+
+            <property name="qrtzSTRepeatCount" column="REPEAT_COUNT" type="long" not-null="true"/>
+            <property name="qrtzSTRepeatInterval" column="REPEAT_INTERVAL" type="long" not-null="true"/>
+            <property name="qrtzSTTimesTriggered" column="TIMES_TRIGGERED" type="long" not-null="true"/>
+        </joined-subclass>
+
+        <joined-subclass name="com.navis.framework.quartz.business.CronTrigger" table="qrtz_cron_triggers">
+            <meta attribute="generated-class">com.navis.framework.quartz.business.CronTriggerHbr</meta>
+            <meta attribute="n4alias">qrtzCT</meta>
+            <meta attribute="n4-entity-name">Quartz Cron Trigger</meta>
+            <meta attribute="n4-entity-name-plural">Quartz Cron Triggers</meta>
+            <meta attribute="class-description">Quartz Cron Trigger</meta>
+            <meta attribute="carina-index"/>
+
+            <key>
+                <column name="SCHED_NAME"/>
+                <column name="TRIGGER_NAME"/>
+                <column name="TRIGGER_GROUP"/>
+            </key>
+
+            <property name="qrtzCTCronExpression" column="CRON_EXPRESSION" type="string" length="120" not-null="true"/>
+            <property name="qrtzCTTimeZoneID" column="TIME_ZONE_ID" type="string" length="80"/>
+
+        </joined-subclass>
+
+        <joined-subclass name="com.navis.framework.quartz.business.BlobTrigger" table="qrtz_blob_triggers">
+            <meta attribute="generated-class">com.navis.framework.quartz.business.BlobTriggerHbr</meta>
+            <meta attribute="n4alias">qrtzBT</meta>
+            <meta attribute="n4-entity-name">Quartz Blob Trigger</meta>
+            <meta attribute="n4-entity-name-plural">Quartz Blob Triggers</meta>
+            <meta attribute="class-description">Quartz Blob Trigger</meta>
+            <meta attribute="carina-index"/>
+
+            <key>
+                <column name="SCHED_NAME"/>
+                <column name="TRIGGER_NAME"/>
+                <column name="TRIGGER_GROUP"/>
+            </key>
+
+            <property name="qrtzBTBlobData" column="BLOB_DATA" type="com.navis.framework.persistence.util.BlobUserType"/>
+        </joined-subclass>
+
+    </class>
+
+</hibernate-mapping>

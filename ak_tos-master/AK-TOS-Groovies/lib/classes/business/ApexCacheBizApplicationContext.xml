@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ARGO-4779 Implement second level caching for selected reference entites -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-lazy-init="true">
+    <bean name="apexCachedEntities" class="com.navis.framework.hibernate.configuration.SecondLevelCacheProperties">
+        <property name="entityProperties">
+            <props>
+                <prop key="com.navis.framework.query.business.SavedPredicate">nonstrict-read-write</prop>
+
+                <!-- ARGO reference and other classes -->
+                <prop key="com.navis.argo.business.reference.EquipType">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.UnLocCode">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.Commodity">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.RoutingPoint">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.MasterBizUnit">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.CarrierService">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.CarrierItinerary">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.PointCall">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.Destination">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.ScopedBizUnit">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.EquipGrade">nonstrict-read-write</prop>
+                <!-- jwang 2008-04-21 ARGO-10960: add additional fields for EDO -->
+                <prop key="com.navis.argo.business.reference.EquipCondition">nonstrict-read-write</prop>
+                <!-- jwang 2008-05-01 ARGO-11406: add MnR Status field -->
+                <prop key="com.navis.argo.business.reference.MnrStatus">nonstrict-read-write</prop>
+                <!-- jwang 2008-11-13 ARGO-15205 Need new entity "Order Purpose" to support Inter Facility Transfers for ANTGWY. -->
+                <prop key="com.navis.argo.business.reference.OrderPurpose">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.EquipFeature">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.Group">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.SpecialStow">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.EquipDamageType">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.EqComponent">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.EquipSerialRange">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.AgentRepresentation">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.model.Operator">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.model.Complex">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.model.Facility">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.model.Yard">nonstrict-read-write</prop>
+
+                <!-- RMK, ARGO-40941, 2012-08-10, Performance tests showed performance improved with this removed in 2.4 -->
+                <!--<prop key="com.navis.argo.business.model.CarrierVisit">nonstrict-read-write</prop>-->
+
+                <prop key="com.navis.vessel.business.operation.Vessel">nonstrict-read-write</prop>
+                <prop key="com.navis.vessel.business.operation.VesselClass">nonstrict-read-write</prop>
+                <prop key="com.navis.services.business.rules.ServiceRule">nonstrict-read-write</prop>
+                <prop key="com.navis.services.business.rules.FlagType">nonstrict-read-write</prop>
+                <prop key="com.navis.argo.business.reference.EntitySet">nonstrict-read-write</prop>
+            </props>
+
+        </property>
+        <property name="collectionProperties">
+            <props>
+                <prop key="com.navis.argo.business.reference.CarrierItinerary.itinPoints">nonstrict-read-write</prop>
+                <prop key="com.navis.framework.query.business.SavedPredicate.prdctChildPrdctList">nonstrict-read-write</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

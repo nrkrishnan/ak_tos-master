@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<!DOCTYPE metafields PUBLIC "" "MetafieldDictionary.dtd" >
+<!--
+-->
+<metafields>
+    <!-- 2010.02.24 tisaacson ARGO-24194 Restructured cluster management UI / service status tracking. -->
+    <metafield id="nodeCacheItemScope" value-class="String"/>
+    <metafield id="nodeCacheItemType" value-class="String"/>
+    <metafield id="nodeCacheItemName" value-class="String"/>
+    <metafield id="nodeCacheItemState" value-class="String"/>
+    <metafield id="nodeCacheItemAddress" value-class="String"/>
+    <metafield id="nodeCacheItemVersion" value-class="String"/>
+    <metafield id="nodeCacheItemInfo" value-class="String"/>
+    <metafield id="nodeCacheItemStartupTime" value-class="Long"/>
+    <metafield id="nodeCacheItemHeartbeatTime" value-class="Long"/>
+    <metafield id="nodeCacheItemActivityTime" value-class="Long"/>
+    <metafield id="nodeCacheItemShutdownTime" value-class="Long"/>
+    <metafield id="nodeCacheItemUserName" value-class="String"/>
+    <metafield id="nodeCacheItemMemory" value-class="String"/>
+    <metafield id="nodeCacheItemStorage" value-class="String"/>
+
+    <metafield id="apexSparcsImportDirPath" value-class="String"/>
+
+    <!-- mpadhye ARGO-32890: Integrity Checker -->
+    <metafield id="idcSourceType" value-class="app-defined" app-defined-value-class="com.navis.argo.business.atoms.DataSourceTypeEnum"/>
+    <metafield id="idcSource" value-class="String">
+        <validation>
+            <letter-case>UPPER</letter-case>
+            <max-length>120</max-length>
+        </validation>
+    </metafield>
+    <metafield id="idcTargetType" value-class="app-defined" app-defined-value-class="com.navis.argo.business.atoms.DataSourceTypeEnum"/>
+    <metafield id="idcTarget" value-class="String">
+        <validation>
+            <letter-case>UPPER</letter-case>
+            <max-length>120</max-length>
+        </validation>
+    </metafield>
+    <metafield id="idcOutput" value-class="String">
+        <validation>
+            <letter-case>UPPER</letter-case>
+            <max-length>120</max-length>
+        </validation>
+    </metafield>
+
+</metafields>
